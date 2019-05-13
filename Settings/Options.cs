@@ -14,6 +14,7 @@ namespace SQLIndexManager {
     private int _connectionTimeout = 15;
     private int _commandTimeout = 90;
     private int _maxDop;
+    private int _fillFactor = 100;
     private int _sampleStatsPercent = 100;
     private int _maxDuration = 1;
     private string _abortAfterWait = "NONE";
@@ -48,6 +49,12 @@ namespace SQLIndexManager {
     public int MaxDop {
       get => _maxDop;
       set => _maxDop = value.IsBetween(0, 64) ? value : _maxDop;
+    }
+
+    [XmlAttribute]
+    public int FillFactor {
+      get => _fillFactor;
+      set => _fillFactor = value.IsBetween(0, 100) ? value : _fillFactor;
     }
 
     [XmlAttribute]
@@ -100,6 +107,12 @@ namespace SQLIndexManager {
 
     [XmlAttribute]
     public bool ScanNonClusteredColumnstore;
+
+    [XmlAttribute]
+    public bool IgnorePermissions;
+
+    [XmlAttribute]
+    public bool IgnoreReadOnlyFL;
 
     [XmlElement]
     public List<string> ExcludeSchemas {
@@ -174,6 +187,8 @@ namespace SQLIndexManager {
       ScanNonClusteredIndex = true;
       ScanClusteredColumnstore = true;
       ScanNonClusteredColumnstore = true;
+      IgnorePermissions = true;
+      IgnoreReadOnlyFL = true;
     }
   }
 

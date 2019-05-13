@@ -106,7 +106,13 @@ namespace SQLIndexManager {
                       $"ON [{SchemaName}].[{ObjectName}] REBUILD PARTITION = {partition}\n    " +
                       $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
                       $"ONLINE = {onlineRebuild}, " +
-                      (FixType == IndexOp.RebuildFillFactorZero ? $"FILLFACTOR = 100, " : "") +
+                      (FixType == IndexOp.RebuildFillFactorZero 
+                            ? $"FILLFACTOR = 100, "
+                            : (Settings.Options.FillFactor.IsBetween(1, 99) 
+                                  ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
+                                  : ""
+                              )
+                       ) +
                       $"DATA_COMPRESSION = {compression.ToDescription()}, " +
                       $"MAXDOP = {Settings.Options.MaxDop});";
             }

@@ -10,13 +10,14 @@ namespace SQLIndexManager {
   public static class QueryEngine {
 
     public static List<Database> GetDatabases(SqlConnection connection) {
+      string query = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin 
+                        ? Query.DatabaseList
+                        : Query.DatabaseListAzure;
 
-      DataSet data = new DataSet();
-
-      string query = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin ? Query.DatabaseList : Query.DatabaseListAzure;
-      
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
       adapter.Fill(data);
 
       List<Database> dbs = new List<Database>();
@@ -35,7 +36,6 @@ namespace SQLIndexManager {
     }
 
     public static List<Index> GetIndexes(SqlConnection connection) {
-
       string lob = string.Empty;
       if (Settings.ServerInfo.IsOnlineRebuildAvailable)
         lob = Settings.ServerInfo.MajorVersion == 10 ? Query.Lob2008 : Query.Lob2012Plus;
@@ -65,9 +65,11 @@ namespace SQLIndexManager {
         excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID('" + string.Join("')), (OBJECT_ID('", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
       }
 
-      string query = string.Format(Query.PreDescribeIndexes, string.Join(", ", it), excludeList, indexQuery, lob, indexStats);
+      string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
+      string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";
 
-      DataSet data = new DataSet();
+      string query = string.Format(Query.PreDescribeIndexes, string.Join(", ", it), excludeList, indexQuery, lob, indexStats, ignoreReadOnlyFL, ignorePermissions);
+
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
       cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
@@ -76,6 +78,7 @@ namespace SQLIndexManager {
       cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
 
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
       adapter.Fill(data);
 
       List<Index> indexes = new List<Index>();
@@ -140,8 +143,8 @@ namespace SQLIndexManager {
     }
 
     public static void GetIndexFragmentation(SqlConnection connection, Index index) {
-
       SqlCommand cmd = new SqlCommand(Query.IndexFragmentation, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
       cmd.Parameters.Add(new SqlParameter("@ObjectID",        SqlDbType.Int) { Value = index.ObjectId });
       cmd.Parameters.Add(new SqlParameter("@IndexID",         SqlDbType.Int) { Value = index.IndexId });
       cmd.Parameters.Add(new SqlParameter("@PartitionNumber", SqlDbType.Int) { Value = index.PartitionNumber });
@@ -150,16 +153,15 @@ namespace SQLIndexManager {
     }
 
     public static void GetColumnstoreFragmentation(SqlConnection connection, Index index, List<Index> indexes) {
-
-      DataSet data = new DataSet();
-
       SqlCommand cmd = new SqlCommand(Query.ColumnstoreIndexFragmentation, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
       cmd.Parameters.Add(new SqlParameter("@ObjectID", SqlDbType.Int) { Value = index.ObjectId });
       cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
       cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
       cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
       adapter.Fill(data);
 
       foreach(DataRow row in data.Tables[0].Rows) {
@@ -179,9 +181,6 @@ namespace SQLIndexManager {
     }
 
     public static void FixIndex(SqlConnection connection, Index index) {
-
-      DataSet data = new DataSet();
-
       string sqlInfo = string.Format(index.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
                                      index.ObjectId, index.IndexId, index.PartitionNumber);
 
@@ -191,6 +190,7 @@ namespace SQLIndexManager {
 
       SqlCommand cmd = new SqlCommand(sql, connection) { CommandTimeout = Settings.Options.CommandTimeout };
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
 
       try {
         adapter.Fill(data);

@@ -657,12 +657,11 @@ namespace SQLIndexManager {
 
     private void GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e) {
       if (e.Info == null || e.SelectedControl == gridControl1) {
-        var info = gridView1.CalcHitInfo(e.ControlMousePosition);
+        GridHitInfo info = gridView1.CalcHitInfo(e.ControlMousePosition);
 
         if (info.InRowCell && info.RowHandle != -1 && info.Column != null && info.Column.FieldName == "Progress") {
-          var errorMessage = gridView1.GetRowCellValue(info.RowHandle, "Error");
-          if (errorMessage != null)
-            e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", errorMessage.ToString());
+          Index index = (Index)gridView1.GetRow(info.RowHandle);
+          e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}",  $"{index.GetQuery()}\n{index.Error}");
         }
       }
     }

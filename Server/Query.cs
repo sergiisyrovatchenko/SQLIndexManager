@@ -87,7 +87,7 @@ SELECT ObjectID         = i.[object_id]
      , IsFiltered       = i.[has_filter]
 FROM #AllocationUnits a
 JOIN #Partitions p ON a.ContainerID = p.[partition_id]
-JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.[object_id] AND p.[index_id] = i.[index_id]
+JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.[object_id] AND p.[index_id] = i.[index_id] {6}
 WHERE i.[type] IN ({0})
     AND i.[object_id] > 255
 
@@ -95,7 +95,7 @@ DECLARE @DBID   INT
       , @DBNAME SYSNAME
 
 SET @DBNAME = DB_NAME()
-SELECT @DBID = database_id
+SELECT @DBID = [database_id]
 FROM sys.databases WITH(NOLOCK)
 WHERE [name] = @DBNAME
 
@@ -169,7 +169,7 @@ LEFT JOIN #Fragmentation f ON f.ObjectID = i.ObjectID AND f.IndexID = i.IndexID 
 LEFT JOIN ({4}) u ON i.ObjectID = u.ObjectID AND i.IndexID = u.IndexID
 LEFT JOIN #Lob lob ON lob.ObjectID = i.ObjectID AND lob.IndexID = i.IndexID
 LEFT JOIN sys.destination_data_spaces dds WITH(NOLOCK) ON i.DataSpaceID = dds.[partition_scheme_id] AND i.PartitionNumber = dds.[destination_id]
-JOIN sys.filegroups fg WITH(NOLOCK) ON ISNULL(dds.[data_space_id], i.DataSpaceID) = fg.[data_space_id]
+JOIN sys.filegroups fg WITH(NOLOCK) ON ISNULL(dds.[data_space_id], i.DataSpaceID) = fg.[data_space_id] {5}
 WHERE o.type IN ('V', 'U')
     AND (
             f.Fragmentation >= @Fragmentation
@@ -177,7 +177,8 @@ WHERE o.type IN ('V', 'U')
             i.PagesCount > @PreDescribeSize
         OR
             i.IndexType IN (5, 6)
-    )";
+    )
+";
 
     public const string IndexStats = @"
     SELECT ObjectID    = [object_id]
@@ -296,19 +297,25 @@ FROM (
            , [partition_number]
 ) t
 WHERE Fragmentation >= @Fragmentation
-    AND PagesCount BETWEEN @MinIndexSize AND @MaxIndexSize";
+    AND PagesCount BETWEEN @MinIndexSize AND @MaxIndexSize
+";
 
+    // https://dba.stackexchange.com/questions/44908/what-is-the-actual-behavior-of-compatibility-level-80/
     public const string IndexFragmentation = @"
+DECLARE @DBID INT = DB_ID()
+
 SELECT [avg_fragmentation_in_percent]
-FROM sys.dm_db_index_physical_stats(DB_ID(), @ObjectID, @IndexID, @PartitionNumber, 'LIMITED')
+FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, 'LIMITED')
 WHERE [index_level] = 0
-    AND [alloc_unit_type_desc] = 'IN_ROW_DATA'";
+    AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
+";
     
     public const string ServerInfo = @"
 SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
      , Edition       = SERVERPROPERTY('Edition')
      , ServerVersion = SERVERPROPERTY('ProductVersion')
-     , IsSysAdmin    = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)";
+     , IsSysAdmin    = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)
+";
 
     public const string DatabaseList = @"
 SELECT DatabaseName = t.[name]
@@ -324,7 +331,8 @@ LEFT JOIN (
 ) d ON d.[database_id] = t.[database_id]
 WHERE t.[state] = 0
     AND t.[database_id] != 2
-    AND ISNULL(HAS_DBACCESS(t.[name]), 1) = 1";
+    AND ISNULL(HAS_DBACCESS(t.[name]), 1) = 1
+";
 
     public const string DatabaseListAzure = @"
 SELECT DatabaseName = [name]
@@ -339,6 +347,13 @@ DECLARE @UnusedPagesCount  BIGINT
       , @ReservedPageCount BIGINT
       , @RowsCount         BIGINT
       , @Compression       TINYINT
+      , @DBID              INT
+      , @DBNAME            SYSNAME
+
+SET @DBNAME = DB_NAME()
+SELECT @DBID = [database_id]
+FROM sys.databases WITH(NOLOCK)
+WHERE [name] = @DBNAME
 
 SELECT TOP(1) @UnusedPagesCount   = [used_page_count]
             , @ReservedPageCount  = [reserved_page_count]
@@ -360,9 +375,10 @@ SELECT Fragmentation    = [avg_fragmentation_in_percent]
      , RowsCount        = ISNULL(@RowsCount, 0)
      , IndexStats       = STATS_DATE({0}, {1})
      , DataCompression  = @Compression
-FROM sys.dm_db_index_physical_stats(DB_ID(), {0}, {1}, {2}, 'LIMITED')
+FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, 'LIMITED')
 WHERE [index_level] = 0
-    AND [alloc_unit_type_desc] = 'IN_ROW_DATA'";
+    AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
+";
 
     public const string AfterFixColumnstoreIndex = @"
 DECLARE @PagesCount      BIGINT
@@ -386,7 +402,8 @@ SELECT Fragmentation    = @Fragmentation
 FROM sys.partitions WITH(NOLOCK)
 WHERE [object_id] = {0}
     AND [index_id] = {1}
-    AND [partition_number] = {2}";
+    AND [partition_number] = {2}
+";
   }
 
 }

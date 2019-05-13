@@ -33,6 +33,9 @@ namespace SQLIndexManager {
       boxScanNonClusteredColumnstore.Checked = o.ScanNonClusteredColumnstore;
       boxExcludeSchemas.EditValue = string.Join(";", o.ExcludeSchemas);
       boxExcludeObject.EditValue = string.Join(";", o.ExcludeObject);
+      boxFillFactor.EditValue = o.FillFactor;
+      boxIgnorePermissions.Checked = o.IgnorePermissions;
+      boxIgnoreReadOnlyFL.Checked = o.IgnoreReadOnlyFL;
     }
 
     public Options GetSettings() {
@@ -58,7 +61,10 @@ namespace SQLIndexManager {
         ScanClusteredColumnstore = boxScanClusteredColumnstore.Checked,
         ScanNonClusteredColumnstore = boxScanNonClusteredColumnstore.Checked,
         ExcludeSchemas = new List<string> (boxExcludeSchemas.EditValue.ToString().Split(';')),
-        ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';'))
+        ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';')),
+        FillFactor = (int)boxFillFactor.Value,
+        IgnorePermissions = boxIgnorePermissions.Checked,
+        IgnoreReadOnlyFL = boxIgnoreReadOnlyFL.Checked
       };
 
     }
