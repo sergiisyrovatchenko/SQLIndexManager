@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DevExpress.XtraGrid;
 
 namespace SQLIndexManager {
 
@@ -219,11 +220,21 @@ namespace SQLIndexManager {
                                         .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
                                         .ThenByDescending(_ => _.PagesCount).ToList();
 
-      foreach(Index ix in indexes) {
+      foreach (Index ix in indexes) {
         if (ix.Fragmentation < Settings.Options.RebuildThreshold && ix.IsAllowReorganize)
           ix.FixType = IndexOp.Reorganize;
         else if (Settings.Options.Online && ix.IsAllowOnlineRebuild)
           ix.FixType = IndexOp.RebuildOnline;
+        else if (!ix.IsColumnstore && ix.IsAllowCompression) {
+          if (Settings.Options.DataCompression == DataCompression.None.ToDescription() && ix.DataCompression != DataCompression.None)
+            ix.FixType = IndexOp.RebuildNone;
+          else if (Settings.Options.DataCompression == DataCompression.Row.ToDescription())
+            ix.FixType = IndexOp.RebuildRow;
+          else if (Settings.Options.DataCompression == DataCompression.Page.ToDescription())
+            ix.FixType = IndexOp.RebuildPage;
+          else
+            ix.FixType = IndexOp.Rebuild;
+        }
         else
           ix.FixType = IndexOp.Rebuild;
       }
@@ -231,26 +242,29 @@ namespace SQLIndexManager {
       labelIndex.Caption = indexes.Count.ToString();
       Output.Current.Add($"Processed: {_scanIndexes.Count}. Fragmented: {indexes.Count}", null, _scanDuration.ElapsedMilliseconds);
 
-      if (indexes.Count == 0) return;
-
-      buttonExport.Enabled = true;
+      gridView1.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
       gridControl1.DataSource = indexes;
 
-      var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
-      var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
+      if (indexes.Count > 0) {
+        buttonExport.Enabled = true;
 
-      rulePagesCount.Minimum = 0;
-      rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
+        var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
+        var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
 
-      ruleUnusedPagesCount.Minimum = 0;
-      ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
-                                      ? indexes.Max(_ => _.UnusedPagesCount)
-                                      : rulePagesCount.Maximum;
+        rulePagesCount.Minimum = 0;
+        rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
+
+        ruleUnusedPagesCount.Minimum = 0;
+        ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
+                                          ? indexes.Max(_ => _.UnusedPagesCount)
+                                          : rulePagesCount.Maximum;
+      }
     }
 
     private void RefreshIndexes() {
       if (_workerFix != null && _workerFix.IsBusy) return;
 
+      gridView1.CustomDrawEmptyForeground -= CustomDrawEmptyForeground;
       gridControl1.DataSource = null;
 
       labelDatabase.Caption = Settings.ActiveHost.Databases.Count.ToString();
@@ -264,7 +278,7 @@ namespace SQLIndexManager {
       gridView1.Columns[Resources.Progress].Visible = false;
       gridView1.Columns[Resources.Duration].Visible = false;
       gridView1.Columns[Resources.PagesCountBefore].Visible = false;
-      
+
       buttonDatabases.Enabled =
         buttonRefreshIndex.Enabled =
           buttonNewConnection.Enabled =
@@ -302,7 +316,7 @@ namespace SQLIndexManager {
 
       List<Index> selIndex = ((List<Index>)gridView1.DataSource).Where(_ => _.IsSelected).ToList();
 
-      List<Index> fixIndex = 
+      List<Index> fixIndex =
           selIndex.Where(x => Settings.ActiveHost.Databases.Any(y => y == x.DatabaseName))
                   .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
                   .ThenByDescending(_ => _.PagesCount).ToList();
@@ -661,7 +675,7 @@ namespace SQLIndexManager {
 
         if (info.InRowCell && info.RowHandle != -1 && info.Column != null && info.Column.FieldName == "Progress") {
           Index index = (Index)gridView1.GetRow(info.RowHandle);
-          e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}",  $"{index.GetQuery()}\n{index.Error}");
+          e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", $"{index.GetQuery()}\n{index.Error}");
         }
       }
     }
@@ -772,8 +786,8 @@ namespace SQLIndexManager {
 
       if (dialog.ShowDialog() == DialogResult.OK) {
         CsvExportOptionsEx advOptions = new CsvExportOptionsEx {
-           ExportType = DevExpress.Export.ExportType.WYSIWYG,
-           TextExportMode = TextExportMode.Value
+          ExportType = DevExpress.Export.ExportType.WYSIWYG,
+          TextExportMode = TextExportMode.Value
         };
 
         try {
@@ -831,6 +845,26 @@ namespace SQLIndexManager {
 
     #endregion
 
+    private void CustomDrawEmptyForeground(object sender, CustomDrawEventArgs e) {
+      string noIndexesFoundText = "No indexes found";
+      string trySearchingAgainText = "Try searching again";
+      int offset = 15;
+
+      e.DefaultDraw();
+      e.Appearance.Options.UseFont = true;
+      e.Appearance.Font = new Font("Tahoma", 12);
+      Size size = e.Appearance.CalcTextSize(e.Cache, noIndexesFoundText, e.Bounds.Width).ToSize();
+      int x = (e.Bounds.Width - size.Width) / 2;
+      int y = e.Bounds.Y + offset;
+      Rectangle noIndexesFoundBounds = new Rectangle(new Point(x, y), size);
+      e.Appearance.DrawString(e.Cache, noIndexesFoundText, noIndexesFoundBounds);
+      size = e.Appearance.CalcTextSize(e.Cache, trySearchingAgainText, e.Bounds.Width).ToSize();
+      x = noIndexesFoundBounds.X - (size.Width - noIndexesFoundBounds.Width) / 2;
+      y = noIndexesFoundBounds.Bottom + offset;
+      size.Width += offset;
+      Rectangle trySearchingAgainBounds = new Rectangle(new Point(x, y), size);
+      e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
+    }
   }
 
 }

@@ -30,22 +30,12 @@ CREATE TABLE #ExcludeList (ID INT PRIMARY KEY)
 INSERT INTO #ExcludeList
 SELECT [object_id]
 FROM sys.objects WITH(NOLOCK)
-WHERE [is_ms_shipped] = 1 {1}
+WHERE [type] IN ('V', 'U')
+    AND [is_ms_shipped] = 1 {1}
 
 IF OBJECT_ID('tempdb.dbo.#Partitions') IS NOT NULL
     DROP TABLE #Partitions
-
-SELECT [object_id]
-     , [index_id]
-     , [partition_id]
-     , [partition_number]
-     , [rows]
-     , [data_compression]
-INTO #Partitions
-FROM sys.partitions WITH(NOLOCK)
-WHERE [object_id] > 255
-    AND [rows] > 0
-    AND [object_id] NOT IN (SELECT * FROM #ExcludeList)
+{7}
 
 IF OBJECT_ID('tempdb.dbo.#Indexes') IS NOT NULL
     DROP TABLE #Indexes
@@ -148,6 +138,9 @@ SELECT i.ObjectID
      , i.IsAllowPageLocks
      , u.TotalWrites
      , u.TotalReads
+     , u.TotalSeeks
+     , u.TotalScans
+     , u.TotalLookups
      , u.LastUsage
      , i.DataCompression
      , f.Fragmentation
@@ -170,7 +163,7 @@ LEFT JOIN ({4}) u ON i.ObjectID = u.ObjectID AND i.IndexID = u.IndexID
 LEFT JOIN #Lob lob ON lob.ObjectID = i.ObjectID AND lob.IndexID = i.IndexID
 LEFT JOIN sys.destination_data_spaces dds WITH(NOLOCK) ON i.DataSpaceID = dds.[partition_scheme_id] AND i.PartitionNumber = dds.[destination_id]
 JOIN sys.filegroups fg WITH(NOLOCK) ON ISNULL(dds.[data_space_id], i.DataSpaceID) = fg.[data_space_id] {5}
-WHERE o.type IN ('V', 'U')
+WHERE o.[type] IN ('V', 'U')
     AND (
             f.Fragmentation >= @Fragmentation
         OR
@@ -180,31 +173,75 @@ WHERE o.type IN ('V', 'U')
     )
 ";
 
+    public const string IncludeListEmpty = @"
+SELECT [object_id]
+     , [index_id]
+     , [partition_id]
+     , [partition_number]
+     , [rows]
+     , [data_compression]
+INTO #Partitions
+FROM sys.partitions WITH(NOLOCK)
+WHERE [object_id] > 255
+    AND [rows] > 0
+    AND [object_id] NOT IN (SELECT * FROM #ExcludeList)";
+
+    public const string IncludeList = @"
+IF OBJECT_ID('tempdb.dbo.#IncludeList') IS NOT NULL
+    DROP TABLE #IncludeList
+
+CREATE TABLE #IncludeList (ID INT PRIMARY KEY)
+
+INSERT INTO #IncludeList
+SELECT [object_id]
+FROM sys.objects WITH(NOLOCK)
+WHERE [type] IN ('V', 'U')
+    {0}
+
+SELECT [object_id]
+     , [index_id]
+     , [partition_id]
+     , [partition_number]
+     , [rows]
+     , [data_compression]
+INTO #Partitions
+FROM sys.partitions WITH(NOLOCK)
+WHERE [object_id] > 255
+    AND [rows] > 0
+    AND [object_id] NOT IN (SELECT * FROM #ExcludeList)
+    AND [object_id] IN (SELECT * FROM #IncludeList)";
+
     public const string IndexStats = @"
-    SELECT ObjectID    = [object_id]
-         , IndexID     = [index_id]
-         , TotalWrites = NULLIF([user_updates], 0)
-         , TotalReads  = NULLIF([user_seeks] + [user_scans] + [user_lookups], 0)
-         , LastUsage   = (
-                            SELECT MAX(dt)
-                            FROM (
-                                VALUES ([last_user_seek])
-                                     , ([last_user_scan])
-                                     , ([last_user_lookup])
-                                     , ([last_user_update])
-                            ) t(dt)
-                       )
+    SELECT ObjectID      = [object_id]
+         , IndexID       = [index_id]
+         , TotalWrites   = NULLIF([user_updates], 0)
+         , TotalReads    = NULLIF([user_seeks] + [user_scans] + [user_lookups], 0)
+         , TotalSeeks    = NULLIF([user_seeks], 0)
+         , TotalScans    = NULLIF([user_scans], 0)
+         , TotalLookups  = NULLIF([user_lookups], 0)
+         , LastUsage     = (
+                                SELECT MAX(dt)
+                                FROM (
+                                    VALUES ([last_user_seek])
+                                         , ([last_user_scan])
+                                         , ([last_user_lookup])
+                                         , ([last_user_update])
+                                ) t(dt)
+                           )
     FROM sys.dm_db_index_usage_stats WITH(NOLOCK)
     WHERE [database_id] = @DBID
 ";
 
     // Azure -> master -> sys.dm_db_index_usage_stats -> VIEW DATABASE STATE permission denied in database 'master'
     public const string IndexStatsAzureMaster = @"
-    SELECT ObjectID    = NULL
-         , IndexID     = NULL
-         , TotalWrites = NULL
-         , TotalReads  = NULL
-         , LastUsage   = NULL
+    SELECT ObjectID     = NULL
+         , IndexID      = NULL
+         , TotalWrites  = NULL
+         , TotalReads   = NULL
+         , TotalSeeks   = NULL
+         , TotalScans   = NULL
+         , TotalLookups = NULL
+         , LastUsage    = NULL
 ";
 
     public const string Lob2008 = @"
@@ -321,6 +358,7 @@ SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
 SELECT DatabaseName = t.[name]
      , d.DataSize
      , d.LogSize
+     , RecoveryModel = t.recovery_model_desc
 FROM sys.databases t WITH(NOLOCK)
 LEFT JOIN (
     SELECT [database_id]
@@ -335,9 +373,10 @@ WHERE t.[state] = 0
 ";
 
     public const string DatabaseListAzure = @"
-SELECT DatabaseName = [name]
-     , DataSize     = CAST(NULL AS BIGINT)
-     , LogSize      = CAST(NULL AS BIGINT)
+SELECT DatabaseName  = [name]
+     , DataSize      = CAST(NULL AS BIGINT)
+     , LogSize       = CAST(NULL AS BIGINT)
+     , RecoveryModel = recovery_model_desc
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND ISNULL(HAS_DBACCESS([name]), 1) = 1";

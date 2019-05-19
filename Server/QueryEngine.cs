@@ -24,9 +24,10 @@ namespace SQLIndexManager {
       foreach (DataRow _ in data.Tables[0].Rows) {
         dbs.Add(
           new Database {
-            DatabaseName = _.Field<string>(Resources.DatabaseName),
-            DataSize     = _.Field<long?>("DataSize"),
-            LogSize      = _.Field<long?>("LogSize")
+            DatabaseName  = _.Field<string>(Resources.DatabaseName),
+            RecoveryModel = _.Field<string>(Resources.RecoveryModel),
+            DataSize      = _.Field<long?>(Resources.DataSize),
+            LogSize       = _.Field<long?>(Resources.LogSize)
           }
         );
       }
@@ -58,17 +59,24 @@ namespace SQLIndexManager {
 
       string excludeList = string.Empty;
       if (Settings.Options.ExcludeSchemas.Count > 0) {
-        excludeList = " OR [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID('" + string.Join("')), (SCHEMA_ID('", Settings.Options.ExcludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)";
+        excludeList = " OR [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.ExcludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)";
       }
 
       if (Settings.Options.ExcludeObject.Count > 0) {
-        excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID('" + string.Join("')), (OBJECT_ID('", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
+        excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID(N'" + string.Join("')), (OBJECT_ID(N'", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
+      }
+
+      string includeList = Query.IncludeListEmpty;
+      if (Settings.Options.IncludeSchemas.Count > 0) {
+        includeList = string.Format(Query.IncludeList, " AND [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.IncludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)");
       }
 
       string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
       string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";
 
-      string query = string.Format(Query.PreDescribeIndexes, string.Join(", ", it), excludeList, indexQuery, lob, indexStats, ignoreReadOnlyFL, ignorePermissions);
+      string query = string.Format(Query.PreDescribeIndexes,
+                                    string.Join(", ", it), excludeList, indexQuery, lob,
+                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList);
 
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
@@ -128,6 +136,9 @@ namespace SQLIndexManager {
           IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
           TotalWrites           = _.Field<long?>(Resources.TotalWrites),
           TotalReads            = _.Field<long?>(Resources.TotalReads),
+          TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
+          TotalScans            = _.Field<long?>(Resources.TotalScans),
+          TotalLookups          = _.Field<long?>(Resources.TotalLookups),
           LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
           DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
           Fragmentation         = _.Field<double?>(Resources.Fragmentation),

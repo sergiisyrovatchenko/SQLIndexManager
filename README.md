@@ -29,4 +29,4 @@ You can download .zip file with the latest build of the master branch from [Goog
 ## Screenshots
 
 ![SQL Index Manager](https://habrastorage.org/webt/xt/bv/v1/xtbvv1cizvrwuxusekttbv7dduk.png)
-![SQL Index Manager](https://habrastorage.org/webt/ea/j2/zg/eaj2zgpfz8_radausrwvowddazy.png)
+![SQL Index Manager](https://habrastorage.org/webt/rc/zk/u2/rczku2blgn9xfnfqreikt8okffa.png)

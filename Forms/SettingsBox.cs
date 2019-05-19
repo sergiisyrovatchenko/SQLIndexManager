@@ -26,11 +26,13 @@ namespace SQLIndexManager {
       boxWaitAtLowPriority.Checked = o.WaitAtLowPriority;
       boxMaxDuration.EditValue = o.MaxDuration;
       boxAbortAfterWait.EditValue = o.AbortAfterWait;
+      boxDataCompression.EditValue = o.DataCompression;
       boxScanHeap.Checked = o.ScanHeap;
       boxScanClusteredIndex.Checked = o.ScanClusteredIndex;
       boxScanNonClusteredIndex.Checked = o.ScanNonClusteredIndex;
       boxScanClusteredColumnstore.Checked = o.ScanClusteredColumnstore;
       boxScanNonClusteredColumnstore.Checked = o.ScanNonClusteredColumnstore;
+      boxIncludeSchemas.EditValue = string.Join(";", o.IncludeSchemas);
       boxExcludeSchemas.EditValue = string.Join(";", o.ExcludeSchemas);
       boxExcludeObject.EditValue = string.Join(";", o.ExcludeObject);
       boxFillFactor.EditValue = o.FillFactor;
@@ -55,11 +57,13 @@ namespace SQLIndexManager {
         WaitAtLowPriority = boxWaitAtLowPriority.Checked,
         MaxDuration = (int)boxMaxDuration.Value,
         AbortAfterWait = (string)boxAbortAfterWait.EditValue,
+        DataCompression = (string)boxDataCompression.EditValue,
         ScanHeap = boxScanHeap.Checked,
         ScanClusteredIndex = boxScanClusteredIndex.Checked,
         ScanNonClusteredIndex = boxScanNonClusteredIndex.Checked,
         ScanClusteredColumnstore = boxScanClusteredColumnstore.Checked,
         ScanNonClusteredColumnstore = boxScanNonClusteredColumnstore.Checked,
+        IncludeSchemas = new List<string> (boxIncludeSchemas.EditValue.ToString().Split(';')),
         ExcludeSchemas = new List<string> (boxExcludeSchemas.EditValue.ToString().Split(';')),
         ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';')),
         FillFactor = (int)boxFillFactor.Value,
@@ -76,7 +80,7 @@ namespace SQLIndexManager {
     }
 
     private void IndexSizeValueChanged(object sender, EventArgs e) {
-      labelSize.Text = $@"Filter by Index Size [ {boxMinIndexSize.Value.Minimum.FormatMbSize()} ... {boxMinIndexSize.Value.Maximum.FormatMbSize()} ... {boxMaxIndexSize.Value.FormatMbSize()} ]";
+      labelSize.Text = $@"Filter Size [ {boxMinIndexSize.Value.Minimum.FormatMbSize()} ... {boxMinIndexSize.Value.Maximum.FormatMbSize()} ... {boxMaxIndexSize.Value.FormatMbSize()} ]";
     }
 
     private void ThresholdValueChanged(object sender, EventArgs e) {

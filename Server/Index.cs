@@ -25,6 +25,9 @@ namespace SQLIndexManager {
     public DateTime? IndexStats { get; set; }
     public long? TotalWrites { get; set; }
     public long? TotalReads { get; set; }
+    public long? TotalScans { get; set; }
+    public long? TotalSeeks { get; set; }
+    public long? TotalLookups { get; set; }
     public DateTime? LastUsage { get; set; }
     public DataCompression DataCompression { get; set; }
     public double? Fragmentation { get; set; }
@@ -108,7 +111,7 @@ namespace SQLIndexManager {
                       $"ONLINE = {onlineRebuild}, " +
                       (FixType == IndexOp.RebuildFillFactorZero 
                             ? $"FILLFACTOR = 100, "
-                            : (Settings.Options.FillFactor.IsBetween(1, 99) 
+                            : (Settings.Options.FillFactor.IsBetween(1, 100) 
                                   ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
                                   : ""
                               )

@@ -36,6 +36,7 @@
       this.buttonRefresh = new DevExpress.XtraEditors.SimpleButton();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
+      this.colRecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
       this.SuspendLayout();
@@ -48,7 +49,7 @@
       this.colDataSize.MinWidth = 80;
       this.colDataSize.Name = "colDataSize";
       this.colDataSize.Visible = true;
-      this.colDataSize.VisibleIndex = 2;
+      this.colDataSize.VisibleIndex = 3;
       this.colDataSize.Width = 100;
       // 
       // colLogSize
@@ -59,7 +60,7 @@
       this.colLogSize.MinWidth = 80;
       this.colLogSize.Name = "colLogSize";
       this.colLogSize.Visible = true;
-      this.colLogSize.VisibleIndex = 3;
+      this.colLogSize.VisibleIndex = 4;
       this.colLogSize.Width = 100;
       // 
       // colDatabase
@@ -69,12 +70,13 @@
       this.colDatabase.Name = "colDatabase";
       this.colDatabase.Visible = true;
       this.colDatabase.VisibleIndex = 1;
+      this.colDatabase.Width = 100;
       // 
       // buttonCancel
       // 
       this.buttonCancel.AllowFocus = false;
       this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(454, 305);
+      this.buttonCancel.Location = new System.Drawing.Point(582, 305);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(75, 23);
       this.buttonCancel.TabIndex = 3;
@@ -85,7 +87,7 @@
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.buttonOK.Enabled = false;
-      this.buttonOK.Location = new System.Drawing.Point(373, 305);
+      this.buttonOK.Location = new System.Drawing.Point(501, 305);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 2;
@@ -108,12 +110,10 @@
       this.grid.MainView = this.view;
       this.grid.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
       this.grid.Name = "grid";
-      this.grid.Size = new System.Drawing.Size(517, 293);
+      this.grid.Size = new System.Drawing.Size(645, 293);
       this.grid.TabIndex = 0;
-      this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[]
-      {
-        this.view
-      });
+      this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.view});
       // 
       // view
       // 
@@ -132,7 +132,11 @@
       this.view.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
       this.view.Appearance.SelectedRow.Options.UseBackColor = true;
       this.view.ColumnPanelRowHeight = 26;
-      this.view.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { this.colDatabase, this.colDataSize, this.colLogSize });
+      this.view.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colDatabase,
+            this.colRecoveryModel,
+            this.colDataSize,
+            this.colLogSize});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = this.colDataSize;
       gridFormatRule1.ColumnApplyTo = this.colDataSize;
@@ -144,9 +148,17 @@
       formatConditionRuleDataBar1.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar1.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar1.DrawAxis = false;
-      formatConditionRuleDataBar1.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+      formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
       formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-      formatConditionRuleDataBar1.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+      formatConditionRuleDataBar1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
       formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar1.PredefinedName = null;
       formatConditionRuleDataBar1.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
@@ -161,9 +173,17 @@
       formatConditionRuleDataBar2.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar2.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar2.DrawAxis = false;
-      formatConditionRuleDataBar2.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+      formatConditionRuleDataBar2.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
       formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-      formatConditionRuleDataBar2.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+      formatConditionRuleDataBar2.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
       formatConditionRuleDataBar2.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar2.PredefinedName = null;
       formatConditionRuleDataBar2.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
@@ -189,20 +209,28 @@
       this.view.OptionsView.ShowGroupPanel = false;
       this.view.OptionsView.ShowIndicator = false;
       this.view.RowHeight = 24;
-      this.view.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[]
-      {
-        new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colDataSize, DevExpress.Data.ColumnSortOrder.Descending)
-      });
+      this.view.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colDataSize, DevExpress.Data.ColumnSortOrder.Descending)});
       this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
-      this.view.CustomColumnDisplayText +=
-        new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridCustomColumnDisplayText);
+      this.view.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridCustomColumnDisplayText);
       this.view.DoubleClick += new System.EventHandler(this.GridDoubleClick);
+      // 
+      // colRecoveryModel
+      // 
+      this.colRecoveryModel.Caption = "Recovery Model";
+      this.colRecoveryModel.FieldName = "RecoveryModel";
+      this.colRecoveryModel.MaxWidth = 110;
+      this.colRecoveryModel.MinWidth = 80;
+      this.colRecoveryModel.Name = "colRecoveryModel";
+      this.colRecoveryModel.Visible = true;
+      this.colRecoveryModel.VisibleIndex = 2;
+      this.colRecoveryModel.Width = 110;
       // 
       // DatabaseBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(541, 338);
+      this.ClientSize = new System.Drawing.Size(667, 338);
       this.Controls.Add(this.grid);
       this.Controls.Add(this.buttonRefresh);
       this.Controls.Add(this.buttonOK);
@@ -232,5 +260,6 @@
     private DevExpress.XtraGrid.Columns.GridColumn colDataSize;
     private DevExpress.XtraGrid.Columns.GridColumn colLogSize;
     private DevExpress.XtraGrid.Columns.GridColumn colDatabase;
+    private DevExpress.XtraGrid.Columns.GridColumn colRecoveryModel;
   }
 }

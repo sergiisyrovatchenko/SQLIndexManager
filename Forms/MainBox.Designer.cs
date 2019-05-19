@@ -40,6 +40,9 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn IsFiltered;
       DevExpress.XtraGrid.Columns.GridColumn IsPartitioned;
       DevExpress.XtraGrid.Columns.GridColumn colDateTime;
+      DevExpress.XtraGrid.Columns.GridColumn TotalSeeks;
+      DevExpress.XtraGrid.Columns.GridColumn TotalScans;
+      DevExpress.XtraGrid.Columns.GridColumn TotalLookups;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
@@ -60,10 +63,10 @@ namespace SQLIndexManager {
       this.statusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
       this.labelDatabase = new DevExpress.XtraBars.BarStaticItem();
       this.labelIndex = new DevExpress.XtraBars.BarStaticItem();
-      this.labelServerInfo = new DevExpress.XtraBars.BarStaticItem();
       this.buttonStopScan = new DevExpress.XtraBars.BarButtonItem();
       this.buttonStopFix = new DevExpress.XtraBars.BarButtonItem();
       this.buttonLog = new DevExpress.XtraBars.BarButtonItem();
+      this.labelServerInfo = new DevExpress.XtraBars.BarStaticItem();
       this.labelInfo = new DevExpress.XtraBars.BarStaticItem();
       this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
       this.buttonNewConnection = new DevExpress.XtraBars.BarButtonItem();
@@ -85,7 +88,6 @@ namespace SQLIndexManager {
       this.buttonExportCSV = new DevExpress.XtraBars.BarButtonItem();
       this.buttonExportText = new DevExpress.XtraBars.BarButtonItem();
       this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
-      this.popupSelect = new DevExpress.XtraBars.PopupMenu(this.components);
       this.taskbar = new DevExpress.Utils.Taskbar.TaskbarAssistant();
       this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
       this.buttonFind = new DevExpress.XtraBars.BarButtonItem();
@@ -120,6 +122,9 @@ namespace SQLIndexManager {
       IsFiltered = new DevExpress.XtraGrid.Columns.GridColumn();
       IsPartitioned = new DevExpress.XtraGrid.Columns.GridColumn();
       colDateTime = new DevExpress.XtraGrid.Columns.GridColumn();
+      TotalSeeks = new DevExpress.XtraGrid.Columns.GridColumn();
+      TotalScans = new DevExpress.XtraGrid.Columns.GridColumn();
+      TotalLookups = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -128,7 +133,6 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.popupSelect)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
       this.splitContainer.SuspendLayout();
@@ -572,6 +576,42 @@ namespace SQLIndexManager {
       colDateTime.VisibleIndex = 0;
       colDateTime.Width = 90;
       // 
+      // TotalSeeks
+      // 
+      TotalSeeks.Caption = "Seeks";
+      TotalSeeks.DisplayFormat.FormatString = "N0";
+      TotalSeeks.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+      TotalSeeks.FieldName = "TotalSeeks";
+      TotalSeeks.MaxWidth = 85;
+      TotalSeeks.MinWidth = 75;
+      TotalSeeks.Name = "TotalSeeks";
+      TotalSeeks.OptionsColumn.AllowEdit = false;
+      TotalSeeks.OptionsColumn.AllowFocus = false;
+      TotalSeeks.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      // 
+      // TotalScans
+      // 
+      TotalScans.Caption = "Scans";
+      TotalScans.DisplayFormat.FormatString = "N0";
+      TotalScans.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+      TotalScans.FieldName = "TotalScans";
+      TotalScans.MaxWidth = 85;
+      TotalScans.MinWidth = 75;
+      TotalScans.Name = "TotalScans";
+      TotalScans.OptionsColumn.AllowEdit = false;
+      TotalScans.OptionsColumn.AllowFocus = false;
+      TotalScans.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      // 
+      // TotalLookups
+      // 
+      TotalLookups.Caption = "Lookups";
+      TotalLookups.MaxWidth = 85;
+      TotalLookups.MinWidth = 75;
+      TotalLookups.Name = "TotalLookups";
+      TotalLookups.OptionsColumn.AllowEdit = false;
+      TotalLookups.OptionsColumn.AllowFocus = false;
+      TotalLookups.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      // 
       // repositoryItemHypertextLabel1
       // 
       this.repositoryItemHypertextLabel1.Name = "repositoryItemHypertextLabel1";
@@ -635,7 +675,10 @@ namespace SQLIndexManager {
             IsPK,
             IsUnique,
             IsFiltered,
-            IsPartitioned});
+            IsPartitioned,
+            TotalSeeks,
+            TotalScans,
+            TotalLookups});
       this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = Fragmentation;
       gridFormatRule1.ColumnApplyTo = Fragmentation;
@@ -834,10 +877,10 @@ namespace SQLIndexManager {
       // 
       this.statusBar.ItemLinks.Add(this.labelDatabase);
       this.statusBar.ItemLinks.Add(this.labelIndex);
-      this.statusBar.ItemLinks.Add(this.labelServerInfo);
       this.statusBar.ItemLinks.Add(this.buttonStopScan);
       this.statusBar.ItemLinks.Add(this.buttonStopFix);
       this.statusBar.ItemLinks.Add(this.buttonLog);
+      this.statusBar.ItemLinks.Add(this.labelServerInfo);
       this.statusBar.ItemLinks.Add(this.labelInfo);
       this.statusBar.Location = new System.Drawing.Point(0, 768);
       this.statusBar.Name = "statusBar";
@@ -864,16 +907,6 @@ namespace SQLIndexManager {
       this.labelIndex.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelIndex.ImageOptions.LargeImage")));
       this.labelIndex.Name = "labelIndex";
       this.labelIndex.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-      // 
-      // labelServerInfo
-      // 
-      this.labelServerInfo.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelServerInfo.Caption = "Not connected";
-      this.labelServerInfo.Id = 26;
-      this.labelServerInfo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.Image")));
-      this.labelServerInfo.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.LargeImage")));
-      this.labelServerInfo.Name = "labelServerInfo";
-      this.labelServerInfo.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonStopScan
       // 
@@ -903,6 +936,16 @@ namespace SQLIndexManager {
       this.buttonLog.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonLog.ImageOptions.LargeImage")));
       this.buttonLog.Name = "buttonLog";
       this.buttonLog.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonLog);
+      // 
+      // labelServerInfo
+      // 
+      this.labelServerInfo.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelServerInfo.Caption = "Not connected";
+      this.labelServerInfo.Id = 26;
+      this.labelServerInfo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.Image")));
+      this.labelServerInfo.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.LargeImage")));
+      this.labelServerInfo.Name = "labelServerInfo";
+      this.labelServerInfo.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelInfo
       // 
@@ -1140,13 +1183,6 @@ namespace SQLIndexManager {
       // 
       this.toolTipController.Active = false;
       // 
-      // popupSelect
-      // 
-      this.popupSelect.ItemLinks.Add(this.buttonDatabases);
-      this.popupSelect.ItemLinks.Add(this.buttonRefreshIndex);
-      this.popupSelect.Name = "popupSelect";
-      this.popupSelect.Ribbon = this.ribbonControl1;
-      // 
       // taskbar
       // 
       this.taskbar.ParentControl = this;
@@ -1167,7 +1203,6 @@ namespace SQLIndexManager {
       // 
       this.buttonFind.ActAsDropDown = true;
       this.buttonFind.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
-      this.buttonFind.DropDownControl = this.popupSelect;
       this.buttonFind.Enabled = false;
       this.buttonFind.Id = 11;
       this.buttonFind.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonFind.ImageOptions.LargeImage")));
@@ -1299,7 +1334,6 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.popupSelect)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
       this.splitContainer.ResumeLayout(false);
@@ -1336,7 +1370,6 @@ namespace SQLIndexManager {
     private BarStaticItem labelDatabase;
     private BarStaticItem labelIndex;
     private DevExpress.Utils.ToolTipController toolTipController;
-    private PopupMenu popupSelect;
     private BarButtonItem buttonDatabases;
     private BarEditItem boxSearch;
     private DevExpress.XtraEditors.Repository.RepositoryItemSearchControl boxSearchControl;

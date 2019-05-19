@@ -88,6 +88,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataSize.
+        /// </summary>
+        internal static string DataSize {
+            get {
+                return ResourceManager.GetString("DataSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         internal static string Duration {
@@ -251,6 +260,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LogSize.
+        /// </summary>
+        internal static string LogSize {
+            get {
+                return ResourceManager.GetString("LogSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ObjectID.
         /// </summary>
         internal static string ObjectID {
@@ -305,6 +323,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RecoveryModel.
+        /// </summary>
+        internal static string RecoveryModel {
+            get {
+                return ResourceManager.GetString("RecoveryModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RowsCount.
         /// </summary>
         internal static string RowsCount {
@@ -323,11 +350,38 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TotalLookups.
+        /// </summary>
+        internal static string TotalLookups {
+            get {
+                return ResourceManager.GetString("TotalLookups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TotalReads.
         /// </summary>
         internal static string TotalReads {
             get {
                 return ResourceManager.GetString("TotalReads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalScans.
+        /// </summary>
+        internal static string TotalScans {
+            get {
+                return ResourceManager.GetString("TotalScans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TotalSeeks.
+        /// </summary>
+        internal static string TotalSeeks {
+            get {
+                return ResourceManager.GetString("TotalSeeks", resourceCulture);
             }
         }
         

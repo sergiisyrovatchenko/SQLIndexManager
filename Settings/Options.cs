@@ -14,10 +14,12 @@ namespace SQLIndexManager {
     private int _connectionTimeout = 15;
     private int _commandTimeout = 90;
     private int _maxDop;
-    private int _fillFactor = 100;
+    private int _fillFactor;
     private int _sampleStatsPercent = 100;
     private int _maxDuration = 1;
     private string _abortAfterWait = "NONE";
+    private string _dataCompression = "DEFAULT";
+    private List<string> _includeSchemas = new List<string>();
     private List<string> _excludeSchemas = new List<string>();
     private List<string> _excludeObject = new List<string>();
 
@@ -115,6 +117,20 @@ namespace SQLIndexManager {
     public bool IgnoreReadOnlyFL;
 
     [XmlElement]
+    public List<string> IncludeSchemas {
+      get => _includeSchemas;
+      set {
+        List<string> items = new List<string>();
+        foreach (string item in value) {
+          string t = item.Replace("'", "").Trim();
+          if (!string.IsNullOrEmpty(t))
+            items.Add(t);
+        }
+        _includeSchemas = items;
+      }
+    }
+
+    [XmlElement]
     public List<string> ExcludeSchemas {
       get => _excludeSchemas;
       set {
@@ -146,6 +162,12 @@ namespace SQLIndexManager {
     public int MaxDuration {
       get => _maxDuration;
       set => _maxDuration = value.IsBetween(1, 10) ? value : _maxDuration;
+    }
+
+    [XmlAttribute]
+    public string DataCompression {
+      get => _dataCompression;
+      set => _dataCompression = (value == "DEFAULT" || value == "NONE" || value == "ROW" || value == "PAGE") ? value : _dataCompression;
     }
 
     [XmlAttribute]

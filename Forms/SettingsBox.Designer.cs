@@ -39,10 +39,11 @@
       DevExpress.XtraEditors.LabelControl labelControl6;
       DevExpress.XtraEditors.GroupControl db3;
       DevExpress.XtraEditors.GroupControl groupControl3;
+      DevExpress.XtraEditors.LabelControl labelControl8;
       DevExpress.XtraEditors.LabelControl labelAbortAfterWait;
       DevExpress.XtraEditors.LabelControl labelMaxDuration;
       DevExpress.XtraEditors.LabelControl labelWaitAtLowPriority;
-      DevExpress.XtraEditors.LabelControl labelControl8;
+      DevExpress.XtraEditors.LabelControl labelControl10;
       this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
       this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
       this.labelRebuild = new DevExpress.XtraEditors.LabelControl();
@@ -50,13 +51,14 @@
       this.labelReorganize = new DevExpress.XtraEditors.LabelControl();
       this.boxStatsSamplePercent = new DevExpress.XtraEditors.SpinEdit();
       this.boxLobCompaction = new DevExpress.XtraEditors.CheckEdit();
-      this.boxMaxDod = new DevExpress.XtraEditors.SpinEdit();
       this.boxSortInTempDb = new DevExpress.XtraEditors.CheckEdit();
       this.boxMinIndexSize = new DevExpress.XtraEditors.RangeTrackBarControl();
       this.boxMaxIndexSize = new DevExpress.XtraEditors.TrackBarControl();
       this.labelSize = new DevExpress.XtraEditors.LabelControl();
       this.boxConnectionTimeout = new DevExpress.XtraEditors.SpinEdit();
       this.boxCommandTimeout = new DevExpress.XtraEditors.SpinEdit();
+      this.boxIgnorePermissions = new DevExpress.XtraEditors.CheckEdit();
+      this.boxIgnoreReadOnlyFL = new DevExpress.XtraEditors.CheckEdit();
       this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
       this.boxExcludeObject = new DevExpress.XtraEditors.TokenEdit();
       this.boxExcludeSchemas = new DevExpress.XtraEditors.TokenEdit();
@@ -66,14 +68,16 @@
       this.boxScanClusteredColumnstore = new DevExpress.XtraEditors.CheckEdit();
       this.boxScanNonClusteredColumnstore = new DevExpress.XtraEditors.CheckEdit();
       this.boxScanHeap = new DevExpress.XtraEditors.CheckEdit();
+      this.boxFillFactor = new DevExpress.XtraEditors.SpinEdit();
       this.boxMaxDuration = new DevExpress.XtraEditors.SpinEdit();
       this.boxAbortAfterWait = new DevExpress.XtraEditors.ComboBoxEdit();
+      this.boxMaxDod = new DevExpress.XtraEditors.SpinEdit();
       this.boxWaitAtLowPriority = new DevExpress.XtraEditors.CheckEdit();
       this.boxOnline = new DevExpress.XtraEditors.CheckEdit();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
-      this.boxIgnoreReadOnlyFL = new DevExpress.XtraEditors.CheckEdit();
-      this.boxIgnorePermissions = new DevExpress.XtraEditors.CheckEdit();
-      this.boxFillFactor = new DevExpress.XtraEditors.SpinEdit();
+      this.boxIncludeSchemas = new DevExpress.XtraEditors.TokenEdit();
+      this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+      this.boxDataCompression = new DevExpress.XtraEditors.ComboBoxEdit();
       gb1 = new DevExpress.XtraEditors.GroupControl();
       gb3 = new DevExpress.XtraEditors.GroupControl();
       labelControl1 = new DevExpress.XtraEditors.LabelControl();
@@ -89,10 +93,11 @@
       labelControl6 = new DevExpress.XtraEditors.LabelControl();
       db3 = new DevExpress.XtraEditors.GroupControl();
       groupControl3 = new DevExpress.XtraEditors.GroupControl();
+      labelControl8 = new DevExpress.XtraEditors.LabelControl();
       labelAbortAfterWait = new DevExpress.XtraEditors.LabelControl();
       labelMaxDuration = new DevExpress.XtraEditors.LabelControl();
       labelWaitAtLowPriority = new DevExpress.XtraEditors.LabelControl();
-      labelControl8 = new DevExpress.XtraEditors.LabelControl();
+      labelControl10 = new DevExpress.XtraEditors.LabelControl();
       ((System.ComponentModel.ISupportInitialize)(gb1)).BeginInit();
       gb1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxThreshold)).BeginInit();
@@ -101,7 +106,6 @@
       gb3.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxLobCompaction.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxMaxDod.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSortInTempDb.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(groupControl1)).BeginInit();
       groupControl1.SuspendLayout();
@@ -115,6 +119,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxCommandTimeout.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(db3)).BeginInit();
       db3.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxExcludeObject.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxExcludeSchemas.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanNonClusteredIndex.Properties)).BeginInit();
@@ -124,13 +130,14 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxScanHeap.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).BeginInit();
       groupControl3.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxFillFactor.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxMaxDuration.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxAbortAfterWait.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxMaxDod.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxWaitAtLowPriority.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxOnline.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxFillFactor.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIncludeSchemas.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxDataCompression.Properties)).BeginInit();
       this.SuspendLayout();
       // 
       // gb1
@@ -142,13 +149,13 @@
       gb1.Controls.Add(this.labelReorganize);
       gb1.Location = new System.Drawing.Point(11, 91);
       gb1.Name = "gb1";
-      gb1.Size = new System.Drawing.Size(366, 102);
+      gb1.Size = new System.Drawing.Size(366, 110);
       gb1.TabIndex = 2;
       gb1.Text = "Fragmentation";
       // 
       // labelControl3
       // 
-      this.labelControl3.Location = new System.Drawing.Point(13, 49);
+      this.labelControl3.Location = new System.Drawing.Point(13, 52);
       this.labelControl3.Name = "labelControl3";
       this.labelControl3.Size = new System.Drawing.Size(42, 13);
       this.labelControl3.TabIndex = 10;
@@ -164,7 +171,7 @@
       // 
       // labelRebuild
       // 
-      this.labelRebuild.Location = new System.Drawing.Point(96, 49);
+      this.labelRebuild.Location = new System.Drawing.Point(96, 52);
       this.labelRebuild.Name = "labelRebuild";
       this.labelRebuild.Size = new System.Drawing.Size(25, 13);
       this.labelRebuild.TabIndex = 8;
@@ -173,7 +180,7 @@
       // boxThreshold
       // 
       this.boxThreshold.EditValue = new DevExpress.XtraEditors.Repository.TrackBarRange(1, 1);
-      this.boxThreshold.Location = new System.Drawing.Point(6, 72);
+      this.boxThreshold.Location = new System.Drawing.Point(6, 82);
       this.boxThreshold.Name = "boxThreshold";
       this.boxThreshold.Properties.AllowFocused = false;
       this.boxThreshold.Properties.HighlightSelectedRange = false;
@@ -254,7 +261,7 @@
       // 
       // labelSortInTempDb
       // 
-      labelSortInTempDb.Location = new System.Drawing.Point(11, 58);
+      labelSortInTempDb.Location = new System.Drawing.Point(11, 81);
       labelSortInTempDb.Name = "labelSortInTempDb";
       labelSortInTempDb.Size = new System.Drawing.Size(118, 13);
       labelSortInTempDb.TabIndex = 10;
@@ -262,7 +269,7 @@
       // 
       // boxLobCompaction
       // 
-      this.boxLobCompaction.Location = new System.Drawing.Point(200, 83);
+      this.boxLobCompaction.Location = new System.Drawing.Point(200, 53);
       this.boxLobCompaction.Name = "boxLobCompaction";
       this.boxLobCompaction.Properties.AllowFocused = false;
       this.boxLobCompaction.Properties.Caption = "";
@@ -272,53 +279,15 @@
       // 
       // labelLobCompaction
       // 
-      labelLobCompaction.Location = new System.Drawing.Point(11, 86);
+      labelLobCompaction.Location = new System.Drawing.Point(12, 55);
       labelLobCompaction.Name = "labelLobCompaction";
       labelLobCompaction.Size = new System.Drawing.Size(122, 13);
       labelLobCompaction.TabIndex = 8;
       labelLobCompaction.Text = "LOB_COMPACTION = ON";
       // 
-      // labelMaxDop
-      // 
-      labelMaxDop.Location = new System.Drawing.Point(12, 56);
-      labelMaxDop.Name = "labelMaxDop";
-      labelMaxDop.Size = new System.Drawing.Size(56, 13);
-      labelMaxDop.TabIndex = 7;
-      labelMaxDop.Text = "MAXDOP = ";
-      // 
-      // boxMaxDod
-      // 
-      this.boxMaxDod.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-      this.boxMaxDod.Location = new System.Drawing.Point(178, 53);
-      this.boxMaxDod.Name = "boxMaxDod";
-      this.boxMaxDod.Properties.AllowFocused = false;
-      this.boxMaxDod.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxMaxDod.Properties.Appearance.Options.UseTextOptions = true;
-      this.boxMaxDod.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.boxMaxDod.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-      this.boxMaxDod.Properties.DisplayFormat.FormatString = "n0";
-      this.boxMaxDod.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxMaxDod.Properties.EditFormat.FormatString = "n0";
-      this.boxMaxDod.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxMaxDod.Properties.IsFloatValue = false;
-      this.boxMaxDod.Properties.Mask.EditMask = "N00";
-      this.boxMaxDod.Properties.MaxValue = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
-      this.boxMaxDod.Size = new System.Drawing.Size(75, 20);
-      this.boxMaxDod.TabIndex = 6;
-      this.boxMaxDod.TabStop = false;
-      // 
       // boxSortInTempDb
       // 
-      this.boxSortInTempDb.Location = new System.Drawing.Point(200, 55);
+      this.boxSortInTempDb.Location = new System.Drawing.Point(200, 79);
       this.boxSortInTempDb.Name = "boxSortInTempDb";
       this.boxSortInTempDb.Properties.AllowFocused = false;
       this.boxSortInTempDb.Properties.Caption = "";
@@ -326,9 +295,17 @@
       this.boxSortInTempDb.TabIndex = 0;
       this.boxSortInTempDb.TabStop = false;
       // 
+      // labelMaxDop
+      // 
+      labelMaxDop.Location = new System.Drawing.Point(12, 84);
+      labelMaxDop.Name = "labelMaxDop";
+      labelMaxDop.Size = new System.Drawing.Size(56, 13);
+      labelMaxDop.TabIndex = 7;
+      labelMaxDop.Text = "MAXDOP = ";
+      // 
       // labelOnline
       // 
-      labelOnline.Location = new System.Drawing.Point(12, 106);
+      labelOnline.Location = new System.Drawing.Point(11, 178);
       labelOnline.Name = "labelOnline";
       labelOnline.Size = new System.Drawing.Size(66, 13);
       labelOnline.TabIndex = 11;
@@ -338,7 +315,7 @@
       // 
       buttonCancel.AllowFocus = false;
       buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      buttonCancel.Location = new System.Drawing.Point(569, 436);
+      buttonCancel.Location = new System.Drawing.Point(569, 505);
       buttonCancel.Name = "buttonCancel";
       buttonCancel.Size = new System.Drawing.Size(75, 23);
       buttonCancel.TabIndex = 0;
@@ -348,12 +325,12 @@
       // buttonRestore
       // 
       buttonRestore.AllowFocus = false;
-      buttonRestore.Location = new System.Drawing.Point(11, 436);
+      buttonRestore.Location = new System.Drawing.Point(12, 505);
       buttonRestore.Name = "buttonRestore";
       buttonRestore.Size = new System.Drawing.Size(102, 23);
       buttonRestore.TabIndex = 0;
       buttonRestore.TabStop = false;
-      buttonRestore.Text = "Restore defaults";
+      buttonRestore.Text = "Defaults";
       buttonRestore.Click += new System.EventHandler(this.ButtonRestoreClick);
       // 
       // groupControl1
@@ -505,6 +482,8 @@
       // 
       // db3
       // 
+      db3.Controls.Add(this.boxIncludeSchemas);
+      db3.Controls.Add(this.labelControl9);
       db3.Controls.Add(this.boxIgnorePermissions);
       db3.Controls.Add(this.boxIgnoreReadOnlyFL);
       db3.Controls.Add(this.labelControl7);
@@ -516,15 +495,35 @@
       db3.Controls.Add(this.boxScanClusteredColumnstore);
       db3.Controls.Add(this.boxScanNonClusteredColumnstore);
       db3.Controls.Add(this.boxScanHeap);
-      db3.Location = new System.Drawing.Point(11, 199);
+      db3.Location = new System.Drawing.Point(12, 207);
       db3.Name = "db3";
-      db3.Size = new System.Drawing.Size(366, 231);
+      db3.Size = new System.Drawing.Size(366, 288);
       db3.TabIndex = 16;
       db3.Text = "Object Scan";
       // 
+      // boxIgnorePermissions
+      // 
+      this.boxIgnorePermissions.Location = new System.Drawing.Point(12, 228);
+      this.boxIgnorePermissions.Name = "boxIgnorePermissions";
+      this.boxIgnorePermissions.Properties.AllowFocused = false;
+      this.boxIgnorePermissions.Properties.Caption = "Ignore object permissions for maintenance";
+      this.boxIgnorePermissions.Size = new System.Drawing.Size(237, 19);
+      this.boxIgnorePermissions.TabIndex = 11;
+      this.boxIgnorePermissions.TabStop = false;
+      // 
+      // boxIgnoreReadOnlyFL
+      // 
+      this.boxIgnoreReadOnlyFL.Location = new System.Drawing.Point(12, 256);
+      this.boxIgnoreReadOnlyFL.Name = "boxIgnoreReadOnlyFL";
+      this.boxIgnoreReadOnlyFL.Properties.AllowFocused = false;
+      this.boxIgnoreReadOnlyFL.Properties.Caption = "Ignore read-only filegroups";
+      this.boxIgnoreReadOnlyFL.Size = new System.Drawing.Size(160, 19);
+      this.boxIgnoreReadOnlyFL.TabIndex = 10;
+      this.boxIgnoreReadOnlyFL.TabStop = false;
+      // 
       // labelControl7
       // 
-      this.labelControl7.Location = new System.Drawing.Point(13, 131);
+      this.labelControl7.Location = new System.Drawing.Point(12, 178);
       this.labelControl7.Name = "labelControl7";
       this.labelControl7.Size = new System.Drawing.Size(297, 13);
       this.labelControl7.TabIndex = 9;
@@ -532,7 +531,7 @@
       // 
       // boxExcludeObject
       // 
-      this.boxExcludeObject.Location = new System.Drawing.Point(13, 150);
+      this.boxExcludeObject.Location = new System.Drawing.Point(13, 197);
       this.boxExcludeObject.Name = "boxExcludeObject";
       this.boxExcludeObject.Properties.EditMode = DevExpress.XtraEditors.TokenEditMode.Manual;
       this.boxExcludeObject.Properties.EditValueSeparatorChar = ';';
@@ -550,7 +549,7 @@
       // 
       // boxExcludeSchemas
       // 
-      this.boxExcludeSchemas.Location = new System.Drawing.Point(13, 105);
+      this.boxExcludeSchemas.Location = new System.Drawing.Point(12, 152);
       this.boxExcludeSchemas.Name = "boxExcludeSchemas";
       this.boxExcludeSchemas.Properties.EditMode = DevExpress.XtraEditors.TokenEditMode.Manual;
       this.boxExcludeSchemas.Properties.EditValueSeparatorChar = ';';
@@ -568,7 +567,7 @@
       // 
       // labelControl5
       // 
-      this.labelControl5.Location = new System.Drawing.Point(13, 87);
+      this.labelControl5.Location = new System.Drawing.Point(12, 133);
       this.labelControl5.Name = "labelControl5";
       this.labelControl5.Size = new System.Drawing.Size(166, 13);
       this.labelControl5.TabIndex = 6;
@@ -631,6 +630,8 @@
       // 
       // groupControl3
       // 
+      groupControl3.Controls.Add(this.boxDataCompression);
+      groupControl3.Controls.Add(labelControl10);
       groupControl3.Controls.Add(labelControl8);
       groupControl3.Controls.Add(this.boxFillFactor);
       groupControl3.Controls.Add(this.boxMaxDuration);
@@ -645,9 +646,47 @@
       groupControl3.Controls.Add(this.boxOnline);
       groupControl3.Location = new System.Drawing.Point(383, 207);
       groupControl3.Name = "groupControl3";
-      groupControl3.Size = new System.Drawing.Size(261, 223);
+      groupControl3.Size = new System.Drawing.Size(261, 288);
       groupControl3.TabIndex = 17;
       groupControl3.Text = "Alter Index Rebuild";
+      // 
+      // labelControl8
+      // 
+      labelControl8.Location = new System.Drawing.Point(12, 56);
+      labelControl8.Name = "labelControl8";
+      labelControl8.Size = new System.Drawing.Size(72, 13);
+      labelControl8.TabIndex = 19;
+      labelControl8.Text = "FILLFACTOR =";
+      // 
+      // boxFillFactor
+      // 
+      this.boxFillFactor.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+      this.boxFillFactor.Location = new System.Drawing.Point(178, 53);
+      this.boxFillFactor.Name = "boxFillFactor";
+      this.boxFillFactor.Properties.AllowFocused = false;
+      this.boxFillFactor.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxFillFactor.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxFillFactor.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxFillFactor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxFillFactor.Properties.DisplayFormat.FormatString = "N00";
+      this.boxFillFactor.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxFillFactor.Properties.EditFormat.FormatString = "n0";
+      this.boxFillFactor.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxFillFactor.Properties.IsFloatValue = false;
+      this.boxFillFactor.Properties.Mask.EditMask = "N00";
+      this.boxFillFactor.Properties.MaxValue = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      this.boxFillFactor.Size = new System.Drawing.Size(75, 20);
+      this.boxFillFactor.TabIndex = 18;
+      this.boxFillFactor.TabStop = false;
       // 
       // boxMaxDuration
       // 
@@ -656,7 +695,7 @@
             0,
             0,
             0});
-      this.boxMaxDuration.Location = new System.Drawing.Point(178, 159);
+      this.boxMaxDuration.Location = new System.Drawing.Point(177, 231);
       this.boxMaxDuration.Name = "boxMaxDuration";
       this.boxMaxDuration.Properties.AllowFocused = false;
       this.boxMaxDuration.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -687,7 +726,7 @@
       // boxAbortAfterWait
       // 
       this.boxAbortAfterWait.EditValue = "NONE";
-      this.boxAbortAfterWait.Location = new System.Drawing.Point(178, 187);
+      this.boxAbortAfterWait.Location = new System.Drawing.Point(177, 259);
       this.boxAbortAfterWait.Name = "boxAbortAfterWait";
       this.boxAbortAfterWait.Properties.AllowFocused = false;
       this.boxAbortAfterWait.Properties.Appearance.Options.UseTextOptions = true;
@@ -705,15 +744,45 @@
       // 
       // labelAbortAfterWait
       // 
-      labelAbortAfterWait.Location = new System.Drawing.Point(35, 190);
+      labelAbortAfterWait.Location = new System.Drawing.Point(34, 262);
       labelAbortAfterWait.Name = "labelAbortAfterWait";
       labelAbortAfterWait.Size = new System.Drawing.Size(119, 13);
       labelAbortAfterWait.TabIndex = 15;
       labelAbortAfterWait.Text = "ABORT_AFTER_WAIT = ";
       // 
+      // boxMaxDod
+      // 
+      this.boxMaxDod.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+      this.boxMaxDod.Location = new System.Drawing.Point(178, 81);
+      this.boxMaxDod.Name = "boxMaxDod";
+      this.boxMaxDod.Properties.AllowFocused = false;
+      this.boxMaxDod.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxMaxDod.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxMaxDod.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxMaxDod.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxMaxDod.Properties.DisplayFormat.FormatString = "n0";
+      this.boxMaxDod.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxMaxDod.Properties.EditFormat.FormatString = "n0";
+      this.boxMaxDod.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxMaxDod.Properties.IsFloatValue = false;
+      this.boxMaxDod.Properties.Mask.EditMask = "N00";
+      this.boxMaxDod.Properties.MaxValue = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+      this.boxMaxDod.Size = new System.Drawing.Size(75, 20);
+      this.boxMaxDod.TabIndex = 6;
+      this.boxMaxDod.TabStop = false;
+      // 
       // labelMaxDuration
       // 
-      labelMaxDuration.Location = new System.Drawing.Point(35, 162);
+      labelMaxDuration.Location = new System.Drawing.Point(34, 234);
       labelMaxDuration.Name = "labelMaxDuration";
       labelMaxDuration.Size = new System.Drawing.Size(94, 13);
       labelMaxDuration.TabIndex = 14;
@@ -721,7 +790,7 @@
       // 
       // boxWaitAtLowPriority
       // 
-      this.boxWaitAtLowPriority.Location = new System.Drawing.Point(200, 132);
+      this.boxWaitAtLowPriority.Location = new System.Drawing.Point(199, 204);
       this.boxWaitAtLowPriority.Name = "boxWaitAtLowPriority";
       this.boxWaitAtLowPriority.Properties.AllowFocused = false;
       this.boxWaitAtLowPriority.Properties.Caption = "";
@@ -731,7 +800,7 @@
       // 
       // labelWaitAtLowPriority
       // 
-      labelWaitAtLowPriority.Location = new System.Drawing.Point(35, 134);
+      labelWaitAtLowPriority.Location = new System.Drawing.Point(34, 206);
       labelWaitAtLowPriority.Name = "labelWaitAtLowPriority";
       labelWaitAtLowPriority.Size = new System.Drawing.Size(129, 13);
       labelWaitAtLowPriority.TabIndex = 12;
@@ -739,7 +808,7 @@
       // 
       // boxOnline
       // 
-      this.boxOnline.Location = new System.Drawing.Point(200, 103);
+      this.boxOnline.Location = new System.Drawing.Point(199, 175);
       this.boxOnline.Name = "boxOnline";
       this.boxOnline.Properties.AllowFocused = false;
       this.boxOnline.Properties.Caption = "";
@@ -751,76 +820,72 @@
       // 
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.buttonOK.Location = new System.Drawing.Point(487, 436);
+      this.buttonOK.Location = new System.Drawing.Point(488, 505);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 1;
       this.buttonOK.TabStop = false;
       this.buttonOK.Text = "OK";
       // 
-      // boxIgnoreReadOnlyFL
+      // boxIncludeSchemas
       // 
-      this.boxIgnoreReadOnlyFL.Location = new System.Drawing.Point(13, 201);
-      this.boxIgnoreReadOnlyFL.Name = "boxIgnoreReadOnlyFL";
-      this.boxIgnoreReadOnlyFL.Properties.AllowFocused = false;
-      this.boxIgnoreReadOnlyFL.Properties.Caption = "Ignore read-only filegroups";
-      this.boxIgnoreReadOnlyFL.Size = new System.Drawing.Size(160, 19);
-      this.boxIgnoreReadOnlyFL.TabIndex = 10;
-      this.boxIgnoreReadOnlyFL.TabStop = false;
+      this.boxIncludeSchemas.Location = new System.Drawing.Point(12, 108);
+      this.boxIncludeSchemas.Name = "boxIncludeSchemas";
+      this.boxIncludeSchemas.Properties.EditMode = DevExpress.XtraEditors.TokenEditMode.Manual;
+      this.boxIncludeSchemas.Properties.EditValueSeparatorChar = ';';
+      this.boxIncludeSchemas.Properties.MaxExpandLines = 1;
+      this.boxIncludeSchemas.Properties.MaxTokenCount = 20;
+      this.boxIncludeSchemas.Properties.Separators.AddRange(new string[] {
+            ",",
+            ";",
+            "|",
+            " "});
+      this.boxIncludeSchemas.Properties.ShowDropDown = false;
+      this.boxIncludeSchemas.Properties.ValidateToken += new DevExpress.XtraEditors.TokenEditValidateTokenEventHandler(this.TokenValidate);
+      this.boxIncludeSchemas.Size = new System.Drawing.Size(343, 20);
+      this.boxIncludeSchemas.TabIndex = 13;
       // 
-      // boxIgnorePermissions
+      // labelControl9
       // 
-      this.boxIgnorePermissions.Location = new System.Drawing.Point(13, 176);
-      this.boxIgnorePermissions.Name = "boxIgnorePermissions";
-      this.boxIgnorePermissions.Properties.AllowFocused = false;
-      this.boxIgnorePermissions.Properties.Caption = "Ignore object permissions for maintenance";
-      this.boxIgnorePermissions.Size = new System.Drawing.Size(237, 19);
-      this.boxIgnorePermissions.TabIndex = 11;
-      this.boxIgnorePermissions.TabStop = false;
+      this.labelControl9.Location = new System.Drawing.Point(12, 89);
+      this.labelControl9.Name = "labelControl9";
+      this.labelControl9.Size = new System.Drawing.Size(164, 13);
+      this.labelControl9.TabIndex = 12;
+      this.labelControl9.Text = "Include schemas ( schema_name )";
       // 
-      // labelControl8
+      // boxDataCompression
       // 
-      labelControl8.Location = new System.Drawing.Point(12, 28);
-      labelControl8.Name = "labelControl8";
-      labelControl8.Size = new System.Drawing.Size(72, 13);
-      labelControl8.TabIndex = 19;
-      labelControl8.Text = "FILLFACTOR =";
-      // 
-      // boxFillFactor
-      // 
-      this.boxFillFactor.EditValue = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-      this.boxFillFactor.Location = new System.Drawing.Point(178, 25);
-      this.boxFillFactor.Name = "boxFillFactor";
-      this.boxFillFactor.Properties.AllowFocused = false;
-      this.boxFillFactor.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxFillFactor.Properties.Appearance.Options.UseTextOptions = true;
-      this.boxFillFactor.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.boxFillFactor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+      this.boxDataCompression.EditValue = "DEFAULT";
+      this.boxDataCompression.Location = new System.Drawing.Point(178, 25);
+      this.boxDataCompression.Name = "boxDataCompression";
+      this.boxDataCompression.Properties.AllowFocused = false;
+      this.boxDataCompression.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxDataCompression.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxDataCompression.Properties.AutoComplete = false;
+      this.boxDataCompression.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-      this.boxFillFactor.Properties.DisplayFormat.FormatString = "N00";
-      this.boxFillFactor.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxFillFactor.Properties.EditFormat.FormatString = "n0";
-      this.boxFillFactor.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxFillFactor.Properties.IsFloatValue = false;
-      this.boxFillFactor.Properties.Mask.EditMask = "N00";
-      this.boxFillFactor.Properties.MaxValue = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-      this.boxFillFactor.Size = new System.Drawing.Size(75, 20);
-      this.boxFillFactor.TabIndex = 18;
-      this.boxFillFactor.TabStop = false;
+      this.boxDataCompression.Properties.Items.AddRange(new object[] {
+            "DEFAULT",
+            "NONE",
+            "ROW",
+            "PAGE"});
+      this.boxDataCompression.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+      this.boxDataCompression.Size = new System.Drawing.Size(75, 20);
+      this.boxDataCompression.TabIndex = 21;
+      // 
+      // labelControl10
+      // 
+      labelControl10.Location = new System.Drawing.Point(12, 28);
+      labelControl10.Name = "labelControl10";
+      labelControl10.Size = new System.Drawing.Size(120, 13);
+      labelControl10.TabIndex = 20;
+      labelControl10.Text = "DATA_COMPRESSION = ";
       // 
       // SettingsBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(656, 469);
+      this.ClientSize = new System.Drawing.Size(656, 540);
       this.Controls.Add(groupControl3);
       this.Controls.Add(db3);
       this.Controls.Add(groupControl2);
@@ -849,7 +914,6 @@
       gb3.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxLobCompaction.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxMaxDod.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSortInTempDb.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(groupControl1)).EndInit();
       groupControl1.ResumeLayout(false);
@@ -866,6 +930,8 @@
       ((System.ComponentModel.ISupportInitialize)(db3)).EndInit();
       db3.ResumeLayout(false);
       db3.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxExcludeObject.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxExcludeSchemas.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanNonClusteredIndex.Properties)).EndInit();
@@ -876,13 +942,14 @@
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).EndInit();
       groupControl3.ResumeLayout(false);
       groupControl3.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxFillFactor.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxMaxDuration.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxAbortAfterWait.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxMaxDod.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxWaitAtLowPriority.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxOnline.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxFillFactor.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxIncludeSchemas.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxDataCompression.Properties)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -920,5 +987,8 @@
     private DevExpress.XtraEditors.CheckEdit boxIgnorePermissions;
     private DevExpress.XtraEditors.CheckEdit boxIgnoreReadOnlyFL;
     private DevExpress.XtraEditors.SpinEdit boxFillFactor;
+    private DevExpress.XtraEditors.TokenEdit boxIncludeSchemas;
+    private DevExpress.XtraEditors.LabelControl labelControl9;
+    private DevExpress.XtraEditors.ComboBoxEdit boxDataCompression;
   }
 }

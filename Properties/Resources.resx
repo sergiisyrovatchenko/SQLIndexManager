@@ -214,4 +214,22 @@
   <data name="IsUnique" xml:space="preserve">
     <value>IsUnique</value>
   </data>
+  <data name="DataSize" xml:space="preserve">
+    <value>DataSize</value>
+  </data>
+  <data name="LogSize" xml:space="preserve">
+    <value>LogSize</value>
+  </data>
+  <data name="RecoveryModel" xml:space="preserve">
+    <value>RecoveryModel</value>
+  </data>
+  <data name="TotalLookups" xml:space="preserve">
+    <value>TotalLookups</value>
+  </data>
+  <data name="TotalScans" xml:space="preserve">
+    <value>TotalScans</value>
+  </data>
+  <data name="TotalSeeks" xml:space="preserve">
+    <value>TotalSeeks</value>
+  </data>
 </root>
