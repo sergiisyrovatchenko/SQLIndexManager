@@ -22,7 +22,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using DevExpress.XtraGrid;
 
 namespace SQLIndexManager {
 
@@ -246,8 +245,6 @@ namespace SQLIndexManager {
       gridControl1.DataSource = indexes;
 
       if (indexes.Count > 0) {
-        buttonExport.Enabled = true;
-
         var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
         var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
 
@@ -282,8 +279,7 @@ namespace SQLIndexManager {
       buttonDatabases.Enabled =
         buttonRefreshIndex.Enabled =
           buttonNewConnection.Enabled =
-            buttonOptions.Enabled =
-              buttonExport.Enabled = false;
+            buttonOptions.Enabled = false;
 
       buttonStopScan.Visibility = BarItemVisibility.Always;
       taskbar.ProgressMode = TaskbarButtonProgressMode.Indeterminate;
@@ -309,7 +305,7 @@ namespace SQLIndexManager {
       buttonDatabases.Enabled =
         buttonRefreshIndex.Enabled =
           buttonNewConnection.Enabled =
-            buttonFixFragmentation.Enabled =
+            buttonFix.Enabled =
               buttonOptions.Enabled = false;
 
       buttonStopFix.Visibility = BarItemVisibility.Always;
@@ -423,7 +419,7 @@ namespace SQLIndexManager {
           buttonNewConnection.Enabled =
             buttonOptions.Enabled = true;
 
-      buttonFixFragmentation.Enabled = false;
+      buttonFix.Enabled = false;
 
       buttonStopFix.Visibility = BarItemVisibility.Never;
 
@@ -585,7 +581,7 @@ namespace SQLIndexManager {
       List<Index> dataView = (List<Index>)obj.DataSource;
       int selectedItems = dataView.Count(_ => _.IsSelected);
 
-      buttonFixFragmentation.Enabled = selectedItems > 0;
+      buttonFix.Enabled = selectedItems > 0;
     }
 
     private void GridRowCountChanged(object sender, EventArgs e) {
@@ -678,6 +674,27 @@ namespace SQLIndexManager {
           e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", $"{index.GetQuery()}\n{index.Error}");
         }
       }
+    }
+
+    private void CustomDrawEmptyForeground(object sender, CustomDrawEventArgs e) {
+      string noIndexesFoundText = "No indexes found";
+      string trySearchingAgainText = "Try searching again";
+      int offset = 15;
+
+      e.DefaultDraw();
+      e.Appearance.Options.UseFont = true;
+      e.Appearance.Font = new Font("Tahoma", 12);
+      Size size = e.Appearance.CalcTextSize(e.Cache, noIndexesFoundText, e.Bounds.Width).ToSize();
+      int x = (e.Bounds.Width - size.Width) / 2;
+      int y = e.Bounds.Y + offset;
+      Rectangle noIndexesFoundBounds = new Rectangle(new Point(x, y), size);
+      e.Appearance.DrawString(e.Cache, noIndexesFoundText, noIndexesFoundBounds);
+      size = e.Appearance.CalcTextSize(e.Cache, trySearchingAgainText, e.Bounds.Width).ToSize();
+      x = noIndexesFoundBounds.X - (size.Width - noIndexesFoundBounds.Width) / 2;
+      y = noIndexesFoundBounds.Bottom + offset;
+      size.Width += offset;
+      Rectangle trySearchingAgainBounds = new Rectangle(new Point(x, y), size);
+      e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
     }
 
     #endregion
@@ -843,28 +860,26 @@ namespace SQLIndexManager {
       }
     }
 
+    private void ExportHtml(object sender, ItemClickEventArgs e) {
+      SaveFileDialog dialog = new SaveFileDialog {
+        Filter = @"HTML Files (*.html)|*.html",
+        RestoreDirectory = true
+      };
+
+      if (dialog.ShowDialog() == DialogResult.OK) {
+        try {
+          gridControl1.ExportToHtml(dialog.FileName);
+          Output.Current.Add($"Export to Html: {dialog.FileName}");
+        }
+        catch (Exception ex) {
+          Output.Current.Add("Export to Html failed", ex.Message);
+          XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+      }
+    }
+
     #endregion
 
-    private void CustomDrawEmptyForeground(object sender, CustomDrawEventArgs e) {
-      string noIndexesFoundText = "No indexes found";
-      string trySearchingAgainText = "Try searching again";
-      int offset = 15;
-
-      e.DefaultDraw();
-      e.Appearance.Options.UseFont = true;
-      e.Appearance.Font = new Font("Tahoma", 12);
-      Size size = e.Appearance.CalcTextSize(e.Cache, noIndexesFoundText, e.Bounds.Width).ToSize();
-      int x = (e.Bounds.Width - size.Width) / 2;
-      int y = e.Bounds.Y + offset;
-      Rectangle noIndexesFoundBounds = new Rectangle(new Point(x, y), size);
-      e.Appearance.DrawString(e.Cache, noIndexesFoundText, noIndexesFoundBounds);
-      size = e.Appearance.CalcTextSize(e.Cache, trySearchingAgainText, e.Bounds.Width).ToSize();
-      x = noIndexesFoundBounds.X - (size.Width - noIndexesFoundBounds.Width) / 2;
-      y = noIndexesFoundBounds.Bottom + offset;
-      size.Width += offset;
-      Rectangle trySearchingAgainBounds = new Rectangle(new Point(x, y), size);
-      e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
-    }
   }
 
 }

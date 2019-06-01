@@ -64,10 +64,14 @@ namespace SQLIndexManager {
       _events.Add(ev);
 
       try {
-        _control.Caption = msg;
+        if (_control != null) {
+          _control.Caption = msg;
+        }
 
-        GridView grid = (GridView)_secondaryControl.MainView;
-        grid.RefreshData();
+        if (_secondaryControl != null) {
+          GridView grid = (GridView)_secondaryControl.MainView;
+          grid.RefreshData();
+        }
 
         using (StreamWriter sw = File.AppendText(Settings.LogFileName)) {
           sw.WriteLine($"[ {now:HH:mm:ss.fff} ] {msg}");

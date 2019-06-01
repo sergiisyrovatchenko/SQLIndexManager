@@ -232,4 +232,19 @@
   <data name="TotalSeeks" xml:space="preserve">
     <value>TotalSeeks</value>
   </data>
+  <data name="Edition" xml:space="preserve">
+    <value>Edition</value>
+  </data>
+  <data name="IsSysAdmin" xml:space="preserve">
+    <value>IsSysAdmin</value>
+  </data>
+  <data name="ProductLevel" xml:space="preserve">
+    <value>ProductLevel</value>
+  </data>
+  <data name="ServerVersion" xml:space="preserve">
+    <value>ServerVersion</value>
+  </data>
+  <data name="MinVersionMessage" xml:space="preserve">
+    <value>SQL Server 2000/2005 is not supported.</value>
+  </data>
 </root>

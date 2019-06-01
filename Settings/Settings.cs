@@ -12,6 +12,7 @@ namespace SQLIndexManager {
     private static GlobalSettings _current;
     private static Host _activeHost;
     private static readonly Destructor _finalise = new Destructor();
+    public static bool IgnoreFileSetting = false;
 
     public static Host ActiveHost {
       get => _activeHost;
@@ -49,7 +50,8 @@ namespace SQLIndexManager {
       get {
         if (_current == null) {
           _current = new GlobalSettings();
-          Load();
+          if (!IgnoreFileSetting)
+            Load();
         }
 
         return _current;
@@ -58,7 +60,8 @@ namespace SQLIndexManager {
 
     private sealed class Destructor {
       ~Destructor() {
-        Save();
+        if (!IgnoreFileSetting)
+          Save();
       }
     }
 

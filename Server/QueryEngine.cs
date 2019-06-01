@@ -33,7 +33,23 @@ namespace SQLIndexManager {
       }
 
       return dbs;
+    }
 
+    public static ServerInfo GetServerInfo(SqlConnection connection) {
+      DataSet data = new DataSet();
+
+      SqlCommand cmd = new SqlCommand(Query.ServerInfo, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      adapter.Fill(data);
+      DataRow row = data.Tables[0].Rows[0];
+
+      string productLevel = row.Field<string>(Resources.ProductLevel);
+      string edition = row.Field<string>(Resources.Edition);
+      string serverVersion = row.Field<string>(Resources.ServerVersion);
+      bool isSysAdmin = row.Field<bool?>(Resources.IsSysAdmin) ?? false;
+
+      return new ServerInfo(productLevel, edition, serverVersion, isSysAdmin);
     }
 
     public static List<Index> GetIndexes(SqlConnection connection) {

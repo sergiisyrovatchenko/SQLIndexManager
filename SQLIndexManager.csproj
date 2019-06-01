@@ -89,6 +89,10 @@
     <Compile Include="Common\ThreadWorker.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Console\CmdArgument.cs" />
+    <Compile Include="Console\CmdParser.cs" />
+    <Compile Include="Console\CmdWorker.cs" />
+    <Compile Include="Console\NativeMethods.cs" />
     <Compile Include="Forms\ErrorBox.cs">
       <SubType>Form</SubType>
     </Compile>

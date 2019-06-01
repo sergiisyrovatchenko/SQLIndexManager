@@ -21,16 +21,8 @@ namespace SQLIndexManager {
       labelVersion.Text = assembly.GetName().Version.ToString();
     }
 
-    private void SqlRu_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      Process.Start("www.sql.ru/forum/1312218-a/sql-index-manager-besplatnaya-utilita-po-obsluzhivaniu-indeksov-dlya-sql-server-i-azure");
-    }
-
     private void GitHub_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
       Process.Start("www.github.com/sergeysyrovatchenko/SQLIndexManager");
-    }
-
-    private void LinkedIn_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      Process.Start("www.linkedin.com/in/sergeysyrovatchenko");
     }
 
     #region Override Methods

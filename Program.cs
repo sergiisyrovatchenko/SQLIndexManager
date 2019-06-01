@@ -2,6 +2,7 @@
 using DevExpress.Skins;
 using System;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -9,27 +10,60 @@ namespace SQLIndexManager {
 
   static class Program {
     [STAThread]
-    static void Main() {
+    static void Main(string[] args) {
       CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
       Thread.CurrentThread.CurrentCulture = culture;
       Thread.CurrentThread.CurrentUICulture = culture;
       CultureInfo.DefaultThreadCurrentCulture = culture;
       CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-      Application.EnableVisualStyles();
-      Application.SetCompatibleTextRenderingDefault(false);
+      if (args != null && args.Length > 0) {
+        Settings.IgnoreFileSetting = true;
+        Output.Current.Add($"Command line: {string.Join(" ", args)}");
 
-      Application.ThreadException += Application_ThreadException;
-      Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-      SkinManager.EnableFormSkins();
-      UserLookAndFeel.Default.SetSkinStyle("Office 2016 Dark");
+        try {
+          AttachConsole();
+          var provider = new CmdWorker(CmdParser.Parse(args));
+          Environment.Exit(provider.FixIndexes());
+        }
+        catch (Exception ex) {
+          Output.Current.Add(ex.Message);
+        }
+      }
+      else {
+        Application.ThreadException += Application_ThreadException;
+        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-      Application.Run(new MainBox());
+        SkinManager.EnableFormSkins();
+        UserLookAndFeel.Default.SetSkinStyle("Office 2016 Dark");
+
+        Application.Run(new MainBox());
+      }
     }
 
     private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
       using (ErrorBox errorBox = new ErrorBox(e.Exception)) {
         errorBox.ShowDialog();
+      }
+    }
+
+    private static void AttachConsole() {
+      const uint ATTACH_PARENT_PROCESS = 0xffffffff;
+      const uint ERROR_SUCCESS = 0;
+      const uint ERROR_ACCESS_DENIED = 5;
+
+      bool consoleAttached = NativeMethods.AttachConsole(ATTACH_PARENT_PROCESS);
+      if (!consoleAttached) {
+        var error = NativeMethods.GetLastError();
+        if (error == ERROR_SUCCESS || error == ERROR_ACCESS_DENIED)
+          consoleAttached = true;
+
+        if (!consoleAttached && !NativeMethods.AllocConsole())
+          Environment.Exit(1);
+        else
+          Console.OutputEncoding = (Encoding)Console.OutputEncoding.Clone();
       }
     }
   }

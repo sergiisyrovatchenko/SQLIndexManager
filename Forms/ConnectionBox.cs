@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using SQLIndexManager.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,15 +75,9 @@ namespace SQLIndexManager {
         return;
       }
 
-      DataSet data = new DataSet();
-
       using (SqlConnection connection = (SqlConnection)e.Result) {
-        
-        SqlCommand cmd = new SqlCommand(Query.ServerInfo, connection) { CommandTimeout = Settings.Options.CommandTimeout };
-
         try {
-          SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-          adapter.Fill(data);
+          _serverInfo = QueryEngine.GetServerInfo(connection);
         }
         catch (Exception ex) {
           string errorMsg = ex.Message.Replace(". ", "." + Environment.NewLine);
@@ -95,17 +90,8 @@ namespace SQLIndexManager {
         }
       }
 
-      DataRow row = data.Tables[0].Rows[0];
-
-      string productLevel = row.Field<string>("ProductLevel");
-      string edition = row.Field<string>("Edition");
-      string serverVersion = row.Field<string>("ServerVersion");
-      bool isSysAdmin = row.Field<bool?>("IsSysAdmin") ?? false;
-
-      _serverInfo = new ServerInfo(productLevel, edition, serverVersion, isSysAdmin);
-
       if (_serverInfo.MajorVersion < 10) {
-        XtraMessageBox.Show("SQL Server 2000/2005 is not supported.", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        XtraMessageBox.Show(Resources.MinVersionMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         boxServer.Focus();
       }
       else {

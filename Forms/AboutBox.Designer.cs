@@ -32,8 +32,6 @@
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
       this.labelProductDescription = new DevExpress.XtraEditors.LabelControl();
       this.labelGitHubControl = new DevExpress.XtraEditors.HyperlinkLabelControl();
-      this.labelLinkedInControl = new DevExpress.XtraEditors.HyperlinkLabelControl();
-      this.hyperlinkLabelControl1 = new DevExpress.XtraEditors.HyperlinkLabelControl();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
       // 
@@ -41,7 +39,7 @@
       // 
       this.labelProductName.Appearance.Font = new System.Drawing.Font("Tahoma", 10.25F);
       this.labelProductName.Appearance.Options.UseFont = true;
-      this.labelProductName.Location = new System.Drawing.Point(149, 17);
+      this.labelProductName.Location = new System.Drawing.Point(149, 26);
       this.labelProductName.Name = "labelProductName";
       this.labelProductName.Size = new System.Drawing.Size(84, 17);
       this.labelProductName.TabIndex = 0;
@@ -49,7 +47,7 @@
       // 
       // label1
       // 
-      this.label1.Location = new System.Drawing.Point(149, 64);
+      this.label1.Location = new System.Drawing.Point(149, 73);
       this.label1.Name = "label1";
       this.label1.Size = new System.Drawing.Size(39, 13);
       this.label1.TabIndex = 2;
@@ -57,7 +55,7 @@
       // 
       // label2
       // 
-      this.label2.Location = new System.Drawing.Point(149, 83);
+      this.label2.Location = new System.Drawing.Point(149, 92);
       this.label2.Name = "label2";
       this.label2.Size = new System.Drawing.Size(51, 13);
       this.label2.TabIndex = 3;
@@ -65,7 +63,7 @@
       // 
       // labelVersion
       // 
-      this.labelVersion.Location = new System.Drawing.Point(225, 64);
+      this.labelVersion.Location = new System.Drawing.Point(225, 73);
       this.labelVersion.Name = "labelVersion";
       this.labelVersion.Size = new System.Drawing.Size(26, 13);
       this.labelVersion.TabIndex = 6;
@@ -73,7 +71,7 @@
       // 
       // labelCopyright
       // 
-      this.labelCopyright.Location = new System.Drawing.Point(225, 83);
+      this.labelCopyright.Location = new System.Drawing.Point(225, 92);
       this.labelCopyright.Name = "labelCopyright";
       this.labelCopyright.Size = new System.Drawing.Size(26, 13);
       this.labelCopyright.TabIndex = 7;
@@ -91,7 +89,7 @@
       // 
       // labelProductDescription
       // 
-      this.labelProductDescription.Location = new System.Drawing.Point(149, 37);
+      this.labelProductDescription.Location = new System.Drawing.Point(149, 46);
       this.labelProductDescription.Name = "labelProductDescription";
       this.labelProductDescription.Size = new System.Drawing.Size(90, 13);
       this.labelProductDescription.TabIndex = 10;
@@ -105,50 +103,19 @@
       this.labelGitHubControl.Appearance.Options.UseLinkColor = true;
       this.labelGitHubControl.Cursor = System.Windows.Forms.Cursors.Hand;
       this.labelGitHubControl.LineColor = System.Drawing.Color.White;
-      this.labelGitHubControl.Location = new System.Drawing.Point(149, 110);
+      this.labelGitHubControl.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+      this.labelGitHubControl.Location = new System.Drawing.Point(149, 119);
       this.labelGitHubControl.Name = "labelGitHubControl";
-      this.labelGitHubControl.Size = new System.Drawing.Size(77, 13);
+      this.labelGitHubControl.Size = new System.Drawing.Size(99, 13);
       this.labelGitHubControl.TabIndex = 11;
-      this.labelGitHubControl.Text = "Git Source Code";
+      this.labelGitHubControl.Text = "Git Hub Project Page";
       this.labelGitHubControl.HyperlinkClick += new DevExpress.Utils.HyperlinkClickEventHandler(this.GitHub_HyperlinkClick);
-      // 
-      // labelLinkedInControl
-      // 
-      this.labelLinkedInControl.Appearance.ForeColor = System.Drawing.Color.White;
-      this.labelLinkedInControl.Appearance.LinkColor = System.Drawing.Color.White;
-      this.labelLinkedInControl.Appearance.Options.UseForeColor = true;
-      this.labelLinkedInControl.Appearance.Options.UseLinkColor = true;
-      this.labelLinkedInControl.Cursor = System.Windows.Forms.Cursors.Hand;
-      this.labelLinkedInControl.LineColor = System.Drawing.Color.White;
-      this.labelLinkedInControl.Location = new System.Drawing.Point(402, 83);
-      this.labelLinkedInControl.Name = "labelLinkedInControl";
-      this.labelLinkedInControl.Size = new System.Drawing.Size(40, 13);
-      this.labelLinkedInControl.TabIndex = 12;
-      this.labelLinkedInControl.Text = "LinkedIn";
-      this.labelLinkedInControl.HyperlinkClick += new DevExpress.Utils.HyperlinkClickEventHandler(this.LinkedIn_HyperlinkClick);
-      // 
-      // hyperlinkLabelControl1
-      // 
-      this.hyperlinkLabelControl1.Appearance.ForeColor = System.Drawing.Color.White;
-      this.hyperlinkLabelControl1.Appearance.LinkColor = System.Drawing.Color.White;
-      this.hyperlinkLabelControl1.Appearance.Options.UseForeColor = true;
-      this.hyperlinkLabelControl1.Appearance.Options.UseLinkColor = true;
-      this.hyperlinkLabelControl1.Cursor = System.Windows.Forms.Cursors.Hand;
-      this.hyperlinkLabelControl1.LineColor = System.Drawing.Color.White;
-      this.hyperlinkLabelControl1.Location = new System.Drawing.Point(149, 130);
-      this.hyperlinkLabelControl1.Name = "hyperlinkLabelControl1";
-      this.hyperlinkLabelControl1.Size = new System.Drawing.Size(61, 13);
-      this.hyperlinkLabelControl1.TabIndex = 13;
-      this.hyperlinkLabelControl1.Text = "Forum (RUS)";
-      this.hyperlinkLabelControl1.HyperlinkClick += new DevExpress.Utils.HyperlinkClickEventHandler(this.SqlRu_HyperlinkClick);
       // 
       // AboutBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(511, 163);
-      this.Controls.Add(this.hyperlinkLabelControl1);
-      this.Controls.Add(this.labelLinkedInControl);
       this.Controls.Add(this.labelGitHubControl);
       this.Controls.Add(this.labelProductDescription);
       this.Controls.Add(this.pictureBox1);
@@ -182,7 +149,5 @@
     private System.Windows.Forms.PictureBox pictureBox1;
     private DevExpress.XtraEditors.LabelControl labelProductDescription;
     private DevExpress.XtraEditors.HyperlinkLabelControl labelGitHubControl;
-    private DevExpress.XtraEditors.HyperlinkLabelControl labelLinkedInControl;
-    private DevExpress.XtraEditors.HyperlinkLabelControl hyperlinkLabelControl1;
   }
 }

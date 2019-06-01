@@ -71,23 +71,23 @@ namespace SQLIndexManager {
       this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
       this.buttonNewConnection = new DevExpress.XtraBars.BarButtonItem();
       this.buttonFix = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonOptions = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonAbout = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonRefreshIndex = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonSaveFix = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonFixFragmentation = new DevExpress.XtraBars.BarButtonItem();
       this.popupFix = new DevExpress.XtraBars.PopupMenu(this.components);
       this.buttonCopyFix = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonSaveFix = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonOptions = new DevExpress.XtraBars.BarButtonItem();
+      this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+      this.buttonExportExcel = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonExportCSV = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonExportText = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonExportHtml = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonAbout = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonRefreshIndex = new DevExpress.XtraBars.BarButtonItem();
       this.buttonDatabases = new DevExpress.XtraBars.BarButtonItem();
       this.boxSearch = new DevExpress.XtraBars.BarEditItem();
       this.boxSearchControl = new DevExpress.XtraEditors.Repository.RepositoryItemSearchControl();
       this.labelSeparator = new DevExpress.XtraBars.BarStaticItem();
-      this.buttonExport = new DevExpress.XtraBars.BarButtonItem();
-      this.popupExport = new DevExpress.XtraBars.PopupMenu(this.components);
-      this.buttonExportExcel = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonExportCSV = new DevExpress.XtraBars.BarButtonItem();
-      this.buttonExportText = new DevExpress.XtraBars.BarButtonItem();
       this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
+      this.popupExport = new DevExpress.XtraBars.PopupMenu(this.components);
       this.taskbar = new DevExpress.Utils.Taskbar.TaskbarAssistant();
       this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
       this.buttonFind = new DevExpress.XtraBars.BarButtonItem();
@@ -131,6 +131,7 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
@@ -145,12 +146,13 @@ namespace SQLIndexManager {
       // 
       Fragmentation.Caption = "Fragmentation";
       Fragmentation.FieldName = "Fragmentation";
-      Fragmentation.MaxWidth = 100;
-      Fragmentation.MinWidth = 80;
+      Fragmentation.MaxWidth = 103;
+      Fragmentation.MinWidth = 103;
       Fragmentation.Name = "Fragmentation";
       Fragmentation.OptionsColumn.AllowEdit = false;
       Fragmentation.OptionsColumn.AllowFocus = false;
       Fragmentation.OptionsColumn.AllowShowHide = false;
+      Fragmentation.OptionsColumn.AllowSize = false;
       Fragmentation.OptionsColumn.ShowInCustomizationForm = false;
       Fragmentation.OptionsFilter.AllowAutoFilter = false;
       Fragmentation.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
@@ -160,18 +162,19 @@ namespace SQLIndexManager {
       Fragmentation.UnboundType = DevExpress.Data.UnboundColumnType.String;
       Fragmentation.Visible = true;
       Fragmentation.VisibleIndex = 8;
-      Fragmentation.Width = 80;
+      Fragmentation.Width = 103;
       // 
       // PagesCount
       // 
       PagesCount.Caption = "Index Size";
       PagesCount.FieldName = "PagesCount";
       PagesCount.MaxWidth = 90;
-      PagesCount.MinWidth = 80;
+      PagesCount.MinWidth = 90;
       PagesCount.Name = "PagesCount";
       PagesCount.OptionsColumn.AllowEdit = false;
       PagesCount.OptionsColumn.AllowFocus = false;
       PagesCount.OptionsColumn.AllowShowHide = false;
+      PagesCount.OptionsColumn.AllowSize = false;
       PagesCount.OptionsColumn.ShowInCustomizationForm = false;
       PagesCount.OptionsFilter.AllowAutoFilter = false;
       PagesCount.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
@@ -180,7 +183,7 @@ namespace SQLIndexManager {
       PagesCount.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
       PagesCount.Visible = true;
       PagesCount.VisibleIndex = 9;
-      PagesCount.Width = 80;
+      PagesCount.Width = 90;
       // 
       // RowsCount
       // 
@@ -189,24 +192,25 @@ namespace SQLIndexManager {
       RowsCount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       RowsCount.FieldName = "RowsCount";
       RowsCount.MaxWidth = 100;
-      RowsCount.MinWidth = 80;
+      RowsCount.MinWidth = 100;
       RowsCount.Name = "RowsCount";
       RowsCount.OptionsColumn.AllowEdit = false;
       RowsCount.OptionsColumn.AllowFocus = false;
+      RowsCount.OptionsColumn.AllowSize = false;
       RowsCount.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
       RowsCount.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
       RowsCount.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
       RowsCount.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
       RowsCount.Visible = true;
       RowsCount.VisibleIndex = 11;
-      RowsCount.Width = 80;
+      RowsCount.Width = 100;
       // 
       // SchemaName
       // 
       SchemaName.Caption = "Schema";
       SchemaName.FieldName = "SchemaName";
-      SchemaName.MaxWidth = 65;
-      SchemaName.MinWidth = 55;
+      SchemaName.MaxWidth = 200;
+      SchemaName.MinWidth = 60;
       SchemaName.Name = "SchemaName";
       SchemaName.OptionsColumn.AllowEdit = false;
       SchemaName.OptionsColumn.AllowFocus = false;
@@ -215,13 +219,13 @@ namespace SQLIndexManager {
       SchemaName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       SchemaName.Visible = true;
       SchemaName.VisibleIndex = 3;
-      SchemaName.Width = 55;
+      SchemaName.Width = 60;
       // 
       // ObjectName
       // 
       ObjectName.Caption = "Object";
       ObjectName.FieldName = "ObjectName";
-      ObjectName.MaxWidth = 200;
+      ObjectName.MaxWidth = 250;
       ObjectName.MinWidth = 120;
       ObjectName.Name = "ObjectName";
       ObjectName.OptionsColumn.AllowEdit = false;
@@ -231,28 +235,28 @@ namespace SQLIndexManager {
       ObjectName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       ObjectName.Visible = true;
       ObjectName.VisibleIndex = 4;
-      ObjectName.Width = 120;
+      ObjectName.Width = 155;
       // 
       // FileGroupName
       // 
       FileGroupName.Caption = "File Group";
       FileGroupName.FieldName = "FileGroupName";
-      FileGroupName.MaxWidth = 100;
-      FileGroupName.MinWidth = 90;
+      FileGroupName.MaxWidth = 150;
+      FileGroupName.MinWidth = 78;
       FileGroupName.Name = "FileGroupName";
       FileGroupName.OptionsColumn.AllowEdit = false;
       FileGroupName.OptionsColumn.AllowFocus = false;
       FileGroupName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       FileGroupName.Visible = true;
       FileGroupName.VisibleIndex = 17;
-      FileGroupName.Width = 90;
+      FileGroupName.Width = 78;
       // 
       // IndexName
       // 
       IndexName.Caption = "Index";
       IndexName.FieldName = "IndexName";
-      IndexName.MaxWidth = 260;
-      IndexName.MinWidth = 100;
+      IndexName.MaxWidth = 280;
+      IndexName.MinWidth = 150;
       IndexName.Name = "IndexName";
       IndexName.OptionsColumn.AllowEdit = false;
       IndexName.OptionsColumn.AllowFocus = false;
@@ -261,21 +265,21 @@ namespace SQLIndexManager {
       IndexName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       IndexName.Visible = true;
       IndexName.VisibleIndex = 5;
-      IndexName.Width = 100;
+      IndexName.Width = 210;
       // 
       // IndexType
       // 
       IndexType.Caption = "Type";
       IndexType.FieldName = "IndexType";
-      IndexType.MaxWidth = 100;
-      IndexType.MinWidth = 90;
+      IndexType.MaxWidth = 200;
+      IndexType.MinWidth = 80;
       IndexType.Name = "IndexType";
       IndexType.OptionsColumn.AllowEdit = false;
       IndexType.OptionsColumn.AllowFocus = false;
       IndexType.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       IndexType.Visible = true;
       IndexType.VisibleIndex = 6;
-      IndexType.Width = 90;
+      IndexType.Width = 100;
       // 
       // PartitionNumber
       // 
@@ -284,16 +288,17 @@ namespace SQLIndexManager {
       PartitionNumber.Caption = "Partition";
       PartitionNumber.FieldName = "PartitionNumber";
       PartitionNumber.MaxWidth = 60;
-      PartitionNumber.MinWidth = 50;
+      PartitionNumber.MinWidth = 60;
       PartitionNumber.Name = "PartitionNumber";
       PartitionNumber.OptionsColumn.AllowEdit = false;
       PartitionNumber.OptionsColumn.AllowFocus = false;
       PartitionNumber.OptionsColumn.AllowShowHide = false;
+      PartitionNumber.OptionsColumn.AllowSize = false;
       PartitionNumber.OptionsColumn.ShowInCustomizationForm = false;
       PartitionNumber.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       PartitionNumber.Visible = true;
       PartitionNumber.VisibleIndex = 7;
-      PartitionNumber.Width = 50;
+      PartitionNumber.Width = 60;
       // 
       // IndexStats
       // 
@@ -308,6 +313,7 @@ namespace SQLIndexManager {
       IndexStats.Name = "IndexStats";
       IndexStats.OptionsColumn.AllowEdit = false;
       IndexStats.OptionsColumn.AllowFocus = false;
+      IndexStats.OptionsColumn.AllowSize = false;
       IndexStats.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       IndexStats.Visible = true;
       IndexStats.VisibleIndex = 12;
@@ -319,14 +325,16 @@ namespace SQLIndexManager {
       TotalWrites.DisplayFormat.FormatString = "N0";
       TotalWrites.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalWrites.FieldName = "TotalWrites";
-      TotalWrites.MaxWidth = 85;
-      TotalWrites.MinWidth = 75;
+      TotalWrites.MaxWidth = 95;
+      TotalWrites.MinWidth = 95;
       TotalWrites.Name = "TotalWrites";
       TotalWrites.OptionsColumn.AllowEdit = false;
       TotalWrites.OptionsColumn.AllowFocus = false;
+      TotalWrites.OptionsColumn.AllowSize = false;
       TotalWrites.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       TotalWrites.Visible = true;
       TotalWrites.VisibleIndex = 14;
+      TotalWrites.Width = 95;
       // 
       // TotalReads
       // 
@@ -334,14 +342,16 @@ namespace SQLIndexManager {
       TotalReads.DisplayFormat.FormatString = "N0";
       TotalReads.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalReads.FieldName = "TotalReads";
-      TotalReads.MaxWidth = 85;
-      TotalReads.MinWidth = 75;
+      TotalReads.MaxWidth = 95;
+      TotalReads.MinWidth = 95;
       TotalReads.Name = "TotalReads";
       TotalReads.OptionsColumn.AllowEdit = false;
       TotalReads.OptionsColumn.AllowFocus = false;
+      TotalReads.OptionsColumn.AllowSize = false;
       TotalReads.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       TotalReads.Visible = true;
       TotalReads.VisibleIndex = 13;
+      TotalReads.Width = 95;
       // 
       // LastUsage
       // 
@@ -356,6 +366,7 @@ namespace SQLIndexManager {
       LastUsage.Name = "LastUsage";
       LastUsage.OptionsColumn.AllowEdit = false;
       LastUsage.OptionsColumn.AllowFocus = false;
+      LastUsage.OptionsColumn.AllowSize = false;
       LastUsage.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       LastUsage.Visible = true;
       LastUsage.VisibleIndex = 15;
@@ -366,19 +377,18 @@ namespace SQLIndexManager {
       FixType.Caption = "Fix";
       FixType.ColumnEdit = this.popupIndexOperation;
       FixType.FieldName = "FixType";
-      FixType.MaxWidth = 95;
-      FixType.MinWidth = 95;
+      FixType.MaxWidth = 200;
+      FixType.MinWidth = 90;
       FixType.Name = "FixType";
       FixType.OptionsColumn.AllowIncrementalSearch = false;
       FixType.OptionsColumn.AllowShowHide = false;
-      FixType.OptionsColumn.AllowSize = false;
       FixType.OptionsColumn.ShowInCustomizationForm = false;
       FixType.OptionsColumn.ShowInExpressionEditor = false;
       FixType.OptionsColumn.TabStop = false;
       FixType.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       FixType.Visible = true;
       FixType.VisibleIndex = 1;
-      FixType.Width = 95;
+      FixType.Width = 90;
       // 
       // popupIndexOperation
       // 
@@ -408,7 +418,7 @@ namespace SQLIndexManager {
       // Progress
       // 
       Progress.FieldName = "Progress";
-      Progress.MaxWidth = 20;
+      Progress.MaxWidth = 25;
       Progress.MinWidth = 25;
       Progress.Name = "Progress";
       Progress.OptionsColumn.AllowEdit = false;
@@ -427,17 +437,18 @@ namespace SQLIndexManager {
       Progress.OptionsColumn.TabStop = false;
       Progress.OptionsFilter.AllowAutoFilter = false;
       Progress.OptionsFilter.AllowFilter = false;
-      Progress.Width = 20;
+      Progress.Width = 25;
       // 
       // UnusedPagesCount
       // 
       UnusedPagesCount.Caption = "Unused Space";
       UnusedPagesCount.FieldName = "UnusedPagesCount";
       UnusedPagesCount.MaxWidth = 90;
-      UnusedPagesCount.MinWidth = 80;
+      UnusedPagesCount.MinWidth = 90;
       UnusedPagesCount.Name = "UnusedPagesCount";
       UnusedPagesCount.OptionsColumn.AllowEdit = false;
       UnusedPagesCount.OptionsColumn.AllowFocus = false;
+      UnusedPagesCount.OptionsColumn.AllowSize = false;
       UnusedPagesCount.OptionsFilter.AllowAutoFilter = false;
       UnusedPagesCount.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
       UnusedPagesCount.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
@@ -445,28 +456,28 @@ namespace SQLIndexManager {
       UnusedPagesCount.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
       UnusedPagesCount.Visible = true;
       UnusedPagesCount.VisibleIndex = 10;
-      UnusedPagesCount.Width = 80;
+      UnusedPagesCount.Width = 90;
       // 
       // Compression
       // 
       Compression.Caption = "Compression";
       Compression.FieldName = "DataCompression";
-      Compression.MaxWidth = 80;
-      Compression.MinWidth = 80;
+      Compression.MaxWidth = 100;
+      Compression.MinWidth = 78;
       Compression.Name = "Compression";
       Compression.OptionsColumn.AllowEdit = false;
       Compression.OptionsColumn.AllowFocus = false;
       Compression.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       Compression.Visible = true;
       Compression.VisibleIndex = 16;
-      Compression.Width = 80;
+      Compression.Width = 78;
       // 
       // DatabaseName
       // 
       DatabaseName.Caption = "Database";
       DatabaseName.FieldName = "DatabaseName";
-      DatabaseName.MaxWidth = 135;
-      DatabaseName.MinWidth = 135;
+      DatabaseName.MaxWidth = 200;
+      DatabaseName.MinWidth = 100;
       DatabaseName.Name = "DatabaseName";
       DatabaseName.OptionsColumn.AllowEdit = false;
       DatabaseName.OptionsColumn.AllowFocus = false;
@@ -475,25 +486,26 @@ namespace SQLIndexManager {
       DatabaseName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       DatabaseName.Visible = true;
       DatabaseName.VisibleIndex = 2;
-      DatabaseName.Width = 135;
+      DatabaseName.Width = 110;
       // 
       // SavedSpace
       // 
       SavedSpace.Caption = "Saved Space";
       SavedSpace.FieldName = "PagesCountBefore";
       SavedSpace.MaxWidth = 90;
-      SavedSpace.MinWidth = 80;
+      SavedSpace.MinWidth = 90;
       SavedSpace.Name = "SavedSpace";
       SavedSpace.OptionsColumn.AllowEdit = false;
       SavedSpace.OptionsColumn.AllowFocus = false;
       SavedSpace.OptionsColumn.AllowShowHide = false;
+      SavedSpace.OptionsColumn.AllowSize = false;
       SavedSpace.OptionsColumn.ShowInCustomizationForm = false;
       SavedSpace.OptionsFilter.AllowAutoFilter = false;
       SavedSpace.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
       SavedSpace.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
       SavedSpace.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
       SavedSpace.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
-      SavedSpace.Width = 80;
+      SavedSpace.Width = 90;
       // 
       // FillFactor
       // 
@@ -502,34 +514,37 @@ namespace SQLIndexManager {
       FillFactor.Caption = "Fill Factor";
       FillFactor.FieldName = "FillFactor";
       FillFactor.MaxWidth = 60;
-      FillFactor.MinWidth = 50;
+      FillFactor.MinWidth = 60;
       FillFactor.Name = "FillFactor";
       FillFactor.OptionsColumn.AllowEdit = false;
       FillFactor.OptionsColumn.AllowFocus = false;
+      FillFactor.OptionsColumn.AllowSize = false;
       FillFactor.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
-      FillFactor.Width = 55;
+      FillFactor.Width = 60;
       // 
       // IsPK
       // 
       IsPK.Caption = "PK";
       IsPK.FieldName = "IsPK";
       IsPK.MaxWidth = 40;
-      IsPK.MinWidth = 30;
+      IsPK.MinWidth = 40;
       IsPK.Name = "IsPK";
       IsPK.OptionsColumn.AllowEdit = false;
       IsPK.OptionsColumn.AllowFocus = false;
+      IsPK.OptionsColumn.AllowSize = false;
       IsPK.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      IsPK.Width = 30;
+      IsPK.Width = 40;
       // 
       // IsUnique
       // 
       IsUnique.Caption = "Unique";
       IsUnique.FieldName = "IsUnique";
       IsUnique.MaxWidth = 50;
-      IsUnique.MinWidth = 30;
+      IsUnique.MinWidth = 50;
       IsUnique.Name = "IsUnique";
       IsUnique.OptionsColumn.AllowEdit = false;
       IsUnique.OptionsColumn.AllowFocus = false;
+      IsUnique.OptionsColumn.AllowSize = false;
       IsUnique.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       IsUnique.Width = 50;
       // 
@@ -538,10 +553,11 @@ namespace SQLIndexManager {
       IsFiltered.Caption = "Filtered";
       IsFiltered.FieldName = "IsFiltered";
       IsFiltered.MaxWidth = 50;
-      IsFiltered.MinWidth = 30;
+      IsFiltered.MinWidth = 50;
       IsFiltered.Name = "IsFiltered";
       IsFiltered.OptionsColumn.AllowEdit = false;
       IsFiltered.OptionsColumn.AllowFocus = false;
+      IsFiltered.OptionsColumn.AllowSize = false;
       IsFiltered.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       IsFiltered.Width = 50;
       // 
@@ -550,12 +566,13 @@ namespace SQLIndexManager {
       IsPartitioned.Caption = "Partitioned";
       IsPartitioned.FieldName = "IsPartitioned";
       IsPartitioned.MaxWidth = 70;
-      IsPartitioned.MinWidth = 50;
+      IsPartitioned.MinWidth = 70;
       IsPartitioned.Name = "IsPartitioned";
       IsPartitioned.OptionsColumn.AllowEdit = false;
       IsPartitioned.OptionsColumn.AllowFocus = false;
+      IsPartitioned.OptionsColumn.AllowSize = false;
       IsPartitioned.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      IsPartitioned.Width = 60;
+      IsPartitioned.Width = 70;
       // 
       // colDateTime
       // 
@@ -582,12 +599,14 @@ namespace SQLIndexManager {
       TotalSeeks.DisplayFormat.FormatString = "N0";
       TotalSeeks.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalSeeks.FieldName = "TotalSeeks";
-      TotalSeeks.MaxWidth = 85;
-      TotalSeeks.MinWidth = 75;
+      TotalSeeks.MaxWidth = 95;
+      TotalSeeks.MinWidth = 95;
       TotalSeeks.Name = "TotalSeeks";
       TotalSeeks.OptionsColumn.AllowEdit = false;
       TotalSeeks.OptionsColumn.AllowFocus = false;
+      TotalSeeks.OptionsColumn.AllowSize = false;
       TotalSeeks.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      TotalSeeks.Width = 95;
       // 
       // TotalScans
       // 
@@ -595,22 +614,26 @@ namespace SQLIndexManager {
       TotalScans.DisplayFormat.FormatString = "N0";
       TotalScans.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalScans.FieldName = "TotalScans";
-      TotalScans.MaxWidth = 85;
-      TotalScans.MinWidth = 75;
+      TotalScans.MaxWidth = 95;
+      TotalScans.MinWidth = 95;
       TotalScans.Name = "TotalScans";
       TotalScans.OptionsColumn.AllowEdit = false;
       TotalScans.OptionsColumn.AllowFocus = false;
+      TotalScans.OptionsColumn.AllowSize = false;
       TotalScans.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      TotalScans.Width = 95;
       // 
       // TotalLookups
       // 
       TotalLookups.Caption = "Lookups";
-      TotalLookups.MaxWidth = 85;
-      TotalLookups.MinWidth = 75;
+      TotalLookups.MaxWidth = 95;
+      TotalLookups.MinWidth = 95;
       TotalLookups.Name = "TotalLookups";
       TotalLookups.OptionsColumn.AllowEdit = false;
       TotalLookups.OptionsColumn.AllowFocus = false;
+      TotalLookups.OptionsColumn.AllowSize = false;
       TotalLookups.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      TotalLookups.Width = 95;
       // 
       // repositoryItemHypertextLabel1
       // 
@@ -832,6 +855,7 @@ namespace SQLIndexManager {
       this.gridView1.OptionsSelection.ShowCheckBoxSelectorInGroupRow = DevExpress.Utils.DefaultBoolean.True;
       this.gridView1.OptionsSelection.ShowCheckBoxSelectorInPrintExport = DevExpress.Utils.DefaultBoolean.False;
       this.gridView1.OptionsSelection.UseIndicatorForSelection = false;
+      this.gridView1.OptionsView.ColumnAutoWidth = false;
       this.gridView1.OptionsView.EnableAppearanceEvenRow = true;
       this.gridView1.OptionsView.EnableAppearanceOddRow = true;
       this.gridView1.OptionsView.ShowGroupPanel = false;
@@ -969,7 +993,6 @@ namespace SQLIndexManager {
             this.labelInfo,
             this.labelServerInfo,
             this.buttonStopFix,
-            this.buttonFixFragmentation,
             this.buttonCopyFix,
             this.labelDatabase,
             this.labelIndex,
@@ -977,19 +1000,18 @@ namespace SQLIndexManager {
             this.boxSearch,
             this.labelSeparator,
             this.buttonStopScan,
-            this.buttonExport,
             this.buttonExportExcel,
             this.buttonExportCSV,
             this.buttonExportText,
-            this.buttonLog});
+            this.buttonLog,
+            this.buttonExportHtml});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-      this.ribbonControl1.MaxItemId = 27;
+      this.ribbonControl1.MaxItemId = 28;
       this.ribbonControl1.Name = "ribbonControl1";
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonNewConnection);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonDatabases);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonRefreshIndex);
-      this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonFixFragmentation);
-      this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonExport);
+      this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonFix);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonOptions);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonAbout);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.labelSeparator);
@@ -1022,22 +1044,97 @@ namespace SQLIndexManager {
       // 
       // buttonFix
       // 
-      this.buttonFix.Caption = "Fix Immediately";
+      this.buttonFix.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
+      this.buttonFix.Caption = "Fix Indexes";
+      this.buttonFix.DropDownControl = this.popupFix;
+      this.buttonFix.Enabled = false;
       this.buttonFix.Id = 15;
       this.buttonFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonFix.ImageOptions.Image")));
       this.buttonFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonFix.ImageOptions.LargeImage")));
       this.buttonFix.Name = "buttonFix";
       this.buttonFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.buttonFix_ItemClick);
       // 
+      // popupFix
+      // 
+      this.popupFix.ItemLinks.Add(this.buttonCopyFix);
+      this.popupFix.ItemLinks.Add(this.buttonSaveFix);
+      this.popupFix.Name = "popupFix";
+      this.popupFix.Ribbon = this.ribbonControl1;
+      // 
+      // buttonCopyFix
+      // 
+      this.buttonCopyFix.Caption = "Copy Script";
+      this.buttonCopyFix.Id = 7;
+      this.buttonCopyFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.Image")));
+      this.buttonCopyFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.LargeImage")));
+      this.buttonCopyFix.Name = "buttonCopyFix";
+      this.buttonCopyFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonCopyFixClick);
+      // 
+      // buttonSaveFix
+      // 
+      this.buttonSaveFix.Caption = "Save Script";
+      this.buttonSaveFix.Id = 23;
+      this.buttonSaveFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.Image")));
+      this.buttonSaveFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.LargeImage")));
+      this.buttonSaveFix.Name = "buttonSaveFix";
+      this.buttonSaveFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonSaveFixClick);
+      // 
       // buttonOptions
       // 
+      this.buttonOptions.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
       this.buttonOptions.Caption = "Settings";
+      this.buttonOptions.DropDownControl = this.popupMenu1;
       this.buttonOptions.Id = 16;
       this.buttonOptions.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonOptions.ImageOptions.Image")));
       this.buttonOptions.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonOptions.ImageOptions.LargeImage")));
       this.buttonOptions.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F12);
       this.buttonOptions.Name = "buttonOptions";
       this.buttonOptions.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonOptionsClick);
+      // 
+      // popupMenu1
+      // 
+      this.popupMenu1.ItemLinks.Add(this.buttonExportExcel);
+      this.popupMenu1.ItemLinks.Add(this.buttonExportCSV);
+      this.popupMenu1.ItemLinks.Add(this.buttonExportText);
+      this.popupMenu1.ItemLinks.Add(this.buttonExportHtml);
+      this.popupMenu1.Name = "popupMenu1";
+      this.popupMenu1.Ribbon = this.ribbonControl1;
+      // 
+      // buttonExportExcel
+      // 
+      this.buttonExportExcel.Caption = "Export to Excel";
+      this.buttonExportExcel.Id = 22;
+      this.buttonExportExcel.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportExcel.ImageOptions.Image")));
+      this.buttonExportExcel.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportExcel.ImageOptions.LargeImage")));
+      this.buttonExportExcel.Name = "buttonExportExcel";
+      this.buttonExportExcel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportExcel);
+      // 
+      // buttonExportCSV
+      // 
+      this.buttonExportCSV.Caption = "Export to CSV";
+      this.buttonExportCSV.Id = 23;
+      this.buttonExportCSV.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.Image")));
+      this.buttonExportCSV.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.LargeImage")));
+      this.buttonExportCSV.Name = "buttonExportCSV";
+      this.buttonExportCSV.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportCSV);
+      // 
+      // buttonExportText
+      // 
+      this.buttonExportText.Caption = "Export to TXT";
+      this.buttonExportText.Id = 24;
+      this.buttonExportText.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportText.ImageOptions.Image")));
+      this.buttonExportText.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportText.ImageOptions.LargeImage")));
+      this.buttonExportText.Name = "buttonExportText";
+      this.buttonExportText.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportText);
+      // 
+      // buttonExportHtml
+      // 
+      this.buttonExportHtml.Caption = "Export to HTML";
+      this.buttonExportHtml.Id = 27;
+      this.buttonExportHtml.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportHtml.ImageOptions.Image")));
+      this.buttonExportHtml.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportHtml.ImageOptions.LargeImage")));
+      this.buttonExportHtml.Name = "buttonExportHtml";
+      this.buttonExportHtml.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportHtml);
       // 
       // buttonAbout
       // 
@@ -1058,44 +1155,6 @@ namespace SQLIndexManager {
       this.buttonRefreshIndex.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F5);
       this.buttonRefreshIndex.Name = "buttonRefreshIndex";
       this.buttonRefreshIndex.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonFindClick);
-      // 
-      // buttonSaveFix
-      // 
-      this.buttonSaveFix.Caption = "Save Script";
-      this.buttonSaveFix.Id = 23;
-      this.buttonSaveFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.Image")));
-      this.buttonSaveFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.LargeImage")));
-      this.buttonSaveFix.Name = "buttonSaveFix";
-      this.buttonSaveFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonSaveFixClick);
-      // 
-      // buttonFixFragmentation
-      // 
-      this.buttonFixFragmentation.ActAsDropDown = true;
-      this.buttonFixFragmentation.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
-      this.buttonFixFragmentation.Caption = "Fix Fragmentation";
-      this.buttonFixFragmentation.DropDownControl = this.popupFix;
-      this.buttonFixFragmentation.Enabled = false;
-      this.buttonFixFragmentation.Id = 6;
-      this.buttonFixFragmentation.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonFixFragmentation.ImageOptions.Image")));
-      this.buttonFixFragmentation.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonFixFragmentation.ImageOptions.LargeImage")));
-      this.buttonFixFragmentation.Name = "buttonFixFragmentation";
-      // 
-      // popupFix
-      // 
-      this.popupFix.ItemLinks.Add(this.buttonFix);
-      this.popupFix.ItemLinks.Add(this.buttonCopyFix);
-      this.popupFix.ItemLinks.Add(this.buttonSaveFix);
-      this.popupFix.Name = "popupFix";
-      this.popupFix.Ribbon = this.ribbonControl1;
-      // 
-      // buttonCopyFix
-      // 
-      this.buttonCopyFix.Caption = "Copy Script";
-      this.buttonCopyFix.Id = 7;
-      this.buttonCopyFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.Image")));
-      this.buttonCopyFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.LargeImage")));
-      this.buttonCopyFix.Name = "buttonCopyFix";
-      this.buttonCopyFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonCopyFixClick);
       // 
       // buttonDatabases
       // 
@@ -1132,56 +1191,18 @@ namespace SQLIndexManager {
       this.labelSeparator.ShowImageInToolbar = false;
       this.labelSeparator.Width = 68;
       // 
-      // buttonExport
+      // toolTipController
       // 
-      this.buttonExport.ActAsDropDown = true;
-      this.buttonExport.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
-      this.buttonExport.Caption = "Export";
-      this.buttonExport.DropDownControl = this.popupExport;
-      this.buttonExport.Enabled = false;
-      this.buttonExport.Id = 21;
-      this.buttonExport.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExport.ImageOptions.Image")));
-      this.buttonExport.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExport.ImageOptions.LargeImage")));
-      this.buttonExport.Name = "buttonExport";
+      this.toolTipController.Active = false;
       // 
       // popupExport
       // 
       this.popupExport.ItemLinks.Add(this.buttonExportExcel);
       this.popupExport.ItemLinks.Add(this.buttonExportCSV);
       this.popupExport.ItemLinks.Add(this.buttonExportText);
+      this.popupExport.ItemLinks.Add(this.buttonExportHtml);
       this.popupExport.Name = "popupExport";
       this.popupExport.Ribbon = this.ribbonControl1;
-      // 
-      // buttonExportExcel
-      // 
-      this.buttonExportExcel.Caption = "Export to Excel";
-      this.buttonExportExcel.Id = 22;
-      this.buttonExportExcel.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportExcel.ImageOptions.Image")));
-      this.buttonExportExcel.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportExcel.ImageOptions.LargeImage")));
-      this.buttonExportExcel.Name = "buttonExportExcel";
-      this.buttonExportExcel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportExcel);
-      // 
-      // buttonExportCSV
-      // 
-      this.buttonExportCSV.Caption = "Export to CSV";
-      this.buttonExportCSV.Id = 23;
-      this.buttonExportCSV.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.Image")));
-      this.buttonExportCSV.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.LargeImage")));
-      this.buttonExportCSV.Name = "buttonExportCSV";
-      this.buttonExportCSV.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportCSV);
-      // 
-      // buttonExportText
-      // 
-      this.buttonExportText.Caption = "Export to TXT";
-      this.buttonExportText.Id = 24;
-      this.buttonExportText.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportText.ImageOptions.Image")));
-      this.buttonExportText.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportText.ImageOptions.LargeImage")));
-      this.buttonExportText.Name = "buttonExportText";
-      this.buttonExportText.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportText);
-      // 
-      // toolTipController
-      // 
-      this.toolTipController.Active = false;
       // 
       // taskbar
       // 
@@ -1332,6 +1353,7 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
@@ -1364,8 +1386,6 @@ namespace SQLIndexManager {
     private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit popupIndexOperation;
     private DevExpress.Utils.ImageCollection imageCollection;
     private DevExpress.XtraGrid.Columns.GridColumn Duration;
-    private BarButtonItem buttonFixFragmentation;
-    private PopupMenu popupFix;
     private BarButtonItem buttonCopyFix;
     private BarStaticItem labelDatabase;
     private BarStaticItem labelIndex;
@@ -1378,7 +1398,6 @@ namespace SQLIndexManager {
     private BarButtonItem buttonStopScan;
     private BarButtonItem buttonFind;
     private DevExpress.Utils.ToolTipController gridToolTipController;
-    private BarButtonItem buttonExport;
     private PopupMenu popupExport;
     private BarButtonItem buttonExportExcel;
     private BarButtonItem buttonExportCSV;
@@ -1390,5 +1409,8 @@ namespace SQLIndexManager {
     private DevExpress.XtraGrid.Columns.GridColumn colDuration;
     private DevExpress.XtraGrid.Columns.GridColumn colMessage;
     private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
+    private PopupMenu popupFix;
+    private BarButtonItem buttonExportHtml;
+    private PopupMenu popupMenu1;
   }
 }

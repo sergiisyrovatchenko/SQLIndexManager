@@ -180,6 +180,9 @@ namespace SQLIndexManager {
       _reorganizeThreshold = reorganize.IsBetween(0, 99) ? reorganize : _reorganizeThreshold;
       _rebuildThreshold = rebuild.IsBetween(1, 100) ? rebuild : _rebuildThreshold;
 
+      if (_reorganizeThreshold > _rebuildThreshold)
+        _rebuildThreshold = _reorganizeThreshold + 1;
+
       if (_reorganizeThreshold == _rebuildThreshold) {
         if (_reorganizeThreshold > 0)
           _reorganizeThreshold -= 1;
@@ -191,7 +194,10 @@ namespace SQLIndexManager {
     private void UpdateSize(int min, int pre, int max) {
       _minIndexSize = min.IsBetween(0, 255) ? min : _minIndexSize;
       _preDescribeSize = min.IsBetween(_minIndexSize, 256) ? pre : _preDescribeSize;
-      _maxIndexSize = max.IsBetween(1, 65536) ? max : _maxIndexSize;
+      _maxIndexSize = max.IsBetween(512, 65536) ? max : _maxIndexSize;
+
+      if (_minIndexSize > _preDescribeSize)
+        _preDescribeSize = _minIndexSize + 1;
 
       if (_minIndexSize == _maxIndexSize) {
         if (_minIndexSize > 0)

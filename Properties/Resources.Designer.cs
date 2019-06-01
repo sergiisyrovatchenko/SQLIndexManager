@@ -106,6 +106,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edition.
+        /// </summary>
+        internal static string Edition {
+            get {
+                return ResourceManager.GetString("Edition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FileGroupName.
         /// </summary>
         internal static string FileGroupName {
@@ -242,6 +251,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsSysAdmin.
+        /// </summary>
+        internal static string IsSysAdmin {
+            get {
+                return ResourceManager.GetString("IsSysAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsUnique.
         /// </summary>
         internal static string IsUnique {
@@ -265,6 +283,15 @@ namespace SQLIndexManager.Properties {
         internal static string LogSize {
             get {
                 return ResourceManager.GetString("LogSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SQL Server 2000/2005 is not supported..
+        /// </summary>
+        internal static string MinVersionMessage {
+            get {
+                return ResourceManager.GetString("MinVersionMessage", resourceCulture);
             }
         }
         
@@ -314,6 +341,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductLevel.
+        /// </summary>
+        internal static string ProductLevel {
+            get {
+                return ResourceManager.GetString("ProductLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Progress.
         /// </summary>
         internal static string Progress {
@@ -346,6 +382,15 @@ namespace SQLIndexManager.Properties {
         internal static string SchemaName {
             get {
                 return ResourceManager.GetString("SchemaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServerVersion.
+        /// </summary>
+        internal static string ServerVersion {
+            get {
+                return ResourceManager.GetString("ServerVersion", resourceCulture);
             }
         }
         
