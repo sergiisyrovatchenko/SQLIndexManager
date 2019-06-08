@@ -43,6 +43,8 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn TotalSeeks;
       DevExpress.XtraGrid.Columns.GridColumn TotalScans;
       DevExpress.XtraGrid.Columns.GridColumn TotalLookups;
+      DevExpress.XtraGrid.Columns.GridColumn IndexColumns;
+      DevExpress.XtraGrid.Columns.GridColumn IncludedColumns;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
@@ -125,6 +127,8 @@ namespace SQLIndexManager {
       TotalSeeks = new DevExpress.XtraGrid.Columns.GridColumn();
       TotalScans = new DevExpress.XtraGrid.Columns.GridColumn();
       TotalLookups = new DevExpress.XtraGrid.Columns.GridColumn();
+      IndexColumns = new DevExpress.XtraGrid.Columns.GridColumn();
+      IncludedColumns = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -626,6 +630,7 @@ namespace SQLIndexManager {
       // TotalLookups
       // 
       TotalLookups.Caption = "Lookups";
+      TotalLookups.FieldName = "TotalLookups";
       TotalLookups.MaxWidth = 95;
       TotalLookups.MinWidth = 95;
       TotalLookups.Name = "TotalLookups";
@@ -634,6 +639,30 @@ namespace SQLIndexManager {
       TotalLookups.OptionsColumn.AllowSize = false;
       TotalLookups.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       TotalLookups.Width = 95;
+      // 
+      // IndexColumns
+      // 
+      IndexColumns.Caption = "Index Columns";
+      IndexColumns.FieldName = "IndexColumns";
+      IndexColumns.MaxWidth = 400;
+      IndexColumns.MinWidth = 150;
+      IndexColumns.Name = "IndexColumns";
+      IndexColumns.OptionsColumn.AllowEdit = false;
+      IndexColumns.OptionsColumn.AllowFocus = false;
+      IndexColumns.OptionsFilter.AllowFilter = false;
+      IndexColumns.Width = 150;
+      // 
+      // IncludedColumns
+      // 
+      IncludedColumns.Caption = "Included Columns";
+      IncludedColumns.FieldName = "IncludedColumns";
+      IncludedColumns.MaxWidth = 400;
+      IncludedColumns.MinWidth = 150;
+      IncludedColumns.Name = "IncludedColumns";
+      IncludedColumns.OptionsColumn.AllowEdit = false;
+      IncludedColumns.OptionsColumn.AllowFocus = false;
+      IncludedColumns.OptionsFilter.AllowFilter = false;
+      IncludedColumns.Width = 150;
       // 
       // repositoryItemHypertextLabel1
       // 
@@ -701,7 +730,9 @@ namespace SQLIndexManager {
             IsPartitioned,
             TotalSeeks,
             TotalScans,
-            TotalLookups});
+            TotalLookups,
+            IndexColumns,
+            IncludedColumns});
       this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = Fragmentation;
       gridFormatRule1.ColumnApplyTo = Fragmentation;
@@ -835,7 +866,8 @@ namespace SQLIndexManager {
       this.gridView1.Name = "gridView1";
       this.gridView1.OptionsCustomization.AllowGroup = false;
       this.gridView1.OptionsFind.AllowFindPanel = false;
-      this.gridView1.OptionsFind.FindFilterColumns = "DatabaseName;SchemaName;ObjectName;IndexName;FileGroupName";
+      this.gridView1.OptionsFind.FindFilterColumns = "DatabaseName;SchemaName;ObjectName;IndexName;FileGroupName;IndexColumns;IncludedC" +
+    "olumns";
       this.gridView1.OptionsFind.FindMode = DevExpress.XtraEditors.FindMode.Always;
       this.gridView1.OptionsFind.FindNullPrompt = "";
       this.gridView1.OptionsFind.ShowClearButton = false;
@@ -1116,7 +1148,7 @@ namespace SQLIndexManager {
       this.buttonExportCSV.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.Image")));
       this.buttonExportCSV.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportCSV.ImageOptions.LargeImage")));
       this.buttonExportCSV.Name = "buttonExportCSV";
-      this.buttonExportCSV.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportCSV);
+      this.buttonExportCSV.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportCsv);
       // 
       // buttonExportText
       // 

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using DevExpress.XtraBars;
+﻿using DevExpress.XtraBars;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SQLIndexManager {
 
@@ -15,7 +15,7 @@ namespace SQLIndexManager {
 
   public class Output {
     private static Output _log;
-    private List<OutputEvent> _events;
+    private readonly List<OutputEvent> _events;
     private BarStaticItem _control;
     private GridControl _secondaryControl;
 
@@ -51,7 +51,7 @@ namespace SQLIndexManager {
       string msg = message;
 
       if (elapsedMilliseconds >= 0) {
-        duration = (new DateTime(0)).AddMilliseconds(elapsedMilliseconds ?? 0);
+        duration = (new DateTime(0)).AddMilliseconds((double) elapsedMilliseconds);
         msg = $"Elapsed time: {duration:HH:mm:ss:fff}. {message}";
       }
 

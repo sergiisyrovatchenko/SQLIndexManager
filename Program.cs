@@ -50,21 +50,21 @@ namespace SQLIndexManager {
     }
 
     private static void AttachConsole() {
-      const uint ATTACH_PARENT_PROCESS = 0xffffffff;
-      const uint ERROR_SUCCESS = 0;
-      const uint ERROR_ACCESS_DENIED = 5;
+      const uint attachParentProcess = 0xffffffff;
+      const uint errorSuccess = 0;
+      const uint errorAccessDenied = 5;
 
-      bool consoleAttached = NativeMethods.AttachConsole(ATTACH_PARENT_PROCESS);
-      if (!consoleAttached) {
-        var error = NativeMethods.GetLastError();
-        if (error == ERROR_SUCCESS || error == ERROR_ACCESS_DENIED)
-          consoleAttached = true;
+      bool consoleAttached = NativeMethods.AttachConsole(attachParentProcess);
+      if (consoleAttached) return;
 
-        if (!consoleAttached && !NativeMethods.AllocConsole())
-          Environment.Exit(1);
-        else
-          Console.OutputEncoding = (Encoding)Console.OutputEncoding.Clone();
-      }
+      var error = NativeMethods.GetLastError();
+      if (error == errorSuccess || error == errorAccessDenied)
+        consoleAttached = true;
+
+      if (!consoleAttached && !NativeMethods.AllocConsole())
+        Environment.Exit(1);
+      else
+        Console.OutputEncoding = (Encoding)Console.OutputEncoding.Clone();
     }
   }
 

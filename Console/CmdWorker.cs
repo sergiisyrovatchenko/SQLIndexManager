@@ -136,7 +136,7 @@ namespace SQLIndexManager {
               break;
             }
             catch (SqlException ex) {
-              if (ex.Message.Contains("Incorrect syntax")) {
+              if (ex.Message.Contains("Incorrect syntax") || ex.Message.Contains("Invalid")) {
                 throw new ArgumentException($"Syntax error: {ex.Source} {ex.Message}");
               }
 

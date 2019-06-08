@@ -97,11 +97,62 @@ CREATE TABLE #Fragmentation (
     , IndexID          INT NOT NULL
     , PartitionNumber  INT NOT NULL
     , Fragmentation    FLOAT NOT NULL
-    , PagesCount       BIGINT NULL
-    , UnusedPagesCount BIGINT NULL
+    , PagesCount       BIGINT
+    , UnusedPagesCount BIGINT
     , PRIMARY KEY (ObjectID, IndexID, PartitionNumber)
 )
 {2}
+
+IF OBJECT_ID('tempdb.dbo.#Columns') IS NOT NULL
+    DROP TABLE #Columns
+
+CREATE TABLE #Columns (
+      ObjectID     INT NOT NULL
+    , ColumnID     INT NOT NULL
+    , ColumnName   SYSNAME NULL
+    , SystemTypeID TINYINT NULL
+    , IsSparse     BIT
+    , IsColumnSet  BIT
+    , MaxLen       SMALLINT
+    , PRIMARY KEY (ObjectID, ColumnID)
+)
+
+INSERT INTO #Columns
+SELECT ObjectID     = [object_id]
+     , ColumnID     = [column_id]
+     , ColumnName   = [name]
+     , SystemTypeID = [system_type_id]
+     , IsSparse     = [is_sparse]
+     , IsColumnSet  = [is_column_set]
+     , MaxLen       = [max_length]
+FROM sys.columns WITH(NOLOCK)
+WHERE [object_id] IN (SELECT DISTINCT i.ObjectID FROM #Indexes i)
+
+IF OBJECT_ID('tempdb.dbo.#IndexColumns') IS NOT NULL
+    DROP TABLE #IndexColumns
+
+CREATE TABLE #IndexColumns (
+      ObjectID      INT NOT NULL
+    , IndexID       INT NOT NULL
+    , IndexColumnID INT NOT NULL
+    , ColumnID      TINYINT NOT NULL
+    , IsIncluded    BIT NOT NULL
+    , PRIMARY KEY (ObjectID, IndexID, ColumnID)
+)
+
+INSERT INTO #IndexColumns
+SELECT ObjectID      = [object_id]
+     , IndexID       = [index_id]
+     , IndexColumnID = [index_column_id]
+     , ColumnID      = [column_id]
+     , IsIncluded    = ISNULL([is_included_column], 0)
+FROM sys.index_columns ic WITH(NOLOCK)
+WHERE EXISTS(
+        SELECT *
+        FROM #Indexes i
+        WHERE i.ObjectID = ic.[object_id]
+            AND i.IndexID = ic.[index_id]
+    )
 
 IF OBJECT_ID('tempdb.dbo.#Lob') IS NOT NULL
     DROP TABLE #Lob
@@ -120,10 +171,39 @@ IF OBJECT_ID('tempdb.dbo.#Sparse') IS NOT NULL
 
 CREATE TABLE #Sparse (ObjectID INT PRIMARY KEY)
 INSERT INTO #Sparse
-SELECT DISTINCT [object_id]
-FROM sys.columns WITH(NOLOCK)
-WHERE [is_sparse] = 1
-    OR [is_column_set] = 1
+SELECT DISTINCT ObjectID
+FROM #Columns
+WHERE IsSparse = 1
+    OR IsColumnSet = 1
+
+IF OBJECT_ID('tempdb.dbo.#AggColumns') IS NOT NULL
+    DROP TABLE #AggColumns
+
+SELECT *
+     , IndexColumns = STUFF((
+            SELECT ', ' + c.ColumnName
+            FROM #IndexColumns i
+            JOIN #Columns c ON i.ObjectID = c.ObjectID AND i.ColumnID = c.ColumnID
+            WHERE i.ObjectID = t.ObjectID
+                AND i.IndexID = t.IndexID
+                AND i.IsIncluded = 0
+            ORDER BY i.IndexColumnID
+        FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
+     , IncludedColumns = STUFF((
+            SELECT ', ' + c.ColumnName
+            FROM #IndexColumns i
+            JOIN #Columns c ON i.ObjectID = c.ObjectID AND i.ColumnID = c.ColumnID
+            WHERE i.ObjectID = t.ObjectID
+                AND i.IndexID = t.IndexID
+                AND i.IsIncluded = 1
+            ORDER BY i.IndexColumnID
+        FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
+INTO #AggColumns
+FROM (
+    SELECT DISTINCT ObjectID, IndexID
+    FROM #Indexes
+    WHERE IndexType IN (1, 2, 6)
+) t
 
 SELECT i.ObjectID
      , i.IndexID
@@ -154,9 +234,12 @@ SELECT i.ObjectID
      , i.IsPK
      , i.FillFactorValue
      , i.IsFiltered
+     , a.IndexColumns
+     , a.IncludedColumns
 FROM #Indexes i
 JOIN sys.objects o WITH(NOLOCK) ON o.[object_id] = i.ObjectID
 JOIN sys.schemas s WITH(NOLOCK) ON s.[schema_id] = o.[schema_id]
+LEFT JOIN #AggColumns a ON a.ObjectID = i.ObjectID AND a.IndexID = i.IndexID
 LEFT JOIN #Sparse p ON p.ObjectID = i.ObjectID
 LEFT JOIN #Fragmentation f ON f.ObjectID = i.ObjectID AND f.IndexID = i.IndexID AND f.PartitionNumber = i.PartitionNumber
 LEFT JOIN ({4}) u ON i.ObjectID = u.ObjectID AND i.IndexID = u.IndexID
@@ -246,33 +329,28 @@ WHERE [object_id] > 255
 
     public const string Lob2008 = @"
 INSERT INTO #Lob (ObjectID, IndexID, IsLobLegacy, IsLob)
-SELECT ObjectID     = c.[object_id]
-     , IndexID      = ISNULL(i.[index_id], 1)
-     , IsLobLegacy  = MAX(CASE WHEN c.[system_type_id] IN (34, 35, 99) THEN 1 END)
-     , IsLob        = MAX(CASE WHEN c.[max_length] = -1 THEN 1 END)
-FROM sys.columns c WITH(NOLOCK)
-LEFT JOIN sys.index_columns i WITH(NOLOCK) ON c.[object_id] = i.[object_id] AND c.[column_id] = i.[column_id]
-WHERE c.[object_id] > 255
-    AND (
-            c.[system_type_id] IN (34, 35, 99)
-        OR
-            c.[max_length] = -1
-    )
-GROUP BY c.[object_id]
-       , i.[index_id]";
+SELECT c.ObjectID
+     , IndexID     = ISNULL(i.IndexID, 1)
+     , IsLobLegacy = MAX(CASE WHEN c.SystemTypeID IN (34, 35, 99) THEN 1 END)
+     , IsLob       = MAX(CASE WHEN c.MaxLen = -1 THEN 1 END)
+FROM #Columns c
+LEFT JOIN #IndexColumns i ON c.ObjectID = i.ObjectID AND c.ColumnID = i.ColumnID
+WHERE c.SystemTypeID IN (34, 35, 99)
+    OR c.MaxLen = -1
+GROUP BY c.ObjectID
+       , i.IndexID";
 
     public const string Lob2012Plus = @"
 INSERT INTO #Lob (ObjectID, IndexID, IsLobLegacy, IsLob)
-SELECT ObjectID    = c.[object_id]
-     , IndexID     = ISNULL(i.[index_id], 1)
-     , IsLobLegacy = MAX(CASE WHEN c.[system_type_id] IN (34, 35, 99) THEN 1 END)
+SELECT c.ObjectID
+     , IndexID     = ISNULL(i.IndexID, 1)
+     , IsLobLegacy = MAX(CASE WHEN c.SystemTypeID IN (34, 35, 99) THEN 1 END)
      , IsLob       = 0
-FROM sys.columns c WITH(NOLOCK)
-LEFT JOIN sys.index_columns i WITH(NOLOCK) ON c.[object_id] = i.[object_id] AND c.[column_id] = i.[column_id]
-WHERE c.[system_type_id] IN (34, 35, 99)
-    AND c.[object_id] > 255
-GROUP BY c.[object_id]
-       , i.[index_id]";
+FROM #Columns c
+LEFT JOIN #IndexColumns i ON c.ObjectID = i.ObjectID AND c.ColumnID = i.ColumnID
+WHERE c.SystemTypeID IN (34, 35, 99)
+GROUP BY c.ObjectID
+       , i.IndexID";
 
     public const string Index2008 = @"
 DECLARE @ObjectID        INT

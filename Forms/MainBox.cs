@@ -135,7 +135,7 @@ namespace SQLIndexManager {
               break;
             }
             catch (SqlException ex) {
-              if (ex.Message.Contains("Incorrect syntax")) {
+              if (ex.Message.Contains("Incorrect syntax") || ex.Message.Contains("Invalid")) {
                 Output.Current.Add($"Syntax error: {ex.Source}", ex.Message);
                 XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -318,7 +318,7 @@ namespace SQLIndexManager {
                   .ThenByDescending(_ => _.PagesCount).ToList();
 
       labelDatabase.Caption = fixIndex.Select(_ => _.DatabaseName).Distinct().Count().ToString();
-      labelIndex.Caption = fixIndex.Count().ToString();
+      labelIndex.Caption = fixIndex.Count.ToString();
 
       foreach (Index row in fixIndex) {
         row.Progress = imageCollection.Images[0];
@@ -530,17 +530,21 @@ namespace SQLIndexManager {
         if (row.IsAllowReorganize)
           i.Add(IndexOp.Reorganize);
 
-        if (!row.IsPartitioned && (row.IndexType == IndexType.Clustered || row.IndexType == IndexType.NonClustered)) {
-          i.Add(IndexOp.UpdateStatsFull);
-          i.Add(IndexOp.UpdateStatsSample);
-          i.Add(IndexOp.UpdateStatsResample);
-        }
+        if (!row.IsPartitioned) {
+          if (row.IndexType == IndexType.Clustered || row.IndexType == IndexType.NonClustered) {
+            i.Add(IndexOp.UpdateStatsFull);
+            i.Add(IndexOp.UpdateStatsSample);
+            i.Add(IndexOp.UpdateStatsResample);
+          }
 
-        if (!row.IsPartitioned && row.IndexType == IndexType.NonClustered)
-          i.Add(IndexOp.Disable);
+          if (row.IndexType == IndexType.NonClustered) {
+            i.Add(IndexOp.Disable);
+            i.Add(IndexOp.Drop);
+          }
+        }
       }
 
-      obj.Properties.DropDownRows = i.Count();
+      obj.Properties.DropDownRows = i.Count;
       obj.Properties.DataSource = i.Select(_ => new { Fix = _, Name = _.ToDescription() });
     }
 
@@ -795,7 +799,7 @@ namespace SQLIndexManager {
 
     #region Export
 
-    private void ExportCSV(object sender, ItemClickEventArgs e) {
+    private void ExportCsv(object sender, ItemClickEventArgs e) {
       SaveFileDialog dialog = new SaveFileDialog {
         Filter = @"CSV Files (*.csv)|*.csv",
         RestoreDirectory = true

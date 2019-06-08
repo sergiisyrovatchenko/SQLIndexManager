@@ -43,7 +43,10 @@ namespace SQLIndexManager {
     UpdateStatsFull = 12,
 
     [Description("DISABLE")]
-    Disable = 13
+    Disable = 13,
+
+    [Description("DROP")]
+    Drop = 14
   }
 
 }

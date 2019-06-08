@@ -10,27 +10,34 @@ namespace SQLIndexManager {
     public string IndexName { get; set; }
     public string ObjectName { get; set; }
     public string SchemaName { get; set; }
+    public IndexType IndexType { get; set; }
+
+    public double? Fragmentation { get; set; }
     public long PagesCount { get; set; }
     public long? PagesCountBefore { get; set; }
     public long UnusedPagesCount { get; set; }
     public int PartitionNumber { get; set; }
     public long RowsCount { get; set; }
-    public string FileGroupName { get; set; }
-    public IndexType IndexType { get; set; }
-    public bool IsPartitioned { get; set; }
-    public bool IsUnique { get; set; }
-    public bool IsPK { get; set; }
-    public bool IsFiltered { get; set; }
-    public int FillFactor { get; set; }
-    public DateTime? IndexStats { get; set; }
+
     public long? TotalWrites { get; set; }
     public long? TotalReads { get; set; }
     public long? TotalScans { get; set; }
     public long? TotalSeeks { get; set; }
     public long? TotalLookups { get; set; }
+
     public DateTime? LastUsage { get; set; }
     public DataCompression DataCompression { get; set; }
-    public double? Fragmentation { get; set; }
+    public int FillFactor { get; set; }
+    public DateTime? IndexStats { get; set; }
+    public string FileGroupName { get; set; }
+
+    public string IndexColumns { get; set; }
+    public string IncludedColumns { get; set; }
+
+    public bool IsPartitioned { get; set; }
+    public bool IsUnique { get; set; }
+    public bool IsPK { get; set; }
+    public bool IsFiltered { get; set; }
     public bool IsAllowReorganize { get; set; }
     public bool IsAllowOnlineRebuild { get; set; }
     public bool IsAllowCompression { get; set; }
@@ -72,7 +79,7 @@ namespace SQLIndexManager {
           case IndexOp.ReorganizeCompressAllRowGroup:
             sql = $"ALTER INDEX [{IndexName}]\n    " +
                     $"ON [{SchemaName}].[{ObjectName}] REORGANIZE PARTITION = {partition}\n    " +
-                    $"WITH (COMPRESS_ALL_ROW_GROUPS = ON);";
+                    "WITH (COMPRESS_ALL_ROW_GROUPS = ON);";
             break;
         }
       }
@@ -110,7 +117,7 @@ namespace SQLIndexManager {
                       $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
                       $"ONLINE = {onlineRebuild}, " +
                       (FixType == IndexOp.RebuildFillFactorZero 
-                            ? $"FILLFACTOR = 100, "
+                            ? "FILLFACTOR = 100, "
                             : (Settings.Options.FillFactor.IsBetween(1, 100) 
                                   ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
                                   : ""
@@ -128,8 +135,11 @@ namespace SQLIndexManager {
             break;
 
           case IndexOp.Disable:
-            sql = $"ALTER INDEX [{IndexName}]\n    " +
-                    $"ON [{SchemaName}].[{ObjectName}] DISABLE;";
+            sql = $"ALTER INDEX [{IndexName}] ON [{SchemaName}].[{ObjectName}] DISABLE;";
+            break;
+
+          case IndexOp.Drop:
+            sql = $"DROP INDEX [{IndexName}] ON [{SchemaName}].[{ObjectName}];";
             break;
 
           case IndexOp.UpdateStatsSample:

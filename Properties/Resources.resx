@@ -247,4 +247,10 @@
   <data name="MinVersionMessage" xml:space="preserve">
     <value>SQL Server 2000/2005 is not supported.</value>
   </data>
+  <data name="IncludedColumns" xml:space="preserve">
+    <value>IncludedColumns</value>
+  </data>
+  <data name="IndexColumns" xml:space="preserve">
+    <value>IndexColumns</value>
+  </data>
 </root>

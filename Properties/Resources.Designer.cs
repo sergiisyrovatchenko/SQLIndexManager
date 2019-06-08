@@ -152,6 +152,24 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IncludedColumns.
+        /// </summary>
+        internal static string IncludedColumns {
+            get {
+                return ResourceManager.GetString("IncludedColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IndexColumns.
+        /// </summary>
+        internal static string IndexColumns {
+            get {
+                return ResourceManager.GetString("IndexColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IndexID.
         /// </summary>
         internal static string IndexID {

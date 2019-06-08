@@ -160,7 +160,9 @@ namespace SQLIndexManager {
           Fragmentation         = _.Field<double?>(Resources.Fragmentation),
           IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.Heap,
           IsAllowOnlineRebuild  = isOnlineRebuild,
-          IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse)
+          IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
+          IndexColumns          = _.Field<string>(Resources.IndexColumns),
+          IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
         };
 
         indexes.Add(index);
@@ -211,7 +213,8 @@ namespace SQLIndexManager {
       string sqlInfo = string.Format(index.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
                                      index.ObjectId, index.IndexId, index.PartitionNumber);
 
-      string sql = (index.FixType == IndexOp.Disable) 
+      bool isDeadIndex = (index.FixType == IndexOp.Disable || index.FixType == IndexOp.Drop);
+      string sql = isDeadIndex
                       ? index.GetQuery()
                       : $"{index.GetQuery()} \n {sqlInfo}";
 
@@ -226,7 +229,7 @@ namespace SQLIndexManager {
         index.Error = ex.Message;
       }
 
-      if (index.FixType == IndexOp.Disable) {
+      if (isDeadIndex) {
         index.PagesCountBefore = index.PagesCount;
         index.Fragmentation = 0;
         index.PagesCount = 0;
