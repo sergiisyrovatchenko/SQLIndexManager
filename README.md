@@ -14,8 +14,8 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 * Command-line automation
 * Automatic T-SQL script generation
 * Columnstore maintenance support
-* Index rebuild with compression options
 * Drop or disable unused indexes
+* Index rebuild with compression options
 * Export of scan results into Excel, CSV, HTML and text files
 * Support for any editions of SQL Server 2008+ and Azure
 * And a lot of other improvements :)
@@ -32,8 +32,8 @@ You can download .zip file with the latest build of the master branch from [Rele
 
 ## Screenshots
 
-![SQL Index Manager](https://habrastorage.org/webt/b6/qa/sd/b6qasd21kq2qpg-nnxxel3anev0.png)
-![SQL Index Manager](https://habrastorage.org/webt/oa/7f/h5/oa7fh5hzryzu4mexhj7frwgqwmc.png)
+![SQL Index Manager](https://habrastorage.org/webt/bw/6n/ma/bw6nmab-z9tlc5q1rud1rmdjj34.png)
+![SQL Index Manager](https://habrastorage.org/webt/vj/vi/ts/vjvits-lmjukoi35ra_3bjt8pdq.png)
 ![SQL Index Manager](https://habrastorage.org/webt/_t/ko/8p/_tko8pek1wuwi3mtsj_hlwp3ruc.png)
 
 ## Command Line
