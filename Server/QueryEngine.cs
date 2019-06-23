@@ -53,16 +53,6 @@ namespace SQLIndexManager {
     }
 
     public static List<Index> GetIndexes(SqlConnection connection) {
-      string lob = string.Empty;
-      if (Settings.ServerInfo.IsOnlineRebuildAvailable)
-        lob = Settings.ServerInfo.MajorVersion == 10 ? Query.Lob2008 : Query.Lob2012Plus;
-
-      string indexStats = Settings.ServerInfo.IsAzure && connection.Database == Resources.DatamaseMaster
-                              ? Query.IndexStatsAzureMaster
-                              : Query.IndexStats;
-
-      string indexQuery = Settings.ServerInfo.MajorVersion == 10 ? Query.Index2008 : Query.Index2012Plus;
-
       List<int> it = new List<int>();
       if (Settings.Options.ScanHeap) it.Add((int)IndexType.Heap);
       if (Settings.Options.ScanClusteredIndex) it.Add((int)IndexType.Clustered);
@@ -73,99 +63,160 @@ namespace SQLIndexManager {
         if (Settings.Options.ScanNonClusteredColumnstore) it.Add((int)IndexType.ColumnstoreNonClustered);
       }
 
-      string excludeList = string.Empty;
-      if (Settings.Options.ExcludeSchemas.Count > 0) {
-        excludeList = " OR [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.ExcludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)";
-      }
+      List<Index> indexes = new List<Index>();
 
-      if (Settings.Options.ExcludeObject.Count > 0) {
-        excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID(N'" + string.Join("')), (OBJECT_ID(N'", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
-      }
+      if (it.Count > 0) {
 
-      string includeList = Query.IncludeListEmpty;
-      if (Settings.Options.IncludeSchemas.Count > 0) {
-        includeList = string.Format(Query.IncludeList, " AND [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.IncludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)");
-      }
+        string lob = string.Empty;
+        if (Settings.ServerInfo.IsOnlineRebuildAvailable)
+          lob = Settings.ServerInfo.MajorVersion == 10 ? Query.Lob2008 : Query.Lob2012Plus;
 
-      string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
-      string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";
+        string indexStats = Settings.ServerInfo.IsAzure && connection.Database == Resources.DatamaseMaster
+                              ? Query.IndexStatsAzureMaster
+                              : Query.IndexStats;
 
-      string query = string.Format(Query.PreDescribeIndexes,
+        string indexQuery = Settings.ServerInfo.MajorVersion == 10 ? Query.Index2008 : Query.Index2012Plus;
+
+        string excludeList = string.Empty;
+        if (Settings.Options.ExcludeSchemas.Count > 0) {
+          excludeList = " OR [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.ExcludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)";
+        }
+
+        if (Settings.Options.ExcludeObject.Count > 0) {
+          excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID(N'" + string.Join("')), (OBJECT_ID(N'", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
+        }
+
+        string includeList = Query.IncludeListEmpty;
+        if (Settings.Options.IncludeSchemas.Count > 0) {
+          includeList = string.Format(Query.IncludeList, " AND [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.IncludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)");
+        }
+
+        string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
+        string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";
+
+        string query = string.Format(Query.PreDescribeIndexes,
                                     string.Join(", ", it), excludeList, indexQuery, lob,
                                     indexStats, ignoreReadOnlyFL, ignorePermissions, includeList);
 
-      SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+        SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-      cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
-      cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
-      cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
-      cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
 
-      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-      DataSet data = new DataSet();
-      adapter.Fill(data);
+        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        DataSet data = new DataSet();
+        adapter.Fill(data);
 
-      List<Index> indexes = new List<Index>();
-      foreach (DataRow _ in data.Tables[0].AsEnumerable()) {
+        foreach (DataRow _ in data.Tables[0].AsEnumerable()) {
 
-        IndexType indexType = (IndexType)_.Field<byte>(Resources.IndexType);
-        bool isOnlineRebuild = Settings.ServerInfo.IsOnlineRebuildAvailable;
+          IndexType indexType = (IndexType)_.Field<byte>(Resources.IndexType);
+          bool isOnlineRebuild = Settings.ServerInfo.IsOnlineRebuildAvailable;
 
-        if (isOnlineRebuild) {
-          if (
-               _.Field<bool>(Resources.IsLobLegacy)
-            ||
-               indexType == IndexType.Heap
-            ||
-               indexType == IndexType.ColumnstoreClustered
-            ||
-               indexType == IndexType.ColumnstoreNonClustered
-          ) {
-            isOnlineRebuild = false;
+          if (isOnlineRebuild) {
+            if (
+                 _.Field<bool>(Resources.IsLobLegacy)
+              ||
+                 indexType == IndexType.Heap
+              ||
+                 indexType == IndexType.ColumnstoreClustered
+              ||
+                 indexType == IndexType.ColumnstoreNonClustered
+            ) {
+              isOnlineRebuild = false;
+            }
+            else {
+              isOnlineRebuild =
+                     Settings.ServerInfo.MajorVersion > 10
+                  ||
+                     (Settings.ServerInfo.MajorVersion == 10 && !_.Field<bool>(Resources.IsLob));
+            }
           }
-          else {
-            isOnlineRebuild =
-                   Settings.ServerInfo.MajorVersion > 10
-                ||
-                   (Settings.ServerInfo.MajorVersion == 10 && !_.Field<bool>(Resources.IsLob));
-          }
+
+          Index index = new Index {
+            DatabaseName          = connection.Database,
+            ObjectId              = _.Field<int>(Resources.ObjectID),
+            IndexId               = _.Field<int>(Resources.IndexID),
+            IndexName             = _.Field<string>(Resources.IndexName),
+            ObjectName            = _.Field<string>(Resources.ObjectName),
+            SchemaName            = _.Field<string>(Resources.SchemaName),
+            PagesCount            = _.Field<long>(Resources.PagesCount),
+            UnusedPagesCount      = _.Field<long>(Resources.UnusedPagesCount),
+            PartitionNumber       = _.Field<int>(Resources.PartitionNumber),
+            RowsCount             = _.Field<long>(Resources.RowsCount),
+            FileGroupName         = _.Field<string>(Resources.FileGroupName),
+            IndexType             = indexType,
+            IsPartitioned         = _.Field<bool>(Resources.IsPartitioned),
+            IsUnique              = _.Field<bool>(Resources.IsUnique),
+            IsPK                  = _.Field<bool>(Resources.IsPK),
+            IsFiltered            = _.Field<bool>(Resources.IsFiltered),
+            FillFactor            = _.Field<int>(Resources.FillFactor),
+            IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
+            TotalWrites           = _.Field<long?>(Resources.TotalWrites),
+            TotalReads            = _.Field<long?>(Resources.TotalReads),
+            TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
+            TotalScans            = _.Field<long?>(Resources.TotalScans),
+            TotalLookups          = _.Field<long?>(Resources.TotalLookups),
+            LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
+            DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
+            Fragmentation         = _.Field<double?>(Resources.Fragmentation),
+            IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.Heap,
+            IsAllowOnlineRebuild  = isOnlineRebuild,
+            IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
+            IndexColumns          = _.Field<string>(Resources.IndexColumns),
+            IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
+          };
+
+          indexes.Add(index);
         }
+      }
 
-        Index index = new Index {
-          DatabaseName          = connection.Database,
-          ObjectId              = _.Field<int>(Resources.ObjectID),
-          IndexId               = _.Field<int>(Resources.IndexID),
-          IndexName             = _.Field<string>(Resources.IndexName),
-          ObjectName            = _.Field<string>(Resources.ObjectName),
-          SchemaName            = _.Field<string>(Resources.SchemaName),
-          PagesCount            = _.Field<long>(Resources.PagesCount),
-          UnusedPagesCount      = _.Field<long>(Resources.UnusedPagesCount),
-          PartitionNumber       = _.Field<int>(Resources.PartitionNumber),
-          RowsCount             = _.Field<long>(Resources.RowsCount),
-          FileGroupName         = _.Field<string>(Resources.FileGroupName),
-          IndexType             = indexType,
-          IsPartitioned         = _.Field<bool>(Resources.IsPartitioned),
-          IsUnique              = _.Field<bool>(Resources.IsUnique),
-          IsPK                  = _.Field<bool>(Resources.IsPK),
-          IsFiltered            = _.Field<bool>(Resources.IsFiltered),
-          FillFactor            = _.Field<int>(Resources.FillFactor),
-          IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
-          TotalWrites           = _.Field<long?>(Resources.TotalWrites),
-          TotalReads            = _.Field<long?>(Resources.TotalReads),
-          TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
-          TotalScans            = _.Field<long?>(Resources.TotalScans),
-          TotalLookups          = _.Field<long?>(Resources.TotalLookups),
-          LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
-          DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
-          Fragmentation         = _.Field<double?>(Resources.Fragmentation),
-          IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.Heap,
-          IsAllowOnlineRebuild  = isOnlineRebuild,
-          IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
-          IndexColumns          = _.Field<string>(Resources.IndexColumns),
-          IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
-        };
+      if (Settings.Options.ScanMissingIndex) {
 
-        indexes.Add(index);
+        SqlCommand cmd = new SqlCommand(Query.MissingIndex, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
+
+        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        DataSet data = new DataSet();
+        adapter.Fill(data);
+
+        foreach (DataRow _ in data.Tables[0].AsEnumerable()) {
+          double fragmentation = _.Field<double>(Resources.Fragmentation);
+          string indexCols = _.Field<string>(Resources.IndexColumns);
+          string objName = _.Field<string>(Resources.ObjectName);
+          string indexName = $"IX_{Guid.NewGuid().ToString().Truncate(5)}_{objName}_{indexCols}"
+                                    .Replace(",", "_")
+                                    .Replace("[", string.Empty)
+                                    .Replace("]", string.Empty)
+                                    .Replace(" ", string.Empty).Truncate(240);
+
+          Index index = new Index {
+            DatabaseName          = connection.Database,
+            ObjectId              = _.Field<int>(Resources.ObjectID),
+            IndexName             = indexName,
+            ObjectName            = objName,
+            SchemaName            = _.Field<string>(Resources.SchemaName),
+            PagesCount            = _.Field<long>(Resources.PagesCount),
+            RowsCount             = _.Field<long>(Resources.RowsCount),
+            FileGroupName         = _.Field<string>(Resources.FileGroupName),
+            IndexType             = IndexType.MissingIndex,
+            IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
+            TotalReads            = _.Field<long?>(Resources.TotalReads),
+            TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
+            TotalScans            = _.Field<long?>(Resources.TotalScans),
+            LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
+            DataCompression       = DataCompression.None,
+            Fragmentation         = fragmentation,
+            IndexColumns          = indexCols,
+            IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
+          };
+
+          indexes.Add(index);
+        }
       }
 
       return indexes;
@@ -214,7 +265,7 @@ namespace SQLIndexManager {
                                      index.ObjectId, index.IndexId, index.PartitionNumber);
 
       bool isDeadIndex = (index.FixType == IndexOp.Disable || index.FixType == IndexOp.Drop);
-      string sql = isDeadIndex
+      string sql = isDeadIndex || index.FixType == IndexOp.CreateIndex
                       ? index.GetQuery()
                       : $"{index.GetQuery()} \n {sqlInfo}";
 
@@ -229,6 +280,9 @@ namespace SQLIndexManager {
         index.Error = ex.Message;
       }
 
+      if (index.FixType == IndexOp.CreateIndex) {
+        index.Fragmentation = 0;
+      }
       if (isDeadIndex) {
         index.PagesCountBefore = index.PagesCount;
         index.Fragmentation = 0;

@@ -27,15 +27,19 @@ namespace SQLIndexManager {
       boxMaxDuration.EditValue = o.MaxDuration;
       boxAbortAfterWait.EditValue = o.AbortAfterWait;
       boxDataCompression.EditValue = o.DataCompression;
+      boxFillFactor.EditValue = o.FillFactor;
+
       boxScanHeap.Checked = o.ScanHeap;
       boxScanClusteredIndex.Checked = o.ScanClusteredIndex;
       boxScanNonClusteredIndex.Checked = o.ScanNonClusteredIndex;
       boxScanClusteredColumnstore.Checked = o.ScanClusteredColumnstore;
       boxScanNonClusteredColumnstore.Checked = o.ScanNonClusteredColumnstore;
+      boxScanMissingIndex.Checked = o.ScanMissingIndex;
+      boxScanStatistics.Checked = o.ScanStatistics;
+
       boxIncludeSchemas.EditValue = string.Join(";", o.IncludeSchemas);
       boxExcludeSchemas.EditValue = string.Join(";", o.ExcludeSchemas);
       boxExcludeObject.EditValue = string.Join(";", o.ExcludeObject);
-      boxFillFactor.EditValue = o.FillFactor;
       boxIgnorePermissions.Checked = o.IgnorePermissions;
       boxIgnoreReadOnlyFL.Checked = o.IgnoreReadOnlyFL;
     }
@@ -58,15 +62,19 @@ namespace SQLIndexManager {
         MaxDuration = (int)boxMaxDuration.Value,
         AbortAfterWait = (string)boxAbortAfterWait.EditValue,
         DataCompression = (string)boxDataCompression.EditValue,
+        FillFactor = (int)boxFillFactor.Value,
+
         ScanHeap = boxScanHeap.Checked,
         ScanClusteredIndex = boxScanClusteredIndex.Checked,
         ScanNonClusteredIndex = boxScanNonClusteredIndex.Checked,
         ScanClusteredColumnstore = boxScanClusteredColumnstore.Checked,
         ScanNonClusteredColumnstore = boxScanNonClusteredColumnstore.Checked,
+        ScanMissingIndex = boxScanMissingIndex.Checked,
+        ScanStatistics = boxScanStatistics.Checked,
+
         IncludeSchemas = new List<string> (boxIncludeSchemas.EditValue.ToString().Split(';')),
         ExcludeSchemas = new List<string> (boxExcludeSchemas.EditValue.ToString().Split(';')),
         ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';')),
-        FillFactor = (int)boxFillFactor.Value,
         IgnorePermissions = boxIgnorePermissions.Checked,
         IgnoreReadOnlyFL = boxIgnoreReadOnlyFL.Checked
       };
@@ -109,6 +117,8 @@ namespace SQLIndexManager {
           || boxScanNonClusteredIndex.Checked
           || boxScanClusteredColumnstore.Checked
           || boxScanNonClusteredColumnstore.Checked
+          || boxScanMissingIndex.Checked
+          || boxScanStatistics.Checked
         );
     }
 

@@ -3,6 +3,9 @@
 namespace SQLIndexManager {
 
   public enum IndexType {
+    [Description("MISSING INDEX")]
+    MissingIndex = -1,
+
     [Description("HEAP")]
     Heap = 0,
 

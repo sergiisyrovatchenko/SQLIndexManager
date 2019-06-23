@@ -93,6 +93,22 @@ namespace SQLIndexManager {
           compression = DataCompression.None;
 
         switch (FixType) {
+          case IndexOp.CreateIndex:
+            sql = $"CREATE NONCLUSTERED INDEX [{IndexName}]\n" +
+                    $"ON [{SchemaName}].[{ObjectName}] ({IndexColumns})\n" +
+                    (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
+                    $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
+                    (Settings.Options.FillFactor.IsBetween(1, 100)
+                            ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
+                            : ""
+                          ) +
+                    (Settings.Options.DataCompression == "DEFAULT"
+                            ? ""
+                            : $"DATA_COMPRESSION = {Settings.Options.DataCompression}, "
+                          ) + 
+                    $"MAXDOP = {Settings.Options.MaxDop});";
+            break;
+
           case IndexOp.Rebuild:
           case IndexOp.RebuildPage:
           case IndexOp.RebuildRow:

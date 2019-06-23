@@ -97,8 +97,6 @@ CREATE TABLE #Fragmentation (
     , IndexID          INT NOT NULL
     , PartitionNumber  INT NOT NULL
     , Fragmentation    FLOAT NOT NULL
-    , PagesCount       BIGINT
-    , UnusedPagesCount BIGINT
     , PRIMARY KEY (ObjectID, IndexID, PartitionNumber)
 )
 {2}
@@ -181,7 +179,7 @@ IF OBJECT_ID('tempdb.dbo.#AggColumns') IS NOT NULL
 
 SELECT *
      , IndexColumns = STUFF((
-            SELECT ', ' + c.ColumnName
+            SELECT ', [' + c.ColumnName + ']'
             FROM #IndexColumns i
             JOIN #Columns c ON i.ObjectID = c.ObjectID AND i.ColumnID = c.ColumnID
             WHERE i.ObjectID = t.ObjectID
@@ -190,7 +188,7 @@ SELECT *
             ORDER BY i.IndexColumnID
         FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
      , IncludedColumns = STUFF((
-            SELECT ', ' + c.ColumnName
+            SELECT ', [' + c.ColumnName + ']'
             FROM #IndexColumns i
             JOIN #Columns c ON i.ObjectID = c.ObjectID AND i.ColumnID = c.ColumnID
             WHERE i.ObjectID = t.ObjectID
@@ -210,8 +208,8 @@ SELECT i.ObjectID
      , i.IndexName
      , ObjectName       = o.[name]
      , SchemaName       = s.[name]
-     , PagesCount       = ISNULL(f.PagesCount, i.PagesCount)
-     , UnusedPagesCount = ISNULL(f.UnusedPagesCount, i.UnusedPagesCount)
+     , i.PagesCount
+     , i.UnusedPagesCount
      , i.PartitionNumber
      , i.RowsCount
      , i.IndexType
@@ -254,6 +252,80 @@ WHERE o.[type] IN ('V', 'U')
         OR
             i.IndexType IN (5, 6)
     )
+";
+
+    public const string MissingIndex = @"
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb.dbo.#Indexes') IS NOT NULL
+    DROP TABLE #Indexes
+
+SELECT ObjectID     = d.[object_id]
+     , UserImpact   = gs.[avg_user_impact]
+     , TotalReads   = gs.[user_seeks] + gs.[user_scans]
+     , TotalSeeks   = gs.[user_seeks]
+     , TotalScans   = gs.[user_scans]
+     , LastUsage    = ISNULL(gs.[last_user_scan], gs.[last_user_seek])
+     , IndexColumns =
+                CASE
+                    WHEN d.[equality_columns] IS NOT NULL AND d.[inequality_columns] IS NOT NULL
+                        THEN d.[equality_columns] + ', ' + d.[inequality_columns]
+                    WHEN d.[equality_columns] IS NOT NULL AND d.[inequality_columns] IS NULL
+                        THEN d.[equality_columns]
+                    ELSE d.[inequality_columns]
+                END
+     , IncludedColumns = d.[included_columns]
+INTO #Indexes
+FROM sys.dm_db_missing_index_groups g WITH(NOLOCK)
+JOIN sys.dm_db_missing_index_group_stats gs WITH(NOLOCK) ON gs.[group_handle] = g.[index_group_handle]
+JOIN sys.dm_db_missing_index_details d WITH(NOLOCK) ON g.[index_handle] = d.[index_handle]
+WHERE d.[database_id] = DB_ID()
+
+IF OBJECT_ID('tempdb.dbo.#AllocationUnits') IS NOT NULL
+    DROP TABLE #AllocationUnits
+
+SELECT ObjectID   = p.[object_id]
+     , RowsCount  = SUM(p.[rows])
+     , PagesCount = SUM(t.[total_pages])
+     , IndexStats = STATS_DATE(p.[object_id], 1)
+INTO #AllocationUnits
+FROM sys.partitions p
+JOIN (
+    SELECT [container_id]
+         , [total_pages] = SUM([total_pages])
+    FROM sys.allocation_units WITH(NOLOCK)
+    GROUP BY [container_id]
+    HAVING SUM([total_pages]) BETWEEN @MinIndexSize AND @MaxIndexSize
+) t ON t.[container_id] = p.[partition_id]
+WHERE p.[object_id] IN (SELECT DISTINCT i.ObjectID FROM #Indexes i)
+    AND p.[index_id] IN (0, 1)
+GROUP BY p.[object_id]
+
+SELECT *, FileGroupName = (
+                  SELECT f.[name]
+                  FROM sys.filegroups f WITH(NOLOCK)
+                  WHERE f.[is_default] = 1
+              )
+FROM (
+    SELECT i.ObjectID
+         , ObjectName    = o.[name]
+         , SchemaName    = s.[name]
+         , Fragmentation = CAST(100. * (i.UserImpact * i.TotalReads) / MAX(i.UserImpact * i.TotalReads) OVER() AS FLOAT)
+         , a.RowsCount
+         , a.PagesCount
+         , i.TotalReads
+         , i.TotalSeeks
+         , i.TotalScans
+         , i.LastUsage
+         , a.IndexStats
+         , i.IndexColumns
+         , i.IncludedColumns
+    FROM #Indexes i
+    JOIN #AllocationUnits a ON i.ObjectID = a.ObjectID
+    JOIN sys.objects o WITH(NOLOCK) ON o.[object_id] = i.ObjectID
+    JOIN sys.schemas s WITH(NOLOCK) ON o.[schema_id] = s.[schema_id]
+) t
+WHERE t.Fragmentation >= @Fragmentation
 ";
 
     public const string IncludeListEmpty = @"

@@ -46,7 +46,10 @@ namespace SQLIndexManager {
     Disable = 13,
 
     [Description("DROP")]
-    Drop = 14
+    Drop = 14,
+
+    [Description("CREATE INDEX")]
+    CreateIndex = 15
   }
 
 }

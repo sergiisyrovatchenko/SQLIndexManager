@@ -7,6 +7,8 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class AboutBox : XtraForm {
+    const string Mail = "sergey.syrovatchenko@gmail.com";
+
     public AboutBox() {
       InitializeComponent();
 
@@ -15,10 +17,19 @@ namespace SQLIndexManager {
       var product = (AssemblyProductAttribute)assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false)[0];
       var copyright = (AssemblyCopyrightAttribute)assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false)[0];
 
+      labelMail.Text = Mail;
       labelProductName.Text = title.Title;
       labelProductDescription.Text = product.Product;
       labelCopyright.Text = copyright.Copyright;
       labelVersion.Text = assembly.GetName().Version.ToString();
+    }
+
+    private void labelMail_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
+      Process.Start($"mailto:{Mail}");
+    }
+
+    private void Copyright_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
+      Process.Start("www.linkedin.com/in/sergeysyrovatchenko");
     }
 
     private void GitHub_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
@@ -35,6 +46,7 @@ namespace SQLIndexManager {
 
       return base.ProcessDialogKey(keyData);
     }
+
 
     #endregion
   }

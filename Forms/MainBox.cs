@@ -220,7 +220,9 @@ namespace SQLIndexManager {
                                         .ThenByDescending(_ => _.PagesCount).ToList();
 
       foreach (Index ix in indexes) {
-        if (ix.Fragmentation < Settings.Options.RebuildThreshold && ix.IsAllowReorganize)
+        if (ix.IndexType == IndexType.MissingIndex)
+          ix.FixType = IndexOp.CreateIndex;
+        else if (ix.Fragmentation < Settings.Options.RebuildThreshold && ix.IsAllowReorganize)
           ix.FixType = IndexOp.Reorganize;
         else if (Settings.Options.Online && ix.IsAllowOnlineRebuild)
           ix.FixType = IndexOp.RebuildOnline;
@@ -248,10 +250,10 @@ namespace SQLIndexManager {
         var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
         var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
 
-        rulePagesCount.Minimum = 0;
+        rulePagesCount.Minimum = 1;
         rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
 
-        ruleUnusedPagesCount.Minimum = 0;
+        ruleUnusedPagesCount.Minimum = 1;
         ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
                                           ? indexes.Max(_ => _.UnusedPagesCount)
                                           : rulePagesCount.Maximum;

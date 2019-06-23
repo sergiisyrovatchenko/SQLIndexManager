@@ -24,10 +24,10 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
-      DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar2 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule3 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule4 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       this.colDataSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colLogSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colDatabase = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -76,7 +76,7 @@
       // 
       this.buttonCancel.AllowFocus = false;
       this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(582, 305);
+      this.buttonCancel.Location = new System.Drawing.Point(582, 307);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(75, 23);
       this.buttonCancel.TabIndex = 3;
@@ -87,7 +87,7 @@
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.buttonOK.Enabled = false;
-      this.buttonOK.Location = new System.Drawing.Point(501, 305);
+      this.buttonOK.Location = new System.Drawing.Point(501, 307);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 2;
@@ -96,7 +96,7 @@
       // buttonRefresh
       // 
       this.buttonRefresh.AllowFocus = false;
-      this.buttonRefresh.Location = new System.Drawing.Point(12, 305);
+      this.buttonRefresh.Location = new System.Drawing.Point(12, 307);
       this.buttonRefresh.Name = "buttonRefresh";
       this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
       this.buttonRefresh.TabIndex = 1;
@@ -138,58 +138,58 @@
             this.colDataSize,
             this.colLogSize});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-      gridFormatRule1.Column = this.colDataSize;
-      gridFormatRule1.ColumnApplyTo = this.colDataSize;
-      gridFormatRule1.Name = "DataSize";
-      formatConditionRuleDataBar1.AllowNegativeAxis = false;
-      formatConditionRuleDataBar1.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
-      formatConditionRuleDataBar1.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar1.Appearance.BorderColor = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar1.Appearance.Options.UseBackColor = true;
-      formatConditionRuleDataBar1.Appearance.Options.UseBorderColor = true;
-      formatConditionRuleDataBar1.DrawAxis = false;
-      formatConditionRuleDataBar1.Maximum = new decimal(new int[] {
+      gridFormatRule3.Column = this.colDataSize;
+      gridFormatRule3.ColumnApplyTo = this.colDataSize;
+      gridFormatRule3.Name = "DataSize";
+      formatConditionRuleDataBar3.AllowNegativeAxis = false;
+      formatConditionRuleDataBar3.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
+      formatConditionRuleDataBar3.Appearance.BackColor2 = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar3.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar3.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar3.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar3.DrawAxis = false;
+      formatConditionRuleDataBar3.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-      formatConditionRuleDataBar1.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-      formatConditionRuleDataBar1.Minimum = new decimal(new int[] {
+      formatConditionRuleDataBar3.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar3.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-      formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
-      formatConditionRuleDataBar1.PredefinedName = null;
-      formatConditionRuleDataBar1.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule1.Rule = formatConditionRuleDataBar1;
-      gridFormatRule2.Column = this.colLogSize;
-      gridFormatRule2.ColumnApplyTo = this.colLogSize;
-      gridFormatRule2.Name = "LogSize";
-      formatConditionRuleDataBar2.AllowNegativeAxis = false;
-      formatConditionRuleDataBar2.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
-      formatConditionRuleDataBar2.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar2.Appearance.BorderColor = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar2.Appearance.Options.UseBackColor = true;
-      formatConditionRuleDataBar2.Appearance.Options.UseBorderColor = true;
-      formatConditionRuleDataBar2.DrawAxis = false;
-      formatConditionRuleDataBar2.Maximum = new decimal(new int[] {
+      formatConditionRuleDataBar3.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar3.PredefinedName = null;
+      formatConditionRuleDataBar3.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule3.Rule = formatConditionRuleDataBar3;
+      gridFormatRule4.Column = this.colLogSize;
+      gridFormatRule4.ColumnApplyTo = this.colLogSize;
+      gridFormatRule4.Name = "LogSize";
+      formatConditionRuleDataBar4.AllowNegativeAxis = false;
+      formatConditionRuleDataBar4.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
+      formatConditionRuleDataBar4.Appearance.BackColor2 = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar4.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar4.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar4.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar4.DrawAxis = false;
+      formatConditionRuleDataBar4.Maximum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-      formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-      formatConditionRuleDataBar2.Minimum = new decimal(new int[] {
+      formatConditionRuleDataBar4.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar4.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-      formatConditionRuleDataBar2.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
-      formatConditionRuleDataBar2.PredefinedName = null;
-      formatConditionRuleDataBar2.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule2.Rule = formatConditionRuleDataBar2;
-      this.view.FormatRules.Add(gridFormatRule1);
-      this.view.FormatRules.Add(gridFormatRule2);
+      formatConditionRuleDataBar4.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar4.PredefinedName = null;
+      formatConditionRuleDataBar4.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule4.Rule = formatConditionRuleDataBar4;
+      this.view.FormatRules.Add(gridFormatRule3);
+      this.view.FormatRules.Add(gridFormatRule4);
       this.view.GridControl = this.grid;
       this.view.Name = "view";
       this.view.OptionsBehavior.Editable = false;
@@ -230,7 +230,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(667, 338);
+      this.ClientSize = new System.Drawing.Size(667, 340);
       this.Controls.Add(this.grid);
       this.Controls.Add(this.buttonRefresh);
       this.Controls.Add(this.buttonOK);

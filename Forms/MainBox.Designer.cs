@@ -229,7 +229,7 @@ namespace SQLIndexManager {
       // 
       ObjectName.Caption = "Object";
       ObjectName.FieldName = "ObjectName";
-      ObjectName.MaxWidth = 250;
+      ObjectName.MaxWidth = 350;
       ObjectName.MinWidth = 120;
       ObjectName.Name = "ObjectName";
       ObjectName.OptionsColumn.AllowEdit = false;
@@ -259,7 +259,7 @@ namespace SQLIndexManager {
       // 
       IndexName.Caption = "Index";
       IndexName.FieldName = "IndexName";
-      IndexName.MaxWidth = 280;
+      IndexName.MaxWidth = 400;
       IndexName.MinWidth = 150;
       IndexName.Name = "IndexName";
       IndexName.OptionsColumn.AllowEdit = false;
@@ -644,7 +644,7 @@ namespace SQLIndexManager {
       // 
       IndexColumns.Caption = "Index Columns";
       IndexColumns.FieldName = "IndexColumns";
-      IndexColumns.MaxWidth = 400;
+      IndexColumns.MaxWidth = 600;
       IndexColumns.MinWidth = 150;
       IndexColumns.Name = "IndexColumns";
       IndexColumns.OptionsColumn.AllowEdit = false;
@@ -656,7 +656,7 @@ namespace SQLIndexManager {
       // 
       IncludedColumns.Caption = "Included Columns";
       IncludedColumns.FieldName = "IncludedColumns";
-      IncludedColumns.MaxWidth = 400;
+      IncludedColumns.MaxWidth = 600;
       IncludedColumns.MinWidth = 150;
       IncludedColumns.Name = "IncludedColumns";
       IncludedColumns.OptionsColumn.AllowEdit = false;
