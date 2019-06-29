@@ -262,4 +262,10 @@
   <data name="LogUsedSize" xml:space="preserve">
     <value>LogUsedSize</value>
   </data>
+  <data name="DataFreeSize" xml:space="preserve">
+    <value>DataFreeSize</value>
+  </data>
+  <data name="LogFreeSize" xml:space="preserve">
+    <value>LogFreeSize</value>
+  </data>
 </root>

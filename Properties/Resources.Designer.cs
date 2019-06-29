@@ -79,6 +79,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataFreeSize.
+        /// </summary>
+        internal static string DataFreeSize {
+            get {
+                return ResourceManager.GetString("DataFreeSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to master.
         /// </summary>
         internal static string DatamaseMaster {
@@ -301,6 +310,15 @@ namespace SQLIndexManager.Properties {
         internal static string LastUsage {
             get {
                 return ResourceManager.GetString("LastUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogFreeSize.
+        /// </summary>
+        internal static string LogFreeSize {
+            get {
+                return ResourceManager.GetString("LogFreeSize", resourceCulture);
             }
         }
         

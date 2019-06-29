@@ -511,9 +511,9 @@ IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
     DROP TABLE #UsedSpace
 
 CREATE TABLE #UsedSpace (
-      DatabaseID INT
+      DatabaseID   INT
     , DataUsedSize BIGINT
-    , LogUsedSize BIGINT
+    , LogUsedSize  BIGINT
 )
 
 DECLARE @SQL NVARCHAR(MAX) = (

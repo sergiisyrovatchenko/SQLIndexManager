@@ -33,7 +33,9 @@
       DevExpress.XtraGrid.GridFormatRule gridFormatRule4 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       this.colDataSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.colDataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colLogSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.colLogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colDatabase = new DevExpress.XtraGrid.Columns.GridColumn();
       this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
@@ -43,8 +45,6 @@
       this.colRecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colLogReuseWait = new DevExpress.XtraGrid.Columns.GridColumn();
       this.searchControl1 = new DevExpress.XtraEditors.SearchControl();
-      this.colLogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colDataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).BeginInit();
@@ -54,23 +54,45 @@
       // 
       this.colDataSize.Caption = "Data Size";
       this.colDataSize.FieldName = "DataSize";
-      this.colDataSize.MaxWidth = 100;
-      this.colDataSize.MinWidth = 100;
+      this.colDataSize.MaxWidth = 110;
+      this.colDataSize.MinWidth = 110;
       this.colDataSize.Name = "colDataSize";
       this.colDataSize.Visible = true;
       this.colDataSize.VisibleIndex = 4;
-      this.colDataSize.Width = 100;
+      this.colDataSize.Width = 110;
+      // 
+      // colDataFreeSize
+      // 
+      this.colDataFreeSize.Caption = "Free Size";
+      this.colDataFreeSize.FieldName = "DataFreeSize";
+      this.colDataFreeSize.MaxWidth = 100;
+      this.colDataFreeSize.MinWidth = 100;
+      this.colDataFreeSize.Name = "colDataFreeSize";
+      this.colDataFreeSize.Visible = true;
+      this.colDataFreeSize.VisibleIndex = 5;
+      this.colDataFreeSize.Width = 100;
       // 
       // colLogSize
       // 
       this.colLogSize.Caption = "Log Size";
       this.colLogSize.FieldName = "LogSize";
-      this.colLogSize.MaxWidth = 100;
-      this.colLogSize.MinWidth = 100;
+      this.colLogSize.MaxWidth = 110;
+      this.colLogSize.MinWidth = 110;
       this.colLogSize.Name = "colLogSize";
       this.colLogSize.Visible = true;
-      this.colLogSize.VisibleIndex = 5;
-      this.colLogSize.Width = 100;
+      this.colLogSize.VisibleIndex = 6;
+      this.colLogSize.Width = 110;
+      // 
+      // colLogFreeSize
+      // 
+      this.colLogFreeSize.Caption = "Free Size";
+      this.colLogFreeSize.FieldName = "LogFreeSize";
+      this.colLogFreeSize.MaxWidth = 100;
+      this.colLogFreeSize.MinWidth = 100;
+      this.colLogFreeSize.Name = "colLogFreeSize";
+      this.colLogFreeSize.Visible = true;
+      this.colLogFreeSize.VisibleIndex = 7;
+      this.colLogFreeSize.Width = 100;
       // 
       // colDatabase
       // 
@@ -79,13 +101,13 @@
       this.colDatabase.Name = "colDatabase";
       this.colDatabase.Visible = true;
       this.colDatabase.VisibleIndex = 1;
-      this.colDatabase.Width = 251;
+      this.colDatabase.Width = 241;
       // 
       // buttonCancel
       // 
       this.buttonCancel.AllowFocus = false;
       this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(865, 367);
+      this.buttonCancel.Location = new System.Drawing.Point(865, 365);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(75, 23);
       this.buttonCancel.TabIndex = 3;
@@ -96,7 +118,7 @@
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.buttonOK.Enabled = false;
-      this.buttonOK.Location = new System.Drawing.Point(784, 367);
+      this.buttonOK.Location = new System.Drawing.Point(784, 365);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 2;
@@ -105,7 +127,7 @@
       // buttonRefresh
       // 
       this.buttonRefresh.AllowFocus = false;
-      this.buttonRefresh.Location = new System.Drawing.Point(12, 367);
+      this.buttonRefresh.Location = new System.Drawing.Point(12, 365);
       this.buttonRefresh.Name = "buttonRefresh";
       this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
       this.buttonRefresh.TabIndex = 1;
@@ -119,7 +141,7 @@
       this.grid.MainView = this.view;
       this.grid.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
       this.grid.Name = "grid";
-      this.grid.Size = new System.Drawing.Size(928, 352);
+      this.grid.Size = new System.Drawing.Size(928, 353);
       this.grid.TabIndex = 0;
       this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.view});
@@ -146,8 +168,8 @@
             this.colRecoveryModel,
             this.colLogReuseWait,
             this.colDataSize,
-            this.colLogSize,
             this.colDataFreeSize,
+            this.colLogSize,
             this.colLogFreeSize});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = this.colDataSize;
@@ -175,11 +197,10 @@
       formatConditionRuleDataBar1.PredefinedName = null;
       formatConditionRuleDataBar1.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule1.Rule = formatConditionRuleDataBar1;
-      gridFormatRule2.Column = this.colLogSize;
-      gridFormatRule2.ColumnApplyTo = this.colLogSize;
-      gridFormatRule2.Name = "LogSize";
-      formatConditionRuleDataBar2.AllowNegativeAxis = false;
-      formatConditionRuleDataBar2.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
+      gridFormatRule2.Column = this.colDataFreeSize;
+      gridFormatRule2.ColumnApplyTo = this.colDataFreeSize;
+      gridFormatRule2.Name = "DataFreeSize";
+      formatConditionRuleDataBar2.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(201)))), ((int)(((byte)(255)))));
       formatConditionRuleDataBar2.Appearance.BackColor2 = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar2.Appearance.BorderColor = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar2.Appearance.Options.UseBackColor = true;
@@ -190,7 +211,7 @@
             0,
             0,
             0});
-      formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar2.Minimum = new decimal(new int[] {
             1,
             0,
@@ -198,12 +219,12 @@
             0});
       formatConditionRuleDataBar2.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar2.PredefinedName = null;
-      formatConditionRuleDataBar2.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule2.Rule = formatConditionRuleDataBar2;
-      gridFormatRule3.Column = this.colDataFreeSize;
-      gridFormatRule3.ColumnApplyTo = this.colDataFreeSize;
-      gridFormatRule3.Name = "DataFreeSize";
-      formatConditionRuleDataBar3.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
+      gridFormatRule3.Column = this.colLogSize;
+      gridFormatRule3.ColumnApplyTo = this.colLogSize;
+      gridFormatRule3.Name = "LogSize";
+      formatConditionRuleDataBar3.AllowNegativeAxis = false;
+      formatConditionRuleDataBar3.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
       formatConditionRuleDataBar3.Appearance.BackColor2 = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar3.Appearance.BorderColor = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar3.Appearance.Options.UseBackColor = true;
@@ -222,11 +243,12 @@
             0});
       formatConditionRuleDataBar3.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar3.PredefinedName = null;
+      formatConditionRuleDataBar3.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule3.Rule = formatConditionRuleDataBar3;
       gridFormatRule4.Column = this.colLogFreeSize;
       gridFormatRule4.ColumnApplyTo = this.colLogFreeSize;
       gridFormatRule4.Name = "LogFreeSize";
-      formatConditionRuleDataBar4.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
+      formatConditionRuleDataBar4.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(224)))), ((int)(((byte)(212)))));
       formatConditionRuleDataBar4.Appearance.BackColor2 = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar4.Appearance.BorderColor = System.Drawing.Color.Transparent;
       formatConditionRuleDataBar4.Appearance.Options.UseBackColor = true;
@@ -237,7 +259,7 @@
             0,
             0,
             0});
-      formatConditionRuleDataBar4.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar4.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar4.Minimum = new decimal(new int[] {
             1,
             0,
@@ -297,17 +319,17 @@
       // 
       this.colLogReuseWait.Caption = "Log Reuse Wait";
       this.colLogReuseWait.FieldName = "LogReuseWait";
-      this.colLogReuseWait.MaxWidth = 145;
-      this.colLogReuseWait.MinWidth = 145;
+      this.colLogReuseWait.MaxWidth = 130;
+      this.colLogReuseWait.MinWidth = 130;
       this.colLogReuseWait.Name = "colLogReuseWait";
       this.colLogReuseWait.Visible = true;
       this.colLogReuseWait.VisibleIndex = 3;
-      this.colLogReuseWait.Width = 145;
+      this.colLogReuseWait.Width = 130;
       // 
       // searchControl1
       // 
       this.searchControl1.Client = this.grid;
-      this.searchControl1.Location = new System.Drawing.Point(93, 369);
+      this.searchControl1.Location = new System.Drawing.Point(93, 367);
       this.searchControl1.Name = "searchControl1";
       this.searchControl1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Repository.ClearButton(),
@@ -316,33 +338,11 @@
       this.searchControl1.Size = new System.Drawing.Size(217, 20);
       this.searchControl1.TabIndex = 4;
       // 
-      // colLogFreeSize
-      // 
-      this.colLogFreeSize.Caption = "Log Free Size";
-      this.colLogFreeSize.FieldName = "LogFreeSize";
-      this.colLogFreeSize.MaxWidth = 90;
-      this.colLogFreeSize.MinWidth = 90;
-      this.colLogFreeSize.Name = "colLogFreeSize";
-      this.colLogFreeSize.Visible = true;
-      this.colLogFreeSize.VisibleIndex = 7;
-      this.colLogFreeSize.Width = 90;
-      // 
-      // colDataFreeSize
-      // 
-      this.colDataFreeSize.Caption = "Data Free Size";
-      this.colDataFreeSize.FieldName = "DataFreeSize";
-      this.colDataFreeSize.MaxWidth = 90;
-      this.colDataFreeSize.MinWidth = 90;
-      this.colDataFreeSize.Name = "colDataFreeSize";
-      this.colDataFreeSize.Visible = true;
-      this.colDataFreeSize.VisibleIndex = 6;
-      this.colDataFreeSize.Width = 90;
-      // 
       // DatabaseBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(952, 402);
+      this.ClientSize = new System.Drawing.Size(952, 398);
       this.Controls.Add(this.searchControl1);
       this.Controls.Add(this.grid);
       this.Controls.Add(this.buttonRefresh);

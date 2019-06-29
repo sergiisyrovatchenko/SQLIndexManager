@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 
@@ -55,8 +57,18 @@ namespace SQLIndexManager {
 
         try {
           connection.Open();
-          grid.DataSource = QueryEngine.GetDatabases(connection, scanUsedSpace);
-          Output.Current.Add($"Refresh {view.RowCount} databases", null, ts.ElapsedMilliseconds);
+
+          List<Database> dbs = QueryEngine.GetDatabases(connection, scanUsedSpace);
+          grid.DataSource = dbs;
+          Output.Current.Add($"Refresh {dbs.Count} databases", null, ts.ElapsedMilliseconds);
+
+          if (scanUsedSpace) {
+            var ruleDataFreeSize = view.FormatRules[Resources.DataFreeSize].RuleCast<FormatConditionRuleDataBar>();
+            var ruleLogFreeSize = view.FormatRules[Resources.LogFreeSize].RuleCast<FormatConditionRuleDataBar>();
+
+            ruleDataFreeSize.Maximum = dbs.Max(_ => _.DataSize);
+            ruleLogFreeSize.Maximum = dbs.Max(_ => _.LogSize);
+          }
 
           foreach (string db in Settings.ActiveHost.Databases) {
             int index = view.LocateByValue(colDatabase.FieldName, db);
