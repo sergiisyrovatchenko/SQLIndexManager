@@ -97,6 +97,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DataUsedSize.
+        /// </summary>
+        internal static string DataUsedSize {
+            get {
+                return ResourceManager.GetString("DataUsedSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         internal static string Duration {
@@ -296,11 +305,29 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LogReuseWait.
+        /// </summary>
+        internal static string LogReuseWait {
+            get {
+                return ResourceManager.GetString("LogReuseWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LogSize.
         /// </summary>
         internal static string LogSize {
             get {
                 return ResourceManager.GetString("LogSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogUsedSize.
+        /// </summary>
+        internal static string LogUsedSize {
+            get {
+                return ResourceManager.GetString("LogUsedSize", resourceCulture);
             }
         }
         

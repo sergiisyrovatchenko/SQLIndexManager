@@ -1,8 +1,7 @@
 ﻿using DevExpress.Data;
+using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.Utils.Taskbar.Core;
-using DevExpress.Utils;
-using DevExpress.XtraPrinting;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
@@ -11,6 +10,7 @@ using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraPrinting;
 using SQLIndexManager.Properties;
 using System;
 using System.Collections.Generic;
@@ -470,13 +470,13 @@ namespace SQLIndexManager {
 
       var groupList = fix.GroupBy(u => u.DatabaseName).Select(grp => grp.ToList()).ToList();
       foreach (var group in groupList) {
-        sb.AppendLine($"USE [{group[0].DatabaseName}]\nGO\n");
+        sb.AppendLine($"USE [{group[0].DatabaseName.ToQuota()}]\nGO\n");
 
         foreach (Index i in group.OrderBy(_ => _.SchemaName)
-                              .ThenBy(_ => _.ObjectName)
-                              .ThenBy(_ => _.IndexName)
-                              .ThenBy(_ => _.PartitionNumber)) {
-          sb.AppendLine($"PRINT N'{i}'\n{i.GetQuery()}\nGO\n");
+                                 .ThenBy(_ => _.ObjectName)
+                                 .ThenBy(_ => _.IndexName)
+                                 .ThenBy(_ => _.PartitionNumber)) {
+          sb.AppendLine($"RAISERROR(N'{i}', 0, 1) WITH NOWAIT\n{i.GetQuery()}\nGO\n");
         }
       }
 

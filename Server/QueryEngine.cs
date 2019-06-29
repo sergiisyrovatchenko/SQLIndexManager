@@ -9,9 +9,9 @@ namespace SQLIndexManager {
 
   public static class QueryEngine {
 
-    public static List<Database> GetDatabases(SqlConnection connection) {
+    public static List<Database> GetDatabases(SqlConnection connection, bool scanUsedSpace) {
       string query = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin 
-                        ? Query.DatabaseList
+                        ? (scanUsedSpace ? Query.DatabaseFullList : Query.DatabaseList)
                         : Query.DatabaseListAzure;
 
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
@@ -22,12 +22,18 @@ namespace SQLIndexManager {
 
       List<Database> dbs = new List<Database>();
       foreach (DataRow _ in data.Tables[0].Rows) {
+        long dataSize = _.Field<long?>(Resources.DataSize) ?? 0;
+        long logSize = _.Field<long?>(Resources.LogSize) ?? 0;
+
         dbs.Add(
           new Database {
             DatabaseName  = _.Field<string>(Resources.DatabaseName),
             RecoveryModel = _.Field<string>(Resources.RecoveryModel),
-            DataSize      = _.Field<long?>(Resources.DataSize),
-            LogSize       = _.Field<long?>(Resources.LogSize)
+            LogReuseWait  = _.Field<string>(Resources.LogReuseWait),
+            DataSize      = dataSize,
+            DataFreeSize  = dataSize - (_.Field<long?>(Resources.DataUsedSize) ?? 0),
+            LogSize       = logSize,
+            LogFreeSize   = logSize - (_.Field<long?>(Resources.LogUsedSize) ?? 0)
           }
         );
       }

@@ -18,18 +18,16 @@ namespace SQLIndexManager {
       InitializeComponent();
 
       if (Settings.ServerInfo.IsAzure || !Settings.ServerInfo.IsSysAdmin) {
-        colDataSize.Visible =
-          colLogSize.Visible = false;
-
+        colDataSize.Visible = colLogSize.Visible = false;
         view.SortInfo.Clear();
         view.SortInfo.Add(new GridColumnSortInfo(colDatabase, ColumnSortOrder.Ascending));
       }
 
-      RefreshDatabases();
+      RefreshDatabases(false);
     }
 
     private void ButtonRefreshClick(object sender, EventArgs e) {
-      RefreshDatabases();
+      RefreshDatabases(true);
     }
 
     public List<string> GetDatabases() {
@@ -44,18 +42,21 @@ namespace SQLIndexManager {
       return dbs;
     }
 
-    private void RefreshDatabases() {
+    private void RefreshDatabases(bool scanUsedSpace) {
       grid.DataSource = null;
+      buttonOK.Enabled = false;
+      colDataFreeSize.Visible = colLogFreeSize.Visible = scanUsedSpace
+                                                       && !Settings.ServerInfo.IsAzure
+                                                       && Settings.ServerInfo.IsSysAdmin;
+
       Stopwatch ts = Stopwatch.StartNew();
 
       using (SqlConnection connection = Connection.Create(Settings.ActiveHost)) {
 
         try {
           connection.Open();
-
-          grid.DataSource = QueryEngine.GetDatabases(connection);
-
-          Output.Current.Add("Refresh databases", null, ts.ElapsedMilliseconds);
+          grid.DataSource = QueryEngine.GetDatabases(connection, scanUsedSpace);
+          Output.Current.Add($"Refresh {view.RowCount} databases", null, ts.ElapsedMilliseconds);
 
           foreach (string db in Settings.ActiveHost.Databases) {
             int index = view.LocateByValue(colDatabase.FieldName, db);
@@ -96,7 +97,11 @@ namespace SQLIndexManager {
       if (e.Value == null)
         return;
       
-      if (e.Column.FieldName == colDataSize.FieldName || e.Column.FieldName == colLogSize.FieldName) {
+      if (   e.Column.FieldName == colDataSize.FieldName
+          || e.Column.FieldName == colDataFreeSize.FieldName
+          || e.Column.FieldName == colLogSize.FieldName
+          || e.Column.FieldName == colLogFreeSize.FieldName
+       ) {
         e.DisplayText = (Convert.ToDecimal(e.Value) * 8).FormatSize();
       }
     }

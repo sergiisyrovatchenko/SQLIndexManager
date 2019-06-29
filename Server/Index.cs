@@ -51,6 +51,9 @@ namespace SQLIndexManager {
 
     public string GetQuery() {
       string sql = string.Empty;
+      string indexName = IndexName.ToQuota();
+      string schemaName = SchemaName.ToQuota();
+      string objectName = ObjectName.ToQuota();
       string partition = IsPartitioned ? PartitionNumber.ToString() : "ALL";
       DataCompression compression = DataCompression;
 
@@ -66,19 +69,19 @@ namespace SQLIndexManager {
           case IndexOp.Rebuild:
           case IndexOp.RebuildColumnstore:
           case IndexOp.RebuildColumnstoreArchive:
-            sql = $"ALTER INDEX [{IndexName}]\n    " +
-                    $"ON [{SchemaName}].[{ObjectName}] REBUILD PARTITION = {partition}\n    " +
+            sql = $"ALTER INDEX [{indexName}]\n    " +
+                    $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
                     $"WITH (DATA_COMPRESSION = {compression.ToDescription()}, MAXDOP = {Settings.Options.MaxDop});";
             break;
 
           case IndexOp.Reorganize:
-            sql = $"ALTER INDEX [{IndexName}]\n    " +
-                    $"ON [{SchemaName}].[{ObjectName}] REORGANIZE PARTITION = {partition};";
+            sql = $"ALTER INDEX [{indexName}]\n    " +
+                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition};";
             break;
 
           case IndexOp.ReorganizeCompressAllRowGroup:
-            sql = $"ALTER INDEX [{IndexName}]\n    " +
-                    $"ON [{SchemaName}].[{ObjectName}] REORGANIZE PARTITION = {partition}\n    " +
+            sql = $"ALTER INDEX [{indexName}]\n    " +
+                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition}\n    " +
                     "WITH (COMPRESS_ALL_ROW_GROUPS = ON);";
             break;
         }
@@ -94,8 +97,8 @@ namespace SQLIndexManager {
 
         switch (FixType) {
           case IndexOp.CreateIndex:
-            sql = $"CREATE NONCLUSTERED INDEX [{IndexName}]\n" +
-                    $"ON [{SchemaName}].[{ObjectName}] ({IndexColumns})\n" +
+            sql = $"CREATE NONCLUSTERED INDEX [{indexName}]\n" +
+                    $"ON [{schemaName}].[{objectName}] ({IndexColumns})\n" +
                     (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
                     $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
                     (Settings.Options.FillFactor.IsBetween(1, 100)
@@ -116,7 +119,7 @@ namespace SQLIndexManager {
           case IndexOp.RebuildOnline:
           case IndexOp.RebuildFillFactorZero:
             if (IndexType == IndexType.Heap) {
-              sql = $"ALTER TABLE [{SchemaName}].[{ObjectName}] REBUILD PARTITION = {partition}\n    " +
+              sql = $"ALTER TABLE [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
                       $"WITH (DATA_COMPRESSION = {compression.ToDescription()}, MAXDOP = {Settings.Options.MaxDop});";
             }
             else {
@@ -128,8 +131,8 @@ namespace SQLIndexManager {
                   onlineRebuild = "ON";
               }
 
-              sql = $"ALTER INDEX [{IndexName}]\n    " +
-                      $"ON [{SchemaName}].[{ObjectName}] REBUILD PARTITION = {partition}\n    " +
+              sql = $"ALTER INDEX [{indexName}]\n    " +
+                      $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
                       $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
                       $"ONLINE = {onlineRebuild}, " +
                       (FixType == IndexOp.RebuildFillFactorZero 
@@ -145,23 +148,23 @@ namespace SQLIndexManager {
             break;
 
           case IndexOp.Reorganize:
-            sql = $"ALTER INDEX [{IndexName}]\n    " +
-                    $"ON [{SchemaName}].[{ObjectName}] REORGANIZE PARTITION = {partition}\n    " +
+            sql = $"ALTER INDEX [{indexName}]\n    " +
+                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition}\n    " +
                     $"WITH (LOB_COMPACTION = {(Settings.Options.LobCompaction ? "ON" : "OFF")});";
             break;
 
           case IndexOp.Disable:
-            sql = $"ALTER INDEX [{IndexName}] ON [{SchemaName}].[{ObjectName}] DISABLE;";
+            sql = $"ALTER INDEX [{indexName}] ON [{schemaName}].[{objectName}] DISABLE;";
             break;
 
           case IndexOp.Drop:
-            sql = $"DROP INDEX [{IndexName}] ON [{SchemaName}].[{ObjectName}];";
+            sql = $"DROP INDEX [{indexName}] ON [{schemaName}].[{objectName}];";
             break;
 
           case IndexOp.UpdateStatsSample:
           case IndexOp.UpdateStatsResample:
           case IndexOp.UpdateStatsFull:
-            sql = $"UPDATE STATISTICS [{SchemaName}].[{ObjectName}] [{IndexName}]\n    " + (
+            sql = $"UPDATE STATISTICS [{schemaName}].[{objectName}] [{indexName}]\n    " + (
                 FixType == IndexOp.UpdateStatsSample
                     ? $"WITH SAMPLE {Settings.Options.SampleStatsPercent} PERCENT;"
                     : (FixType == IndexOp.UpdateStatsFull ? "WITH FULLSCAN;" : "WITH RESAMPLE;")
@@ -175,7 +178,7 @@ namespace SQLIndexManager {
     }
 
     public override string ToString() {
-      return $"{DatabaseName} | {SchemaName}.{ObjectName} | {(string.IsNullOrEmpty(IndexName) ? "Heap" : $"{IndexName}")} {(IsPartitioned ? "[ " + PartitionNumber + " ] " : string.Empty)}| {(Convert.ToDecimal(PagesCount) * 8).FormatSize()}";
+      return $"{DatabaseName} | {SchemaName}.{ObjectName} | {(string.IsNullOrEmpty(IndexName) ? "Heap" : $"{IndexName}")} {(IsPartitioned ? "[ " + PartitionNumber + " ] " : string.Empty)}| {(Convert.ToDecimal(PagesCount) * 8).FormatSize()}".Replace("'", string.Empty);
     }
   }
 

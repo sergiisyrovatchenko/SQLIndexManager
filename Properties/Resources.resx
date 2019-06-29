@@ -253,4 +253,13 @@
   <data name="IndexColumns" xml:space="preserve">
     <value>IndexColumns</value>
   </data>
+  <data name="LogReuseWait" xml:space="preserve">
+    <value>LogReuseWait</value>
+  </data>
+  <data name="DataUsedSize" xml:space="preserve">
+    <value>DataUsedSize</value>
+  </data>
+  <data name="LogUsedSize" xml:space="preserve">
+    <value>LogUsedSize</value>
+  </data>
 </root>

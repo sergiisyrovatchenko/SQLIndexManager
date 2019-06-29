@@ -504,11 +504,67 @@ SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
      , IsSysAdmin    = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)
 ";
 
+    public const string DatabaseFullList = @"
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
+    DROP TABLE #UsedSpace
+
+CREATE TABLE #UsedSpace (
+      DatabaseID INT
+    , DataUsedSize BIGINT
+    , LogUsedSize BIGINT
+)
+
+DECLARE @SQL NVARCHAR(MAX) = (
+    SELECT '
+    USE [' + REPLACE(REPLACE([name], ']', ']]'), '[', '[[') + ']
+    INSERT INTO #UsedSpace
+    SELECT DB_ID()
+         , SUM(CASE WHEN [type] = 0 THEN [size] ELSE 0 END)
+         , SUM(CASE WHEN [type] = 1 THEN [size] ELSE 0 END)
+    FROM (
+        SELECT [type], [size] = SUM(CAST(FILEPROPERTY([name], ''SpaceUsed'') AS BIGINT))
+        FROM sys.database_files WITH(NOLOCK)
+        GROUP BY [type]
+    ) t;'
+    FROM sys.databases WITH(NOLOCK)
+    WHERE [state] = 0
+        AND [database_id] != 2
+        AND ISNULL(HAS_DBACCESS([name]), 1) = 1
+    FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
+
+EXEC sys.sp_executesql @SQL
+
+SELECT DatabaseName = t.[name]
+     , d.DataSize
+     , u.DataUsedSize
+     , d.LogSize
+     , u.LogUsedSize
+     , RecoveryModel = t.recovery_model_desc
+     , LogReuseWait  = t.log_reuse_wait_desc
+FROM sys.databases t WITH(NOLOCK)
+LEFT JOIN #UsedSpace u ON u.DatabaseID = t.[database_id]
+LEFT JOIN (
+    SELECT [database_id]
+         , DataSize = SUM(CASE WHEN [type] = 0 THEN CAST(size AS BIGINT) END)
+         , LogSize  = SUM(CASE WHEN [type] = 1 THEN CAST(size AS BIGINT) END)
+    FROM sys.master_files WITH(NOLOCK)
+    GROUP BY [database_id]
+) d ON d.[database_id] = t.[database_id]
+WHERE t.[state] = 0
+    AND t.[database_id] != 2
+    AND ISNULL(HAS_DBACCESS(t.[name]), 1) = 1
+";
+
     public const string DatabaseList = @"
 SELECT DatabaseName = t.[name]
      , d.DataSize
+     , DataUsedSize  = CAST(NULL AS BIGINT)
      , d.LogSize
+     , LogUsedSize   = CAST(NULL AS BIGINT)
      , RecoveryModel = t.recovery_model_desc
+     , LogReuseWait  = t.log_reuse_wait_desc
 FROM sys.databases t WITH(NOLOCK)
 LEFT JOIN (
     SELECT [database_id]
@@ -525,11 +581,15 @@ WHERE t.[state] = 0
     public const string DatabaseListAzure = @"
 SELECT DatabaseName  = [name]
      , DataSize      = CAST(NULL AS BIGINT)
+     , DataUsedSize  = CAST(NULL AS BIGINT)
      , LogSize       = CAST(NULL AS BIGINT)
+     , LogUsedSize   = CAST(NULL AS BIGINT)
      , RecoveryModel = recovery_model_desc
+     , LogReuseWait  = log_reuse_wait_desc
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
-    AND ISNULL(HAS_DBACCESS([name]), 1) = 1";
+    AND ISNULL(HAS_DBACCESS([name]), 1) = 1
+";
 
     public const string AfterFixIndex = @"
 DECLARE @UnusedPagesCount  BIGINT
