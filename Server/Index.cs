@@ -97,10 +97,12 @@ namespace SQLIndexManager {
 
         switch (FixType) {
           case IndexOp.CreateIndex:
+            bool isCreateOnline = Settings.ServerInfo.MajorVersion > 10  && Settings.ServerInfo.IsOnlineRebuildAvailable && Settings.Options.Online;
             sql = $"CREATE NONCLUSTERED INDEX [{indexName}]\n" +
                     $"ON [{schemaName}].[{objectName}] ({IndexColumns})\n" +
                     (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
                     $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
+                    $"ONLINE = {(isCreateOnline ? "ON" : "OFF")}, " +
                     (Settings.Options.FillFactor.IsBetween(1, 100)
                             ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
                             : ""

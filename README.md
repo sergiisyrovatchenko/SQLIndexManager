@@ -28,7 +28,12 @@ You can download .zip file with the latest build of the master branch from [Rele
 ## Future Plans
 
 * Improvements in command-line automation
+* Check duplicate or unused indexes
 * Statistics maintenance
+
+## Topics
+
+[SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
 
 ## Screenshots
 
