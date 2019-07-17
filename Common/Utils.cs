@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace SQLIndexManager {
@@ -12,6 +13,16 @@ namespace SQLIndexManager {
 
     public static bool IsBetween(this int value, int minimum, int maximum) {
       return value >= minimum && value <= maximum;
+    }
+
+    public static List<string> RemoveInvalidTokens(this List<string> value) {
+      List<string> items = new List<string>();
+      foreach (string item in value) {
+        string t = item.Replace("'", "").Trim();
+        if (!string.IsNullOrEmpty(t))
+          items.Add(t);
+      }
+      return items;
     }
 
     public static string ToQuota(this string value) {

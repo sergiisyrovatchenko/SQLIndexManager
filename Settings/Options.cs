@@ -21,6 +21,7 @@ namespace SQLIndexManager {
     private string _dataCompression = "DEFAULT";
     private List<string> _includeSchemas = new List<string>();
     private List<string> _excludeSchemas = new List<string>();
+    private List<string> _includeObject = new List<string>();
     private List<string> _excludeObject = new List<string>();
 
     [XmlAttribute]
@@ -125,43 +126,25 @@ namespace SQLIndexManager {
     [XmlElement]
     public List<string> IncludeSchemas {
       get => _includeSchemas;
-      set {
-        List<string> items = new List<string>();
-        foreach (string item in value) {
-          string t = item.Replace("'", "").Trim();
-          if (!string.IsNullOrEmpty(t))
-            items.Add(t);
-        }
-        _includeSchemas = items;
-      }
+      set => _includeSchemas = value.RemoveInvalidTokens();
     }
 
     [XmlElement]
     public List<string> ExcludeSchemas {
       get => _excludeSchemas;
-      set {
-        List<string> items = new List<string>();
-        foreach (string item in value) {
-          string t = item.Replace("'", "").Trim();
-          if (!string.IsNullOrEmpty(t))
-            items.Add(t);
-        }
-        _excludeSchemas = items;
-      }
+      set => _excludeSchemas = value.RemoveInvalidTokens();
     }
 
     [XmlElement]
     public List<string> ExcludeObject {
       get => _excludeObject;
-      set {
-        List<string> items = new List<string>();
-        foreach (string item in value) {
-          string t = item.Replace("'", "").Trim();
-          if (!string.IsNullOrEmpty(t))
-            items.Add(t);
-        }
-        _excludeObject = items;
-      }
+      set => _excludeObject = value.RemoveInvalidTokens();
+    }
+
+    [XmlElement]
+    public List<string> IncludeObject {
+      get => _includeObject;
+      set => _includeObject = value.RemoveInvalidTokens();
     }
 
     [XmlAttribute]

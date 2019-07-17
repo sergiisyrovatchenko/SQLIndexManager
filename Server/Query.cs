@@ -31,7 +31,7 @@ INSERT INTO #ExcludeList
 SELECT [object_id]
 FROM sys.objects WITH(NOLOCK)
 WHERE [type] IN ('V', 'U')
-    AND [is_ms_shipped] = 1 {1}
+    AND ( [is_ms_shipped] = 1 {1})
 
 IF OBJECT_ID('tempdb.dbo.#Partitions') IS NOT NULL
     DROP TABLE #Partitions
@@ -351,7 +351,7 @@ INSERT INTO #IncludeList
 SELECT [object_id]
 FROM sys.objects WITH(NOLOCK)
 WHERE [type] IN ('V', 'U')
-    {0}
+    {0}{1}
 
 SELECT [object_id]
      , [index_id]

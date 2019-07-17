@@ -83,19 +83,38 @@ namespace SQLIndexManager {
 
         string indexQuery = Settings.ServerInfo.MajorVersion == 10 ? Query.Index2008 : Query.Index2012Plus;
 
+        List<string> excludeObjectMask = Settings.Options.ExcludeObject.Where(_ => _.Contains("%")).ToList();
+        List<string> includeObjectMask = Settings.Options.IncludeObject.Where(_ => _.Contains("%")).ToList();
+        List<string> excludeObjectId = Settings.Options.ExcludeObject.Where(_ => !_.Contains("%")).ToList();
+        List<string> includeObjectId = Settings.Options.IncludeObject.Where(_ => !_.Contains("%")).ToList();
+
         string excludeList = string.Empty;
-        if (Settings.Options.ExcludeSchemas.Count > 0) {
-          excludeList = " OR [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.ExcludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)";
-        }
+        if (Settings.Options.ExcludeSchemas.Count > 0)
+          excludeList += "OR [schema_id] = SCHEMA_ID(N'" + string.Join("') OR [schema_id] = SCHEMA_ID(N'", Settings.Options.ExcludeSchemas) + "') ";
 
-        if (Settings.Options.ExcludeObject.Count > 0) {
-          excludeList += " OR [object_id] IN (SELECT * FROM (VALUES (OBJECT_ID(N'" + string.Join("')), (OBJECT_ID(N'", Settings.Options.ExcludeObject) + "'))) t(ID) WHERE ID IS NOT NULL)";
-        }
+        if (excludeObjectMask.Count > 0)
+          excludeList += "OR [name] LIKE N'" + string.Join("' OR [name] LIKE N'", excludeObjectMask) + "' ";
 
-        string includeList = Query.IncludeListEmpty;
-        if (Settings.Options.IncludeSchemas.Count > 0) {
-          includeList = string.Format(Query.IncludeList, " AND [schema_id] IN (SELECT * FROM (VALUES (SCHEMA_ID(N'" + string.Join("')), (SCHEMA_ID(N'", Settings.Options.IncludeSchemas) + "'))) t(ID) WHERE ID IS NOT NULL)");
-        }
+        if (excludeObjectId.Count > 0)
+          excludeList += "OR [object_id] = OBJECT_ID(N'" + string.Join("') OR [object_id] = OBJECT_ID(N'", excludeObjectId) + "') ";
+
+        string includeListSchemas = Settings.Options.IncludeSchemas.Count > 0
+                                      ? "AND ( [schema_id] = SCHEMA_ID(N'" + string.Join("') OR [schema_id] = SCHEMA_ID(N'", Settings.Options.IncludeSchemas) + "') ) "
+                                      : string.Empty;
+
+        string includeListObject = string.Empty;
+        if (includeObjectMask.Count > 0)
+          includeListObject += "OR [name] LIKE N'" + string.Join("' OR [name] LIKE N'", includeObjectMask) + "' ";
+
+        if (includeObjectId.Count > 0)
+          includeListObject += "OR [object_id] = OBJECT_ID(N'" + string.Join("') OR [object_id] = OBJECT_ID(N'", includeObjectId) + "') ";
+
+        if (!string.IsNullOrEmpty(includeListObject))
+          includeListObject = $"AND ( 1 = 0 {includeListObject})";
+
+        string includeList = string.IsNullOrEmpty(includeListSchemas) && string.IsNullOrEmpty(includeListObject)
+                                ? Query.IncludeListEmpty
+                                : string.Format(Query.IncludeList, includeListSchemas, includeListObject);
 
         string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
         string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";

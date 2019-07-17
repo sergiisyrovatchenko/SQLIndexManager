@@ -43,8 +43,8 @@ namespace SQLIndexManager {
     private void UpdateActiveHost(Host host) {
       Settings.ActiveHost = host;
 
-      buttonDatabases.Enabled =
-        buttonRefreshIndex.Enabled = (host != null && host.Databases.Count > 0);
+      buttonDatabases.Enabled = (host != null);
+      buttonRefreshIndex.Enabled = (host != null && host.Databases.Count > 0);
 
       labelServerInfo.Visibility =
         labelDatabase.Visibility =
@@ -484,9 +484,13 @@ namespace SQLIndexManager {
     }
 
     private void FixedOpPopupValueChanged(object sender, EventArgs e) {
-      int row = gridView1.GetFocusedDataSourceRowIndex();
+      Index row = (Index)gridView1.GetFocusedRow();
+      if (row == null) return;
+
+      int rowIndex = gridView1.FindRow(row);
+
       gridView1.PostEditor();
-      gridView1.SelectRow(row);
+      gridView1.SelectRow(rowIndex);
       gridView1.UpdateCurrentRow();
     }
 

@@ -132,23 +132,51 @@
   <data name="TotalReads" xml:space="preserve">
     <value>TotalReads</value>
   </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>IsUnique</value>
+  </data>
+  <data name="RecoveryModel" xml:space="preserve">
+    <value>RecoveryModel</value>
+  </data>
   <data name="SchemaName" xml:space="preserve">
     <value>SchemaName</value>
+  </data>
+  <data name="UnusedPagesCount" xml:space="preserve">
+    <value>UnusedPagesCount</value>
+  </data>
+  <data name="IsFiltered" xml:space="preserve">
+    <value>IsFiltered</value>
+  </data>
+  <data name="MinVersionMessage" xml:space="preserve">
+    <value>SQL Server 2000/2005 is not supported.</value>
   </data>
   <data name="DatabaseName" xml:space="preserve">
     <value>DatabaseName</value>
   </data>
-  <data name="RowsCount" xml:space="preserve">
-    <value>RowsCount</value>
+  <data name="ServerVersion" xml:space="preserve">
+    <value>ServerVersion</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="icon_include" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_include.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProductLevel" xml:space="preserve">
+    <value>ProductLevel</value>
   </data>
   <data name="PartitionNumber" xml:space="preserve">
     <value>PartitionNumber</value>
+  </data>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Progress" xml:space="preserve">
     <value>Progress</value>
   </data>
   <data name="DatamaseMaster" xml:space="preserve">
     <value>master</value>
+  </data>
+  <data name="IndexID" xml:space="preserve">
+    <value>IndexID</value>
   </data>
   <data name="IndexType" xml:space="preserve">
     <value>IndexType</value>
@@ -165,107 +193,85 @@
   <data name="IndexStats" xml:space="preserve">
     <value>IndexStats</value>
   </data>
+  <data name="DataUsedSize" xml:space="preserve">
+    <value>DataUsedSize</value>
+  </data>
   <data name="IndexName" xml:space="preserve">
     <value>IndexName</value>
   </data>
   <data name="DataCompression" xml:space="preserve">
     <value>DataCompression</value>
   </data>
-  <data name="IndexID" xml:space="preserve">
-    <value>IndexID</value>
-  </data>
-  <data name="LastUsage" xml:space="preserve">
-    <value>LastUsage</value>
-  </data>
-  <data name="TotalWrites" xml:space="preserve">
-    <value>TotalWrites</value>
-  </data>
-  <data name="UnusedPagesCount" xml:space="preserve">
-    <value>UnusedPagesCount</value>
-  </data>
-  <data name="ObjectID" xml:space="preserve">
-    <value>ObjectID</value>
-  </data>
-  <data name="IsAllowPageLocks" xml:space="preserve">
-    <value>IsAllowPageLocks</value>
-  </data>
-  <data name="PagesCount" xml:space="preserve">
-    <value>PagesCount</value>
-  </data>
-  <data name="IsPartitioned" xml:space="preserve">
-    <value>IsPartitioned</value>
-  </data>
-  <data name="IsLobLegacy" xml:space="preserve">
-    <value>IsLobLegacy</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FillFactor" xml:space="preserve">
-    <value>FillFactorValue</value>
-  </data>
-  <data name="IsFiltered" xml:space="preserve">
-    <value>IsFiltered</value>
-  </data>
-  <data name="IsPK" xml:space="preserve">
-    <value>IsPK</value>
-  </data>
-  <data name="IsUnique" xml:space="preserve">
-    <value>IsUnique</value>
-  </data>
   <data name="DataSize" xml:space="preserve">
     <value>DataSize</value>
-  </data>
-  <data name="LogSize" xml:space="preserve">
-    <value>LogSize</value>
-  </data>
-  <data name="RecoveryModel" xml:space="preserve">
-    <value>RecoveryModel</value>
-  </data>
-  <data name="TotalLookups" xml:space="preserve">
-    <value>TotalLookups</value>
-  </data>
-  <data name="TotalScans" xml:space="preserve">
-    <value>TotalScans</value>
   </data>
   <data name="TotalSeeks" xml:space="preserve">
     <value>TotalSeeks</value>
   </data>
-  <data name="Edition" xml:space="preserve">
-    <value>Edition</value>
+  <data name="RowsCount" xml:space="preserve">
+    <value>RowsCount</value>
   </data>
-  <data name="IsSysAdmin" xml:space="preserve">
-    <value>IsSysAdmin</value>
-  </data>
-  <data name="ProductLevel" xml:space="preserve">
-    <value>ProductLevel</value>
-  </data>
-  <data name="ServerVersion" xml:space="preserve">
-    <value>ServerVersion</value>
-  </data>
-  <data name="MinVersionMessage" xml:space="preserve">
-    <value>SQL Server 2000/2005 is not supported.</value>
-  </data>
-  <data name="IncludedColumns" xml:space="preserve">
-    <value>IncludedColumns</value>
-  </data>
-  <data name="IndexColumns" xml:space="preserve">
-    <value>IndexColumns</value>
-  </data>
-  <data name="LogReuseWait" xml:space="preserve">
-    <value>LogReuseWait</value>
-  </data>
-  <data name="DataUsedSize" xml:space="preserve">
-    <value>DataUsedSize</value>
-  </data>
-  <data name="LogUsedSize" xml:space="preserve">
-    <value>LogUsedSize</value>
+  <data name="TotalScans" xml:space="preserve">
+    <value>TotalScans</value>
   </data>
   <data name="DataFreeSize" xml:space="preserve">
     <value>DataFreeSize</value>
   </data>
+  <data name="LastUsage" xml:space="preserve">
+    <value>LastUsage</value>
+  </data>
+  <data name="IsSysAdmin" xml:space="preserve">
+    <value>IsSysAdmin</value>
+  </data>
+  <data name="PagesCount" xml:space="preserve">
+    <value>PagesCount</value>
+  </data>
+  <data name="TotalLookups" xml:space="preserve">
+    <value>TotalLookups</value>
+  </data>
+  <data name="TotalWrites" xml:space="preserve">
+    <value>TotalWrites</value>
+  </data>
+  <data name="IndexColumns" xml:space="preserve">
+    <value>IndexColumns</value>
+  </data>
+  <data name="ObjectID" xml:space="preserve">
+    <value>ObjectID</value>
+  </data>
+  <data name="LogReuseWait" xml:space="preserve">
+    <value>LogReuseWait</value>
+  </data>
+  <data name="IsAllowPageLocks" xml:space="preserve">
+    <value>IsAllowPageLocks</value>
+  </data>
+  <data name="IncludedColumns" xml:space="preserve">
+    <value>IncludedColumns</value>
+  </data>
+  <data name="IsPK" xml:space="preserve">
+    <value>IsPK</value>
+  </data>
+  <data name="Edition" xml:space="preserve">
+    <value>Edition</value>
+  </data>
+  <data name="FillFactor" xml:space="preserve">
+    <value>FillFactorValue</value>
+  </data>
   <data name="LogFreeSize" xml:space="preserve">
     <value>LogFreeSize</value>
+  </data>
+  <data name="IsPartitioned" xml:space="preserve">
+    <value>IsPartitioned</value>
+  </data>
+  <data name="LogSize" xml:space="preserve">
+    <value>LogSize</value>
+  </data>
+  <data name="IsLobLegacy" xml:space="preserve">
+    <value>IsLobLegacy</value>
+  </data>
+  <data name="LogUsedSize" xml:space="preserve">
+    <value>LogUsedSize</value>
+  </data>
+  <data name="icon_exclude" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_exclude.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

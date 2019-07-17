@@ -39,6 +39,7 @@ namespace SQLIndexManager {
 
       boxIncludeSchemas.EditValue = string.Join(";", o.IncludeSchemas);
       boxExcludeSchemas.EditValue = string.Join(";", o.ExcludeSchemas);
+      boxIncludeObject.EditValue = string.Join(";", o.IncludeObject);
       boxExcludeObject.EditValue = string.Join(";", o.ExcludeObject);
       boxIgnorePermissions.Checked = o.IgnorePermissions;
       boxIgnoreReadOnlyFL.Checked = o.IgnoreReadOnlyFL;
@@ -74,6 +75,7 @@ namespace SQLIndexManager {
 
         IncludeSchemas = new List<string> (boxIncludeSchemas.EditValue.ToString().Split(';')),
         ExcludeSchemas = new List<string> (boxExcludeSchemas.EditValue.ToString().Split(';')),
+        IncludeObject = new List<string> (boxIncludeObject.EditValue.ToString().Split(';')),
         ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';')),
         IgnorePermissions = boxIgnorePermissions.Checked,
         IgnoreReadOnlyFL = boxIgnoreReadOnlyFL.Checked
@@ -88,7 +90,7 @@ namespace SQLIndexManager {
     }
 
     private void IndexSizeValueChanged(object sender, EventArgs e) {
-      labelSize.Text = $@"Filter Size [ {boxMinIndexSize.Value.Minimum.FormatMbSize()} ... {boxMinIndexSize.Value.Maximum.FormatMbSize()} ... {boxMaxIndexSize.Value.FormatMbSize()} ]";
+      labelSize.Text = $@">= {boxMinIndexSize.Value.Minimum.FormatMbSize()} ... {boxMinIndexSize.Value.Maximum.FormatMbSize()} <= {boxMaxIndexSize.Value.FormatMbSize()}";
     }
 
     private void ThresholdValueChanged(object sender, EventArgs e) {

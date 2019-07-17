@@ -107,7 +107,7 @@
       // 
       this.buttonCancel.AllowFocus = false;
       this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(865, 365);
+      this.buttonCancel.Location = new System.Drawing.Point(865, 367);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(75, 23);
       this.buttonCancel.TabIndex = 3;
@@ -118,7 +118,7 @@
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.buttonOK.Enabled = false;
-      this.buttonOK.Location = new System.Drawing.Point(784, 365);
+      this.buttonOK.Location = new System.Drawing.Point(784, 367);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 2;
@@ -127,7 +127,7 @@
       // buttonRefresh
       // 
       this.buttonRefresh.AllowFocus = false;
-      this.buttonRefresh.Location = new System.Drawing.Point(12, 365);
+      this.buttonRefresh.Location = new System.Drawing.Point(12, 367);
       this.buttonRefresh.Name = "buttonRefresh";
       this.buttonRefresh.Size = new System.Drawing.Size(75, 23);
       this.buttonRefresh.TabIndex = 1;
@@ -329,7 +329,7 @@
       // searchControl1
       // 
       this.searchControl1.Client = this.grid;
-      this.searchControl1.Location = new System.Drawing.Point(93, 367);
+      this.searchControl1.Location = new System.Drawing.Point(93, 369);
       this.searchControl1.Name = "searchControl1";
       this.searchControl1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Repository.ClearButton(),
@@ -342,7 +342,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(952, 398);
+      this.ClientSize = new System.Drawing.Size(952, 400);
       this.Controls.Add(this.searchControl1);
       this.Controls.Add(this.grid);
       this.Controls.Add(this.buttonRefresh);
