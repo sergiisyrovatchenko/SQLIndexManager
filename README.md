@@ -33,7 +33,7 @@ You can download .zip file with the latest build of the master branch from [Rele
 
 ## Topics
 
-[SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
+[SQL Index Manager â€“ Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
 
 ## Screenshots
 
@@ -44,32 +44,59 @@ You can download .zip file with the latest build of the master branch from [Rele
 ## Command Line
 
 **/connection "Data Source=HOMEPC\SQL_2017;Integrated Security=True;User ID=HOMEPC\PC"**
+
 This switch is used to specify connection string
+
 **/databases "AdventureWorks2017;AdventureWorks2012;msdb"**
+
 This switch is used to specify databases to manage indexes in
+
 **/connectiontimeout 30**
+
 This switch is used to specify connection timeout in seconds. Overrides value specified in the connection string
+
 **/commandtimeout 120**
+
 This switch is used to specify command execution timeout in seconds. Overrides default option (90 seconds)
+
 **/online**
+
 This switch is used to rebuild indexes with online option
+
 **/ignoreheap**
+
 This switch is used to ignore any heaps during maintenance
+
 **/ignorecolumnstore**
+
 This switch is used to ignore any columnstore indexes during maintenance
+
 **/ignorebtree**
+
 This switch is used to ignore any b-tree indexes during maintenance
+
 **/maxdop 8**
+
 Configure the max degree of parallelism during maintenance. Overrides server option
+
 **/reorganizethreshold 15**
+
 Specifies reorganize the fragmentation threshold in %. Overrides default option (15%)
+
 **/rebuildthreshold 30**
+
 Specifies rebuild the fragmentation threshold in %. Overrides default option (30%)
+
 **/minindexsize 32**
+
 This switch is used to specify the minimum index size in MB. Overrides global option (6 MB)
+
 **/predescribesize 128**
+
 This switch is used to specify the predescribe index size in MB. Overrides global option (256 MB)
+
 **/maxindexsize 8096**
+
 This switch is used to specify the maximun index size in MB. Overrides global option (8 GB)
 
 ## Thanks
