@@ -133,7 +133,7 @@ CREATE TABLE #IndexColumns (
       ObjectID      INT NOT NULL
     , IndexID       INT NOT NULL
     , IndexColumnID INT NOT NULL
-    , ColumnID      TINYINT NOT NULL
+    , ColumnID      INT NOT NULL
     , IsIncluded    BIT NOT NULL
     , PRIMARY KEY (ObjectID, IndexID, ColumnID)
 )
