@@ -136,19 +136,18 @@ namespace SQLIndexManager {
               break;
             }
             catch (SqlException ex) {
-              if (ex.Message.Contains("Incorrect syntax") || ex.Message.Contains("Invalid")) {
-                throw new ArgumentException($"Syntax error: {ex.Source} {ex.Message}");
+              if (!ex.Message.Contains("timeout")) {
+                throw new ArgumentException($"Error: {ex.Source} {ex.Message}");
               }
 
               retries++;
-              if (retries > 2 || !ex.Message.Contains("timeout")) {
+              if (retries > 2)
                 break;
-              }
             }
           }
 
           watch.Stop();
-          Output.Current.Add($"Pre-descibe: {(idx.Count(_ => _.Fragmentation != null))}. " +
+          Output.Current.Add($"Pre-describe: {(idx.Count(_ => _.Fragmentation != null))}. " +
                              $"Post-describe: {(idx.Count(_ => _.Fragmentation == null))}", null, watch.ElapsedMilliseconds);
 
           List<int> clid = new List<int>();

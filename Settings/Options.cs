@@ -12,7 +12,7 @@ namespace SQLIndexManager {
     private int _preDescribeSize = 256;
     private int _maxIndexSize = 8192;
     private int _connectionTimeout = 15;
-    private int _commandTimeout = 90;
+    private int _commandTimeout = 120;
     private int _maxDop;
     private int _fillFactor;
     private int _sampleStatsPercent = 100;
@@ -33,7 +33,7 @@ namespace SQLIndexManager {
     [XmlAttribute]
     public int CommandTimeout {
       get => _commandTimeout;
-      set => _commandTimeout = value.IsBetween(0, 900) ? value : _commandTimeout;
+      set => _commandTimeout = value.IsBetween(0, 1800) ? value : _commandTimeout;
     }
 
     [XmlAttribute]
@@ -183,7 +183,7 @@ namespace SQLIndexManager {
     private void UpdateSize(int min, int pre, int max) {
       _minIndexSize = min.IsBetween(0, 255) ? min : _minIndexSize;
       _preDescribeSize = min.IsBetween(_minIndexSize, 256) ? pre : _preDescribeSize;
-      _maxIndexSize = max.IsBetween(512, 65536) ? max : _maxIndexSize;
+      _maxIndexSize = max.IsBetween(512, 131072) ? max : _maxIndexSize;
 
       if (_minIndexSize > _preDescribeSize)
         _preDescribeSize = _minIndexSize + 1;

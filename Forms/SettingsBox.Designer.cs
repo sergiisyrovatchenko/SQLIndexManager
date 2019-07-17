@@ -328,7 +328,7 @@
       this.boxMaxIndexSize.Properties.HighlightSelectedRange = false;
       this.boxMaxIndexSize.Properties.LabelAppearance.Options.UseTextOptions = true;
       this.boxMaxIndexSize.Properties.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.boxMaxIndexSize.Properties.Maximum = 65536;
+      this.boxMaxIndexSize.Properties.Maximum = 131072;
       this.boxMaxIndexSize.Properties.Minimum = 512;
       this.boxMaxIndexSize.Properties.TickFrequency = 128;
       this.boxMaxIndexSize.Properties.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -427,10 +427,15 @@
       this.boxCommandTimeout.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
       this.boxCommandTimeout.Properties.EditFormat.FormatString = "n0";
       this.boxCommandTimeout.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxCommandTimeout.Properties.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
       this.boxCommandTimeout.Properties.IsFloatValue = false;
       this.boxCommandTimeout.Properties.Mask.EditMask = "N00";
       this.boxCommandTimeout.Properties.MaxValue = new decimal(new int[] {
-            1000,
+            1800,
             0,
             0,
             0});

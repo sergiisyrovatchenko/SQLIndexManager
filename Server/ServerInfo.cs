@@ -77,7 +77,7 @@
           case 9:
             return "2005";
           case 10:
-            return MinorVersion == 5 ? "2008 R2" : "2008";
+            return MinorVersion == 50 ? "2008 R2" : "2008";
           case 11:
             return "2012";
           case 12:

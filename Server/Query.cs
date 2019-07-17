@@ -4,6 +4,8 @@
 
     public const string PreDescribeIndexes = @"
 SET NOCOUNT ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
 
 IF OBJECT_ID('tempdb.dbo.#AllocationUnits') IS NOT NULL
     DROP TABLE #AllocationUnits
@@ -111,7 +113,7 @@ CREATE TABLE #Columns (
     , SystemTypeID TINYINT NULL
     , IsSparse     BIT
     , IsColumnSet  BIT
-    , MaxLen       SMALLINT
+    , MaxLen       INT
     , PRIMARY KEY (ObjectID, ColumnID)
 )
 
@@ -177,7 +179,17 @@ WHERE IsSparse = 1
 IF OBJECT_ID('tempdb.dbo.#AggColumns') IS NOT NULL
     DROP TABLE #AggColumns
 
-SELECT *
+CREATE TABLE #AggColumns (
+      ObjectID        INT NOT NULL
+    , IndexID         INT NOT NULL
+    , IndexColumns    NVARCHAR(MAX)
+    , IncludedColumns NVARCHAR(MAX)
+    , PRIMARY KEY (ObjectID, IndexID)
+)
+
+INSERT INTO #AggColumns
+SELECT t.ObjectID
+     , t.IndexID
      , IndexColumns = STUFF((
             SELECT ', [' + c.ColumnName + ']'
             FROM #IndexColumns i
@@ -196,7 +208,6 @@ SELECT *
                 AND i.IsIncluded = 1
             ORDER BY i.IndexColumnID
         FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
-INTO #AggColumns
 FROM (
     SELECT DISTINCT ObjectID, IndexID
     FROM #Indexes

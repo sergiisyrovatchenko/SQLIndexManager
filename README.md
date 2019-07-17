@@ -1,4 +1,4 @@
-# SQL Index Manager
+﻿# SQL Index Manager
 
 This tool lets you quickly and easily find out the status of your indexes and discover which databases need maintenance.   
 You can do maintenance through the UI, or generate a T-SQL script to run in SSMS.
@@ -28,7 +28,7 @@ You can download .zip file with the latest build of the master branch from [Rele
 ## Future Plans
 
 * Improvements in command-line automation
-* Check duplicate or unused indexes
+* Detect duplicate and unused indexes
 * Statistics maintenance
 
 ## Topics
