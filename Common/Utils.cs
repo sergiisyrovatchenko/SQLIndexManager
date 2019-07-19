@@ -20,7 +20,7 @@ namespace SQLIndexManager {
       if (string.IsNullOrEmpty(value))
         return string.Empty;
 
-      return value.Replace("], ", "]").Split(',').ToList().OrderBy(_ => _).Aggregate((_, __) => _ + __);
+      return value.Replace("], ", "],").Split(',').ToList().OrderBy(_ => _).Aggregate((_, __) => _ + __);
     }
 
     public static string Left(this string value, int maxLength) {

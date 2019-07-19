@@ -35,7 +35,6 @@ namespace SQLIndexManager {
       boxScanClusteredColumnstore.Checked = o.ScanClusteredColumnstore;
       boxScanNonClusteredColumnstore.Checked = o.ScanNonClusteredColumnstore;
       boxScanMissingIndex.Checked = o.ScanMissingIndex;
-      boxScanStatistics.Checked = o.ScanStatistics;
 
       boxIncludeSchemas.EditValue = string.Join(";", o.IncludeSchemas);
       boxExcludeSchemas.EditValue = string.Join(";", o.ExcludeSchemas);
@@ -71,7 +70,6 @@ namespace SQLIndexManager {
         ScanClusteredColumnstore = boxScanClusteredColumnstore.Checked,
         ScanNonClusteredColumnstore = boxScanNonClusteredColumnstore.Checked,
         ScanMissingIndex = boxScanMissingIndex.Checked,
-        ScanStatistics = boxScanStatistics.Checked,
 
         IncludeSchemas = new List<string> (boxIncludeSchemas.EditValue.ToString().Split(';')),
         ExcludeSchemas = new List<string> (boxExcludeSchemas.EditValue.ToString().Split(';')),
@@ -120,7 +118,6 @@ namespace SQLIndexManager {
           || boxScanClusteredColumnstore.Checked
           || boxScanNonClusteredColumnstore.Checked
           || boxScanMissingIndex.Checked
-          || boxScanStatistics.Checked
         );
     }
 

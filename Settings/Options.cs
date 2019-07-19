@@ -112,9 +112,6 @@ namespace SQLIndexManager {
     public bool ScanNonClusteredColumnstore;
 
     [XmlAttribute]
-    public bool ScanStatistics;
-
-    [XmlAttribute]
     public bool ScanMissingIndex;
 
     [XmlAttribute]

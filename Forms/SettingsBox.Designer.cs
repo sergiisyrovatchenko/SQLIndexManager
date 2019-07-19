@@ -58,7 +58,6 @@
       this.labelSize = new DevExpress.XtraEditors.LabelControl();
       this.boxConnectionTimeout = new DevExpress.XtraEditors.SpinEdit();
       this.boxCommandTimeout = new DevExpress.XtraEditors.SpinEdit();
-      this.boxScanStatistics = new DevExpress.XtraEditors.CheckEdit();
       this.boxScanMissingIndex = new DevExpress.XtraEditors.CheckEdit();
       this.boxIgnorePermissions = new DevExpress.XtraEditors.CheckEdit();
       this.boxIgnoreReadOnlyFL = new DevExpress.XtraEditors.CheckEdit();
@@ -123,7 +122,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxCommandTimeout.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(db3)).BeginInit();
       db3.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.boxScanStatistics.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanMissingIndex.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).BeginInit();
@@ -445,7 +443,6 @@
       // 
       // db3
       // 
-      db3.Controls.Add(this.boxScanStatistics);
       db3.Controls.Add(this.boxScanMissingIndex);
       db3.Controls.Add(this.boxIgnorePermissions);
       db3.Controls.Add(this.boxIgnoreReadOnlyFL);
@@ -459,18 +456,6 @@
       db3.Size = new System.Drawing.Size(387, 187);
       db3.TabIndex = 16;
       db3.Text = "Object Scan";
-      // 
-      // boxScanStatistics
-      // 
-      this.boxScanStatistics.Enabled = false;
-      this.boxScanStatistics.Location = new System.Drawing.Point(119, 82);
-      this.boxScanStatistics.Name = "boxScanStatistics";
-      this.boxScanStatistics.Properties.AllowFocused = false;
-      this.boxScanStatistics.Properties.Caption = "STATISTICS";
-      this.boxScanStatistics.Size = new System.Drawing.Size(85, 19);
-      this.boxScanStatistics.TabIndex = 14;
-      this.boxScanStatistics.TabStop = false;
-      this.boxScanStatistics.CheckedChanged += new System.EventHandler(this.IndexTypeCheckedChanged);
       // 
       // boxScanMissingIndex
       // 
@@ -1029,7 +1014,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxCommandTimeout.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(db3)).EndInit();
       db3.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.boxScanStatistics.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanMissingIndex.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxIgnorePermissions.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxIgnoreReadOnlyFL.Properties)).EndInit();
@@ -1102,7 +1086,6 @@
     private DevExpress.XtraEditors.SpinEdit boxFillFactor;
     private DevExpress.XtraEditors.TokenEdit boxIncludeSchemas;
     private DevExpress.XtraEditors.ComboBoxEdit boxDataCompression;
-    private DevExpress.XtraEditors.CheckEdit boxScanStatistics;
     private DevExpress.XtraEditors.CheckEdit boxScanMissingIndex;
     private DevExpress.XtraEditors.TokenEdit boxIncludeObject;
     private DevExpress.XtraEditors.GroupControl groupControl4;
