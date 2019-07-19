@@ -83,6 +83,23 @@ JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.[object_id] AND p.[index_id
 WHERE i.[type] IN ({0})
     AND i.[object_id] > 255
 
+DECLARE @files TABLE (ID INT PRIMARY KEY)
+INSERT INTO @files
+SELECT DISTINCT [data_space_id]
+FROM sys.database_files WITH(NOLOCK)
+WHERE [state] != 0
+    AND [type] = 0
+
+IF @@ROWCOUNT > 0 BEGIN
+
+    DELETE FROM i
+    FROM #Indexes i
+    LEFT JOIN sys.destination_data_spaces dds WITH(NOLOCK) ON i.DataSpaceID = dds.[partition_scheme_id] AND i.PartitionNumber = dds.[destination_id]
+    WHERE ISNULL(dds.[data_space_id], i.DataSpaceID) IN (SELECT * FROM @files)
+
+END
+
+
 DECLARE @DBID   INT
       , @DBNAME SYSNAME
 
@@ -132,26 +149,27 @@ IF OBJECT_ID('tempdb.dbo.#IndexColumns') IS NOT NULL
     DROP TABLE #IndexColumns
 
 CREATE TABLE #IndexColumns (
-      ObjectID      INT NOT NULL
-    , IndexID       INT NOT NULL
-    , IndexColumnID INT NOT NULL
-    , ColumnID      INT NOT NULL
-    , IsIncluded    BIT NOT NULL
+      ObjectID   INT NOT NULL
+    , IndexID    INT NOT NULL
+    , OrderID    INT NOT NULL
+    , ColumnID   INT NOT NULL
+    , IsIncluded BIT NOT NULL
     , PRIMARY KEY (ObjectID, IndexID, ColumnID)
 )
 
 INSERT INTO #IndexColumns
-SELECT ObjectID      = [object_id]
-     , IndexID       = [index_id]
-     , IndexColumnID = [index_column_id]
-     , ColumnID      = [column_id]
-     , IsIncluded    = ISNULL([is_included_column], 0)
+SELECT ObjectID   = [object_id]
+     , IndexID    = [index_id]
+     , OrderID    = CASE WHEN [is_included_column] = 0 THEN [key_ordinal] ELSE [index_column_id] END
+     , ColumnID   = [column_id]
+     , IsIncluded = ISNULL([is_included_column], 0)
 FROM sys.index_columns ic WITH(NOLOCK)
 WHERE EXISTS(
         SELECT *
         FROM #Indexes i
         WHERE i.ObjectID = ic.[object_id]
             AND i.IndexID = ic.[index_id]
+            AND i.IndexType IN (1, 2)
     )
 
 IF OBJECT_ID('tempdb.dbo.#Lob') IS NOT NULL
@@ -197,7 +215,7 @@ SELECT t.ObjectID
             WHERE i.ObjectID = t.ObjectID
                 AND i.IndexID = t.IndexID
                 AND i.IsIncluded = 0
-            ORDER BY i.IndexColumnID
+            ORDER BY i.OrderID
         FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
      , IncludedColumns = STUFF((
             SELECT ', [' + c.ColumnName + ']'
@@ -206,12 +224,12 @@ SELECT t.ObjectID
             WHERE i.ObjectID = t.ObjectID
                 AND i.IndexID = t.IndexID
                 AND i.IsIncluded = 1
-            ORDER BY i.IndexColumnID
+            ORDER BY i.OrderID
         FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)'), 1, 2, '')
 FROM (
     SELECT DISTINCT ObjectID, IndexID
     FROM #Indexes
-    WHERE IndexType IN (1, 2, 6)
+    WHERE IndexType IN (1, 2)
 ) t
 
 SELECT i.ObjectID
