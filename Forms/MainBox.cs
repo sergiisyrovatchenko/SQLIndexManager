@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -218,6 +219,58 @@ namespace SQLIndexManager {
                                         .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
                                         .ThenByDescending(_ => _.PagesCount).ToList();
 
+      UpdateFixType(indexes);
+      FindDublicateIndexes(indexes);
+
+      labelIndex.Caption = indexes.Count.ToString();
+      Output.Current.Add($"Processed: {_scanIndexes.Count}. Fragmented: {indexes.Count}", null, _scanDuration.ElapsedMilliseconds);
+
+      gridView1.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
+      gridControl1.DataSource = indexes;
+
+      if (indexes.Count > 0) {
+        var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
+        var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
+
+        rulePagesCount.Minimum = 1;
+        rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
+
+        ruleUnusedPagesCount.Minimum = 1;
+        ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
+                                          ? indexes.Max(_ => _.UnusedPagesCount)
+                                          : rulePagesCount.Maximum;
+      }
+    }
+
+    private void FindDublicateIndexes(List<Index> indexes) {
+      var data = indexes.Where(_ => !_.IsPartitioned
+                                 && (_.IndexType == IndexType.Clustered || _.IndexType == IndexType.NonClustered))
+                        .GroupBy(_ => new { _.DatabaseName, _.ObjectId })
+                        .Select(_ => new { _.Key.DatabaseName, _.Key.ObjectId, Indexes = _.ToList() })
+                        .Where(_ => _.Indexes.Count > 1);
+
+      foreach (var item in data) {
+        foreach (Index a in item.Indexes) {
+          if (a.Warning != null) continue;
+          foreach (Index b in item.Indexes) {
+            if (a != b && b.Warning == null && a.IndexColumns == b.IndexColumns && a.IncludedColumns.Sort() == b.IncludedColumns.Sort())
+              a.Warning = b.Warning = WarningType.High;
+          }
+        }
+
+        foreach (Index a in item.Indexes) {
+          foreach (Index b in item.Indexes) {
+            if (a != b && b.Warning == null) {
+              int len = Math.Min(a.IndexColumns.Length, b.IndexColumns.Length);
+              if (a.IndexColumns == b.IndexColumns || a.IndexColumns.Left(len) == b.IndexColumns.Left(len))
+                b.Warning = WarningType.Middle;
+            }
+          }
+        }
+      }
+    }
+
+    private void UpdateFixType (List<Index> indexes) {
       foreach (Index ix in indexes) {
         if (ix.IndexType == IndexType.MissingIndex)
           ix.FixType = IndexOp.CreateIndex;
@@ -237,25 +290,6 @@ namespace SQLIndexManager {
         }
         else
           ix.FixType = IndexOp.Rebuild;
-      }
-
-      labelIndex.Caption = indexes.Count.ToString();
-      Output.Current.Add($"Processed: {_scanIndexes.Count}. Fragmented: {indexes.Count}", null, _scanDuration.ElapsedMilliseconds);
-
-      gridView1.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
-      gridControl1.DataSource = indexes;
-
-      if (indexes.Count > 0) {
-        var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
-        var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
-
-        rulePagesCount.Minimum = 1;
-        rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
-
-        ruleUnusedPagesCount.Minimum = 1;
-        ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
-                                          ? indexes.Max(_ => _.UnusedPagesCount)
-                                          : rulePagesCount.Maximum;
       }
     }
 
@@ -509,7 +543,7 @@ namespace SQLIndexManager {
 
         i.Add(IndexOp.Reorganize);
 
-        if (Settings.ServerInfo.MajorVersion >= 13)
+        if (Settings.ServerInfo.MajorVersion >= Server.Sql2016)
           i.Add(IndexOp.ReorganizeCompressAllRowGroup);
       }
       else {
@@ -614,7 +648,7 @@ namespace SQLIndexManager {
     }
 
     private void GridRowCellClick(object sender, RowCellClickEventArgs e) {
-      if (e.Column != null && e.Column.Name == "FixType") {
+      if (e.Column != null && e.Column.Name == Resources.FixType) {
         GridView obj = (GridView)sender;
         obj.ShowEditor();
 
@@ -623,14 +657,40 @@ namespace SQLIndexManager {
       }
     }
 
+    private void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
+      GridView view = sender as GridView;
+      string[] columns = {
+                           Resources.DatabaseName,
+                           Resources.ObjectName,
+                           Resources.SchemaName,
+                           Resources.IndexName,
+                           Resources.IndexType,
+                           Resources.IndexColumns,
+                           Resources.IncludedColumns
+                         };
+
+      if (columns.Contains(e.Column.FieldName)) {
+        Index index = (Index)view.GetRow(e.RowHandle);
+        if (index.Warning == null) return;
+
+        e.Appearance.GradientMode = LinearGradientMode.Vertical;
+
+        if (index.Warning == WarningType.Low)
+          e.Appearance.BackColor2 = Color.FromArgb(182, 255, 145);
+        else if (index.Warning == WarningType.Middle)
+          e.Appearance.BackColor2 = Color.FromArgb(255, 250, 156);
+        else if (index.Warning == WarningType.High)
+          e.Appearance.BackColor2 = Color.FromArgb(255, 187, 186);
+      }
+    }
+
     private void GridColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e) {
       switch (e.Column.FieldName) {
         case "PagesCount":
         case "PagesCountBefore":
         case "UnusedPagesCount":
-          if (e.Value != null) {
+          if (e.Value != null)
             e.DisplayText = (Convert.ToDecimal(e.Value) * 8).FormatSize();
-          }
           break;
 
         case "Fragmentation":
@@ -678,7 +738,7 @@ namespace SQLIndexManager {
       if (e.Info == null || e.SelectedControl == gridControl1) {
         GridHitInfo info = gridView1.CalcHitInfo(e.ControlMousePosition);
 
-        if (info.InRowCell && info.RowHandle != -1 && info.Column != null && info.Column.FieldName == "Progress") {
+        if (info.InRowCell && info.RowHandle != -1 && info.Column != null && info.Column.FieldName == Resources.Progress) {
           Index index = (Index)gridView1.GetRow(info.RowHandle);
           e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", $"{index.GetQuery()}\n{index.Error}");
         }
@@ -687,7 +747,7 @@ namespace SQLIndexManager {
 
     private void CustomDrawEmptyForeground(object sender, CustomDrawEventArgs e) {
       string noIndexesFoundText = "No indexes found";
-      string trySearchingAgainText = "Try searching again";
+      string trySearchingAgainText = "Try searching again or change settings";
       int offset = 15;
 
       e.DefaultDraw();

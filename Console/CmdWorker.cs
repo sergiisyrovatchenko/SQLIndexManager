@@ -105,7 +105,7 @@ namespace SQLIndexManager {
         }
       }
 
-      if (host.ServerInfo.MajorVersion < 10)
+      if (host.ServerInfo.MajorVersion < Server.Sql2008)
         throw new ArgumentException(Resources.MinVersionMessage);
       else
         Settings.ActiveHost = host;

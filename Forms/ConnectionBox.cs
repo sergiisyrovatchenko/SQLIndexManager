@@ -90,7 +90,7 @@ namespace SQLIndexManager {
         }
       }
 
-      if (_serverInfo.MajorVersion < 10) {
+      if (_serverInfo.MajorVersion < Server.Sql2008) {
         XtraMessageBox.Show(Resources.MinVersionMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         boxServer.Focus();
       }

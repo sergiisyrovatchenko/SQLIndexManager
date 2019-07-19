@@ -151,6 +151,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FixType.
+        /// </summary>
+        internal static string FixType {
+            get {
+                return ResourceManager.GetString("FixType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fragmentation.
         /// </summary>
         internal static string Fragmentation {

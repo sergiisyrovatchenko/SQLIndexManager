@@ -47,6 +47,7 @@ namespace SQLIndexManager {
     public Image Progress { get; set; }
     public DateTime? Duration { get; set; }
     public IndexOp FixType { get; set; }
+    public WarningType? Warning { get; set; }
     public bool IsSelected { get; set; }
 
     public string GetQuery() {
@@ -97,7 +98,10 @@ namespace SQLIndexManager {
 
         switch (FixType) {
           case IndexOp.CreateIndex:
-            bool isCreateOnline = Settings.ServerInfo.MajorVersion > 10  && Settings.ServerInfo.IsOnlineRebuildAvailable && Settings.Options.Online;
+            bool isCreateOnline = Settings.ServerInfo.MajorVersion > Server.Sql2008 
+                               && Settings.ServerInfo.IsOnlineRebuildAvailable
+                               && Settings.Options.Online;
+
             sql = $"CREATE NONCLUSTERED INDEX [{indexName}]\n" +
                     $"ON [{schemaName}].[{objectName}] ({IndexColumns})\n" +
                     (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
@@ -127,8 +131,10 @@ namespace SQLIndexManager {
             else {
               string onlineRebuild = "OFF";
               if (FixType == IndexOp.RebuildOnline) {
-                if (Settings.Options.WaitAtLowPriority && Settings.ServerInfo.MajorVersion >= 12)
-                  onlineRebuild = $"ON (WAIT_AT_LOW_PRIORITY(MAX_DURATION = {Settings.Options.MaxDuration} MINUTES, ABORT_AFTER_WAIT = {Settings.Options.AbortAfterWait}))";
+                if (Settings.Options.WaitAtLowPriority && Settings.ServerInfo.MajorVersion >= Server.Sql2014)
+                  onlineRebuild = $"ON (" +
+                                    $"WAIT_AT_LOW_PRIORITY(MAX_DURATION = {Settings.Options.MaxDuration} MINUTES, " +
+                                    $"ABORT_AFTER_WAIT = {Settings.Options.AbortAfterWait}))";
                 else
                   onlineRebuild = "ON";
               }
@@ -180,7 +186,9 @@ namespace SQLIndexManager {
     }
 
     public override string ToString() {
-      return $"{DatabaseName} | {SchemaName}.{ObjectName} | {(string.IsNullOrEmpty(IndexName) ? "Heap" : $"{IndexName}")} {(IsPartitioned ? "[ " + PartitionNumber + " ] " : string.Empty)}| {(Convert.ToDecimal(PagesCount) * 8).FormatSize()}".Replace("'", string.Empty);
+      return $"{DatabaseName} | {SchemaName}.{ObjectName} " +
+             $"| {(string.IsNullOrEmpty(IndexName) ? "Heap" : $"{IndexName}")} {(IsPartitioned ? "[ " + PartitionNumber + " ] " : string.Empty)}" +
+             $"| {(Convert.ToDecimal(PagesCount) * 8).FormatSize()}".Replace("'", string.Empty);
     }
   }
 

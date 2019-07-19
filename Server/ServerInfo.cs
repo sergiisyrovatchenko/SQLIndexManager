@@ -18,11 +18,11 @@
     public bool IsColumnstoreAvailable {
       get {
         if (
-            (MajorVersion >= 12 && IsMaxEdititon) // 2014..2019 Enterprise/Developer/Evaluation
+            (MajorVersion >= Server.Sql2014 && IsMaxEdititon) // 2014..2019 Enterprise/Developer/Evaluation
          ||
-            (MajorVersion == 13 && PatchVersion >= 4001) // 2016 SP1
+            (MajorVersion == Server.Sql2016 && PatchVersion >= 4001) // 2016 SP1
          ||
-            (MajorVersion >= 14) // 2017..2019
+            (MajorVersion >= Server.Sql2017)
         ) {
           return true;
         }
@@ -34,11 +34,11 @@
     public bool IsCompressionAvailable {
       get {
         if (
-            (MajorVersion >= 10 && IsMaxEdititon) // 2008..2019 Enterprise/Developer/Evaluation
+            (MajorVersion >= Server.Sql2008 && IsMaxEdititon)
          ||
-            (MajorVersion == 13 && PatchVersion >= 4001) // 2016 SP1
+            (MajorVersion == Server.Sql2016 && PatchVersion >= 4001) // 2016 SP1
          ||
-            (MajorVersion >= 14) // 2017..2019
+            (MajorVersion >= Server.Sql2017)
         ) {
           return true;
         }
@@ -49,16 +49,16 @@
 
     public bool IsOnlineRebuildAvailable {
       get {
-        if (MajorVersion >= 10 && IsMaxEdititon) // 2008..2019 Enterprise/Developer/Evaluation
+        if (MajorVersion >= Server.Sql2008 && IsMaxEdititon)
         {
           if (
-              (MajorVersion == 12 && PatchVersion < 2370) // 2014 RTM
+              (MajorVersion == Server.Sql2014 && PatchVersion < 2370) // 2014 RTM
            ||
-              (MajorVersion == 11 && (
-                                         PatchVersion < 3437 // 2012 RTM..SP1
-                                      ||
-                                         PatchVersion.IsBetween(5058, 5521) // 2012 SP2
-                                     )
+              (MajorVersion == Server.Sql2012 && (
+                                                     PatchVersion < 3437 // 2012 RTM..SP1
+                                                  ||
+                                                     PatchVersion.IsBetween(5058, 5521) // 2012 SP2
+                                                 )
               )
           ) {
             return false; // https://sqlperformance.com/2014/06/sql-indexes/hotfix-sql-2012-rebuilds
@@ -74,19 +74,19 @@
     public string ProductVersion {
       get {
         switch (MajorVersion) {
-          case 9:
+          case Server.Sql2005:
             return "2005";
-          case 10:
+          case Server.Sql2008:
             return MinorVersion == 50 ? "2008 R2" : "2008";
-          case 11:
+          case Server.Sql2012:
             return "2012";
-          case 12:
+          case Server.Sql2014:
             return "2014";
-          case 13:
+          case Server.Sql2016:
             return "2016";
-          case 14:
+          case Server.Sql2017:
             return "2017";
-          case 15:
+          case Server.Sql2019:
             return "2019";
           default:
             return "?";

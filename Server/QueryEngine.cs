@@ -75,13 +75,13 @@ namespace SQLIndexManager {
 
         string lob = string.Empty;
         if (Settings.ServerInfo.IsOnlineRebuildAvailable)
-          lob = Settings.ServerInfo.MajorVersion == 10 ? Query.Lob2008 : Query.Lob2012Plus;
+          lob = Settings.ServerInfo.MajorVersion == Server.Sql2008 ? Query.Lob2008 : Query.Lob2012Plus;
 
         string indexStats = Settings.ServerInfo.IsAzure && connection.Database == Resources.DatamaseMaster
                               ? Query.IndexStatsAzureMaster
                               : Query.IndexStats;
 
-        string indexQuery = Settings.ServerInfo.MajorVersion == 10 ? Query.Index2008 : Query.Index2012Plus;
+        string indexQuery = Settings.ServerInfo.MajorVersion == Server.Sql2008 ? Query.Index2008 : Query.Index2012Plus;
 
         List<string> excludeObjectMask = Settings.Options.ExcludeObject.Where(_ => _.Contains("%")).ToList();
         List<string> includeObjectMask = Settings.Options.IncludeObject.Where(_ => _.Contains("%")).ToList();
@@ -153,9 +153,9 @@ namespace SQLIndexManager {
             }
             else {
               isOnlineRebuild =
-                     Settings.ServerInfo.MajorVersion > 10
+                     Settings.ServerInfo.MajorVersion > Server.Sql2008
                   ||
-                     (Settings.ServerInfo.MajorVersion == 10 && !_.Field<bool>(Resources.IsLob));
+                     (Settings.ServerInfo.MajorVersion == Server.Sql2008 && !_.Field<bool>(Resources.IsLob));
             }
           }
 

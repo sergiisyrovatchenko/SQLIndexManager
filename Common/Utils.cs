@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace SQLIndexManager {
 
@@ -13,6 +14,21 @@ namespace SQLIndexManager {
 
     public static bool IsBetween(this int value, int minimum, int maximum) {
       return value >= minimum && value <= maximum;
+    }
+
+    public static string Sort(this string value) {
+      if (string.IsNullOrEmpty(value))
+        return string.Empty;
+
+      return value.Replace("], ", "]").Split(',').ToList().OrderBy(_ => _).Aggregate((_, __) => _ + __);
+    }
+
+    public static string Left(this string value, int maxLength) {
+      if (string.IsNullOrEmpty(value))
+        return value;
+
+      maxLength = Math.Abs(maxLength);
+      return value.Length <= maxLength ? value : value.Substring(0, maxLength);
     }
 
     public static List<string> RemoveInvalidTokens(this List<string> value) {

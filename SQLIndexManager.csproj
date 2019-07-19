@@ -127,6 +127,7 @@
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Index.cs" />
     <Compile Include="Server\Query.cs" />
+    <Compile Include="Server\Server.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="Server\Host.cs" />
     <Compile Include="Settings\Options.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Types\DataCompression.cs" />
     <Compile Include="Types\IndexOp.cs" />
     <Compile Include="Types\IndexType.cs" />
+    <Compile Include="Types\WarningType.cs" />
     <EmbeddedResource Include="Forms\ErrorBox.resx">
       <DependentUpon>ErrorBox.cs</DependentUpon>
     </EmbeddedResource>

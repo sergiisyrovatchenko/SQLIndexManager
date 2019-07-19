@@ -15,6 +15,7 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 * Automatic T-SQL script generation
 * Columnstore maintenance support
 * Collecting missing indexes
+* Detect duplicate indexes
 * Drop or disable unused indexes
 * Index rebuild with compression options
 * Export of scan results into Excel, CSV, HTML and text files
@@ -28,7 +29,6 @@ You can download .zip file with the latest build of the master branch from [Rele
 ## Future Plans
 
 * Improvements in command-line automation
-* Detect duplicate and unused indexes
 * Statistics maintenance
 
 ## Topics
