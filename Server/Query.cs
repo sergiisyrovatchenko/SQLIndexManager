@@ -99,7 +99,6 @@ IF @@ROWCOUNT > 0 BEGIN
 
 END
 
-
 DECLARE @DBID   INT
       , @DBNAME SYSNAME
 
@@ -518,7 +517,8 @@ WHERE Fragmentation >= @Fragmentation
 
     // https://dba.stackexchange.com/questions/44908/what-is-the-actual-behavior-of-compatibility-level-80/
     public const string IndexFragmentation = @"
-DECLARE @DBID INT = DB_ID()
+DECLARE @DBID INT
+SET @DBID = DB_ID()
 
 SELECT [avg_fragmentation_in_percent]
 FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, 'LIMITED')
@@ -533,8 +533,30 @@ SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
      , IsSysAdmin    = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)
 ";
 
-    public const string DatabaseFullList = @"
+    public const string DatabaseList = @"
 SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb.dbo.#Databases') IS NOT NULL
+    DROP TABLE #Databases
+
+CREATE TABLE #Databases (
+      DatabaseID    INT
+    , DatabaseName  NVARCHAR(500)
+    , RecoveryModel NVARCHAR(500)
+    , LogReuseWait  NVARCHAR(500)
+    , HasDBAccess   BIT
+)
+
+INSERT INTO #Databases
+SELECT DatabaseID    = [database_id]
+     , DatabaseName  = [name]
+     , RecoveryModel = [recovery_model_desc]
+     , LogReuseWait  = [log_reuse_wait_desc]
+     , HasDBAccess   = ISNULL(HAS_DBACCESS([name]), 1)
+FROM sys.databases WITH(NOLOCK)
+WHERE [state] = 0
+    AND [user_access] = 0
+    AND [database_id] != 2
 
 IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
     DROP TABLE #UsedSpace
@@ -543,69 +565,48 @@ CREATE TABLE #UsedSpace (
       DatabaseID   INT
     , DataUsedSize BIGINT
     , LogUsedSize  BIGINT
-)
+){0}
 
-DECLARE @SQL NVARCHAR(MAX) = (
-    SELECT '
-    USE [' + REPLACE(REPLACE([name], ']', ']]'), '[', '[[') + ']
-    INSERT INTO #UsedSpace
-    SELECT DB_ID()
-         , SUM(CASE WHEN [type] = 0 THEN [size] ELSE 0 END)
-         , SUM(CASE WHEN [type] = 1 THEN [size] ELSE 0 END)
-    FROM (
-        SELECT [type], [size] = SUM(CAST(FILEPROPERTY([name], ''SpaceUsed'') AS BIGINT))
-        FROM sys.database_files WITH(NOLOCK)
-        GROUP BY [type]
-    ) t;'
-    FROM sys.databases WITH(NOLOCK)
-    WHERE [state] = 0
-        AND [database_id] != 2
-        AND ISNULL(HAS_DBACCESS([name]), 1) = 1
-    FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
-
-EXEC sys.sp_executesql @SQL
-
-SELECT DatabaseName = t.[name]
+SELECT t.DatabaseName
      , d.DataSize
      , u.DataUsedSize
      , d.LogSize
      , u.LogUsedSize
-     , RecoveryModel = t.recovery_model_desc
-     , LogReuseWait  = t.log_reuse_wait_desc
-FROM sys.databases t WITH(NOLOCK)
-LEFT JOIN #UsedSpace u ON u.DatabaseID = t.[database_id]
+     , t.RecoveryModel
+     , t.LogReuseWait
+FROM #Databases t
+LEFT JOIN #UsedSpace u ON u.DatabaseID = t.DatabaseID
 LEFT JOIN (
-    SELECT [database_id]
-         , DataSize = SUM(CASE WHEN [type] = 0 THEN CAST(size AS BIGINT) END)
-         , LogSize  = SUM(CASE WHEN [type] = 1 THEN CAST(size AS BIGINT) END)
+    SELECT DatabaseID = [database_id]
+         , DataSize   = SUM(CASE WHEN [type] = 0 THEN CAST([size] AS BIGINT) END)
+         , LogSize    = SUM(CASE WHEN [type] = 1 THEN CAST([size] AS BIGINT) END)
     FROM sys.master_files WITH(NOLOCK)
     GROUP BY [database_id]
-) d ON d.[database_id] = t.[database_id]
-WHERE t.[state] = 0
-    AND t.[database_id] != 2
-    AND ISNULL(HAS_DBACCESS(t.[name]), 1) = 1
+) d ON d.DatabaseID = t.DatabaseID
+WHERE t.HasDBAccess = 1
 ";
 
-    public const string DatabaseList = @"
-SELECT DatabaseName = t.[name]
-     , d.DataSize
-     , DataUsedSize  = CAST(NULL AS BIGINT)
-     , d.LogSize
-     , LogUsedSize   = CAST(NULL AS BIGINT)
-     , RecoveryModel = t.recovery_model_desc
-     , LogReuseWait  = t.log_reuse_wait_desc
-FROM sys.databases t WITH(NOLOCK)
-LEFT JOIN (
-    SELECT [database_id]
-         , DataSize = SUM(CASE WHEN [type] = 0 THEN CAST(size AS BIGINT) END)
-         , LogSize  = SUM(CASE WHEN [type] = 1 THEN CAST(size AS BIGINT) END)
-    FROM sys.master_files WITH(NOLOCK)
-    GROUP BY [database_id]
-) d ON d.[database_id] = t.[database_id]
-WHERE t.[state] = 0
-    AND t.[database_id] != 2
-    AND ISNULL(HAS_DBACCESS(t.[name]), 1) = 1
-";
+    public const string DatabaseUsedSpace = @"
+
+DECLARE @SQL NVARCHAR(MAX) 
+SET @SQL = (
+    SELECT '
+    USE [' + REPLACE(REPLACE(DatabaseName, ']', ']]'), '[', '[[') + ']
+    INSERT INTO #UsedSpace
+    SELECT DB_ID()
+         , SUM(CASE WHEN [type] = 0 THEN [size] END)
+         , SUM(CASE WHEN [type] = 1 THEN [size] END)
+    FROM (
+        SELECT [type], [size] = SUM(CAST(FILEPROPERTY([name], ''SpaceUsed'') AS BIGINT))
+        FROM sys.database_files WITH(NOLOCK)
+        WHERE [state] = 0
+        GROUP BY [type]
+    ) t;'
+    FROM #Databases
+    WHERE HasDBAccess = 1
+    FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
+
+EXEC sys.sp_executesql @SQL";
 
     public const string DatabaseListAzure = @"
 SELECT DatabaseName  = [name]
@@ -613,8 +614,8 @@ SELECT DatabaseName  = [name]
      , DataUsedSize  = CAST(NULL AS BIGINT)
      , LogSize       = CAST(NULL AS BIGINT)
      , LogUsedSize   = CAST(NULL AS BIGINT)
-     , RecoveryModel = recovery_model_desc
-     , LogReuseWait  = log_reuse_wait_desc
+     , RecoveryModel = [recovery_model_desc]
+     , LogReuseWait  = [log_reuse_wait_desc]
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND ISNULL(HAS_DBACCESS([name]), 1) = 1

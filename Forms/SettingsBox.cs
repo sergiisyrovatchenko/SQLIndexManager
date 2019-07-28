@@ -27,6 +27,7 @@ namespace SQLIndexManager {
       boxMaxDuration.EditValue = o.MaxDuration;
       boxAbortAfterWait.EditValue = o.AbortAfterWait;
       boxDataCompression.EditValue = o.DataCompression;
+      boxNoRecompute.EditValue = o.NoRecompute;
       boxFillFactor.EditValue = o.FillFactor;
 
       boxScanHeap.Checked = o.ScanHeap;
@@ -62,6 +63,7 @@ namespace SQLIndexManager {
         MaxDuration = (int)boxMaxDuration.Value,
         AbortAfterWait = (string)boxAbortAfterWait.EditValue,
         DataCompression = (string)boxDataCompression.EditValue,
+        NoRecompute = (string)boxNoRecompute.EditValue,
         FillFactor = (int)boxFillFactor.Value,
 
         ScanHeap = boxScanHeap.Checked,

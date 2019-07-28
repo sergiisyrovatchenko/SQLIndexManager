@@ -105,16 +105,20 @@ namespace SQLIndexManager {
             sql = $"CREATE NONCLUSTERED INDEX [{indexName}]\n" +
                     $"ON [{schemaName}].[{objectName}] ({IndexColumns})\n" +
                     (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
-                    $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
-                    $"ONLINE = {(isCreateOnline ? "ON" : "OFF")}, " +
+                    $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? Options.ON : Options.OFF)}, " +
+                    $"ONLINE = {(isCreateOnline ? Options.ON : Options.OFF)}, " +
                     (Settings.Options.FillFactor.IsBetween(1, 100)
                             ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
                             : ""
                           ) +
-                    (Settings.Options.DataCompression == "DEFAULT"
+                    (Settings.Options.DataCompression == Options.DEFAULT
                             ? ""
                             : $"DATA_COMPRESSION = {Settings.Options.DataCompression}, "
-                          ) + 
+                          ) +
+                    (Settings.Options.NoRecompute == Options.DEFAULT && !IsPartitioned
+                            ? ""
+                            : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
+                          ) +
                     $"MAXDOP = {Settings.Options.MaxDop});";
             break;
 
@@ -136,13 +140,17 @@ namespace SQLIndexManager {
                                     $"WAIT_AT_LOW_PRIORITY(MAX_DURATION = {Settings.Options.MaxDuration} MINUTES, " +
                                     $"ABORT_AFTER_WAIT = {Settings.Options.AbortAfterWait}))";
                 else
-                  onlineRebuild = "ON";
+                  onlineRebuild = Options.ON;
               }
 
               sql = $"ALTER INDEX [{indexName}]\n    " +
                       $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
-                      $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? "ON" : "OFF")}, " +
+                      $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? Options.ON : Options.OFF)}, " +
                       $"ONLINE = {onlineRebuild}, " +
+                      (Settings.Options.NoRecompute == Options.DEFAULT && !IsPartitioned
+                            ? ""
+                            : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
+                          ) +
                       (FixType == IndexOp.RebuildFillFactorZero 
                             ? "FILLFACTOR = 100, "
                             : (Settings.Options.FillFactor.IsBetween(1, 100) 
@@ -158,7 +166,7 @@ namespace SQLIndexManager {
           case IndexOp.Reorganize:
             sql = $"ALTER INDEX [{indexName}]\n    " +
                     $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition}\n    " +
-                    $"WITH (LOB_COMPACTION = {(Settings.Options.LobCompaction ? "ON" : "OFF")});";
+                    $"WITH (LOB_COMPACTION = {(Settings.Options.LobCompaction ? Options.ON : Options.OFF)});";
             break;
 
           case IndexOp.Disable:

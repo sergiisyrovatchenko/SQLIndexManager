@@ -11,7 +11,7 @@ namespace SQLIndexManager {
 
     public static List<Database> GetDatabases(SqlConnection connection, bool scanUsedSpace) {
       string query = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin 
-                        ? (scanUsedSpace ? Query.DatabaseFullList : Query.DatabaseList)
+                        ? string.Format(Query.DatabaseList, scanUsedSpace ? Query.DatabaseUsedSpace : string.Empty)
                         : Query.DatabaseListAzure;
 
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
@@ -285,14 +285,16 @@ namespace SQLIndexManager {
       }
     }
 
-    public static void FixIndex(SqlConnection connection, Index index) {
+    public static string FixIndex(SqlConnection connection, Index index) {
       string sqlInfo = string.Format(index.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
                                      index.ObjectId, index.IndexId, index.PartitionNumber);
 
-      bool isDeadIndex = (index.FixType == IndexOp.Disable || index.FixType == IndexOp.Drop);
-      string sql = isDeadIndex || index.FixType == IndexOp.CreateIndex
-                      ? index.GetQuery()
-                      : $"{index.GetQuery()} \n {sqlInfo}";
+      string query = index.GetQuery();
+      string sql = index.FixType == IndexOp.Disable
+                || index.FixType == IndexOp.Drop
+                || index.FixType == IndexOp.CreateIndex
+                      ? query
+                      : $"{query} \n {sqlInfo}";
 
       SqlCommand cmd = new SqlCommand(sql, connection) { CommandTimeout = Settings.Options.CommandTimeout };
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -308,7 +310,7 @@ namespace SQLIndexManager {
       if (index.FixType == IndexOp.CreateIndex) {
         index.Fragmentation = 0;
       }
-      if (isDeadIndex) {
+      else if (index.FixType == IndexOp.Disable || index.FixType == IndexOp.Drop) {
         index.PagesCountBefore = index.PagesCount;
         index.Fragmentation = 0;
         index.PagesCount = 0;
@@ -326,6 +328,8 @@ namespace SQLIndexManager {
         index.DataCompression   = ((DataCompression)row.Field<byte>(Resources.DataCompression));
         index.IndexStats        = row.Field<DateTime?>(Resources.IndexStats);
       }
+
+      return query;
 
     }
   }

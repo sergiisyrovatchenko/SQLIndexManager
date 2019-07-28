@@ -39,7 +39,7 @@ You can download .zip file with the latest build of the master branch from [Rele
 
 ![SQL Index Manager](https://habrastorage.org/webt/bw/6n/ma/bw6nmab-z9tlc5q1rud1rmdjj34.png)
 ![SQL Index Manager](https://habrastorage.org/webt/vj/vi/ts/vjvits-lmjukoi35ra_3bjt8pdq.png)
-![SQL Index Manager](https://habrastorage.org/webt/kd/em/xj/kdemxjo8sj0hxa4y_omvv3dph6a.png)
+![SQL Index Manager](https://habrastorage.org/webt/xa/dj/if/xadjifj1s0eecjl5pldsnh5phsi.png)
 
 ## Command Line
 
@@ -98,7 +98,3 @@ This switch is used to specify the predescribe index size in MB. Overrides globa
 **/maxindexsize 8096**
 
 This switch is used to specify the maximun index size in MB. Overrides global option (8 GB)
-
-## Thanks
-
-[Ievgenii Vasyliev](https://www.linkedin.com/in/ievgenii-vasyliev-a672bb78/) - for his help in the development and implementation of the command line

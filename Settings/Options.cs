@@ -6,6 +6,11 @@ namespace SQLIndexManager {
 
   [Serializable]
   public class Options {
+    public const string DEFAULT = "DEFAULT";
+    public const string NONE = "NONE";
+    public const string ON = "ON";
+    public const string OFF = "OFF";
+
     private int _reorganizeThreshold = 15;
     private int _rebuildThreshold = 30;
     private int _minIndexSize = 6;
@@ -17,8 +22,9 @@ namespace SQLIndexManager {
     private int _fillFactor;
     private int _sampleStatsPercent = 100;
     private int _maxDuration = 1;
-    private string _abortAfterWait = "NONE";
-    private string _dataCompression = "DEFAULT";
+    private string _abortAfterWait = NONE;
+    private string _dataCompression = DEFAULT;
+    private string _noRecompute = DEFAULT;
     private List<string> _includeSchemas = new List<string>();
     private List<string> _excludeSchemas = new List<string>();
     private List<string> _includeObject = new List<string>();
@@ -151,15 +157,21 @@ namespace SQLIndexManager {
     }
 
     [XmlAttribute]
+    public string NoRecompute {
+      get => _noRecompute;
+      set => _noRecompute = (value == DEFAULT || value == ON || value == OFF) ? value : _noRecompute;
+    }
+
+    [XmlAttribute]
     public string DataCompression {
       get => _dataCompression;
-      set => _dataCompression = (value == "DEFAULT" || value == "NONE" || value == "ROW" || value == "PAGE") ? value : _dataCompression;
+      set => _dataCompression = (value == DEFAULT || value == NONE || value == "ROW" || value == "PAGE") ? value : _dataCompression;
     }
 
     [XmlAttribute]
     public string AbortAfterWait {
       get => _abortAfterWait;
-      set => _abortAfterWait = (value == "NONE" || value == "SELF" || value == "BLOCKERS") ? value : _abortAfterWait;
+      set => _abortAfterWait = (value == NONE || value == "SELF" || value == "BLOCKERS") ? value : _abortAfterWait;
     }
 
     private void UpdateThreshold(int reorganize, int rebuild) {

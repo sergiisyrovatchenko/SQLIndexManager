@@ -221,6 +221,7 @@ namespace SQLIndexManager {
 
       UpdateFixType(indexes);
       FindDublicateIndexes(indexes);
+      FindUnusedIndexes(indexes);
 
       labelIndex.Caption = indexes.Count.ToString();
       Output.Current.Add($"Processed: {_scanIndexes.Count}. Fragmented: {indexes.Count}", null, _scanDuration.ElapsedMilliseconds);
@@ -242,8 +243,20 @@ namespace SQLIndexManager {
       }
     }
 
+    private void FindUnusedIndexes(List<Index> indexes) {
+      foreach(Index ix in indexes.Where(
+                  _ => !_.IsPartitioned
+                    && _.Warning == null
+                    && _.TotalWrites > 50000
+                    && (_.TotalReads ?? 0) < _.TotalWrites / 10
+                    && (_.IndexType == IndexType.Clustered || _.IndexType == IndexType.NonClustered))) {
+        ix.Warning = WarningType.Low;
+      }
+    }
+
     private void FindDublicateIndexes(List<Index> indexes) {
       var data = indexes.Where(_ => !_.IsPartitioned
+                                 && _.Warning == null
                                  && (_.IndexType == IndexType.Clustered || _.IndexType == IndexType.NonClustered))
                         .GroupBy(_ => new { _.DatabaseName, _.ObjectId })
                         .Select(_ => new { _.Key.DatabaseName, _.Key.ObjectId, Indexes = _.ToList() })
@@ -412,16 +425,15 @@ namespace SQLIndexManager {
             return;
           }
 
-          string sql = item.GetQuery();
           Output.Current.AddCaption(item.ToString());
-
           Stopwatch watch = Stopwatch.StartNew();
 
           item.Progress = imageCollection.Images[1];
 
+          string sql = string.Empty;
           SqlConnection connection = connectionList.Get(item.DatabaseName);
           if (connection != null) {
-            QueryEngine.FixIndex(connection, item);
+            sql = QueryEngine.FixIndex(connection, item);
           }
 
           item.Progress = imageCollection.Images[2];
