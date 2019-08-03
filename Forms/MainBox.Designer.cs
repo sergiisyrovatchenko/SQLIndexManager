@@ -55,7 +55,10 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule5 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule6 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar6 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
+      DevExpress.XtraGrid.Columns.GridColumn PageSpaceUsed;
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.repositoryItemHypertextLabel1 = new DevExpress.XtraEditors.Repository.RepositoryItemHypertextLabel();
       this.gridControl1 = new DevExpress.XtraGrid.GridControl();
@@ -129,6 +132,7 @@ namespace SQLIndexManager {
       TotalLookups = new DevExpress.XtraGrid.Columns.GridColumn();
       IndexColumns = new DevExpress.XtraGrid.Columns.GridColumn();
       IncludedColumns = new DevExpress.XtraGrid.Columns.GridColumn();
+      PageSpaceUsed = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -712,6 +716,7 @@ namespace SQLIndexManager {
             IndexName,
             IndexType,
             PartitionNumber,
+            PageSpaceUsed,
             Fragmentation,
             PagesCount,
             SavedSpace,
@@ -857,11 +862,37 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar5.PredefinedName = null;
       formatConditionRuleDataBar5.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule5.Rule = formatConditionRuleDataBar5;
+      gridFormatRule6.Column = PageSpaceUsed;
+      gridFormatRule6.ColumnApplyTo = PageSpaceUsed;
+      gridFormatRule6.Name = "PageSpaceUsed";
+      formatConditionRuleDataBar6.AllowNegativeAxis = false;
+      formatConditionRuleDataBar6.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(125)))), ((int)(((byte)(212)))));
+      formatConditionRuleDataBar6.Appearance.BackColor2 = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar6.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar6.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar6.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar6.DrawAxis = false;
+      formatConditionRuleDataBar6.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar6.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar6.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar6.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar6.PredefinedName = null;
+      formatConditionRuleDataBar6.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule6.Rule = formatConditionRuleDataBar6;
       this.gridView1.FormatRules.Add(gridFormatRule1);
       this.gridView1.FormatRules.Add(gridFormatRule2);
       this.gridView1.FormatRules.Add(gridFormatRule3);
       this.gridView1.FormatRules.Add(gridFormatRule4);
       this.gridView1.FormatRules.Add(gridFormatRule5);
+      this.gridView1.FormatRules.Add(gridFormatRule6);
       this.gridView1.GridControl = this.gridControl1;
       this.gridView1.Name = "gridView1";
       this.gridView1.OptionsCustomization.AllowGroup = false;
@@ -1361,6 +1392,24 @@ namespace SQLIndexManager {
       // repositoryItemMemoEdit1
       // 
       this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+      // 
+      // PageSpaceUsed
+      // 
+      PageSpaceUsed.Caption = "Page Space Used";
+      PageSpaceUsed.FieldName = "PageSpaceUsed";
+      PageSpaceUsed.MaxWidth = 103;
+      PageSpaceUsed.MinWidth = 103;
+      PageSpaceUsed.Name = "PageSpaceUsed";
+      PageSpaceUsed.OptionsColumn.AllowEdit = false;
+      PageSpaceUsed.OptionsColumn.AllowFocus = false;
+      PageSpaceUsed.OptionsColumn.AllowSize = false;
+      PageSpaceUsed.OptionsFilter.AllowAutoFilter = false;
+      PageSpaceUsed.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
+      PageSpaceUsed.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
+      PageSpaceUsed.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
+      PageSpaceUsed.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
+      PageSpaceUsed.UnboundType = DevExpress.Data.UnboundColumnType.String;
+      PageSpaceUsed.Width = 103;
       // 
       // MainBox
       // 

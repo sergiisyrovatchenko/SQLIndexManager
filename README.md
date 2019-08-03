@@ -39,7 +39,7 @@ You can download .zip file with the latest build of the master branch from [Rele
 
 ![SQL Index Manager](https://habrastorage.org/webt/bw/6n/ma/bw6nmab-z9tlc5q1rud1rmdjj34.png)
 ![SQL Index Manager](https://habrastorage.org/webt/vj/vi/ts/vjvits-lmjukoi35ra_3bjt8pdq.png)
-![SQL Index Manager](https://habrastorage.org/webt/xa/dj/if/xadjifj1s0eecjl5pldsnh5phsi.png)
+![SQL Index Manager](https://habrastorage.org/webt/ep/e6/cv/epe6cveesa22v3yvbatf7iwhfry.png)
 
 ## Command Line
 

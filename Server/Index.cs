@@ -13,6 +13,7 @@ namespace SQLIndexManager {
     public IndexType IndexType { get; set; }
 
     public double? Fragmentation { get; set; }
+    public double? PageSpaceUsed { get; set; }
     public long PagesCount { get; set; }
     public long? PagesCountBefore { get; set; }
     public long UnusedPagesCount { get; set; }
@@ -115,7 +116,7 @@ namespace SQLIndexManager {
                             ? ""
                             : $"DATA_COMPRESSION = {Settings.Options.DataCompression}, "
                           ) +
-                    (Settings.Options.NoRecompute == Options.DEFAULT && !IsPartitioned
+                    (Settings.Options.NoRecompute == Options.DEFAULT
                             ? ""
                             : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
                           ) +
@@ -147,7 +148,7 @@ namespace SQLIndexManager {
                       $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
                       $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? Options.ON : Options.OFF)}, " +
                       $"ONLINE = {onlineRebuild}, " +
-                      (Settings.Options.NoRecompute == Options.DEFAULT && !IsPartitioned
+                      (Settings.Options.NoRecompute == Options.DEFAULT
                             ? ""
                             : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
                           ) +

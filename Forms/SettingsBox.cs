@@ -29,6 +29,7 @@ namespace SQLIndexManager {
       boxDataCompression.EditValue = o.DataCompression;
       boxNoRecompute.EditValue = o.NoRecompute;
       boxFillFactor.EditValue = o.FillFactor;
+      boxScanMode.EditValue = o.ScanMode;
 
       boxScanHeap.Checked = o.ScanHeap;
       boxScanClusteredIndex.Checked = o.ScanClusteredIndex;
@@ -65,6 +66,7 @@ namespace SQLIndexManager {
         DataCompression = (string)boxDataCompression.EditValue,
         NoRecompute = (string)boxNoRecompute.EditValue,
         FillFactor = (int)boxFillFactor.Value,
+        ScanMode = (string)boxScanMode.EditValue,
 
         ScanHeap = boxScanHeap.Checked,
         ScanClusteredIndex = boxScanClusteredIndex.Checked,

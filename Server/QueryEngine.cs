@@ -125,10 +125,11 @@ namespace SQLIndexManager {
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
-        cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
-        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@ScanMode", SqlDbType.NVarChar, 100) { Value = Settings.Options.ScanMode });
 
         SqlDataAdapter adapter = new SqlDataAdapter(cmd);
         DataSet data = new DataSet();
@@ -186,6 +187,7 @@ namespace SQLIndexManager {
             LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
             DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
             Fragmentation         = _.Field<double?>(Resources.Fragmentation),
+            PageSpaceUsed         = _.Field<double?>(Resources.PageSpaceUsed),
             IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.Heap,
             IsAllowOnlineRebuild  = isOnlineRebuild,
             IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
@@ -197,20 +199,19 @@ namespace SQLIndexManager {
         }
       }
 
-      if (Settings.Options.ScanMissingIndex) {
+      if (Settings.Options.ScanMissingIndex && !(Settings.ServerInfo.IsAzure && connection.Database == Resources.DatamaseMaster)) {
 
         SqlCommand cmd = new SqlCommand(Query.MissingIndex, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
-        cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
-        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
         SqlDataAdapter adapter = new SqlDataAdapter(cmd);
         DataSet data = new DataSet();
         adapter.Fill(data);
 
         foreach (DataRow _ in data.Tables[0].AsEnumerable()) {
-          double fragmentation = _.Field<double>(Resources.Fragmentation);
           string indexCols = _.Field<string>(Resources.IndexColumns);
           string objName = _.Field<string>(Resources.ObjectName);
           string indexName = $"IX_{Guid.NewGuid().ToString().Truncate(5)}_{objName}_{indexCols}"
@@ -235,7 +236,7 @@ namespace SQLIndexManager {
             TotalScans            = _.Field<long?>(Resources.TotalScans),
             LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
             DataCompression       = DataCompression.None,
-            Fragmentation         = fragmentation,
+            Fragmentation         = _.Field<double>(Resources.Fragmentation),
             IndexColumns          = indexCols,
             IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
           };
@@ -253,17 +254,27 @@ namespace SQLIndexManager {
       cmd.Parameters.Add(new SqlParameter("@ObjectID",        SqlDbType.Int) { Value = index.ObjectId });
       cmd.Parameters.Add(new SqlParameter("@IndexID",         SqlDbType.Int) { Value = index.IndexId });
       cmd.Parameters.Add(new SqlParameter("@PartitionNumber", SqlDbType.Int) { Value = index.PartitionNumber });
+      cmd.Parameters.Add(new SqlParameter("@ScanMode",        SqlDbType.NVarChar, 100) { Value = Settings.Options.ScanMode });
 
-      index.Fragmentation = (double?)cmd.ExecuteScalar();
+      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
+      adapter.Fill(data);
+
+      if (data.Tables.Count == 1 && data.Tables[0].Rows.Count == 1) {
+        DataRow row = data.Tables[0].Rows[0];
+
+        index.Fragmentation = row.Field<double>(Resources.Fragmentation);
+        index.PageSpaceUsed = row.Field<double?>(Resources.PageSpaceUsed);
+      }
     }
 
     public static void GetColumnstoreFragmentation(SqlConnection connection, Index index, List<Index> indexes) {
       SqlCommand cmd = new SqlCommand(Query.ColumnstoreIndexFragmentation, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-      cmd.Parameters.Add(new SqlParameter("@ObjectID", SqlDbType.Int) { Value = index.ObjectId });
-      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float) { Value = Settings.Options.ReorganizeThreshold });
-      cmd.Parameters.Add(new SqlParameter("@MinIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
-      cmd.Parameters.Add(new SqlParameter("@MaxIndexSize", SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
+      cmd.Parameters.Add(new SqlParameter("@ObjectID",      SqlDbType.Int)    { Value = index.ObjectId });
+      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+      cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
+      cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
       DataSet data = new DataSet();
@@ -287,7 +298,7 @@ namespace SQLIndexManager {
 
     public static string FixIndex(SqlConnection connection, Index index) {
       string sqlInfo = string.Format(index.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
-                                     index.ObjectId, index.IndexId, index.PartitionNumber);
+                                     index.ObjectId, index.IndexId, index.PartitionNumber, Settings.Options.ScanMode);
 
       string query = index.GetQuery();
       string sql = index.FixType == IndexOp.Disable
@@ -322,6 +333,7 @@ namespace SQLIndexManager {
 
         index.PagesCountBefore  = index.PagesCount - row.Field<long>(Resources.PagesCount);
         index.Fragmentation     = row.Field<double>(Resources.Fragmentation);
+        index.PageSpaceUsed     = row.Field<double?>(Resources.PageSpaceUsed);
         index.PagesCount        = row.Field<long>(Resources.PagesCount);
         index.UnusedPagesCount  = row.Field<long>(Resources.UnusedPagesCount);
         index.RowsCount         = row.Field<long>(Resources.RowsCount);

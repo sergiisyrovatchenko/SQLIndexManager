@@ -115,6 +115,7 @@ CREATE TABLE #Fragmentation (
     , IndexID          INT NOT NULL
     , PartitionNumber  INT NOT NULL
     , Fragmentation    FLOAT NOT NULL
+    , PageSpaceUsed    FLOAT NULL
     , PRIMARY KEY (ObjectID, IndexID, PartitionNumber)
 )
 {2}
@@ -250,6 +251,7 @@ SELECT i.ObjectID
      , u.LastUsage
      , i.DataCompression
      , f.Fragmentation
+     , f.PageSpaceUsed
      , IndexStats       = STATS_DATE(i.ObjectID, i.IndexID)
      , IsLobLegacy      = ISNULL(lob.IsLobLegacy, 0)
      , IsLob            = ISNULL(lob.IsLob, 0)
@@ -470,12 +472,13 @@ FETCH NEXT FROM cur INTO @ObjectID, @IndexID, @PartitionNumber
 
 WHILE @@FETCH_STATUS = 0 BEGIN
 
-    INSERT INTO #Fragmentation (ObjectID, IndexID, PartitionNumber, Fragmentation)
+    INSERT INTO #Fragmentation (ObjectID, IndexID, PartitionNumber, Fragmentation, PageSpaceUsed)
     SELECT @ObjectID
          , @IndexID
          , @PartitionNumber
          , [avg_fragmentation_in_percent]
-    FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, 'LIMITED') r
+         , [avg_page_space_used_in_percent]
+    FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, @ScanMode) r
     WHERE [index_level] = 0
         AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
 
@@ -487,13 +490,14 @@ CLOSE cur
 DEALLOCATE cur";
 
     public const string Index2012Plus = @"
-INSERT INTO #Fragmentation (ObjectID, IndexID, PartitionNumber, Fragmentation)
+INSERT INTO #Fragmentation (ObjectID, IndexID, PartitionNumber, Fragmentation, PageSpaceUsed)
 SELECT i.ObjectID
      , i.IndexID
      , i.PartitionNumber
      , r.[avg_fragmentation_in_percent]
+     , r.[avg_page_space_used_in_percent]
 FROM #Indexes i
-CROSS APPLY sys.dm_db_index_physical_stats(@DBID, i.ObjectID, i.IndexID, i.PartitionNumber, 'LIMITED') r
+CROSS APPLY sys.dm_db_index_physical_stats(@DBID, i.ObjectID, i.IndexID, i.PartitionNumber, @ScanMode) r
 WHERE i.PagesCount <= @PreDescribeSize
     AND r.[index_level] = 0
     AND r.[alloc_unit_type_desc] = 'IN_ROW_DATA'
@@ -520,8 +524,9 @@ WHERE Fragmentation >= @Fragmentation
 DECLARE @DBID INT
 SET @DBID = DB_ID()
 
-SELECT [avg_fragmentation_in_percent]
-FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, 'LIMITED')
+SELECT Fragmentation = [avg_fragmentation_in_percent]
+     , PageSpaceUsed = [avg_page_space_used_in_percent]
+FROM sys.dm_db_index_physical_stats(@DBID, @ObjectID, @IndexID, @PartitionNumber, @ScanMode)
 WHERE [index_level] = 0
     AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
 ";
@@ -649,12 +654,13 @@ WHERE [object_id] = {0}
     AND [partition_number] = {2}
 
 SELECT Fragmentation    = [avg_fragmentation_in_percent]
+     , PageSpaceUsed    = [avg_page_space_used_in_percent]
      , PagesCount       = ISNULL(@ReservedPageCount, 0)
      , UnusedPagesCount = ISNULL(CASE WHEN ABS(@ReservedPageCount - @UnusedPagesCount) > 32 THEN @ReservedPageCount - @UnusedPagesCount END, 0)
      , RowsCount        = ISNULL(@RowsCount, 0)
      , IndexStats       = STATS_DATE({0}, {1})
      , DataCompression  = @Compression
-FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, 'LIMITED')
+FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, '{3}')
 WHERE [index_level] = 0
     AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
 ";

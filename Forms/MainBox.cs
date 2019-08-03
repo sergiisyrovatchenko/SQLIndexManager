@@ -678,7 +678,9 @@ namespace SQLIndexManager {
                            Resources.IndexName,
                            Resources.IndexType,
                            Resources.IndexColumns,
-                           Resources.IncludedColumns
+                           Resources.IncludedColumns,
+                           Resources.TotalWrites,
+                           Resources.TotalReads
                          };
 
       if (columns.Contains(e.Column.FieldName)) {
@@ -706,8 +708,11 @@ namespace SQLIndexManager {
           break;
 
         case "Fragmentation":
-          double value = Convert.ToDouble(e.Value);
-          e.DisplayText = string.Format(value - Math.Truncate(value) < 0.1 || value > 99.9 ? "{0:n0} %" : "{0:n1} %", value);
+        case "PageSpaceUsed":
+          if (e.Value != null) {
+            double value = Convert.ToDouble(e.Value);
+            e.DisplayText = string.Format(value - Math.Truncate(value) < 0.1 || value > 99.9 ? "{0:n0} %" : "{0:n1} %", value);
+          }
           break;
 
         case "Compression":

@@ -48,6 +48,7 @@
       System.Windows.Forms.PictureBox pictureBox1;
       System.Windows.Forms.PictureBox pictureBox3;
       System.Windows.Forms.PictureBox pictureBox4;
+      DevExpress.XtraEditors.LabelControl labelControl9;
       this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
       this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
       this.labelRebuild = new DevExpress.XtraEditors.LabelControl();
@@ -85,6 +86,7 @@
       this.boxIncludeObject = new DevExpress.XtraEditors.TokenEdit();
       this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
       this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
+      this.boxScanMode = new DevExpress.XtraEditors.ComboBoxEdit();
       gb1 = new DevExpress.XtraEditors.GroupControl();
       labelControl1 = new DevExpress.XtraEditors.LabelControl();
       labelSortInTempDb = new DevExpress.XtraEditors.LabelControl();
@@ -109,6 +111,7 @@
       pictureBox1 = new System.Windows.Forms.PictureBox();
       pictureBox3 = new System.Windows.Forms.PictureBox();
       pictureBox4 = new System.Windows.Forms.PictureBox();
+      labelControl9 = new DevExpress.XtraEditors.LabelControl();
       ((System.ComponentModel.ISupportInitialize)(gb1)).BeginInit();
       gb1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxThreshold)).BeginInit();
@@ -158,10 +161,13 @@
       this.groupControl4.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).BeginInit();
       this.groupControl5.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxScanMode.Properties)).BeginInit();
       this.SuspendLayout();
       // 
       // gb1
       // 
+      gb1.Controls.Add(labelControl9);
+      gb1.Controls.Add(this.boxScanMode);
       gb1.Controls.Add(this.labelControl3);
       gb1.Controls.Add(this.labelControl4);
       gb1.Controls.Add(this.labelRebuild);
@@ -1004,6 +1010,33 @@
       this.groupControl5.TabIndex = 19;
       this.groupControl5.Text = "Object Filter (schema.table OR table OR %pattern%)";
       // 
+      // boxScanMode
+      // 
+      this.boxScanMode.EditValue = "LIMITED";
+      this.boxScanMode.Location = new System.Drawing.Point(287, 22);
+      this.boxScanMode.Name = "boxScanMode";
+      this.boxScanMode.Properties.AllowFocused = false;
+      this.boxScanMode.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxScanMode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxScanMode.Properties.AutoComplete = false;
+      this.boxScanMode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxScanMode.Properties.Items.AddRange(new object[] {
+            "LIMITED",
+            "SAMPLED",
+            "DETAILED"});
+      this.boxScanMode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+      this.boxScanMode.Size = new System.Drawing.Size(88, 20);
+      this.boxScanMode.TabIndex = 24;
+      // 
+      // labelControl9
+      // 
+      labelControl9.Location = new System.Drawing.Point(243, 25);
+      labelControl9.Name = "labelControl9";
+      labelControl9.Size = new System.Drawing.Size(38, 13);
+      labelControl9.TabIndex = 25;
+      labelControl9.Text = "SCAN =";
+      // 
       // SettingsBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1083,6 +1116,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).EndInit();
       this.groupControl5.ResumeLayout(false);
       this.groupControl5.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxScanMode.Properties)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -1126,5 +1160,6 @@
     private DevExpress.XtraEditors.GroupControl groupControl5;
     private DevExpress.XtraEditors.LabelControl labelControl5;
     private DevExpress.XtraEditors.ComboBoxEdit boxNoRecompute;
+    private DevExpress.XtraEditors.ComboBoxEdit boxScanMode;
   }
 }

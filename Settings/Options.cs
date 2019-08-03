@@ -10,6 +10,7 @@ namespace SQLIndexManager {
     public const string NONE = "NONE";
     public const string ON = "ON";
     public const string OFF = "OFF";
+    public const string LIMITED = "LIMITED";
 
     private int _reorganizeThreshold = 15;
     private int _rebuildThreshold = 30;
@@ -25,6 +26,7 @@ namespace SQLIndexManager {
     private string _abortAfterWait = NONE;
     private string _dataCompression = DEFAULT;
     private string _noRecompute = DEFAULT;
+    private string _scanMode = LIMITED;
     private List<string> _includeSchemas = new List<string>();
     private List<string> _excludeSchemas = new List<string>();
     private List<string> _includeObject = new List<string>();
@@ -172,6 +174,12 @@ namespace SQLIndexManager {
     public string AbortAfterWait {
       get => _abortAfterWait;
       set => _abortAfterWait = (value == NONE || value == "SELF" || value == "BLOCKERS") ? value : _abortAfterWait;
+    }
+
+    [XmlAttribute]
+    public string ScanMode {
+      get => _scanMode;
+      set => _scanMode = (value == LIMITED || value == "SAMPLED" || value == "DETAILED") ? value : _scanMode;
     }
 
     private void UpdateThreshold(int reorganize, int rebuild) {

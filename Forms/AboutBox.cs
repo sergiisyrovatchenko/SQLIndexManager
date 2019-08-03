@@ -1,5 +1,6 @@
 ﻿using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
@@ -7,7 +8,7 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class AboutBox : XtraForm {
-    const string Mail = "sergey.syrovatchenko@gmail.com";
+    const string _mail = "sergey.syrovatchenko@gmail.com";
 
     public AboutBox() {
       InitializeComponent();
@@ -17,7 +18,7 @@ namespace SQLIndexManager {
       var product = (AssemblyProductAttribute)assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false)[0];
       var copyright = (AssemblyCopyrightAttribute)assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false)[0];
 
-      labelMail.Text = Mail;
+      labelMail.Text = _mail;
       labelProductName.Text = title.Title;
       labelProductDescription.Text = product.Product;
       labelCopyright.Text = copyright.Copyright;
@@ -25,15 +26,25 @@ namespace SQLIndexManager {
     }
 
     private void labelMail_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      Process.Start($"mailto:{Mail}");
+      RunHyperlink($"mailto:{_mail}");
     }
 
     private void Copyright_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      Process.Start("www.linkedin.com/in/sergeysyrovatchenko");
+      RunHyperlink("www.linkedin.com/in/sergeysyrovatchenko");
     }
 
     private void GitHub_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      Process.Start("www.github.com/sergeysyrovatchenko/SQLIndexManager");
+      RunHyperlink("www.github.com/sergeysyrovatchenko/SQLIndexManager");
+    }
+
+    private void RunHyperlink(string hyperlink) {
+      try {
+        Process.Start(hyperlink);
+      }
+      catch (Exception ex) {
+        Output.Current.Add($"Error: {ex.Source}", ex.Message);
+        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
     }
 
     #region Override Methods

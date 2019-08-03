@@ -424,6 +424,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PageSpaceUsed.
+        /// </summary>
+        internal static string PageSpaceUsed {
+            get {
+                return ResourceManager.GetString("PageSpaceUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PartitionNumber.
         /// </summary>
         internal static string PartitionNumber {
