@@ -332,7 +332,7 @@ WHERE p.[object_id] IN (SELECT DISTINCT i.ObjectID FROM #Indexes i)
 GROUP BY p.[object_id]
 
 SELECT *, FileGroupName = (
-                  SELECT f.[name]
+                  SELECT TOP(1) f.[name]
                   FROM sys.filegroups f WITH(NOLOCK)
                   WHERE f.[is_default] = 1
               )
