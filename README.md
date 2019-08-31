@@ -3,6 +3,8 @@
 This tool lets you quickly and easily find out the status of your indexes and discover which databases need maintenance.   
 You can do maintenance through the UI, or generate a T-SQL script to run in SSMS.
 
+[SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
+
 ## Key Features
 
 * An incredibly fast describe engine
@@ -26,10 +28,6 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 ## Latest Version
 
 You can download .zip file with the latest build of the master branch from [Releases](https://github.com/sergeysyrovatchenko/SQLIndexManager/releases)
-
-## Topics
-
-[SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
 
 ## Screenshots
 
