@@ -8,7 +8,8 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class AboutBox : XtraForm {
-    const string _mail = "sergey.syrovatchenko@gmail.com";
+
+    private const string _mail = "sergey.syrovatchenko@gmail.com";
 
     public AboutBox() {
       InitializeComponent();
@@ -60,6 +61,7 @@ namespace SQLIndexManager {
 
 
     #endregion
+
   }
 
 }

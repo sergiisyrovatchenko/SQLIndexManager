@@ -4,6 +4,7 @@ using System.Drawing;
 namespace SQLIndexManager {
 
   public class Index {
+
     public string DatabaseName { get; set; }
     public int ObjectId { get; set; }
     public int IndexId { get; set; }
@@ -42,7 +43,7 @@ namespace SQLIndexManager {
     public bool IsAllowReorganize { get; set; }
     public bool IsAllowOnlineRebuild { get; set; }
     public bool IsAllowCompression { get; set; }
-    public bool IsColumnstore => (IndexType == IndexType.ColumnstoreClustered || IndexType == IndexType.ColumnstoreNonClustered);
+    public bool IsColumnstore => (IndexType == IndexType.CLUSTERED_COLUMNSTORE || IndexType == IndexType.NONCLUSTERED_COLUMNSTORE);
 
     public string Error { get; set; }
     public Image Progress { get; set; }
@@ -54,137 +55,115 @@ namespace SQLIndexManager {
     public string GetQuery() {
       string sql = string.Empty;
       string indexName = IndexName.ToQuota();
-      string schemaName = SchemaName.ToQuota();
-      string objectName = ObjectName.ToQuota();
+      string objectName = $"{SchemaName.ToQuota()}.{ObjectName.ToQuota()}";
+      string fullIndexName = $"{indexName} ON {objectName}";
       string partition = IsPartitioned ? PartitionNumber.ToString() : "ALL";
-      DataCompression compression = DataCompression;
 
       if (IsColumnstore) {
 
-        if (FixType == IndexOp.RebuildColumnstore)
-          compression = DataCompression.Columnstore;
-
-        if (FixType == IndexOp.RebuildColumnstoreArchive)
-          compression = DataCompression.ColumnstoreArchive;
-
         switch (FixType) {
-          case IndexOp.Rebuild:
-          case IndexOp.RebuildColumnstore:
-          case IndexOp.RebuildColumnstoreArchive:
-            sql = $"ALTER INDEX [{indexName}]\n    " +
-                    $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
-                    $"WITH (DATA_COMPRESSION = {compression.ToDescription()}, MAXDOP = {Settings.Options.MaxDop});";
+          case IndexOp.REBUILD:
+          case IndexOp.REBUILD_COLUMNSTORE:
+          case IndexOp.REBUILD_COLUMNSTORE_ARCHIVE:
+            DataCompression compression = (FixType == IndexOp.REBUILD_COLUMNSTORE) ? DataCompression.COLUMNSTORE : DataCompression.COLUMNSTORE_ARCHIVE;
+            sql = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}\n    " +
+                    $"WITH (DATA_COMPRESSION = {(FixType == IndexOp.REBUILD ? DataCompression : compression)}, MAXDOP = {Settings.Options.MaxDop});";
             break;
 
-          case IndexOp.Reorganize:
-            sql = $"ALTER INDEX [{indexName}]\n    " +
-                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition};";
-            break;
-
-          case IndexOp.ReorganizeCompressAllRowGroup:
-            sql = $"ALTER INDEX [{indexName}]\n    " +
-                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition}\n    " +
-                    "WITH (COMPRESS_ALL_ROW_GROUPS = ON);";
+          case IndexOp.REORGANIZE:
+          case IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS:
+            sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}" +
+                    $"{(FixType == IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS ? "\n    WITH (COMPRESS_ALL_ROW_GROUPS = ON)" : "")};";
             break;
         }
+
       }
       else {
 
-        if (FixType == IndexOp.RebuildPage)
-          compression = DataCompression.Page;
-        else if (FixType == IndexOp.RebuildRow)
-          compression = DataCompression.Row;
-        else if (FixType == IndexOp.RebuildNone)
-          compression = DataCompression.None;
-
         switch (FixType) {
-          case IndexOp.CreateIndex:
-            bool isCreateOnline = Settings.ServerInfo.MajorVersion > Server.Sql2008 
-                               && Settings.ServerInfo.IsOnlineRebuildAvailable
-                               && Settings.Options.Online;
+          case IndexOp.REBUILD:
+          case IndexOp.REBUILD_ROW:
+          case IndexOp.REBUILD_PAGE:
+          case IndexOp.REBUILD_NONE:
+          case IndexOp.REBUILD_ONLINE:
+          case IndexOp.CREATE_INDEX:
 
-            sql = $"CREATE NONCLUSTERED INDEX [{indexName}]\n" +
-                    $"ON [{schemaName}].[{objectName}] ({IndexColumns})\n" +
-                    (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE({IncludedColumns})\n") +
-                    $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? Options.ON : Options.OFF)}, " +
-                    $"ONLINE = {(isCreateOnline ? Options.ON : Options.OFF)}, " +
-                    (Settings.Options.FillFactor.IsBetween(1, 100)
-                            ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
-                            : ""
-                          ) +
-                    (Settings.Options.DataCompression == Options.DEFAULT
-                            ? ""
-                            : $"DATA_COMPRESSION = {Settings.Options.DataCompression}, "
-                          ) +
-                    (Settings.Options.NoRecompute == Options.DEFAULT
-                            ? ""
-                            : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
-                          ) +
+            DataCompression compression;
+            if (FixType == IndexOp.REBUILD_PAGE)
+              compression = DataCompression.PAGE;
+            else if (FixType == IndexOp.REBUILD_ROW)
+              compression = DataCompression.ROW;
+            else if (FixType == IndexOp.REBUILD_NONE)
+              compression = DataCompression.NONE;
+            else if (Settings.Options.DataCompression != DataCompression.DEFAULT)
+              compression = Settings.Options.DataCompression;
+            else
+              compression = DataCompression;
+
+            string onlineRebuild = "OFF";
+            if (FixType == IndexOp.REBUILD_ONLINE || (Settings.Options.Online && IsAllowOnlineRebuild)) {
+              if (Settings.Options.WaitAtLowPriority && Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2014)
+                onlineRebuild = "ON (" +
+                                  $"WAIT_AT_LOW_PRIORITY (MAX_DURATION = {Settings.Options.MaxDuration} MINUTES, " +
+                                  $"ABORT_AFTER_WAIT = {Settings.Options.AbortAfterWait}))";
+              else
+                onlineRebuild = "ON";
+            }
+
+            string sqlHeader;
+            if (IndexType == IndexType.MISSING_INDEX)
+              sqlHeader = $"CREATE NONCLUSTERED INDEX {fullIndexName}\n    ({IndexColumns})\n    " 
+                        + (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE ({IncludedColumns})\n    ");
+            else if (IndexType == IndexType.HEAP)
+              sqlHeader = $"ALTER TABLE {objectName} REBUILD PARTITION = {partition}\n    ";
+            else
+              sqlHeader = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}\n    ";
+
+            sql = sqlHeader +
+                    $"WITH (" +
+                    (IndexType == IndexType.HEAP
+                      ? ""
+                      : $"SORT_IN_TEMPDB = {Settings.Options.SortInTempDb.OnOff()}, ") +
+                    (IsPartitioned || IndexType == IndexType.HEAP
+                      ? ""
+                      : $"PAD_INDEX = {Settings.Options.PadIndex.OnOff()}, ") +
+                    (IsPartitioned || Settings.Options.FillFactor == 0
+                      ? ""
+                      : $"FILLFACTOR = {Settings.Options.FillFactor}, ") +
+                    (IsPartitioned || Settings.Options.NoRecompute == NoRecompute.DEFAULT || IndexType == IndexType.HEAP
+                      ? ""
+                      : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, ") +
+                    (!IsAllowCompression
+                      ? ""
+                      : $"DATA_COMPRESSION = {compression}, ") +
+                    $"ONLINE = {onlineRebuild}, " +
                     $"MAXDOP = {Settings.Options.MaxDop});";
             break;
 
-          case IndexOp.Rebuild:
-          case IndexOp.RebuildPage:
-          case IndexOp.RebuildRow:
-          case IndexOp.RebuildNone:
-          case IndexOp.RebuildOnline:
-          case IndexOp.RebuildFillFactorZero:
-            if (IndexType == IndexType.Heap) {
-              sql = $"ALTER TABLE [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
-                      $"WITH (DATA_COMPRESSION = {compression.ToDescription()}, MAXDOP = {Settings.Options.MaxDop});";
-            }
-            else {
-              string onlineRebuild = "OFF";
-              if (FixType == IndexOp.RebuildOnline) {
-                if (Settings.Options.WaitAtLowPriority && Settings.ServerInfo.MajorVersion >= Server.Sql2014)
-                  onlineRebuild = $"ON (" +
-                                    $"WAIT_AT_LOW_PRIORITY(MAX_DURATION = {Settings.Options.MaxDuration} MINUTES, " +
-                                    $"ABORT_AFTER_WAIT = {Settings.Options.AbortAfterWait}))";
-                else
-                  onlineRebuild = Options.ON;
-              }
-
-              sql = $"ALTER INDEX [{indexName}]\n    " +
-                      $"ON [{schemaName}].[{objectName}] REBUILD PARTITION = {partition}\n    " +
-                      $"WITH (SORT_IN_TEMPDB = {(Settings.Options.SortInTempDb ? Options.ON : Options.OFF)}, " +
-                      $"ONLINE = {onlineRebuild}, " +
-                      (Settings.Options.NoRecompute == Options.DEFAULT
-                            ? ""
-                            : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, "
-                          ) +
-                      (FixType == IndexOp.RebuildFillFactorZero 
-                            ? "FILLFACTOR = 100, "
-                            : (Settings.Options.FillFactor.IsBetween(1, 100) 
-                                  ? $"FILLFACTOR = {Settings.Options.FillFactor}, "
-                                  : ""
-                              )
-                       ) +
-                      $"DATA_COMPRESSION = {compression.ToDescription()}, " +
-                      $"MAXDOP = {Settings.Options.MaxDop});";
-            }
+          case IndexOp.REORGANIZE:
+            sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}\n    " +
+                    $"WITH (LOB_COMPACTION = {Settings.Options.LobCompaction.OnOff()});";
             break;
 
-          case IndexOp.Reorganize:
-            sql = $"ALTER INDEX [{indexName}]\n    " +
-                    $"ON [{schemaName}].[{objectName}] REORGANIZE PARTITION = {partition}\n    " +
-                    $"WITH (LOB_COMPACTION = {(Settings.Options.LobCompaction ? Options.ON : Options.OFF)});";
+          case IndexOp.DISABLE_INDEX:
+            sql = $"ALTER INDEX {fullIndexName} DISABLE;";
             break;
 
-          case IndexOp.Disable:
-            sql = $"ALTER INDEX [{indexName}] ON [{schemaName}].[{objectName}] DISABLE;";
+          case IndexOp.DROP_INDEX:
+            sql = $"DROP INDEX {fullIndexName};";
             break;
 
-          case IndexOp.Drop:
-            sql = $"DROP INDEX [{indexName}] ON [{schemaName}].[{objectName}];";
+          case IndexOp.DROP_TABLE:
+            sql = $"DROP TABLE {objectName};";
             break;
 
-          case IndexOp.UpdateStatsSample:
-          case IndexOp.UpdateStatsResample:
-          case IndexOp.UpdateStatsFull:
-            sql = $"UPDATE STATISTICS [{schemaName}].[{objectName}] [{indexName}]\n    " + (
-                FixType == IndexOp.UpdateStatsSample
+          case IndexOp.UPDATE_STATISTICS_SAMPLE:
+          case IndexOp.UPDATE_STATISTICS_RESAMPLE:
+          case IndexOp.UPDATE_STATISTICS_FULL:
+            sql = $"UPDATE STATISTICS {objectName} {indexName}\n    " + (
+                FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
                     ? $"WITH SAMPLE {Settings.Options.SampleStatsPercent} PERCENT;"
-                    : (FixType == IndexOp.UpdateStatsFull ? "WITH FULLSCAN;" : "WITH RESAMPLE;")
+                    : (FixType == IndexOp.UPDATE_STATISTICS_FULL ? "WITH FULLSCAN;" : "WITH RESAMPLE;")
             );
             break;
         }
@@ -199,6 +178,7 @@ namespace SQLIndexManager {
              $"| {(string.IsNullOrEmpty(IndexName) ? "Heap" : $"{IndexName}")} {(IsPartitioned ? "[ " + PartitionNumber + " ] " : string.Empty)}" +
              $"| {(Convert.ToDecimal(PagesCount) * 8).FormatSize()}".Replace("'", string.Empty);
     }
+
   }
 
 }

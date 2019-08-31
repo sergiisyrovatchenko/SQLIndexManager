@@ -4,6 +4,7 @@ using System.Threading;
 namespace SQLIndexManager {
 
   public class ThreadWorker : BackgroundWorker {
+
     private Thread _workerThread;
 
     protected override void OnDoWork(DoWorkEventArgs e) {
@@ -24,6 +25,7 @@ namespace SQLIndexManager {
         _workerThread = null;
       }
     }
+
   }
 
 }

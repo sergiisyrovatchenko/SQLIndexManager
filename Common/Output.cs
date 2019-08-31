@@ -8,12 +8,15 @@ using System.IO;
 namespace SQLIndexManager {
 
   public class OutputEvent {
+
     public DateTime DateTime { get; set; }
     public string Message { get; set; }
     public DateTime? Duration { get; set; }
+
   }
 
   public class Output {
+
     private static Output _log;
     private readonly List<OutputEvent> _events;
     private BarStaticItem _control;
@@ -81,6 +84,7 @@ namespace SQLIndexManager {
       }
       catch { }
     }
+
   }
 
 }

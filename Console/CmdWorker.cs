@@ -8,6 +8,7 @@ using System.Linq;
 namespace SQLIndexManager {
 
   public class CmdWorker {
+
     public CmdWorker(List<CmdArgument> args) {
       Host host = new Host();
       Settings.Options.IgnorePermissions = false;
@@ -18,7 +19,7 @@ namespace SQLIndexManager {
           case "connection":
             SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder(cmd.Params[0]);
             host.Server = sb.DataSource;
-            host.AuthType = sb.IntegratedSecurity ? AuthTypes.Windows : AuthTypes.SqlServer;
+            host.AuthType = sb.IntegratedSecurity ? AuthTypes.WINDOWS : AuthTypes.SQLSERVER;
             host.User = sb.UserID;
             if (!string.IsNullOrEmpty(sb.InitialCatalog)) {
               host.Databases.Add(sb.InitialCatalog);
@@ -47,6 +48,10 @@ namespace SQLIndexManager {
             Settings.Options.Online = true;
             break;
 
+          case "missingindex":
+            Settings.Options.ScanMissingIndex = true;
+            break;
+
           case "ignoreheap":
             Settings.Options.ScanHeap = false;
             break;
@@ -66,11 +71,11 @@ namespace SQLIndexManager {
             break;
 
           case "rebuildthreshold":
-            Settings.Options.RebuildThreshold = Convert.ToInt32(cmd.Params[0]);
+            Settings.Options.SecondThreshold = Convert.ToInt32(cmd.Params[0]);
             break;
 
           case "reorganizethreshold":
-            Settings.Options.ReorganizeThreshold = Convert.ToInt32(cmd.Params[0]);
+            Settings.Options.FirstThreshold = Convert.ToInt32(cmd.Params[0]);
             break;
 
           case "minindexsize":
@@ -105,7 +110,7 @@ namespace SQLIndexManager {
         }
       }
 
-      if (host.ServerInfo.MajorVersion < Server.Sql2008)
+      if (host.ServerInfo.MajorVersion < ServerVersion.Sql2008)
         throw new ArgumentException(Resources.MinVersionMessage);
       else
         Settings.ActiveHost = host;
@@ -160,7 +165,7 @@ namespace SQLIndexManager {
               connection = connectionList.Get(database);
               if (connection == null) break;
 
-              if (index.IndexType == IndexType.ColumnstoreClustered || index.IndexType == IndexType.ColumnstoreNonClustered) {
+              if (index.IndexType == IndexType.CLUSTERED_COLUMNSTORE || index.IndexType == IndexType.NONCLUSTERED_COLUMNSTORE) {
                 if (!clid.Exists(_ => _ == index.ObjectId)) {
                   watch = Stopwatch.StartNew();
                   QueryEngine.GetColumnstoreFragmentation(connection, index, idx);
@@ -184,7 +189,7 @@ namespace SQLIndexManager {
           scanIndex.AddRange(idx);
         }
 
-        var fixIndex = scanIndex.Where(_ => _.Fragmentation >= Settings.Options.ReorganizeThreshold
+        var fixIndex = scanIndex.Where(_ => _.Fragmentation >= Settings.Options.FirstThreshold
                                          && _.PagesCount >= Settings.Options.MinIndexSize.PageSize()
                                          && _.PagesCount <= Settings.Options.MaxIndexSize.PageSize()).ToList();
 
@@ -196,12 +201,14 @@ namespace SQLIndexManager {
           Output.Current.Add("Fix...");
 
           foreach (Index ix in fixIndex) {
-            if (ix.Fragmentation < Settings.Options.RebuildThreshold && ix.IsAllowReorganize)
-              ix.FixType = IndexOp.Reorganize;
+            if (ix.IndexType == IndexType.MISSING_INDEX)
+              ix.FixType = IndexOp.CREATE_INDEX;
+            else if (ix.Fragmentation < Settings.Options.SecondThreshold && ix.IsAllowReorganize)
+              ix.FixType = IndexOp.REORGANIZE;
             else if (Settings.Options.Online && ix.IsAllowOnlineRebuild)
-              ix.FixType = IndexOp.RebuildOnline;
+              ix.FixType = IndexOp.REBUILD_ONLINE;
             else
-              ix.FixType = IndexOp.Rebuild;
+              ix.FixType = IndexOp.REBUILD;
 
             watch = Stopwatch.StartNew();
             SqlConnection connection = connectionList.Get(ix.DatabaseName);
@@ -227,5 +234,7 @@ namespace SQLIndexManager {
 
       return 0;
     }
+
   }
+
 }

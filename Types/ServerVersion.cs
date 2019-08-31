@@ -1,6 +1,6 @@
 ﻿namespace SQLIndexManager {
 
-  public static class Server {
+  public static class ServerVersion {
     public const int Sql2005 = 9;
     public const int Sql2008 = 10;
     public const int Sql2012 = 11;

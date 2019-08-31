@@ -4,7 +4,6 @@ using SQLIndexManager.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,6 +11,7 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class ConnectionBox : XtraForm {
+
     public ConnectionBox() {
       InitializeComponent();
 
@@ -90,7 +90,7 @@ namespace SQLIndexManager {
         }
       }
 
-      if (_serverInfo.MajorVersion < Server.Sql2008) {
+      if (_serverInfo.MajorVersion < ServerVersion.Sql2008) {
         XtraMessageBox.Show(Resources.MinVersionMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         boxServer.Focus();
       }
@@ -104,28 +104,28 @@ namespace SQLIndexManager {
     #region Properties
 
     private string _server {
-      get { return boxServer.Text; }
-      set { boxServer.Text = value; }
+      get => boxServer.Text;
+      set => boxServer.Text = value;
     }
 
     private AuthTypes _authType {
-      get { return (AuthTypes)boxAuthType.SelectedIndex; }
-      set { boxAuthType.SelectedIndex = (int)value; }
+      get => (AuthTypes)boxAuthType.SelectedIndex;
+      set => boxAuthType.SelectedIndex = (int)value;
     }
 
     private string _user {
-      get { return boxUser.Text; }
-      set { boxUser.Text = value; }
+      get => boxUser.Text;
+      set => boxUser.Text = value;
     }
 
     private string _password {
-      get { return boxPassword.Text; }
-      set { boxPassword.Text = value; }
+      get => boxPassword.Text;
+      set => boxPassword.Text = value;
     }
 
     private bool _savePassword {
-      get { return boxSavePassword.Checked; }
-      set { boxSavePassword.Checked = value; }
+      get => boxSavePassword.Checked;
+      set => boxSavePassword.Checked = value;
     }
 
     private List<string> _databases;
@@ -176,7 +176,7 @@ namespace SQLIndexManager {
     }
 
     private void BoxAuthTypeSelectionChanged(object sender, EventArgs e) {
-      bool sqlAuth = (_authType == AuthTypes.SqlServer);
+      bool sqlAuth = (_authType == AuthTypes.SQLSERVER);
       boxUser.Enabled =
           boxPassword.Enabled =
               boxSavePassword.Enabled = sqlAuth;
@@ -192,7 +192,7 @@ namespace SQLIndexManager {
 
     private void UpdateControlUsage(bool enabled) {
 
-      foreach(Control c in this.Controls) {
+      foreach(Control c in Controls) {
         c.Enabled = enabled;
       }
 
@@ -202,13 +202,13 @@ namespace SQLIndexManager {
       if (enabled) {
         boxUser.Enabled =
             boxPassword.Enabled =
-                boxSavePassword.Enabled = (_authType == AuthTypes.SqlServer);
+                boxSavePassword.Enabled = (_authType == AuthTypes.SQLSERVER);
       }
     }
 
     private void EditValueChanged(object sender, EventArgs e) {
       buttonOK.Enabled =
-          !string.IsNullOrEmpty(_server) && !(string.IsNullOrEmpty(_user) && _authType == AuthTypes.SqlServer);
+          !string.IsNullOrEmpty(_server) && !(string.IsNullOrEmpty(_user) && _authType == AuthTypes.SQLSERVER);
     }
 
     #endregion
@@ -230,6 +230,7 @@ namespace SQLIndexManager {
     }
 
     #endregion
+
   }
 
 }

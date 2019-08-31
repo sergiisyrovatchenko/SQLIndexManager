@@ -1,25 +1,12 @@
-﻿using System.ComponentModel;
-
-namespace SQLIndexManager {
+﻿namespace SQLIndexManager {
 
   public enum IndexType {
-    [Description("MISSING INDEX")]
-    MissingIndex = -1,
-
-    [Description("HEAP")]
-    Heap = 0,
-
-    [Description("CLUSTERED")]
-    Clustered = 1,
-
-    [Description("NONCLUSTERED")]
-    NonClustered = 2,
-
-    [Description("CLUSTERED COLUMNSTORE")]
-    ColumnstoreClustered = 5,
-
-    [Description("NONCLUSTERED COLUMNSTORE")]
-    ColumnstoreNonClustered = 6
+    MISSING_INDEX = -1,
+    HEAP = 0,
+    CLUSTERED = 1,
+    NONCLUSTERED = 2,
+    CLUSTERED_COLUMNSTORE = 5,
+    NONCLUSTERED_COLUMNSTORE = 6
   }
 
 }

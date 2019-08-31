@@ -14,6 +14,7 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 * Command-line automation
 * Automatic T-SQL script generation
 * Columnstore maintenance support
+* Statistics maintenance
 * Collecting missing indexes
 * Detect duplicate indexes
 * Drop or disable unused indexes
@@ -26,20 +27,15 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 
 You can download .zip file with the latest build of the master branch from [Releases](https://github.com/sergeysyrovatchenko/SQLIndexManager/releases)
 
-## Future Plans
-
-* Improvements in command-line automation
-* Statistics maintenance
-
 ## Topics
 
 [SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
 
 ## Screenshots
 
-![SQL Index Manager](https://habrastorage.org/webt/bw/6n/ma/bw6nmab-z9tlc5q1rud1rmdjj34.png)
-![SQL Index Manager](https://habrastorage.org/webt/vj/vi/ts/vjvits-lmjukoi35ra_3bjt8pdq.png)
-![SQL Index Manager](https://habrastorage.org/webt/ep/e6/cv/epe6cveesa22v3yvbatf7iwhfry.png)
+![SQL Index Manager](https://habrastorage.org/webt/jw/8s/vk/jw8svkqqg0ybvtdgt1cdoiulxsm.png)
+![SQL Index Manager](https://habrastorage.org/webt/9d/gm/uf/9dgmufdo4-bnbhqrx7c8jcs5358.png)
+![SQL Index Manager](https://habrastorage.org/webt/3x/iz/4n/3xiz4nf8-wneuchgmovaceynny0.png)
 
 ## Command Line
 
@@ -74,6 +70,10 @@ This switch is used to ignore any columnstore indexes during maintenance
 **/ignorebtree**
 
 This switch is used to ignore any b-tree indexes during maintenance
+
+**/missingindex**
+
+Including missing indexes into regular maintenance
 
 **/maxdop 8**
 

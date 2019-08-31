@@ -3,6 +3,7 @@
 namespace SQLIndexManager {
 
   public static class CmdParser {
+
     public static List<CmdArgument> Parse(string[] argumets) {
 
       List<CmdArgument> newArguments = new List<CmdArgument>();
@@ -20,6 +21,7 @@ namespace SQLIndexManager {
 
       return newArguments;
     }
+
   }
 
 }

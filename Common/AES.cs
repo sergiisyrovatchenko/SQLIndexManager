@@ -6,6 +6,7 @@ using System.Text;
 namespace SQLIndexManager {
 
   internal class AES {
+
     private static readonly byte[] Key1 = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF, 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
     private static readonly byte[] Key2 = Encoding.UTF8.GetBytes("_SQLIndexManager");
 
@@ -43,6 +44,7 @@ namespace SQLIndexManager {
         }
       }
     }
+
   }
 
 }

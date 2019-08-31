@@ -9,7 +9,8 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class NetworkBox : XtraForm {
-    readonly CancellationTokenSource _cancel = new CancellationTokenSource(500);
+
+    private readonly CancellationTokenSource _cancel = new CancellationTokenSource(500);
 
     public NetworkBox() {
       InitializeComponent();
@@ -87,6 +88,7 @@ namespace SQLIndexManager {
     }
 
     #endregion
+
   }
 
 }

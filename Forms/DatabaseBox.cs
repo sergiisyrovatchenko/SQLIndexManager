@@ -11,11 +11,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 
   public partial class DatabaseBox : XtraForm {
+
     public DatabaseBox() {
       InitializeComponent();
 
@@ -47,9 +47,13 @@ namespace SQLIndexManager {
     private void RefreshDatabases(bool scanUsedSpace) {
       grid.DataSource = null;
       buttonOK.Enabled = false;
+
+      colDataSize.Visible = colLogSize.Visible = !Settings.ServerInfo.IsAzure
+                                              && Settings.ServerInfo.IsSysAdmin;
+
       colDataFreeSize.Visible = colLogFreeSize.Visible = scanUsedSpace
-                                                       && !Settings.ServerInfo.IsAzure
-                                                       && Settings.ServerInfo.IsSysAdmin;
+                                                      && !Settings.ServerInfo.IsAzure
+                                                      && Settings.ServerInfo.IsSysAdmin;
 
       Stopwatch ts = Stopwatch.StartNew();
 
@@ -59,16 +63,13 @@ namespace SQLIndexManager {
           connection.Open();
 
           List<Database> dbs = QueryEngine.GetDatabases(connection, scanUsedSpace);
+          var max = dbs.Max(_ => Math.Max(_.DataSize, _.LogSize));
+          foreach (var rule in view.FormatRules) {
+            ((FormatConditionRuleDataBar)rule.Rule).Maximum = max;
+          }
+
           grid.DataSource = dbs;
           Output.Current.Add($"Refresh {dbs.Count} databases", null, ts.ElapsedMilliseconds);
-
-          if (scanUsedSpace) {
-            var ruleDataFreeSize = view.FormatRules[Resources.DataFreeSize].RuleCast<FormatConditionRuleDataBar>();
-            var ruleLogFreeSize = view.FormatRules[Resources.LogFreeSize].RuleCast<FormatConditionRuleDataBar>();
-
-            ruleDataFreeSize.Maximum = dbs.Max(_ => _.DataSize);
-            ruleLogFreeSize.Maximum = dbs.Max(_ => _.LogSize);
-          }
 
           foreach (string db in Settings.ActiveHost.Databases) {
             int index = view.LocateByValue(colDatabase.FieldName, db);
@@ -140,6 +141,7 @@ namespace SQLIndexManager {
     }
 
     #endregion
+
   }
 
 }

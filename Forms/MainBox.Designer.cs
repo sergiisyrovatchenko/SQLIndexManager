@@ -46,20 +46,27 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn IndexColumns;
       DevExpress.XtraGrid.Columns.GridColumn IncludedColumns;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraEditors.FormatConditionRuleIconSet formatConditionRuleIconSet1 = new DevExpress.XtraEditors.FormatConditionRuleIconSet();
+      DevExpress.XtraEditors.FormatConditionIconSet formatConditionIconSet1 = new DevExpress.XtraEditors.FormatConditionIconSet();
+      DevExpress.XtraEditors.FormatConditionIconSetIcon formatConditionIconSetIcon1 = new DevExpress.XtraEditors.FormatConditionIconSetIcon();
+      DevExpress.XtraEditors.FormatConditionIconSetIcon formatConditionIconSetIcon2 = new DevExpress.XtraEditors.FormatConditionIconSetIcon();
+      DevExpress.XtraEditors.FormatConditionIconSetIcon formatConditionIconSetIcon3 = new DevExpress.XtraEditors.FormatConditionIconSetIcon();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar2 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule3 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar2 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule4 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule5 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule6 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule7 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar6 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
-      DevExpress.XtraGrid.Columns.GridColumn PageSpaceUsed;
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
+      this.Warning = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.PageSpaceUsed = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemHypertextLabel1 = new DevExpress.XtraEditors.Repository.RepositoryItemHypertextLabel();
       this.gridControl1 = new DevExpress.XtraGrid.GridControl();
       this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -80,11 +87,12 @@ namespace SQLIndexManager {
       this.buttonCopyFix = new DevExpress.XtraBars.BarButtonItem();
       this.buttonSaveFix = new DevExpress.XtraBars.BarButtonItem();
       this.buttonOptions = new DevExpress.XtraBars.BarButtonItem();
-      this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+      this.popupExport = new DevExpress.XtraBars.PopupMenu(this.components);
       this.buttonExportExcel = new DevExpress.XtraBars.BarButtonItem();
       this.buttonExportCSV = new DevExpress.XtraBars.BarButtonItem();
       this.buttonExportText = new DevExpress.XtraBars.BarButtonItem();
       this.buttonExportHtml = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonRestoreDefaultLayout = new DevExpress.XtraBars.BarButtonItem();
       this.buttonAbout = new DevExpress.XtraBars.BarButtonItem();
       this.buttonRefreshIndex = new DevExpress.XtraBars.BarButtonItem();
       this.buttonDatabases = new DevExpress.XtraBars.BarButtonItem();
@@ -92,7 +100,6 @@ namespace SQLIndexManager {
       this.boxSearchControl = new DevExpress.XtraEditors.Repository.RepositoryItemSearchControl();
       this.labelSeparator = new DevExpress.XtraBars.BarStaticItem();
       this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
-      this.popupExport = new DevExpress.XtraBars.PopupMenu(this.components);
       this.taskbar = new DevExpress.Utils.Taskbar.TaskbarAssistant();
       this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
       this.buttonFind = new DevExpress.XtraBars.BarButtonItem();
@@ -102,6 +109,8 @@ namespace SQLIndexManager {
       this.colDuration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colMessage = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+      this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.labelError = new DevExpress.XtraBars.BarStaticItem();
       Fragmentation = new DevExpress.XtraGrid.Columns.GridColumn();
       PagesCount = new DevExpress.XtraGrid.Columns.GridColumn();
       RowsCount = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -132,16 +141,14 @@ namespace SQLIndexManager {
       TotalLookups = new DevExpress.XtraGrid.Columns.GridColumn();
       IndexColumns = new DevExpress.XtraGrid.Columns.GridColumn();
       IncludedColumns = new DevExpress.XtraGrid.Columns.GridColumn();
-      PageSpaceUsed = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
       this.splitContainer.SuspendLayout();
@@ -196,8 +203,6 @@ namespace SQLIndexManager {
       // RowsCount
       // 
       RowsCount.Caption = "Rows";
-      RowsCount.DisplayFormat.FormatString = "N0";
-      RowsCount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       RowsCount.FieldName = "RowsCount";
       RowsCount.MaxWidth = 100;
       RowsCount.MinWidth = 100;
@@ -217,7 +222,7 @@ namespace SQLIndexManager {
       // 
       SchemaName.Caption = "Schema";
       SchemaName.FieldName = "SchemaName";
-      SchemaName.MaxWidth = 200;
+      SchemaName.MaxWidth = 250;
       SchemaName.MinWidth = 60;
       SchemaName.Name = "SchemaName";
       SchemaName.OptionsColumn.AllowEdit = false;
@@ -233,7 +238,7 @@ namespace SQLIndexManager {
       // 
       ObjectName.Caption = "Object";
       ObjectName.FieldName = "ObjectName";
-      ObjectName.MaxWidth = 350;
+      ObjectName.MaxWidth = 700;
       ObjectName.MinWidth = 120;
       ObjectName.Name = "ObjectName";
       ObjectName.OptionsColumn.AllowEdit = false;
@@ -249,7 +254,7 @@ namespace SQLIndexManager {
       // 
       FileGroupName.Caption = "File Group";
       FileGroupName.FieldName = "FileGroupName";
-      FileGroupName.MaxWidth = 150;
+      FileGroupName.MaxWidth = 200;
       FileGroupName.MinWidth = 78;
       FileGroupName.Name = "FileGroupName";
       FileGroupName.OptionsColumn.AllowEdit = false;
@@ -263,7 +268,7 @@ namespace SQLIndexManager {
       // 
       IndexName.Caption = "Index";
       IndexName.FieldName = "IndexName";
-      IndexName.MaxWidth = 400;
+      IndexName.MaxWidth = 800;
       IndexName.MinWidth = 150;
       IndexName.Name = "IndexName";
       IndexName.OptionsColumn.AllowEdit = false;
@@ -279,7 +284,7 @@ namespace SQLIndexManager {
       // 
       IndexType.Caption = "Type";
       IndexType.FieldName = "IndexType";
-      IndexType.MaxWidth = 200;
+      IndexType.MaxWidth = 250;
       IndexType.MinWidth = 80;
       IndexType.Name = "IndexType";
       IndexType.OptionsColumn.AllowEdit = false;
@@ -385,7 +390,7 @@ namespace SQLIndexManager {
       FixType.Caption = "Fix";
       FixType.ColumnEdit = this.popupIndexOperation;
       FixType.FieldName = "FixType";
-      FixType.MaxWidth = 200;
+      FixType.MaxWidth = 220;
       FixType.MinWidth = 90;
       FixType.Name = "FixType";
       FixType.OptionsColumn.AllowIncrementalSearch = false;
@@ -393,7 +398,7 @@ namespace SQLIndexManager {
       FixType.OptionsColumn.ShowInCustomizationForm = false;
       FixType.OptionsColumn.ShowInExpressionEditor = false;
       FixType.OptionsColumn.TabStop = false;
-      FixType.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      FixType.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       FixType.Visible = true;
       FixType.VisibleIndex = 1;
       FixType.Width = 90;
@@ -484,7 +489,7 @@ namespace SQLIndexManager {
       // 
       DatabaseName.Caption = "Database";
       DatabaseName.FieldName = "DatabaseName";
-      DatabaseName.MaxWidth = 200;
+      DatabaseName.MaxWidth = 250;
       DatabaseName.MinWidth = 100;
       DatabaseName.Name = "DatabaseName";
       DatabaseName.OptionsColumn.AllowEdit = false;
@@ -494,7 +499,7 @@ namespace SQLIndexManager {
       DatabaseName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       DatabaseName.Visible = true;
       DatabaseName.VisibleIndex = 2;
-      DatabaseName.Width = 110;
+      DatabaseName.Width = 100;
       // 
       // SavedSpace
       // 
@@ -648,7 +653,7 @@ namespace SQLIndexManager {
       // 
       IndexColumns.Caption = "Index Columns";
       IndexColumns.FieldName = "IndexColumns";
-      IndexColumns.MaxWidth = 600;
+      IndexColumns.MaxWidth = 1000;
       IndexColumns.MinWidth = 150;
       IndexColumns.Name = "IndexColumns";
       IndexColumns.OptionsColumn.AllowEdit = false;
@@ -660,13 +665,46 @@ namespace SQLIndexManager {
       // 
       IncludedColumns.Caption = "Included Columns";
       IncludedColumns.FieldName = "IncludedColumns";
-      IncludedColumns.MaxWidth = 600;
+      IncludedColumns.MaxWidth = 1000;
       IncludedColumns.MinWidth = 150;
       IncludedColumns.Name = "IncludedColumns";
       IncludedColumns.OptionsColumn.AllowEdit = false;
       IncludedColumns.OptionsColumn.AllowFocus = false;
       IncludedColumns.OptionsFilter.AllowFilter = false;
       IncludedColumns.Width = 150;
+      // 
+      // Warning
+      // 
+      this.Warning.AppearanceCell.Options.UseTextOptions = true;
+      this.Warning.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.Warning.Caption = "Warning";
+      this.Warning.FieldName = "Error";
+      this.Warning.MaxWidth = 90;
+      this.Warning.MinWidth = 90;
+      this.Warning.Name = "Warning";
+      this.Warning.OptionsColumn.AllowEdit = false;
+      this.Warning.OptionsColumn.AllowFocus = false;
+      this.Warning.OptionsColumn.AllowSize = false;
+      this.Warning.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      this.Warning.Width = 90;
+      // 
+      // PageSpaceUsed
+      // 
+      this.PageSpaceUsed.Caption = "Page Space Used";
+      this.PageSpaceUsed.FieldName = "PageSpaceUsed";
+      this.PageSpaceUsed.MaxWidth = 103;
+      this.PageSpaceUsed.MinWidth = 103;
+      this.PageSpaceUsed.Name = "PageSpaceUsed";
+      this.PageSpaceUsed.OptionsColumn.AllowEdit = false;
+      this.PageSpaceUsed.OptionsColumn.AllowFocus = false;
+      this.PageSpaceUsed.OptionsColumn.AllowSize = false;
+      this.PageSpaceUsed.OptionsFilter.AllowAutoFilter = false;
+      this.PageSpaceUsed.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
+      this.PageSpaceUsed.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
+      this.PageSpaceUsed.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
+      this.PageSpaceUsed.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
+      this.PageSpaceUsed.UnboundType = DevExpress.Data.UnboundColumnType.String;
+      this.PageSpaceUsed.Width = 103;
       // 
       // repositoryItemHypertextLabel1
       // 
@@ -702,7 +740,7 @@ namespace SQLIndexManager {
       this.gridView1.Appearance.OddRow.Options.UseBackColor = true;
       this.gridView1.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
       this.gridView1.Appearance.Row.Options.UseFont = true;
-      this.gridView1.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.gridView1.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
       this.gridView1.Appearance.SelectedRow.Options.UseBackColor = true;
       this.gridView1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
       this.gridView1.ColumnPanelRowHeight = 26;
@@ -716,7 +754,7 @@ namespace SQLIndexManager {
             IndexName,
             IndexType,
             PartitionNumber,
-            PageSpaceUsed,
+            this.PageSpaceUsed,
             Fragmentation,
             PagesCount,
             SavedSpace,
@@ -737,15 +775,49 @@ namespace SQLIndexManager {
             TotalScans,
             TotalLookups,
             IndexColumns,
-            IncludedColumns});
+            IncludedColumns,
+            this.Warning,
+            this.Error});
       this.gridView1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-      gridFormatRule1.Column = Fragmentation;
-      gridFormatRule1.ColumnApplyTo = Fragmentation;
-      gridFormatRule1.Name = "Fragmentation";
+      gridFormatRule1.Column = this.Warning;
+      gridFormatRule1.ColumnApplyTo = IndexName;
+      gridFormatRule1.Name = "Warning";
+      formatConditionIconSet1.CategoryName = "Symbols";
+      formatConditionIconSetIcon1.PredefinedName = "Flags3_1.png";
+      formatConditionIconSetIcon1.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      formatConditionIconSetIcon1.ValueComparison = DevExpress.XtraEditors.FormatConditionComparisonType.GreaterOrEqual;
+      formatConditionIconSetIcon2.PredefinedName = "Flags3_2.png";
+      formatConditionIconSetIcon2.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+      formatConditionIconSetIcon2.ValueComparison = DevExpress.XtraEditors.FormatConditionComparisonType.GreaterOrEqual;
+      formatConditionIconSetIcon3.PredefinedName = "Flags3_3.png";
+      formatConditionIconSetIcon3.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+      formatConditionIconSetIcon3.ValueComparison = DevExpress.XtraEditors.FormatConditionComparisonType.GreaterOrEqual;
+      formatConditionIconSet1.Icons.Add(formatConditionIconSetIcon1);
+      formatConditionIconSet1.Icons.Add(formatConditionIconSetIcon2);
+      formatConditionIconSet1.Icons.Add(formatConditionIconSetIcon3);
+      formatConditionIconSet1.Name = "Flags3";
+      formatConditionIconSet1.ValueType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleIconSet1.IconSet = formatConditionIconSet1;
+      gridFormatRule1.Rule = formatConditionRuleIconSet1;
+      gridFormatRule2.Column = Fragmentation;
+      gridFormatRule2.ColumnApplyTo = Fragmentation;
+      gridFormatRule2.Name = "Fragmentation";
       formatConditionRuleDataBar1.AllowNegativeAxis = false;
       formatConditionRuleDataBar1.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(121)))), ((int)(((byte)(121)))));
-      formatConditionRuleDataBar1.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar1.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar1.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(188)))), ((int)(((byte)(188)))));
+      formatConditionRuleDataBar1.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(121)))), ((int)(((byte)(121)))));
       formatConditionRuleDataBar1.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar1.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar1.DrawAxis = false;
@@ -763,16 +835,17 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar1.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar1.PredefinedName = null;
       formatConditionRuleDataBar1.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule1.Rule = formatConditionRuleDataBar1;
-      gridFormatRule2.Column = PagesCount;
-      gridFormatRule2.ColumnApplyTo = PagesCount;
-      gridFormatRule2.Name = "PagesCount";
+      gridFormatRule2.Rule = formatConditionRuleDataBar1;
+      gridFormatRule3.Column = PagesCount;
+      gridFormatRule3.ColumnApplyTo = PagesCount;
+      gridFormatRule3.Name = "PagesCount";
       formatConditionRuleDataBar2.AllowNegativeAxis = false;
       formatConditionRuleDataBar2.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
-      formatConditionRuleDataBar2.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar2.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar2.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(214)))), ((int)(((byte)(254)))));
+      formatConditionRuleDataBar2.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
       formatConditionRuleDataBar2.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar2.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar2.DrawAxis = false;
       formatConditionRuleDataBar2.Maximum = new decimal(new int[] {
             100,
             0,
@@ -787,14 +860,14 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar2.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar2.PredefinedName = null;
       formatConditionRuleDataBar2.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule2.Rule = formatConditionRuleDataBar2;
-      gridFormatRule3.Column = UnusedPagesCount;
-      gridFormatRule3.ColumnApplyTo = UnusedPagesCount;
-      gridFormatRule3.Name = "UnusedPagesCount";
+      gridFormatRule3.Rule = formatConditionRuleDataBar2;
+      gridFormatRule4.Column = UnusedPagesCount;
+      gridFormatRule4.ColumnApplyTo = UnusedPagesCount;
+      gridFormatRule4.Name = "UnusedPagesCount";
       formatConditionRuleDataBar3.AllowNegativeAxis = false;
       formatConditionRuleDataBar3.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
-      formatConditionRuleDataBar3.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar3.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar3.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
+      formatConditionRuleDataBar3.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
       formatConditionRuleDataBar3.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar3.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar3.DrawAxis = false;
@@ -812,14 +885,14 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar3.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar3.PredefinedName = null;
       formatConditionRuleDataBar3.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule3.Rule = formatConditionRuleDataBar3;
-      gridFormatRule4.Column = RowsCount;
-      gridFormatRule4.ColumnApplyTo = RowsCount;
-      gridFormatRule4.Name = "RowsCount";
+      gridFormatRule4.Rule = formatConditionRuleDataBar3;
+      gridFormatRule5.Column = RowsCount;
+      gridFormatRule5.ColumnApplyTo = RowsCount;
+      gridFormatRule5.Name = "RowsCount";
       formatConditionRuleDataBar4.AllowNegativeAxis = false;
       formatConditionRuleDataBar4.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
-      formatConditionRuleDataBar4.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar4.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar4.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(237)))), ((int)(((byte)(179)))));
+      formatConditionRuleDataBar4.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
       formatConditionRuleDataBar4.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar4.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar4.DrawAxis = false;
@@ -837,13 +910,14 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar4.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar4.PredefinedName = null;
       formatConditionRuleDataBar4.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule4.Rule = formatConditionRuleDataBar4;
-      gridFormatRule5.Column = SavedSpace;
-      gridFormatRule5.ColumnApplyTo = SavedSpace;
-      gridFormatRule5.Name = "SavedSpace";
+      gridFormatRule5.Rule = formatConditionRuleDataBar4;
+      gridFormatRule6.Column = SavedSpace;
+      gridFormatRule6.ColumnApplyTo = SavedSpace;
+      gridFormatRule6.Name = "SavedSpace";
+      formatConditionRuleDataBar5.AllowNegativeAxis = false;
       formatConditionRuleDataBar5.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
-      formatConditionRuleDataBar5.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar5.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar5.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(159)))), ((int)(((byte)(243)))), ((int)(((byte)(233)))));
+      formatConditionRuleDataBar5.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
       formatConditionRuleDataBar5.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar5.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar5.DrawAxis = false;
@@ -861,14 +935,14 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar5.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar5.PredefinedName = null;
       formatConditionRuleDataBar5.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule5.Rule = formatConditionRuleDataBar5;
-      gridFormatRule6.Column = PageSpaceUsed;
-      gridFormatRule6.ColumnApplyTo = PageSpaceUsed;
-      gridFormatRule6.Name = "PageSpaceUsed";
+      gridFormatRule6.Rule = formatConditionRuleDataBar5;
+      gridFormatRule7.Column = this.PageSpaceUsed;
+      gridFormatRule7.ColumnApplyTo = this.PageSpaceUsed;
+      gridFormatRule7.Name = "PageSpaceUsed";
       formatConditionRuleDataBar6.AllowNegativeAxis = false;
       formatConditionRuleDataBar6.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(125)))), ((int)(((byte)(212)))));
-      formatConditionRuleDataBar6.Appearance.BackColor2 = System.Drawing.Color.Transparent;
-      formatConditionRuleDataBar6.Appearance.BorderColor = System.Drawing.Color.Transparent;
+      formatConditionRuleDataBar6.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(165)))), ((int)(((byte)(238)))));
+      formatConditionRuleDataBar6.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(125)))), ((int)(((byte)(212)))));
       formatConditionRuleDataBar6.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar6.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar6.DrawAxis = false;
@@ -886,13 +960,14 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar6.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar6.PredefinedName = null;
       formatConditionRuleDataBar6.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule6.Rule = formatConditionRuleDataBar6;
+      gridFormatRule7.Rule = formatConditionRuleDataBar6;
       this.gridView1.FormatRules.Add(gridFormatRule1);
       this.gridView1.FormatRules.Add(gridFormatRule2);
       this.gridView1.FormatRules.Add(gridFormatRule3);
       this.gridView1.FormatRules.Add(gridFormatRule4);
       this.gridView1.FormatRules.Add(gridFormatRule5);
       this.gridView1.FormatRules.Add(gridFormatRule6);
+      this.gridView1.FormatRules.Add(gridFormatRule7);
       this.gridView1.GridControl = this.gridControl1;
       this.gridView1.Name = "gridView1";
       this.gridView1.OptionsCustomization.AllowGroup = false;
@@ -912,6 +987,8 @@ namespace SQLIndexManager {
       this.gridView1.OptionsMenu.ShowAutoFilterRowItem = false;
       this.gridView1.OptionsSelection.CheckBoxSelectorColumnWidth = 35;
       this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
+      this.gridView1.OptionsSelection.EnableAppearanceFocusedRow = false;
+      this.gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
       this.gridView1.OptionsSelection.MultiSelect = true;
       this.gridView1.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
       this.gridView1.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
@@ -925,7 +1002,6 @@ namespace SQLIndexManager {
       this.gridView1.OptionsView.ShowIndicator = false;
       this.gridView1.RowHeight = 24;
       this.gridView1.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.GridRowCellClick);
-      this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.GridRowCellStyle);
       this.gridView1.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.GridPopupMenuShowing);
       this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
       this.gridView1.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridColumnDisplayText);
@@ -965,6 +1041,7 @@ namespace SQLIndexManager {
       // 
       this.statusBar.ItemLinks.Add(this.labelDatabase);
       this.statusBar.ItemLinks.Add(this.labelIndex);
+      this.statusBar.ItemLinks.Add(this.labelError);
       this.statusBar.ItemLinks.Add(this.buttonStopScan);
       this.statusBar.ItemLinks.Add(this.buttonStopFix);
       this.statusBar.ItemLinks.Add(this.buttonLog);
@@ -984,6 +1061,7 @@ namespace SQLIndexManager {
       this.labelDatabase.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelDatabase.ImageOptions.Image")));
       this.labelDatabase.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelDatabase.ImageOptions.LargeImage")));
       this.labelDatabase.Name = "labelDatabase";
+      this.labelDatabase.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
       this.labelDatabase.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelIndex
@@ -994,6 +1072,7 @@ namespace SQLIndexManager {
       this.labelIndex.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelIndex.ImageOptions.Image")));
       this.labelIndex.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelIndex.ImageOptions.LargeImage")));
       this.labelIndex.Name = "labelIndex";
+      this.labelIndex.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
       this.labelIndex.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonStopScan
@@ -1033,6 +1112,7 @@ namespace SQLIndexManager {
       this.labelServerInfo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.Image")));
       this.labelServerInfo.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.LargeImage")));
       this.labelServerInfo.Name = "labelServerInfo";
+      this.labelServerInfo.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
       this.labelServerInfo.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelInfo
@@ -1068,9 +1148,11 @@ namespace SQLIndexManager {
             this.buttonExportCSV,
             this.buttonExportText,
             this.buttonLog,
-            this.buttonExportHtml});
+            this.buttonExportHtml,
+            this.buttonRestoreDefaultLayout,
+            this.labelError});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-      this.ribbonControl1.MaxItemId = 28;
+      this.ribbonControl1.MaxItemId = 30;
       this.ribbonControl1.Name = "ribbonControl1";
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonNewConnection);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonDatabases);
@@ -1147,7 +1229,7 @@ namespace SQLIndexManager {
       // 
       this.buttonOptions.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.DropDown;
       this.buttonOptions.Caption = "Settings";
-      this.buttonOptions.DropDownControl = this.popupMenu1;
+      this.buttonOptions.DropDownControl = this.popupExport;
       this.buttonOptions.Id = 16;
       this.buttonOptions.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonOptions.ImageOptions.Image")));
       this.buttonOptions.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonOptions.ImageOptions.LargeImage")));
@@ -1155,14 +1237,15 @@ namespace SQLIndexManager {
       this.buttonOptions.Name = "buttonOptions";
       this.buttonOptions.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonOptionsClick);
       // 
-      // popupMenu1
+      // popupExport
       // 
-      this.popupMenu1.ItemLinks.Add(this.buttonExportExcel);
-      this.popupMenu1.ItemLinks.Add(this.buttonExportCSV);
-      this.popupMenu1.ItemLinks.Add(this.buttonExportText);
-      this.popupMenu1.ItemLinks.Add(this.buttonExportHtml);
-      this.popupMenu1.Name = "popupMenu1";
-      this.popupMenu1.Ribbon = this.ribbonControl1;
+      this.popupExport.ItemLinks.Add(this.buttonExportExcel);
+      this.popupExport.ItemLinks.Add(this.buttonExportCSV);
+      this.popupExport.ItemLinks.Add(this.buttonExportText);
+      this.popupExport.ItemLinks.Add(this.buttonExportHtml);
+      this.popupExport.ItemLinks.Add(this.buttonRestoreDefaultLayout, true);
+      this.popupExport.Name = "popupExport";
+      this.popupExport.Ribbon = this.ribbonControl1;
       // 
       // buttonExportExcel
       // 
@@ -1199,6 +1282,15 @@ namespace SQLIndexManager {
       this.buttonExportHtml.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonExportHtml.ImageOptions.LargeImage")));
       this.buttonExportHtml.Name = "buttonExportHtml";
       this.buttonExportHtml.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ExportHtml);
+      // 
+      // buttonRestoreDefaultLayout
+      // 
+      this.buttonRestoreDefaultLayout.Caption = "Restore Layout";
+      this.buttonRestoreDefaultLayout.Id = 28;
+      this.buttonRestoreDefaultLayout.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem1.ImageOptions.Image")));
+      this.buttonRestoreDefaultLayout.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barButtonItem1.ImageOptions.LargeImage")));
+      this.buttonRestoreDefaultLayout.Name = "buttonRestoreDefaultLayout";
+      this.buttonRestoreDefaultLayout.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.RestoreDefaultLayout);
       // 
       // buttonAbout
       // 
@@ -1258,15 +1350,6 @@ namespace SQLIndexManager {
       // toolTipController
       // 
       this.toolTipController.Active = false;
-      // 
-      // popupExport
-      // 
-      this.popupExport.ItemLinks.Add(this.buttonExportExcel);
-      this.popupExport.ItemLinks.Add(this.buttonExportCSV);
-      this.popupExport.ItemLinks.Add(this.buttonExportText);
-      this.popupExport.ItemLinks.Add(this.buttonExportHtml);
-      this.popupExport.Name = "popupExport";
-      this.popupExport.Ribbon = this.ribbonControl1;
       // 
       // taskbar
       // 
@@ -1393,23 +1476,27 @@ namespace SQLIndexManager {
       // 
       this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
       // 
-      // PageSpaceUsed
+      // Error
       // 
-      PageSpaceUsed.Caption = "Page Space Used";
-      PageSpaceUsed.FieldName = "PageSpaceUsed";
-      PageSpaceUsed.MaxWidth = 103;
-      PageSpaceUsed.MinWidth = 103;
-      PageSpaceUsed.Name = "PageSpaceUsed";
-      PageSpaceUsed.OptionsColumn.AllowEdit = false;
-      PageSpaceUsed.OptionsColumn.AllowFocus = false;
-      PageSpaceUsed.OptionsColumn.AllowSize = false;
-      PageSpaceUsed.OptionsFilter.AllowAutoFilter = false;
-      PageSpaceUsed.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
-      PageSpaceUsed.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
-      PageSpaceUsed.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
-      PageSpaceUsed.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
-      PageSpaceUsed.UnboundType = DevExpress.Data.UnboundColumnType.String;
-      PageSpaceUsed.Width = 103;
+      this.Error.Caption = "Error Message";
+      this.Error.FieldName = "Error";
+      this.Error.MaxWidth = 300;
+      this.Error.MinWidth = 120;
+      this.Error.Name = "Error";
+      this.Error.OptionsColumn.AllowEdit = false;
+      this.Error.OptionsColumn.AllowFocus = false;
+      this.Error.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
+      this.Error.Width = 120;
+      // 
+      // labelError
+      // 
+      this.labelError.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelError.Caption = "0";
+      this.labelError.Id = 29;
+      this.labelError.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barStaticItem1.ImageOptions.Image")));
+      this.labelError.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barStaticItem1.ImageOptions.LargeImage")));
+      this.labelError.Name = "labelError";
+      this.labelError.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // MainBox
       // 
@@ -1435,9 +1522,8 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxSearchControl)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
       this.splitContainer.ResumeLayout(false);
@@ -1493,6 +1579,10 @@ namespace SQLIndexManager {
     private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
     private PopupMenu popupFix;
     private BarButtonItem buttonExportHtml;
-    private PopupMenu popupMenu1;
+    private DevExpress.XtraGrid.Columns.GridColumn PageSpaceUsed;
+    private DevExpress.XtraGrid.Columns.GridColumn Warning;
+    private BarButtonItem buttonRestoreDefaultLayout;
+    private DevExpress.XtraGrid.Columns.GridColumn Error;
+    private BarStaticItem labelError;
   }
 }

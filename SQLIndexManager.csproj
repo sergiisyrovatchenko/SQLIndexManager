@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -42,29 +42,36 @@
     <ApplicationIcon>Images\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevExpress.Data.v17.2">
+    <Reference Include="DevExpress.Data.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Data.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Images.v17.2">
+    <Reference Include="DevExpress.Images.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Images.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Printing.v17.2.Core">
+    <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Printing.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Sparkline.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Sparkline.v17.2.Core.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Utils.v17.2">
+    <Reference Include="DevExpress.Utils.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Utils.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraBars.v17.2">
+    <Reference Include="DevExpress.XtraBars.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.XtraBars.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraEditors.v17.2">
+    <Reference Include="DevExpress.XtraEditors.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.XtraEditors.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.XtraGrid.v17.2">
+    <Reference Include="DevExpress.XtraGrid.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.XtraGrid.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraLayout.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
@@ -127,7 +134,7 @@
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Index.cs" />
     <Compile Include="Server\Query.cs" />
-    <Compile Include="Server\Server.cs" />
+    <Compile Include="Types\ServerVersion.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="Server\Host.cs" />
     <Compile Include="Settings\Options.cs" />
@@ -155,11 +162,13 @@
     <Compile Include="Forms\ConnectionBox.Designer.cs">
       <DependentUpon>ConnectionBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Types\FixOp.cs" />
     <Compile Include="Types\AuthTypes.cs" />
     <Compile Include="Types\DataCompression.cs" />
     <Compile Include="Types\IndexOp.cs" />
     <Compile Include="Types\IndexType.cs" />
+    <Compile Include="Types\AbortAfterWait.cs" />
+    <Compile Include="Types\NoRecompute.cs" />
+    <Compile Include="Types\ScanMode.cs" />
     <Compile Include="Types\WarningType.cs" />
     <EmbeddedResource Include="Forms\ErrorBox.resx">
       <DependentUpon>ErrorBox.cs</DependentUpon>

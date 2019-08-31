@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 namespace SQLIndexManager {
 
   public class Settings {
+
     private static GlobalSettings _current;
     private static Host _activeHost;
     private static readonly Destructor _finalise = new Destructor();
@@ -86,7 +87,7 @@ namespace SQLIndexManager {
         using (FileStream writer = File.OpenWrite(SettingFileName)) {
           _current.Hosts.RemoveAll(s => !s.IsUserConnection);
           _current.Hosts.ForEach(s => {
-            if (s.AuthType == AuthTypes.SqlServer && s.Password != null) {
+            if (s.AuthType == AuthTypes.SQLSERVER && s.Password != null) {
               s.Password = s.SavePassword
                               ? AES.Encrypt(s.Password)
                               : null;
@@ -113,7 +114,7 @@ namespace SQLIndexManager {
             _current.Hosts.RemoveAll(_ => _.Server == null);
             _current.Hosts.ForEach(s => {
               s.IsUserConnection = true;
-              if (s.AuthType == AuthTypes.SqlServer && !string.IsNullOrEmpty(s.Password)) {
+              if (s.AuthType == AuthTypes.SQLSERVER && !string.IsNullOrEmpty(s.Password)) {
                 s.Password = AES.Decrypt(s.Password);
                 s.SavePassword = true;
               }
@@ -150,6 +151,7 @@ namespace SQLIndexManager {
         _current.Hosts.Add(new Host() { Server = Environment.MachineName });
       }
     }
+
   }
 
 }

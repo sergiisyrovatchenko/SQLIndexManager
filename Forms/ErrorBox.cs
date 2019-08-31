@@ -6,6 +6,7 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   public partial class ErrorBox : XtraForm {
+
     public ErrorBox(Exception ex) {
       InitializeComponent();
 
@@ -33,6 +34,7 @@ namespace SQLIndexManager {
     }
 
     #endregion
+
   }
 
 }

@@ -4,52 +4,52 @@ namespace SQLIndexManager {
 
   public enum IndexOp {
     [Description("REBUILD")]
-    Rebuild = 0,
+    REBUILD = 0,
 
     [Description("REBUILD (COMPRESSION = ROW)")]
-    RebuildRow = 1,
+    REBUILD_ROW = 1,
 
     [Description("REBUILD (COMPRESSION = PAGE)")]
-    RebuildPage = 2,
+    REBUILD_PAGE = 2,
 
     [Description("REBUILD (COMPRESSION = NONE)")]
-    RebuildNone = 3,
+    REBUILD_NONE = 3,
 
     [Description("REBUILD (COMPRESSION = COLUMNSTORE)")]
-    RebuildColumnstore = 4,
+    REBUILD_COLUMNSTORE = 4,
 
     [Description("REBUILD (COMPRESSION = COLUMNSTORE_ARCHIVE)")]
-    RebuildColumnstoreArchive = 5,
+    REBUILD_COLUMNSTORE_ARCHIVE = 5,
 
     [Description("REORGANIZE")]
-    Reorganize = 6,
+    REORGANIZE = 6,
 
     [Description("REORGANIZE (COMPRESS_ALL_ROW_GROUPS = ON)")]
-    ReorganizeCompressAllRowGroup = 7,
+    REORGANIZE_COMPRESS_ALL_ROW_GROUPS = 7,
 
     [Description("REBUILD (ONLINE = ON)")]
-    RebuildOnline = 8,
-
-    [Description("REBUILD (FILLFACTOR = 100)")]
-    RebuildFillFactorZero = 9,
+    REBUILD_ONLINE = 8,
 
     [Description("UPDATE STATISTICS SAMPLE")]
-    UpdateStatsSample = 10,
+    UPDATE_STATISTICS_SAMPLE = 9,
 
     [Description("UPDATE STATISTICS RESAMPLE")]
-    UpdateStatsResample = 11,
+    UPDATE_STATISTICS_RESAMPLE = 10,
 
     [Description("UPDATE STATISTICS FULL")]
-    UpdateStatsFull = 12,
+    UPDATE_STATISTICS_FULL = 11,
 
-    [Description("DISABLE")]
-    Disable = 13,
+    [Description("DISABLE INDEX")]
+    DISABLE_INDEX = 12,
 
-    [Description("DROP")]
-    Drop = 14,
+    [Description("DROP INDEX")]
+    DROP_INDEX = 13,
 
     [Description("CREATE INDEX")]
-    CreateIndex = 15
+    CREATE_INDEX = 14,
+
+    [Description("DROP TABLE")]
+    DROP_TABLE = 15
   }
 
 }

@@ -3,6 +3,7 @@
 namespace SQLIndexManager {
 
   public static class NativeMethods {
+
     [DllImport("kernel32.dll")]
     public static extern bool AllocConsole();
 
@@ -11,6 +12,7 @@ namespace SQLIndexManager {
 
     [DllImport("kernel32.dll")]
     public static extern uint GetLastError();
+
   }
 
 }

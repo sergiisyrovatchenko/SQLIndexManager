@@ -271,7 +271,7 @@ LEFT JOIN #AggColumns a ON a.ObjectID = i.ObjectID AND a.IndexID = i.IndexID
 LEFT JOIN #Sparse p ON p.ObjectID = i.ObjectID
 LEFT JOIN #Fragmentation f ON f.ObjectID = i.ObjectID AND f.IndexID = i.IndexID AND f.PartitionNumber = i.PartitionNumber
 LEFT JOIN ({4}) u ON i.ObjectID = u.ObjectID AND i.IndexID = u.IndexID
-LEFT JOIN #Lob lob ON lob.ObjectID = i.ObjectID AND lob.IndexID = i.IndexID
+LEFT JOIN #Lob lob ON lob.ObjectID = i.ObjectID AND (lob.IndexID = i.IndexID OR (i.IndexID IN (0, 1) AND lob.IndexID = 0))
 LEFT JOIN sys.destination_data_spaces dds WITH(NOLOCK) ON i.DataSpaceID = dds.[partition_scheme_id] AND i.PartitionNumber = dds.[destination_id]
 JOIN sys.filegroups fg WITH(NOLOCK) ON ISNULL(dds.[data_space_id], i.DataSpaceID) = fg.[data_space_id] {5}
 WHERE o.[type] IN ('V', 'U')
@@ -319,7 +319,7 @@ SELECT ObjectID   = p.[object_id]
      , PagesCount = SUM(t.[total_pages])
      , IndexStats = STATS_DATE(p.[object_id], 1)
 INTO #AllocationUnits
-FROM sys.partitions p
+FROM sys.partitions p WITH(NOLOCK)
 JOIN (
     SELECT [container_id]
          , [total_pages] = SUM([total_pages])
@@ -331,11 +331,7 @@ WHERE p.[object_id] IN (SELECT DISTINCT i.ObjectID FROM #Indexes i)
     AND p.[index_id] IN (0, 1)
 GROUP BY p.[object_id]
 
-SELECT *, FileGroupName = (
-                  SELECT TOP(1) f.[name]
-                  FROM sys.filegroups f WITH(NOLOCK)
-                  WHERE f.[is_default] = 1
-              )
+SELECT *
 FROM (
     SELECT i.ObjectID
          , ObjectName    = o.[name]
@@ -432,7 +428,7 @@ WHERE [object_id] > 255
     public const string Lob2008 = @"
 INSERT INTO #Lob (ObjectID, IndexID, IsLobLegacy, IsLob)
 SELECT c.ObjectID
-     , IndexID     = ISNULL(i.IndexID, 1)
+     , IndexID     = ISNULL(i.IndexID, 0)
      , IsLobLegacy = MAX(CASE WHEN c.SystemTypeID IN (34, 35, 99) THEN 1 END)
      , IsLob       = MAX(CASE WHEN c.MaxLen = -1 THEN 1 END)
 FROM #Columns c
@@ -445,7 +441,7 @@ GROUP BY c.ObjectID
     public const string Lob2012Plus = @"
 INSERT INTO #Lob (ObjectID, IndexID, IsLobLegacy, IsLob)
 SELECT c.ObjectID
-     , IndexID     = ISNULL(i.IndexID, 1)
+     , IndexID     = ISNULL(i.IndexID, 0)
      , IsLobLegacy = MAX(CASE WHEN c.SystemTypeID IN (34, 35, 99) THEN 1 END)
      , IsLob       = 0
 FROM #Columns c
@@ -540,6 +536,8 @@ SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
 
     public const string DatabaseList = @"
 SET NOCOUNT ON
+SET ARITHABORT ON
+SET NUMERIC_ROUNDABORT OFF
 
 IF OBJECT_ID('tempdb.dbo.#Databases') IS NOT NULL
     DROP TABLE #Databases
@@ -586,6 +584,7 @@ LEFT JOIN (
          , DataSize   = SUM(CASE WHEN [type] = 0 THEN CAST([size] AS BIGINT) END)
          , LogSize    = SUM(CASE WHEN [type] = 1 THEN CAST([size] AS BIGINT) END)
     FROM sys.master_files WITH(NOLOCK)
+    WHERE [state] = 0
     GROUP BY [database_id]
 ) d ON d.DatabaseID = t.DatabaseID
 WHERE t.HasDBAccess = 1
@@ -689,6 +688,7 @@ WHERE [object_id] = {0}
     AND [index_id] = {1}
     AND [partition_number] = {2}
 ";
+
   }
 
 }

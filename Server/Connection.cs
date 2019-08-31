@@ -13,7 +13,7 @@ namespace SQLIndexManager {
         InitialCatalog = database ?? "master"
       };
 
-      if (host.AuthType == AuthTypes.Windows) {
+      if (host.AuthType == AuthTypes.WINDOWS) {
         builder.IntegratedSecurity = true;
       }
       else {
@@ -28,6 +28,7 @@ namespace SQLIndexManager {
       string connectionString = GetConnectionString(host, database);
       return new SqlConnection(connectionString);
     }
+
   }
   
 }

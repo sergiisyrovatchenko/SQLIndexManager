@@ -60,13 +60,13 @@ namespace SQLIndexManager {
 
     public static List<Index> GetIndexes(SqlConnection connection) {
       List<int> it = new List<int>();
-      if (Settings.Options.ScanHeap) it.Add((int)IndexType.Heap);
-      if (Settings.Options.ScanClusteredIndex) it.Add((int)IndexType.Clustered);
-      if (Settings.Options.ScanNonClusteredIndex) it.Add((int)IndexType.NonClustered);
+      if (Settings.Options.ScanHeap) it.Add((int)IndexType.HEAP);
+      if (Settings.Options.ScanClusteredIndex) it.Add((int)IndexType.CLUSTERED);
+      if (Settings.Options.ScanNonClusteredIndex) it.Add((int)IndexType.NONCLUSTERED);
 
       if (Settings.ServerInfo.IsColumnstoreAvailable) {
-        if (Settings.Options.ScanClusteredColumnstore) it.Add((int)IndexType.ColumnstoreClustered);
-        if (Settings.Options.ScanNonClusteredColumnstore) it.Add((int)IndexType.ColumnstoreNonClustered);
+        if (Settings.Options.ScanClusteredColumnstore) it.Add((int)IndexType.CLUSTERED_COLUMNSTORE);
+        if (Settings.Options.ScanNonClusteredColumnstore) it.Add((int)IndexType.NONCLUSTERED_COLUMNSTORE);
       }
 
       List<Index> indexes = new List<Index>();
@@ -75,13 +75,13 @@ namespace SQLIndexManager {
 
         string lob = string.Empty;
         if (Settings.ServerInfo.IsOnlineRebuildAvailable)
-          lob = Settings.ServerInfo.MajorVersion == Server.Sql2008 ? Query.Lob2008 : Query.Lob2012Plus;
+          lob = Settings.ServerInfo.MajorVersion == ServerVersion.Sql2008 ? Query.Lob2008 : Query.Lob2012Plus;
 
         string indexStats = Settings.ServerInfo.IsAzure && connection.Database == Resources.DatamaseMaster
                               ? Query.IndexStatsAzureMaster
                               : Query.IndexStats;
 
-        string indexQuery = Settings.ServerInfo.MajorVersion == Server.Sql2008 ? Query.Index2008 : Query.Index2012Plus;
+        string indexQuery = Settings.ServerInfo.MajorVersion == ServerVersion.Sql2008 ? Query.Index2008 : Query.Index2012Plus;
 
         List<string> excludeObjectMask = Settings.Options.ExcludeObject.Where(_ => _.Contains("%")).ToList();
         List<string> includeObjectMask = Settings.Options.IncludeObject.Where(_ => _.Contains("%")).ToList();
@@ -125,7 +125,7 @@ namespace SQLIndexManager {
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
         cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
@@ -144,19 +144,17 @@ namespace SQLIndexManager {
             if (
                  _.Field<bool>(Resources.IsLobLegacy)
               ||
-                 indexType == IndexType.Heap
+                 indexType == IndexType.CLUSTERED_COLUMNSTORE
               ||
-                 indexType == IndexType.ColumnstoreClustered
-              ||
-                 indexType == IndexType.ColumnstoreNonClustered
+                 indexType == IndexType.NONCLUSTERED_COLUMNSTORE
             ) {
               isOnlineRebuild = false;
             }
             else {
               isOnlineRebuild =
-                     Settings.ServerInfo.MajorVersion > Server.Sql2008
+                     Settings.ServerInfo.MajorVersion > ServerVersion.Sql2008
                   ||
-                     (Settings.ServerInfo.MajorVersion == Server.Sql2008 && !_.Field<bool>(Resources.IsLob));
+                     (Settings.ServerInfo.MajorVersion == ServerVersion.Sql2008 && !_.Field<bool>(Resources.IsLob));
             }
           }
 
@@ -188,7 +186,7 @@ namespace SQLIndexManager {
             DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
             Fragmentation         = _.Field<double?>(Resources.Fragmentation),
             PageSpaceUsed         = _.Field<double?>(Resources.PageSpaceUsed),
-            IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.Heap,
+            IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
             IsAllowOnlineRebuild  = isOnlineRebuild,
             IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
             IndexColumns          = _.Field<string>(Resources.IndexColumns),
@@ -203,7 +201,7 @@ namespace SQLIndexManager {
 
         SqlCommand cmd = new SqlCommand(Query.MissingIndex, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
         cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
@@ -228,15 +226,17 @@ namespace SQLIndexManager {
             SchemaName            = _.Field<string>(Resources.SchemaName),
             PagesCount            = _.Field<long>(Resources.PagesCount),
             RowsCount             = _.Field<long>(Resources.RowsCount),
-            FileGroupName         = _.Field<string>(Resources.FileGroupName),
-            IndexType             = IndexType.MissingIndex,
+            FileGroupName         = "PRIMARY",
+            IndexType             = IndexType.MISSING_INDEX,
             IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
             TotalReads            = _.Field<long?>(Resources.TotalReads),
             TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
             TotalScans            = _.Field<long?>(Resources.TotalScans),
             LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
-            DataCompression       = DataCompression.None,
+            DataCompression       = DataCompression.NONE,
             Fragmentation         = _.Field<double>(Resources.Fragmentation),
+            IsAllowOnlineRebuild  = false,
+            IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable,
             IndexColumns          = indexCols,
             IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
           };
@@ -272,7 +272,7 @@ namespace SQLIndexManager {
       SqlCommand cmd = new SqlCommand(Query.ColumnstoreIndexFragmentation, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
       cmd.Parameters.Add(new SqlParameter("@ObjectID",      SqlDbType.Int)    { Value = index.ObjectId });
-      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.ReorganizeThreshold });
+      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
       cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
       cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
@@ -296,14 +296,18 @@ namespace SQLIndexManager {
       }
     }
 
-    public static string FixIndex(SqlConnection connection, Index index) {
-      string sqlInfo = string.Format(index.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
-                                     index.ObjectId, index.IndexId, index.PartitionNumber, Settings.Options.ScanMode);
+    public static string FixIndex(SqlConnection connection, Index ix) {
+      string sqlInfo = string.Format(ix.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
+                                     ix.ObjectId, ix.IndexId, ix.PartitionNumber, Settings.Options.ScanMode);
 
-      string query = index.GetQuery();
-      string sql = index.FixType == IndexOp.Disable
-                || index.FixType == IndexOp.Drop
-                || index.FixType == IndexOp.CreateIndex
+      string query = ix.GetQuery();
+      string sql = ix.FixType == IndexOp.DISABLE_INDEX
+                || ix.FixType == IndexOp.DROP_INDEX
+                || ix.FixType == IndexOp.DROP_TABLE
+                || ix.FixType == IndexOp.CREATE_INDEX
+                || ix.FixType == IndexOp.UPDATE_STATISTICS_FULL
+                || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE
+                || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
                       ? query
                       : $"{query} \n {sqlInfo}";
 
@@ -315,35 +319,120 @@ namespace SQLIndexManager {
         adapter.Fill(data);
       }
       catch (Exception ex) {
-        index.Error = ex.Message;
+        ix.Error = ex.Message;
       }
 
-      if (index.FixType == IndexOp.CreateIndex) {
-        index.Fragmentation = 0;
-      }
-      else if (index.FixType == IndexOp.Disable || index.FixType == IndexOp.Drop) {
-        index.PagesCountBefore = index.PagesCount;
-        index.Fragmentation = 0;
-        index.PagesCount = 0;
-        index.UnusedPagesCount = 0;
-        index.RowsCount = 0;
-      }
-      else if (data.Tables.Count == 1 && data.Tables[0].Rows.Count == 1) {
-        DataRow row = data.Tables[0].Rows[0];
+      if (string.IsNullOrEmpty(ix.Error)) {
 
-        index.PagesCountBefore  = index.PagesCount - row.Field<long>(Resources.PagesCount);
-        index.Fragmentation     = row.Field<double>(Resources.Fragmentation);
-        index.PageSpaceUsed     = row.Field<double?>(Resources.PageSpaceUsed);
-        index.PagesCount        = row.Field<long>(Resources.PagesCount);
-        index.UnusedPagesCount  = row.Field<long>(Resources.UnusedPagesCount);
-        index.RowsCount         = row.Field<long>(Resources.RowsCount);
-        index.DataCompression   = ((DataCompression)row.Field<byte>(Resources.DataCompression));
-        index.IndexStats        = row.Field<DateTime?>(Resources.IndexStats);
+        if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
+          ix.IndexStats = DateTime.Now;
+        }
+        else if (ix.FixType == IndexOp.CREATE_INDEX) {
+          ix.IndexStats = DateTime.Now;
+          ix.Fragmentation = 0;
+        }
+        else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
+          ix.PagesCountBefore = ix.PagesCount;
+          ix.Fragmentation = 0;
+          ix.PagesCount = 0;
+          ix.UnusedPagesCount = 0;
+          ix.RowsCount = 0;
+        }
+        else if (data.Tables.Count == 1 && data.Tables[0].Rows.Count == 1) {
+          DataRow row = data.Tables[0].Rows[0];
+
+          ix.PagesCountBefore = ix.PagesCount - row.Field<long>(Resources.PagesCount);
+          ix.Fragmentation = row.Field<double>(Resources.Fragmentation);
+          ix.PageSpaceUsed = row.Field<double?>(Resources.PageSpaceUsed);
+          ix.PagesCount = row.Field<long>(Resources.PagesCount);
+          ix.UnusedPagesCount = row.Field<long>(Resources.UnusedPagesCount);
+          ix.RowsCount = row.Field<long>(Resources.RowsCount);
+          ix.DataCompression = ((DataCompression)row.Field<byte>(Resources.DataCompression));
+          ix.IndexStats = row.Field<DateTime?>(Resources.IndexStats);
+        }
+
       }
 
       return query;
-
     }
+
+    public static void FindUnusedIndexes(List<Index> indexes) {
+      foreach (Index ix in indexes.Where(
+                  _ => !_.IsPartitioned
+                    && _.Warning == null
+                    && _.TotalWrites > 50000
+                    && (_.TotalReads ?? 0) < _.TotalWrites / 10
+                    && (_.IndexType == IndexType.CLUSTERED || _.IndexType == IndexType.NONCLUSTERED || _.IndexType == IndexType.HEAP))) {
+        ix.Warning = WarningType.UNUSED;
+      }
+    }
+
+    public static void FindDublicateIndexes(List<Index> indexes) {
+      var data = indexes.Where(_ => !_.IsPartitioned
+                                 && _.Warning == null
+                                 && (_.IndexType == IndexType.CLUSTERED || _.IndexType == IndexType.NONCLUSTERED))
+                        .GroupBy(_ => new { _.DatabaseName, _.ObjectId })
+                        .Select(_ => new { _.Key.DatabaseName, _.Key.ObjectId, Indexes = _.ToList() })
+                        .Where(_ => _.Indexes.Count > 1);
+
+      foreach (var item in data) {
+        foreach (Index a in item.Indexes) {
+          if (a.Warning != null) continue;
+          foreach (Index b in item.Indexes) {
+            if (a != b && b.Warning == null && a.IndexColumns == b.IndexColumns && a.IncludedColumns.Sort() == b.IncludedColumns.Sort())
+              a.Warning = b.Warning = WarningType.DUBLICATE;
+          }
+        }
+
+        foreach (Index a in item.Indexes) {
+          foreach (Index b in item.Indexes) {
+            if (a != b && b.Warning == null) {
+              int len = Math.Min(a.IndexColumns.Length, b.IndexColumns.Length);
+              if (a.IndexColumns == b.IndexColumns || a.IndexColumns.Left(len) == b.IndexColumns.Left(len))
+                b.Warning = WarningType.OVERLAP;
+            }
+          }
+        }
+      }
+    }
+
+    private static IndexOp CorrectIndexOp(IndexOp op, Index ix) {
+      if (ix.IndexType == IndexType.MISSING_INDEX)
+        return IndexOp.CREATE_INDEX;
+
+      if (op == IndexOp.REORGANIZE && (ix.IsAllowReorganize || ix.IsColumnstore))
+        return IndexOp.REORGANIZE;
+
+      if (op == IndexOp.REBUILD && !ix.IsColumnstore && ix.IsAllowCompression) {
+        if (Settings.Options.DataCompression == DataCompression.NONE && ix.DataCompression != DataCompression.NONE)
+          return IndexOp.REBUILD_NONE;
+
+        if (Settings.Options.DataCompression == DataCompression.ROW)
+          return IndexOp.REBUILD_ROW;
+
+        if (Settings.Options.DataCompression == DataCompression.PAGE)
+          return IndexOp.REBUILD_PAGE;
+      }
+
+      if (op == IndexOp.UPDATE_STATISTICS_FULL || op == IndexOp.UPDATE_STATISTICS_RESAMPLE || op == IndexOp.UPDATE_STATISTICS_SAMPLE) {
+        if (!ix.IsPartitioned && (ix.IndexType == IndexType.CLUSTERED || ix.IndexType == IndexType.NONCLUSTERED)) {
+          return op;
+        }
+      }
+
+      return Settings.Options.Online && ix.IsAllowOnlineRebuild && (op == IndexOp.REBUILD || op == IndexOp.REORGANIZE)
+                ? IndexOp.REBUILD_ONLINE
+                : IndexOp.REBUILD;
+    }
+
+    public static void UpdateFixType(List<Index> indexes) {
+      foreach (Index ix in indexes) {
+        ix.FixType = CorrectIndexOp(ix.Fragmentation < Settings.Options.SecondThreshold
+                          ? Settings.Options.FirstOperation
+                          : Settings.Options.SecondOperation, ix);
+      }
+    }
+
   }
 
 }

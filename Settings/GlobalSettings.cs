@@ -6,6 +6,7 @@ namespace SQLIndexManager {
 
   [Serializable]
   public class GlobalSettings {
+
     [XmlElement]
     public Options Options = new Options();
 
@@ -14,6 +15,7 @@ namespace SQLIndexManager {
 
     [XmlIgnore]
     public List<string> NetworkHosts = new List<string>();
+
   }
 
 }

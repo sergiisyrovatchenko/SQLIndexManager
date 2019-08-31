@@ -7,9 +7,33 @@ namespace SQLIndexManager {
 
   public static class Utils {
 
-    public static string ToDescription(this Enum value) {
+    public static string Description(this Enum value) {
       var da = (DescriptionAttribute[])(value.GetType().GetField(value.ToString())).GetCustomAttributes(typeof(DescriptionAttribute), false);
       return da.Length > 0 ? da[0].Description : value.ToString();
+    }
+
+    public static T ToEnum<T>(this object value) {
+      return (T)Enum.Parse(typeof(T), value.ToString(), true);
+    }
+
+    public static T GetValueFromDescription<T>(string description) {
+      var type = typeof(T);
+      if (!type.IsEnum) throw new InvalidOperationException();
+      foreach (var field in type.GetFields()) {
+        if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute) {
+          if (attribute.Description == description)
+            return (T)field.GetValue(null);
+        }
+        else {
+          if (field.Name == description)
+            return (T)field.GetValue(null);
+        }
+      }
+      return default(T);
+    }
+
+    public static string OnOff(this bool value) {
+      return value ? "ON" : "OFF";
     }
 
     public static bool IsBetween(this int value, int minimum, int maximum) {
@@ -42,8 +66,7 @@ namespace SQLIndexManager {
     }
 
     public static string ToQuota(this string value) {
-      return value?.Replace("[", "[[")
-                   .Replace("]", "]]");
+      return $"[{value?.Replace("[", "[[").Replace("]", "]]")}]";
     }
 
     public static string Truncate(this string value, int maxLength) {
@@ -86,6 +109,7 @@ namespace SQLIndexManager {
 
       return $"{ (value.ToString(value - Math.Truncate(value) == 0 ? "N0" : "N2")) } {dimension}";
     }
+
   }
 
 }

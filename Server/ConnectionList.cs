@@ -74,5 +74,7 @@ namespace SQLIndexManager {
     ~ConnectionList() {
       Dispose(false);
     }
+
   }
+
 }

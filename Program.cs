@@ -9,6 +9,7 @@ using System.Windows.Forms;
 namespace SQLIndexManager {
 
   static class Program {
+
     [STAThread]
     static void Main(string[] args) {
       CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
@@ -66,6 +67,7 @@ namespace SQLIndexManager {
       else
         Console.OutputEncoding = (Encoding)Console.OutputEncoding.Clone();
     }
+
   }
 
 }

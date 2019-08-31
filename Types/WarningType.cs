@@ -1,9 +1,9 @@
 ﻿namespace SQLIndexManager {
 
   public enum WarningType {
-    Low = 1,
-    Middle = 2,
-    High = 3
+    UNUSED = 1,
+    OVERLAP = 2,
+    DUBLICATE = 3
   }
 
 }
