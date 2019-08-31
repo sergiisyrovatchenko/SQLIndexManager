@@ -71,10 +71,12 @@ namespace SQLIndexManager {
       this.gridControl1 = new DevExpress.XtraGrid.GridControl();
       this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
       this.Duration = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
       this.gridToolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.statusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
       this.labelDatabase = new DevExpress.XtraBars.BarStaticItem();
       this.labelIndex = new DevExpress.XtraBars.BarStaticItem();
+      this.labelError = new DevExpress.XtraBars.BarStaticItem();
       this.buttonStopScan = new DevExpress.XtraBars.BarButtonItem();
       this.buttonStopFix = new DevExpress.XtraBars.BarButtonItem();
       this.buttonLog = new DevExpress.XtraBars.BarButtonItem();
@@ -109,8 +111,6 @@ namespace SQLIndexManager {
       this.colDuration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colMessage = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
-      this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.labelError = new DevExpress.XtraBars.BarStaticItem();
       Fragmentation = new DevExpress.XtraGrid.Columns.GridColumn();
       PagesCount = new DevExpress.XtraGrid.Columns.GridColumn();
       RowsCount = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -678,7 +678,7 @@ namespace SQLIndexManager {
       this.Warning.AppearanceCell.Options.UseTextOptions = true;
       this.Warning.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       this.Warning.Caption = "Warning";
-      this.Warning.FieldName = "Error";
+      this.Warning.FieldName = "Warning";
       this.Warning.MaxWidth = 90;
       this.Warning.MinWidth = 90;
       this.Warning.Name = "Warning";
@@ -1033,6 +1033,18 @@ namespace SQLIndexManager {
       this.Duration.OptionsFilter.AllowFilter = false;
       this.Duration.Width = 70;
       // 
+      // Error
+      // 
+      this.Error.Caption = "Error Message";
+      this.Error.FieldName = "Error";
+      this.Error.MaxWidth = 300;
+      this.Error.MinWidth = 120;
+      this.Error.Name = "Error";
+      this.Error.OptionsColumn.AllowEdit = false;
+      this.Error.OptionsColumn.AllowFocus = false;
+      this.Error.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
+      this.Error.Width = 120;
+      // 
       // gridToolTipController
       // 
       this.gridToolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.GetActiveObjectInfo);
@@ -1074,6 +1086,16 @@ namespace SQLIndexManager {
       this.labelIndex.Name = "labelIndex";
       this.labelIndex.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
       this.labelIndex.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      // 
+      // labelError
+      // 
+      this.labelError.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelError.Caption = "0";
+      this.labelError.Id = 29;
+      this.labelError.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelError.ImageOptions.Image")));
+      this.labelError.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelError.ImageOptions.LargeImage")));
+      this.labelError.Name = "labelError";
+      this.labelError.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonStopScan
       // 
@@ -1287,8 +1309,8 @@ namespace SQLIndexManager {
       // 
       this.buttonRestoreDefaultLayout.Caption = "Restore Layout";
       this.buttonRestoreDefaultLayout.Id = 28;
-      this.buttonRestoreDefaultLayout.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barButtonItem1.ImageOptions.Image")));
-      this.buttonRestoreDefaultLayout.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barButtonItem1.ImageOptions.LargeImage")));
+      this.buttonRestoreDefaultLayout.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonRestoreDefaultLayout.ImageOptions.Image")));
+      this.buttonRestoreDefaultLayout.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonRestoreDefaultLayout.ImageOptions.LargeImage")));
       this.buttonRestoreDefaultLayout.Name = "buttonRestoreDefaultLayout";
       this.buttonRestoreDefaultLayout.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.RestoreDefaultLayout);
       // 
@@ -1475,28 +1497,6 @@ namespace SQLIndexManager {
       // repositoryItemMemoEdit1
       // 
       this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-      // 
-      // Error
-      // 
-      this.Error.Caption = "Error Message";
-      this.Error.FieldName = "Error";
-      this.Error.MaxWidth = 300;
-      this.Error.MinWidth = 120;
-      this.Error.Name = "Error";
-      this.Error.OptionsColumn.AllowEdit = false;
-      this.Error.OptionsColumn.AllowFocus = false;
-      this.Error.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
-      this.Error.Width = 120;
-      // 
-      // labelError
-      // 
-      this.labelError.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelError.Caption = "0";
-      this.labelError.Id = 29;
-      this.labelError.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("barStaticItem1.ImageOptions.Image")));
-      this.labelError.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barStaticItem1.ImageOptions.LargeImage")));
-      this.labelError.Name = "labelError";
-      this.labelError.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // MainBox
       // 
