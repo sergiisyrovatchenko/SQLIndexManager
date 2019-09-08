@@ -474,9 +474,7 @@ namespace SQLIndexManager {
     #region Grid Methods
 
     private string GetFixChanges() {
-      List<Index> dv = (List<Index>)gridView1.DataSource;
-      List<Index> fix = dv.Where(_ => _.IsSelected).ToList();
-
+      List<Index> fix = ((List<Index>)gridView1.DataSource).Where(_ => _.IsSelected).ToList();
       StringBuilder sb = new StringBuilder();
 
       var groupList = fix.GroupBy(u => u.DatabaseName).Select(grp => grp.ToList()).ToList();
@@ -681,7 +679,7 @@ namespace SQLIndexManager {
             item.Visible = false;
         }
 
-        if (e.HitInfo.Column.Caption == @"Selection")
+        if (e.HitInfo.Column == null || e.HitInfo.Column.Caption == @"Selection")
           return;
 
         string colName = (e.HitInfo.Column.Fixed == FixedStyle.None) ? "Freeze column" : "Unfreeze column";

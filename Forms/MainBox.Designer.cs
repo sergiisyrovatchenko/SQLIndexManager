@@ -1052,8 +1052,8 @@ namespace SQLIndexManager {
       // statusBar
       // 
       this.statusBar.ItemLinks.Add(this.labelDatabase);
-      this.statusBar.ItemLinks.Add(this.labelIndex);
       this.statusBar.ItemLinks.Add(this.labelError);
+      this.statusBar.ItemLinks.Add(this.labelIndex);
       this.statusBar.ItemLinks.Add(this.buttonStopScan);
       this.statusBar.ItemLinks.Add(this.buttonStopFix);
       this.statusBar.ItemLinks.Add(this.buttonLog);

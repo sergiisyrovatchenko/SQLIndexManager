@@ -380,7 +380,7 @@ namespace SQLIndexManager {
           if (a.Warning != null) continue;
           foreach (Index b in item.Indexes) {
             if (a != b && b.Warning == null && a.IndexColumns == b.IndexColumns && a.IncludedColumns.Sort() == b.IncludedColumns.Sort())
-              a.Warning = b.Warning = WarningType.DUBLICATE;
+              a.Warning = b.Warning = WarningType.DUPLICATE;
           }
         }
 

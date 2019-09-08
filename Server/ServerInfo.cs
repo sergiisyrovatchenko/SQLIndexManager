@@ -7,72 +7,26 @@
     public readonly bool IsSysAdmin;
     private readonly string Version;
 
-    public override string ToString() {
-      return $"SQL Server {ProductVersion} {ProductLevel} ({Version}) {Edition}";
-    }
-
-    public bool IsAzure => Edition == "SQL Azure";
-    private bool IsMaxEdititon => Edition.StartsWith("Enterprise") || Edition.StartsWith("Developer");
-
     public readonly int MajorVersion;
     private readonly int MinorVersion;
     private readonly int PatchVersion;
 
-    public bool IsColumnstoreAvailable {
-      get {
-        if (
-            (MajorVersion >= ServerVersion.Sql2014 && IsMaxEdititon) // 2014..2019 Enterprise/Developer/Evaluation
-         ||
-            (MajorVersion == ServerVersion.Sql2016 && PatchVersion >= 4001) // 2016 SP1
-         ||
-            (MajorVersion >= ServerVersion.Sql2017)
-        ) {
-          return true;
-        }
+    public bool IsAzure => Edition == "SQL Azure";
+    private bool IsMaxEdititon => Edition.StartsWith("Enterprise") || Edition.StartsWith("Developer");
+    public override string ToString() => $"SQL Server {ProductVersion} {ProductLevel} ({Version}) {Edition}";
 
-        return false;
-      }
-    }
+    public bool IsColumnstoreAvailable => IsAzure
+         || (MajorVersion >= ServerVersion.Sql2014 && IsMaxEdititon)
+         || (MajorVersion == ServerVersion.Sql2016 && PatchVersion >= 4001)
+         || MajorVersion >= ServerVersion.Sql2017;
 
-    public bool IsCompressionAvailable {
-      get {
-        if (
-            (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon)
-         ||
-            (MajorVersion == ServerVersion.Sql2016 && PatchVersion >= 4001) // 2016 SP1
-         ||
-            (MajorVersion >= ServerVersion.Sql2017)
-        ) {
-          return true;
-        }
+    public bool IsCompressionAvailable => IsAzure
+         || (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon)
+         || (MajorVersion == ServerVersion.Sql2016 && PatchVersion >= 4001)
+         || MajorVersion >= ServerVersion.Sql2017;
 
-        return false;
-      }
-    }
-
-    public bool IsOnlineRebuildAvailable {
-      get {
-        if (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon)
-        {
-          if (
-              (MajorVersion == ServerVersion.Sql2014 && PatchVersion < 2370) // 2014 RTM
-           ||
-              (MajorVersion == ServerVersion.Sql2012 && (
-                                                        PatchVersion < 3437 // 2012 RTM..SP1
-                                                     ||
-                                                        PatchVersion.IsBetween(5058, 5521) // 2012 SP2
-                                                    )
-              )
-          ) {
-            return false; // https://sqlperformance.com/2014/06/sql-indexes/hotfix-sql-2012-rebuilds
-          }
-
-          return true;
-        }
-
-        return false;
-      }
-    }
+    public bool IsOnlineRebuildAvailable => IsAzure
+         || (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon);
 
     public string ProductVersion {
       get {
