@@ -45,15 +45,15 @@ IF OBJECT_ID('tempdb.dbo.#Indexes') IS NOT NULL
 CREATE TABLE #Indexes (
       ObjectID         INT NOT NULL
     , IndexID          INT NOT NULL
-    , IndexName        SYSNAME NULL
     , PagesCount       BIGINT NOT NULL
     , UnusedPagesCount BIGINT NOT NULL
     , PartitionNumber  INT NOT NULL
     , RowsCount        BIGINT NOT NULL
+    , DataCompression  TINYINT NOT NULL
+    , IndexName        SYSNAME NULL
     , IndexType        TINYINT NOT NULL
     , IsAllowPageLocks BIT NOT NULL
     , DataSpaceID      INT NOT NULL
-    , DataCompression  TINYINT NOT NULL
     , IsUnique         BIT NOT NULL
     , IsPK             BIT NOT NULL
     , FillFactorValue  INT NOT NULL
@@ -62,24 +62,36 @@ CREATE TABLE #Indexes (
 )
 
 INSERT INTO #Indexes
-SELECT ObjectID         = i.[object_id]
-     , IndexID          = i.index_id
+SELECT p.ObjectID
+     , p.IndexID
+     , p.PagesCount
+     , p.UnusedPagesCount
+     , p.PartitionNumber
+     , p.RowsCount
+     , p.DataCompression
      , IndexName        = i.[name]
-     , PagesCount       = a.ReservedPages
-     , UnusedPagesCount = CASE WHEN ABS(a.ReservedPages - a.UsedPages) > 32 THEN a.ReservedPages - a.UsedPages ELSE 0 END
-     , PartitionNumber  = p.[partition_number]
-     , RowsCount        = ISNULL(p.[rows], 0)
      , IndexType        = i.[type]
      , IsAllowPageLocks = i.[allow_page_locks]
      , DataSpaceID      = i.[data_space_id]
-     , DataCompression  = p.[data_compression]
      , IsUnique         = i.[is_unique]
      , IsPK             = i.[is_primary_key]
      , FillFactorValue  = i.[fill_factor]
      , IsFiltered       = i.[has_filter]
-FROM #AllocationUnits a
-JOIN #Partitions p ON a.ContainerID = p.[partition_id]
-JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.[object_id] AND p.[index_id] = i.[index_id] {6}
+FROM (
+    SELECT ObjectID         = p.[object_id]
+         , IndexID          = p.[index_id]
+         , PartitionNumber  = p.[partition_number]
+         , DataCompression  = MAX(p.[data_compression])
+         , RowsCount        = ISNULL(SUM(p.[rows]), 0)
+         , PagesCount       = SUM(a.ReservedPages)
+         , UnusedPagesCount = SUM(CASE WHEN ABS(a.ReservedPages - a.UsedPages) > 32 THEN a.ReservedPages - a.UsedPages ELSE 0 END)
+    FROM #AllocationUnits a
+    JOIN #Partitions p ON a.ContainerID = p.[partition_id]
+    GROUP BY p.[object_id]
+           , p.[index_id]
+           , p.[partition_number]
+) p
+JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.ObjectID AND i.[index_id] = p.IndexID {6}
 WHERE i.[type] IN ({0})
     AND i.[object_id] > 255
 
