@@ -46,17 +46,21 @@ namespace SQLIndexManager {
       buttonDatabases.Enabled = (host != null);
       buttonRefreshIndex.Enabled = (host != null && host.Databases.Count > 0);
 
-      labelServerInfo.Visibility =
-        labelDatabase.Visibility =
-          labelError.Visibility =
-            labelIndex.Visibility = (host == null) ? BarItemVisibility.Never : BarItemVisibility.Always;
+      labelSavedSpace.Visibility = BarItemVisibility.Never;
+
+      labelDatabase.Visibility =
+        labelError.Visibility =
+          labelIndex.Visibility = (host == null) ? BarItemVisibility.Never : BarItemVisibility.Always;
 
       if (host == null) {
+        Text = "SQL Index Manager";
         ShowConnectionBox();
       }
       else {
-        Output.Current.Add($"Current host: {host}");
-        labelServerInfo.Caption = host.ToString();
+        Output.Current.Add($"Host: {host.Server}");
+        Output.Current.Add($"Server: {host.ServerInfo}");
+        Text = host.Server.ToString();
+        labelServerInfo.Caption = host.ServerInfo.ToString();
         ShowDatabaseBox();
       }
     }
@@ -294,6 +298,7 @@ namespace SQLIndexManager {
               buttonRefreshIndex.Enabled =
                 buttonNewConnection.Enabled = false;
 
+      labelSavedSpace.Visibility = BarItemVisibility.Never;
       buttonStopScan.Visibility = BarItemVisibility.Always;
       taskbar.ProgressMode = TaskbarButtonProgressMode.Indeterminate;
 
@@ -432,7 +437,12 @@ namespace SQLIndexManager {
             buttonOptions.Enabled = true;
 
       buttonFix.Enabled = false;
-      labelError.Caption = ((List<Index>)gridView1.DataSource).Count(_ => _.Error != null).ToString();
+
+      List<Index> indexes = (List<Index>)gridView1.DataSource;
+
+      labelSavedSpace.Visibility = BarItemVisibility.Always;
+      labelSavedSpace.Caption = Convert.ToDecimal(indexes.Sum(_ => _.PagesCountBefore ?? 0) * 8).FormatSize();
+      labelError.Caption = indexes.Count(_ => _.Error != null).ToString();
 
       buttonStopFix.Visibility = BarItemVisibility.Never;
 
@@ -731,6 +741,16 @@ namespace SQLIndexManager {
       size.Width += offset;
       Rectangle trySearchingAgainBounds = new Rectangle(new Point(x, y), size);
       e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
+    }
+
+    private void RowCellStyle(object sender, RowCellStyleEventArgs e) {
+      GridView view = sender as GridView;
+      if (e.RowHandle == view.FocusedRowHandle) {
+        if (e.Column.Caption == @"Selection" || (e.Column.Caption == @"Fix" && view.OptionsBehavior.Editable))
+          return;
+
+        e.Appearance.BackColor = Color.Silver;
+      }
     }
 
     #endregion

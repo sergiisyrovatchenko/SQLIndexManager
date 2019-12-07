@@ -540,7 +540,8 @@ WHERE [index_level] = 0
 ";
     
     public const string ServerInfo = @"
-SELECT ProductLevel  = SERVERPROPERTY('ProductLevel')
+SELECT ServerName    = @@SERVERNAME
+     , ProductLevel  = SERVERPROPERTY('ProductLevel')
      , Edition       = SERVERPROPERTY('Edition')
      , ServerVersion = SERVERPROPERTY('ProductVersion')
      , IsSysAdmin    = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)

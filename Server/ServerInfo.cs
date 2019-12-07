@@ -1,7 +1,7 @@
 ﻿namespace SQLIndexManager {
 
   public class ServerInfo {
-
+    public readonly string ServerName;
     private readonly string ProductLevel;
     private readonly string Edition;
     public readonly bool IsSysAdmin;
@@ -51,7 +51,8 @@
       }
     }
 
-    public ServerInfo(string productLevel, string edition, string serverVersion, bool isSysAdmin) {
+    public ServerInfo(string serverName, string productLevel, string edition, string serverVersion, bool isSysAdmin) {
+      ServerName = serverName;
       ProductLevel = productLevel;
       Edition = edition;
       Version = serverVersion;

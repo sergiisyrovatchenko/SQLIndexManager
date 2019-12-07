@@ -36,10 +36,6 @@ namespace SQLIndexManager {
       Databases = new List<string>();
     }
 
-    public override string ToString() {
-      return $"{Server} | {ServerInfo}";
-    }
-
   }
 
 }

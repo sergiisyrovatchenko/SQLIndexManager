@@ -50,12 +50,13 @@ namespace SQLIndexManager {
       adapter.Fill(data);
       DataRow row = data.Tables[0].Rows[0];
 
+      string serverName = row.Field<string>(Resources.ServerName);
       string productLevel = row.Field<string>(Resources.ProductLevel);
       string edition = row.Field<string>(Resources.Edition);
       string serverVersion = row.Field<string>(Resources.ServerVersion);
       bool isSysAdmin = row.Field<bool?>(Resources.IsSysAdmin) ?? false;
 
-      return new ServerInfo(productLevel, edition, serverVersion, isSysAdmin);
+      return new ServerInfo(serverName, productLevel, edition, serverVersion, isSysAdmin);
     }
 
     public static List<Index> GetIndexes(SqlConnection connection) {
@@ -361,7 +362,7 @@ namespace SQLIndexManager {
                   _ => !_.IsPartitioned
                     && _.Warning == null
                     && _.TotalWrites > 50000
-                    && (_.TotalReads ?? 0) < _.TotalWrites / 10
+                    && (_.TotalReads ?? 0) < _.TotalWrites / 20
                     && (_.IndexType == IndexType.CLUSTERED || _.IndexType == IndexType.NONCLUSTERED || _.IndexType == IndexType.HEAP))) {
         ix.Warning = WarningType.UNUSED;
       }

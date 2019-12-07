@@ -280,4 +280,7 @@
   <data name="PageSpaceUsed" xml:space="preserve">
     <value>PageSpaceUsed</value>
   </data>
+  <data name="ServerName" xml:space="preserve">
+    <value>ServerName</value>
+  </data>
 </root>
