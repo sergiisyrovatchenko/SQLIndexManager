@@ -729,15 +729,15 @@ namespace SQLIndexManager {
       // 
       // gridView1
       // 
-      this.gridView1.Appearance.EvenRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.gridView1.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
       this.gridView1.Appearance.EvenRow.Options.UseBackColor = true;
-      this.gridView1.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-      this.gridView1.Appearance.FocusedRow.Options.UseBackColor = true;
       this.gridView1.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 8.75F);
       this.gridView1.Appearance.HeaderPanel.Options.UseFont = true;
-      this.gridView1.Appearance.OddRow.BackColor = System.Drawing.Color.Gainsboro;
+      this.gridView1.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
       this.gridView1.Appearance.OddRow.Options.UseBackColor = true;
+      this.gridView1.Appearance.Row.BackColor = System.Drawing.Color.Silver;
       this.gridView1.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
+      this.gridView1.Appearance.Row.Options.UseBackColor = true;
       this.gridView1.Appearance.Row.Options.UseFont = true;
       this.gridView1.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
       this.gridView1.Appearance.SelectedRow.Options.UseBackColor = true;
@@ -850,9 +850,9 @@ namespace SQLIndexManager {
             0,
             0,
             0});
-      formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar2.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
       formatConditionRuleDataBar2.Minimum = new decimal(new int[] {
-            1,
+            64,
             0,
             0,
             0});
@@ -875,9 +875,9 @@ namespace SQLIndexManager {
             0,
             0,
             0});
-      formatConditionRuleDataBar3.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar3.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
       formatConditionRuleDataBar3.Minimum = new decimal(new int[] {
-            1,
+            64,
             0,
             0,
             0});
@@ -902,7 +902,7 @@ namespace SQLIndexManager {
             0});
       formatConditionRuleDataBar4.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
       formatConditionRuleDataBar4.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
             0});
@@ -927,7 +927,7 @@ namespace SQLIndexManager {
             0});
       formatConditionRuleDataBar5.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
       formatConditionRuleDataBar5.Minimum = new decimal(new int[] {
-            1,
+            64,
             0,
             0,
             0});
@@ -950,9 +950,9 @@ namespace SQLIndexManager {
             0,
             0,
             0});
-      formatConditionRuleDataBar6.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar6.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
       formatConditionRuleDataBar6.Minimum = new decimal(new int[] {
-            1,
+            64,
             0,
             0,
             0});
@@ -987,7 +987,6 @@ namespace SQLIndexManager {
       this.gridView1.OptionsMenu.ShowAddNewSummaryItem = DevExpress.Utils.DefaultBoolean.False;
       this.gridView1.OptionsMenu.ShowAutoFilterRowItem = false;
       this.gridView1.OptionsSelection.CheckBoxSelectorColumnWidth = 35;
-      this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
       this.gridView1.OptionsSelection.EnableAppearanceFocusedRow = false;
       this.gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
       this.gridView1.OptionsSelection.MultiSelect = true;
@@ -1003,7 +1002,7 @@ namespace SQLIndexManager {
       this.gridView1.OptionsView.ShowIndicator = false;
       this.gridView1.RowHeight = 24;
       this.gridView1.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.GridRowCellClick);
-      this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.RowCellStyle);
+      this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.GridRowCellStyle);
       this.gridView1.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.GridPopupMenuShowing);
       this.gridView1.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
       this.gridView1.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridColumnDisplayText);
@@ -1032,7 +1031,7 @@ namespace SQLIndexManager {
       this.Duration.OptionsColumn.ShowInExpressionEditor = false;
       this.Duration.OptionsColumn.TabStop = false;
       this.Duration.OptionsFilter.AllowAutoFilter = false;
-      this.Duration.OptionsFilter.AllowFilter = false;
+      this.Duration.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       this.Duration.Width = 70;
       // 
       // Error
@@ -1400,6 +1399,10 @@ namespace SQLIndexManager {
       this.imageCollection.Images.SetKeyName(2, "apply_16x16.png");
       this.imageCollection.InsertGalleryImage("close_16x16.png", "office2013/actions/close_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("office2013/actions/close_16x16.png"), 3);
       this.imageCollection.Images.SetKeyName(3, "close_16x16.png");
+      this.imageCollection.InsertGalleryImage("copy_16x16.png", "office2013/edit/copy_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("office2013/edit/copy_16x16.png"), 4);
+      this.imageCollection.Images.SetKeyName(4, "copy_16x16.png");
+      this.imageCollection.InsertGalleryImage("masterfilter_16x16.png", "office2013/filter/masterfilter_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("office2013/filter/masterfilter_16x16.png"), 5);
+      this.imageCollection.Images.SetKeyName(5, "masterfilter_16x16.png");
       // 
       // buttonFind
       // 
@@ -1441,7 +1444,7 @@ namespace SQLIndexManager {
       // 
       // gridView2
       // 
-      this.gridView2.Appearance.EvenRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.gridView2.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
       this.gridView2.Appearance.EvenRow.Options.UseBackColor = true;
       this.gridView2.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
       this.gridView2.Appearance.FocusedRow.Options.UseBackColor = true;
@@ -1449,7 +1452,7 @@ namespace SQLIndexManager {
       this.gridView2.Appearance.HeaderPanel.Options.UseFont = true;
       this.gridView2.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.Transparent;
       this.gridView2.Appearance.HideSelectionRow.Options.UseBackColor = true;
-      this.gridView2.Appearance.OddRow.BackColor = System.Drawing.Color.Gainsboro;
+      this.gridView2.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
       this.gridView2.Appearance.OddRow.Options.UseBackColor = true;
       this.gridView2.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
       this.gridView2.Appearance.Row.Options.UseFont = true;

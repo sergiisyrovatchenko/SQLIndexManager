@@ -1,10 +1,12 @@
 ﻿using DevExpress.Data;
+using DevExpress.Data.Filtering;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.Utils.Taskbar.Core;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Base;
@@ -59,7 +61,7 @@ namespace SQLIndexManager {
       else {
         Output.Current.Add($"Host: {host.Server}");
         Output.Current.Add($"Server: {host.ServerInfo}");
-        Text = host.Server.ToString();
+        Text = host.Server.ToUpper();
         labelServerInfo.Caption = host.ServerInfo.ToString();
         ShowDatabaseBox();
       }
@@ -258,19 +260,6 @@ namespace SQLIndexManager {
 
       gridView1.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
       gridControl1.DataSource = indexes;
-
-      if (indexes.Count > 0) {
-        var rulePagesCount = gridView1.FormatRules[Resources.PagesCount].RuleCast<FormatConditionRuleDataBar>();
-        var ruleUnusedPagesCount = gridView1.FormatRules[Resources.UnusedPagesCount].RuleCast<FormatConditionRuleDataBar>();
-
-        rulePagesCount.Minimum = 1;
-        rulePagesCount.Maximum = indexes.Max(_ => _.PagesCount);
-
-        ruleUnusedPagesCount.Minimum = 1;
-        ruleUnusedPagesCount.Maximum = indexes.Max(_ => _.UnusedPagesCount) > 1000
-                                          ? indexes.Max(_ => _.UnusedPagesCount)
-                                          : rulePagesCount.Maximum;
-      }
     }
 
     private void RefreshIndexes() {
@@ -695,6 +684,11 @@ namespace SQLIndexManager {
         string colName = (e.HitInfo.Column.Fixed == FixedStyle.None) ? "Freeze column" : "Unfreeze column";
         e.Menu.Items.Add(new DXMenuItem(colName, ChangeFixedColumnStyle) { Tag = e.HitInfo.Column.FieldName });
       }
+
+      if (e.MenuType == GridMenuType.Row) {
+        e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, imageCollection.Images[4]) { Tag = e.HitInfo.Column.FieldName });
+        e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, imageCollection.Images[5]) { Tag = e.HitInfo.Column.FieldName });
+      }
     }
 
     private void ChangeFixedColumnStyle(object sender, EventArgs e) {
@@ -703,6 +697,21 @@ namespace SQLIndexManager {
       if (col != null) {
         col.Fixed = (col.Fixed == FixedStyle.Left) ? FixedStyle.None : FixedStyle.Left;
       }
+    }
+
+    private void CopyCellValue(object sender, EventArgs e) {
+      DXMenuItem mi = (DXMenuItem)sender;
+      GridColumn col = gridView1.Columns[mi.Tag.ToString()];
+      var cellValue = gridView1.GetFocusedRowCellValue(col);
+      if (cellValue != null)
+        Clipboard.SetText(cellValue.ToString());
+    }
+
+    private void FilterCellValue(object sender, EventArgs e) {
+      DXMenuItem mi = (DXMenuItem)sender;
+      GridColumn col = gridView1.Columns[mi.Tag.ToString()];
+      var cellValue = gridView1.GetFocusedRowCellValue(col);
+      gridView1.SetRowCellValue(GridControl.AutoFilterRowHandle, col, cellValue);
     }
 
     private void GridCustomizationMenu(object sender, RibbonCustomizationMenuEventArgs e) {
@@ -743,12 +752,8 @@ namespace SQLIndexManager {
       e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
     }
 
-    private void RowCellStyle(object sender, RowCellStyleEventArgs e) {
-      GridView view = sender as GridView;
-      if (e.RowHandle == view.FocusedRowHandle) {
-        if (e.Column.Caption == @"Selection" || (e.Column.Caption == @"Fix" && view.OptionsBehavior.Editable))
-          return;
-
+    private void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
+      if (e.RowHandle == (sender as GridView).FocusedRowHandle) {
         e.Appearance.BackColor = Color.Silver;
       }
     }

@@ -29,6 +29,7 @@ namespace SQLIndexManager {
     public Options() {
       SortInTempDb = true;
       LobCompaction = true;
+      ScanHeap = true;
       ScanClusteredIndex = true;
       ScanNonClusteredIndex = true;
       ScanClusteredColumnstore = true;
