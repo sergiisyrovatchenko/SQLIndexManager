@@ -100,6 +100,12 @@
     <Compile Include="Console\CmdParser.cs" />
     <Compile Include="Console\CmdWorker.cs" />
     <Compile Include="Console\NativeMethods.cs" />
+    <Compile Include="Forms\ActionBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ActionBox.Designer.cs">
+      <DependentUpon>ActionBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ErrorBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +176,9 @@
     <Compile Include="Types\NoRecompute.cs" />
     <Compile Include="Types\ScanMode.cs" />
     <Compile Include="Types\WarningType.cs" />
+    <EmbeddedResource Include="Forms\ActionBox.resx">
+      <DependentUpon>ActionBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ErrorBox.resx">
       <DependentUpon>ErrorBox.cs</DependentUpon>
     </EmbeddedResource>

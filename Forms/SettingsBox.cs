@@ -26,6 +26,10 @@ namespace SQLIndexManager {
                         DataCompression.PAGE
                       };
 
+      boxSkipThreshold.Properties.Items.Add(IndexOp.IGNORE.Description());
+      boxSkipThreshold.Properties.Items.Add(IndexOp.NO_ACTION.Description());
+      boxSkipThreshold.Properties.Items.AddRange(indexOps);
+
       boxFirstThreshold.Properties.Items.AddRange(indexOps);
       boxSecondThreshold.Properties.Items.AddRange(indexOps);
       boxDataCompression.Properties.Items.AddRange(dataCompression);
@@ -37,6 +41,7 @@ namespace SQLIndexManager {
     }
 
     private void UpdateControls(Options o) {
+      boxSkipThreshold.EditValue = o.SkipOperation.Description();
       boxFirstThreshold.EditValue = o.FirstOperation.Description();
       boxSecondThreshold.EditValue = o.SecondOperation.Description();
       boxThreshold.Value = new TrackBarRange(o.FirstThreshold, o.SecondThreshold);
@@ -46,6 +51,7 @@ namespace SQLIndexManager {
       boxPadIndex.Checked = o.PadIndex;
       boxSortInTempDb.Checked = o.SortInTempDb;
       boxLobCompaction.Checked = o.LobCompaction;
+      boxDelayAfterFix.Value = o.DelayAfterFix;
       boxMaxDod.Value = o.MaxDop;
       boxStatsSamplePercent.Value = o.SampleStatsPercent;
       boxConnectionTimeout.Value = o.ConnectionTimeout;
@@ -57,6 +63,7 @@ namespace SQLIndexManager {
       boxNoRecompute.EditValue = o.NoRecompute;
       boxFillFactor.EditValue = o.FillFactor;
       boxScanMode.EditValue = o.ScanMode;
+      boxShowSettingsWhenConnectionChanged.Checked = o.ShowSettingsWhenConnectionChanged;
 
       boxScanHeap.Checked = o.ScanHeap;
       boxScanClusteredIndex.Checked = o.ScanClusteredIndex;
@@ -75,6 +82,7 @@ namespace SQLIndexManager {
 
     public Options GetSettings() {
       return new Options {
+        SkipOperation = Utils.GetValueFromDescription<IndexOp>((string)boxSkipThreshold.EditValue),
         FirstOperation = Utils.GetValueFromDescription<IndexOp>((string)boxFirstThreshold.EditValue),
         SecondOperation = Utils.GetValueFromDescription<IndexOp>((string)boxSecondThreshold.EditValue),
         FirstThreshold = boxThreshold.Value.Minimum,
@@ -82,6 +90,7 @@ namespace SQLIndexManager {
         MinIndexSize = boxMinIndexSize.Value.Minimum,
         PreDescribeSize = boxMinIndexSize.Value.Maximum,
         MaxIndexSize = boxMaxIndexSize.Value,
+        DelayAfterFix = (int)boxDelayAfterFix.Value,
         MaxDop = (int)boxMaxDod.Value,
         Online = boxOnline.Checked,
         PadIndex = boxPadIndex.Checked,
@@ -97,6 +106,7 @@ namespace SQLIndexManager {
         NoRecompute = boxNoRecompute.EditValue.ToEnum<NoRecompute>(),
         FillFactor = (int)boxFillFactor.Value,
         ScanMode = boxScanMode.EditValue.ToEnum<ScanMode>(),
+        ShowSettingsWhenConnectionChanged = boxShowSettingsWhenConnectionChanged.Checked,
 
         ScanHeap = boxScanHeap.Checked,
         ScanClusteredIndex = boxScanClusteredIndex.Checked,
@@ -126,6 +136,7 @@ namespace SQLIndexManager {
     }
 
     private void ThresholdValueChanged(object sender, EventArgs e) {
+      labelSkipThreshold.Text = $@"< {boxThreshold.Value.Minimum}%";
       labelFirstThreshold.Text = $@">= {boxThreshold.Value.Minimum}% AND < {boxThreshold.Value.Maximum }%";
       labelSecondThreshold.Text = $@">= {boxThreshold.Value.Maximum}%";
     }

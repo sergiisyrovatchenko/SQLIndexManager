@@ -702,6 +702,19 @@ WHERE [object_id] = {0}
     AND [partition_number] = {2}
 ";
 
+    public const string KillActiveSessions = @"
+DECLARE @SQL NVARCHAR(MAX)
+SELECT @SQL = (
+    SELECT CHAR(13) + 'KILL ' + CAST([session_id] AS NVARCHAR(100))
+    FROM sys.dm_exec_sessions
+    WHERE [program_name] = @ApplicationName
+        AND [status] = 'running'
+        AND [session_id] != @@SPID
+    FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
+
+EXEC sys.sp_executesql @SQL
+";
+
   }
 
 }

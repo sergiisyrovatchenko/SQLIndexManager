@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,10 +20,7 @@ namespace SQLIndexManager {
       get => _activeHost;
       set {
         _activeHost = value;
-
-        if (_activeHost == null)
-          return;
-
+        
         Host oldHost = _current.Hosts.FirstOrDefault(_ => string.Equals(_.Server, _activeHost.Server, StringComparison.CurrentCultureIgnoreCase));
         if (oldHost != null) {
           value.Databases = oldHost.Databases;
@@ -66,8 +64,9 @@ namespace SQLIndexManager {
       }
     }
 
-    public static string ExeName => System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+    public static string ExeName => Process.GetCurrentProcess().ProcessName;
     public static string ExePath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+    public static string ApplicationName => $"{ExeName}-{Process.GetCurrentProcess().Id}";
 
     public static readonly string LayoutFileName = $"{ExePath}\\{ExeName}.layout";
     public static readonly string SettingFileName = $"{ExePath}\\{ExeName}.cfg";

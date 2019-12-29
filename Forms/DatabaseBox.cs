@@ -141,7 +141,7 @@ namespace SQLIndexManager {
     }
 
     private void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
-      if (e.RowHandle == (sender as GridView).FocusedRowHandle) {
+      if (e.RowHandle == ((GridView) sender).FocusedRowHandle) {
         e.Appearance.BackColor = Color.Silver;
       }
     }

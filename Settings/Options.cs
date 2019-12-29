@@ -7,6 +7,7 @@ namespace SQLIndexManager {
   [Serializable]
   public class Options {
 
+    private IndexOp _skipOperation = IndexOp.IGNORE;
     private IndexOp _firstOperation = IndexOp.REORGANIZE;
     private IndexOp _secondOperation = IndexOp.REBUILD;
     private int _firstThreshold = 15;
@@ -16,6 +17,7 @@ namespace SQLIndexManager {
     private int _maxIndexSize = 8192;
     private int _connectionTimeout = 15;
     private int _commandTimeout = 120;
+    private int _delayAfterFix;
     private int _maxDop;
     private int _fillFactor;
     private int _sampleStatsPercent = 100;
@@ -36,6 +38,7 @@ namespace SQLIndexManager {
       ScanNonClusteredColumnstore = true;
       IgnorePermissions = true;
       IgnoreReadOnlyFL = true;
+      ShowSettingsWhenConnectionChanged = true;
 
       ScanMode = ScanMode.LIMITED;
       DataCompression = DataCompression.DEFAULT;
@@ -56,10 +59,16 @@ namespace SQLIndexManager {
     }
 
     [XmlAttribute]
+    public IndexOp SkipOperation {
+      get => _skipOperation;
+      set => _skipOperation = CheckAllowedIndexOp(value, _skipOperation, true);
+    }
+
+    [XmlAttribute]
     public IndexOp FirstOperation {
       get => _firstOperation;
       set => _firstOperation = CheckAllowedIndexOp(value, _firstOperation);
-        }
+    }
 
     [XmlAttribute]
     public IndexOp SecondOperation {
@@ -77,6 +86,12 @@ namespace SQLIndexManager {
     public int SecondThreshold {
       get => _secondThreshold;
       set => UpdateThreshold(_firstThreshold, value);
+    }
+
+    [XmlAttribute]
+    public int DelayAfterFix {
+      get => _delayAfterFix;
+      set => _delayAfterFix = value.IsBetween(0, 5000) ? value : _delayAfterFix;
     }
 
     [XmlAttribute]
@@ -114,6 +129,9 @@ namespace SQLIndexManager {
       get => _maxIndexSize;
       set => UpdateSize(_minIndexSize, _preDescribeSize, value);
     }
+
+    [XmlAttribute]
+    public bool ShowSettingsWhenConnectionChanged;
 
     [XmlAttribute]
     public bool Online;
@@ -199,18 +217,20 @@ namespace SQLIndexManager {
     [XmlAttribute]
     public ScanMode ScanMode;
 
-    private IndexOp CheckAllowedIndexOp(IndexOp newValue, IndexOp oldValue) {
+    private IndexOp CheckAllowedIndexOp(IndexOp newValue, IndexOp oldValue, bool isSkip = false) {
       return (newValue == IndexOp.REBUILD 
            || newValue == IndexOp.REORGANIZE
            || newValue == IndexOp.UPDATE_STATISTICS_FULL
            || newValue == IndexOp.UPDATE_STATISTICS_RESAMPLE
            || newValue == IndexOp.UPDATE_STATISTICS_SAMPLE
+           || (isSkip && newValue == IndexOp.NO_ACTION)
+           || (isSkip && newValue == IndexOp.IGNORE)
         ) ? newValue : oldValue;
     }
 
     private void UpdateThreshold(int first, int second) {
-      _firstThreshold = first.IsBetween(0, 99) ? first : _firstThreshold;
-      _secondThreshold = second.IsBetween(1, 100) ? second : _secondThreshold;
+      _firstThreshold = first.IsBetween(1, 99) ? first : _firstThreshold;
+      _secondThreshold = second.IsBetween(2, 100) ? second : _secondThreshold;
 
       if (_firstThreshold > _secondThreshold)
         _secondThreshold = _firstThreshold + 1;

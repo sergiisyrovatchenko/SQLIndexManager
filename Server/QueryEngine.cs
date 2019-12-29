@@ -70,6 +70,8 @@ namespace SQLIndexManager {
         if (Settings.Options.ScanNonClusteredColumnstore) it.Add((int)IndexType.NONCLUSTERED_COLUMNSTORE);
       }
 
+      int threshold = Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0;
+
       List<Index> indexes = new List<Index>();
 
       if (it.Count > 0) {
@@ -126,7 +128,7 @@ namespace SQLIndexManager {
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = threshold });
         cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
@@ -202,7 +204,7 @@ namespace SQLIndexManager {
 
         SqlCommand cmd = new SqlCommand(Query.MissingIndex, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = threshold });
         cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
         cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
@@ -272,8 +274,10 @@ namespace SQLIndexManager {
     public static void GetColumnstoreFragmentation(SqlConnection connection, Index index, List<Index> indexes) {
       SqlCommand cmd = new SqlCommand(Query.ColumnstoreIndexFragmentation, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
+      int threshold = Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0;
+
       cmd.Parameters.Add(new SqlParameter("@ObjectID",      SqlDbType.Int)    { Value = index.ObjectId });
-      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = Settings.Options.FirstThreshold });
+      cmd.Parameters.Add(new SqlParameter("@Fragmentation", SqlDbType.Float)  { Value = threshold });
       cmd.Parameters.Add(new SqlParameter("@MinIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
       cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",  SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
 
@@ -398,6 +402,9 @@ namespace SQLIndexManager {
     }
 
     private static IndexOp CorrectIndexOp(IndexOp op, Index ix) {
+      if (op == IndexOp.NO_ACTION || op == IndexOp.IGNORE)
+        return IndexOp.SKIP;
+
       if (ix.IndexType == IndexType.MISSING_INDEX)
         return IndexOp.CREATE_INDEX;
 
@@ -428,9 +435,32 @@ namespace SQLIndexManager {
 
     public static void UpdateFixType(List<Index> indexes) {
       foreach (Index ix in indexes) {
-        ix.FixType = CorrectIndexOp(ix.Fragmentation < Settings.Options.SecondThreshold
-                          ? Settings.Options.FirstOperation
-                          : Settings.Options.SecondOperation, ix);
+        if (ix.Fragmentation < Settings.Options.FirstThreshold) {
+          ix.FixType = CorrectIndexOp(Settings.Options.SkipOperation, ix);
+        }
+        else if (ix.Fragmentation < Settings.Options.SecondThreshold) {
+          ix.FixType = CorrectIndexOp(Settings.Options.FirstOperation, ix);
+        }
+        else {
+          ix.FixType = CorrectIndexOp(Settings.Options.SecondOperation, ix);
+        }
+      }
+    }
+
+    public static void KillActiveSessions() {
+      if (!Settings.ServerInfo.IsSysAdmin) return;
+
+      using (SqlConnection connection = Connection.Create(Settings.ActiveHost)) {
+        try {
+          connection.Open();
+          SqlCommand cmd = new SqlCommand(Query.KillActiveSessions, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+          cmd.Parameters.Add(new SqlParameter("@ApplicationName", SqlDbType.NVarChar, 128) { Value = Settings.ApplicationName });
+          cmd.ExecuteNonQuery();
+        }
+        catch { }
+        finally {
+          connection.Close();
+        }
       }
     }
 

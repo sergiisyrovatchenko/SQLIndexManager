@@ -151,6 +151,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fix.
+        /// </summary>
+        internal static string Fix {
+            get {
+                return ResourceManager.GetString("Fix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FixType.
         /// </summary>
         internal static string FixType {
@@ -483,6 +492,15 @@ namespace SQLIndexManager.Properties {
         internal static string SchemaName {
             get {
                 return ResourceManager.GetString("SchemaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selection.
+        /// </summary>
+        internal static string Selection {
+            get {
+                return ResourceManager.GetString("Selection", resourceCulture);
             }
         }
         

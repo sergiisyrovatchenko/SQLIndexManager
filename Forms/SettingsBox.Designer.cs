@@ -37,6 +37,8 @@
       DevExpress.XtraEditors.LabelControl labelControl6;
       DevExpress.XtraEditors.GroupControl db3;
       DevExpress.XtraEditors.GroupControl groupControl3;
+      DevExpress.XtraEditors.LabelControl labelControl3;
+      DevExpress.XtraEditors.LabelControl labelPadIndex;
       DevExpress.XtraEditors.LabelControl labelControl7;
       DevExpress.XtraEditors.LabelControl labelControl13;
       DevExpress.XtraEditors.LabelControl labelControl15;
@@ -48,7 +50,8 @@
       System.Windows.Forms.PictureBox pictureBox1;
       System.Windows.Forms.PictureBox pictureBox3;
       System.Windows.Forms.PictureBox pictureBox4;
-      DevExpress.XtraEditors.LabelControl labelPadIndex;
+      this.labelSkipThreshold = new DevExpress.XtraEditors.LabelControl();
+      this.boxSkipThreshold = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxSecondThreshold = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxFirstThreshold = new DevExpress.XtraEditors.ComboBoxEdit();
       this.labelFirstThreshold = new DevExpress.XtraEditors.LabelControl();
@@ -68,6 +71,8 @@
       this.boxScanNonClusteredColumnstore = new DevExpress.XtraEditors.CheckEdit();
       this.boxIgnoreReadOnlyFL = new DevExpress.XtraEditors.CheckEdit();
       this.boxScanHeap = new DevExpress.XtraEditors.CheckEdit();
+      this.boxDelayAfterFix = new DevExpress.XtraEditors.SpinEdit();
+      this.boxPadIndex = new DevExpress.XtraEditors.CheckEdit();
       this.boxNoRecompute = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxStatsSamplePercent = new DevExpress.XtraEditors.SpinEdit();
       this.boxScanMode = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -87,7 +92,7 @@
       this.boxIncludeObject = new DevExpress.XtraEditors.TokenEdit();
       this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
       this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
-      this.boxPadIndex = new DevExpress.XtraEditors.CheckEdit();
+      this.boxShowSettingsWhenConnectionChanged = new DevExpress.XtraEditors.CheckEdit();
       labelControl9 = new DevExpress.XtraEditors.LabelControl();
       labelSortInTempDb = new DevExpress.XtraEditors.LabelControl();
       labelLobCompaction = new DevExpress.XtraEditors.LabelControl();
@@ -101,6 +106,8 @@
       labelControl6 = new DevExpress.XtraEditors.LabelControl();
       db3 = new DevExpress.XtraEditors.GroupControl();
       groupControl3 = new DevExpress.XtraEditors.GroupControl();
+      labelControl3 = new DevExpress.XtraEditors.LabelControl();
+      labelPadIndex = new DevExpress.XtraEditors.LabelControl();
       labelControl7 = new DevExpress.XtraEditors.LabelControl();
       labelControl13 = new DevExpress.XtraEditors.LabelControl();
       labelControl15 = new DevExpress.XtraEditors.LabelControl();
@@ -112,9 +119,9 @@
       pictureBox1 = new System.Windows.Forms.PictureBox();
       pictureBox3 = new System.Windows.Forms.PictureBox();
       pictureBox4 = new System.Windows.Forms.PictureBox();
-      labelPadIndex = new DevExpress.XtraEditors.LabelControl();
       ((System.ComponentModel.ISupportInitialize)(groupControl1)).BeginInit();
       groupControl1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxSkipThreshold.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSecondThreshold.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxFirstThreshold.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxMinIndexSize)).BeginInit();
@@ -139,6 +146,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxScanHeap.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).BeginInit();
       groupControl3.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxDelayAfterFix.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxNoRecompute.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanMode.Properties)).BeginInit();
@@ -163,7 +172,7 @@
       this.groupControl4.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).BeginInit();
       this.groupControl5.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxShowSettingsWhenConnectionChanged.Properties)).BeginInit();
       this.SuspendLayout();
       // 
       // labelControl9
@@ -210,7 +219,7 @@
       // 
       buttonCancel.AllowFocus = false;
       buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      buttonCancel.Location = new System.Drawing.Point(629, 481);
+      buttonCancel.Location = new System.Drawing.Point(629, 511);
       buttonCancel.Name = "buttonCancel";
       buttonCancel.Size = new System.Drawing.Size(75, 23);
       buttonCancel.TabIndex = 0;
@@ -220,7 +229,7 @@
       // buttonRestore
       // 
       buttonRestore.AllowFocus = false;
-      buttonRestore.Location = new System.Drawing.Point(12, 481);
+      buttonRestore.Location = new System.Drawing.Point(12, 511);
       buttonRestore.Name = "buttonRestore";
       buttonRestore.Size = new System.Drawing.Size(75, 23);
       buttonRestore.TabIndex = 0;
@@ -230,6 +239,8 @@
       // 
       // groupControl1
       // 
+      groupControl1.Controls.Add(this.labelSkipThreshold);
+      groupControl1.Controls.Add(this.boxSkipThreshold);
       groupControl1.Controls.Add(this.boxSecondThreshold);
       groupControl1.Controls.Add(this.boxFirstThreshold);
       groupControl1.Controls.Add(this.labelFirstThreshold);
@@ -241,14 +252,37 @@
       groupControl1.Controls.Add(this.labelSize);
       groupControl1.Location = new System.Drawing.Point(12, 4);
       groupControl1.Name = "groupControl1";
-      groupControl1.Size = new System.Drawing.Size(396, 176);
+      groupControl1.Size = new System.Drawing.Size(396, 205);
       groupControl1.TabIndex = 8;
       groupControl1.Text = "Filters";
+      // 
+      // labelSkipThreshold
+      // 
+      this.labelSkipThreshold.Location = new System.Drawing.Point(211, 91);
+      this.labelSkipThreshold.Name = "labelSkipThreshold";
+      this.labelSkipThreshold.Size = new System.Drawing.Size(25, 13);
+      this.labelSkipThreshold.TabIndex = 33;
+      this.labelSkipThreshold.Text = "Label";
+      // 
+      // boxSkipThreshold
+      // 
+      this.boxSkipThreshold.EditValue = "";
+      this.boxSkipThreshold.Location = new System.Drawing.Point(13, 88);
+      this.boxSkipThreshold.Name = "boxSkipThreshold";
+      this.boxSkipThreshold.Properties.AllowFocused = false;
+      this.boxSkipThreshold.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxSkipThreshold.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxSkipThreshold.Properties.AutoComplete = false;
+      this.boxSkipThreshold.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxSkipThreshold.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+      this.boxSkipThreshold.Size = new System.Drawing.Size(185, 20);
+      this.boxSkipThreshold.TabIndex = 32;
       // 
       // boxSecondThreshold
       // 
       this.boxSecondThreshold.EditValue = "";
-      this.boxSecondThreshold.Location = new System.Drawing.Point(13, 112);
+      this.boxSecondThreshold.Location = new System.Drawing.Point(13, 140);
       this.boxSecondThreshold.Name = "boxSecondThreshold";
       this.boxSecondThreshold.Properties.AllowFocused = false;
       this.boxSecondThreshold.Properties.Appearance.Options.UseTextOptions = true;
@@ -263,7 +297,7 @@
       // boxFirstThreshold
       // 
       this.boxFirstThreshold.EditValue = "";
-      this.boxFirstThreshold.Location = new System.Drawing.Point(13, 86);
+      this.boxFirstThreshold.Location = new System.Drawing.Point(13, 114);
       this.boxFirstThreshold.Name = "boxFirstThreshold";
       this.boxFirstThreshold.Properties.AllowFocused = false;
       this.boxFirstThreshold.Properties.Appearance.Options.UseTextOptions = true;
@@ -277,7 +311,7 @@
       // 
       // labelFirstThreshold
       // 
-      this.labelFirstThreshold.Location = new System.Drawing.Point(211, 89);
+      this.labelFirstThreshold.Location = new System.Drawing.Point(211, 117);
       this.labelFirstThreshold.Name = "labelFirstThreshold";
       this.labelFirstThreshold.Size = new System.Drawing.Size(25, 13);
       this.labelFirstThreshold.TabIndex = 3;
@@ -285,7 +319,7 @@
       // 
       // labelSecondThreshold
       // 
-      this.labelSecondThreshold.Location = new System.Drawing.Point(211, 115);
+      this.labelSecondThreshold.Location = new System.Drawing.Point(211, 143);
       this.labelSecondThreshold.Name = "labelSecondThreshold";
       this.labelSecondThreshold.Size = new System.Drawing.Size(25, 13);
       this.labelSecondThreshold.TabIndex = 8;
@@ -337,11 +371,12 @@
       // boxThreshold
       // 
       this.boxThreshold.EditValue = new DevExpress.XtraEditors.Repository.TrackBarRange(1, 1);
-      this.boxThreshold.Location = new System.Drawing.Point(6, 143);
+      this.boxThreshold.Location = new System.Drawing.Point(6, 171);
       this.boxThreshold.Name = "boxThreshold";
       this.boxThreshold.Properties.AllowFocused = false;
       this.boxThreshold.Properties.HighlightSelectedRange = false;
       this.boxThreshold.Properties.Maximum = 100;
+      this.boxThreshold.Properties.Minimum = 1;
       this.boxThreshold.Properties.TickFrequency = 10;
       this.boxThreshold.Properties.TickStyle = System.Windows.Forms.TickStyle.None;
       this.boxThreshold.Properties.ValueToolTipFormatString = "";
@@ -365,7 +400,7 @@
       groupControl2.Controls.Add(this.boxConnectionTimeout);
       groupControl2.Controls.Add(labelControl6);
       groupControl2.Controls.Add(this.boxCommandTimeout);
-      groupControl2.Location = new System.Drawing.Point(414, 394);
+      groupControl2.Location = new System.Drawing.Point(414, 422);
       groupControl2.Name = "groupControl2";
       groupControl2.Size = new System.Drawing.Size(290, 81);
       groupControl2.TabIndex = 14;
@@ -467,7 +502,7 @@
       db3.Controls.Add(this.boxScanNonClusteredColumnstore);
       db3.Controls.Add(this.boxIgnoreReadOnlyFL);
       db3.Controls.Add(this.boxScanHeap);
-      db3.Location = new System.Drawing.Point(12, 187);
+      db3.Location = new System.Drawing.Point(12, 215);
       db3.Name = "db3";
       db3.Size = new System.Drawing.Size(396, 114);
       db3.TabIndex = 16;
@@ -561,6 +596,8 @@
       // 
       // groupControl3
       // 
+      groupControl3.Controls.Add(this.boxDelayAfterFix);
+      groupControl3.Controls.Add(labelControl3);
       groupControl3.Controls.Add(labelPadIndex);
       groupControl3.Controls.Add(this.boxPadIndex);
       groupControl3.Controls.Add(this.boxNoRecompute);
@@ -589,9 +626,70 @@
       groupControl3.Controls.Add(this.boxOnline);
       groupControl3.Location = new System.Drawing.Point(414, 4);
       groupControl3.Name = "groupControl3";
-      groupControl3.Size = new System.Drawing.Size(290, 384);
+      groupControl3.Size = new System.Drawing.Size(290, 412);
       groupControl3.TabIndex = 17;
       groupControl3.Text = "Indexes";
+      // 
+      // boxDelayAfterFix
+      // 
+      this.boxDelayAfterFix.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+      this.boxDelayAfterFix.Location = new System.Drawing.Point(189, 383);
+      this.boxDelayAfterFix.Name = "boxDelayAfterFix";
+      this.boxDelayAfterFix.Properties.AllowFocused = false;
+      this.boxDelayAfterFix.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxDelayAfterFix.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxDelayAfterFix.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxDelayAfterFix.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxDelayAfterFix.Properties.DisplayFormat.FormatString = "N00";
+      this.boxDelayAfterFix.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxDelayAfterFix.Properties.EditFormat.FormatString = "n0";
+      this.boxDelayAfterFix.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxDelayAfterFix.Properties.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      this.boxDelayAfterFix.Properties.IsFloatValue = false;
+      this.boxDelayAfterFix.Properties.Mask.EditMask = "N00";
+      this.boxDelayAfterFix.Properties.MaxValue = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+      this.boxDelayAfterFix.Size = new System.Drawing.Size(88, 20);
+      this.boxDelayAfterFix.TabIndex = 30;
+      this.boxDelayAfterFix.TabStop = false;
+      // 
+      // labelControl3
+      // 
+      labelControl3.Location = new System.Drawing.Point(14, 384);
+      labelControl3.Name = "labelControl3";
+      labelControl3.Size = new System.Drawing.Size(122, 13);
+      labelControl3.TabIndex = 28;
+      labelControl3.Text = "DELAY_MS_AFTER_FIX =";
+      // 
+      // labelPadIndex
+      // 
+      labelPadIndex.Location = new System.Drawing.Point(14, 189);
+      labelPadIndex.Name = "labelPadIndex";
+      labelPadIndex.Size = new System.Drawing.Size(85, 13);
+      labelPadIndex.TabIndex = 27;
+      labelPadIndex.Text = "PAD_INDEX = ON";
+      // 
+      // boxPadIndex
+      // 
+      this.boxPadIndex.Location = new System.Drawing.Point(221, 186);
+      this.boxPadIndex.Name = "boxPadIndex";
+      this.boxPadIndex.Properties.AllowFocused = false;
+      this.boxPadIndex.Properties.Caption = "";
+      this.boxPadIndex.Size = new System.Drawing.Size(19, 19);
+      this.boxPadIndex.TabIndex = 26;
+      this.boxPadIndex.TabStop = false;
       // 
       // boxNoRecompute
       // 
@@ -980,7 +1078,7 @@
       // 
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.buttonOK.Location = new System.Drawing.Point(548, 481);
+      this.buttonOK.Location = new System.Drawing.Point(548, 511);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 1;
@@ -1012,7 +1110,7 @@
       this.groupControl4.Controls.Add(pictureBox1);
       this.groupControl4.Controls.Add(this.boxExcludeSchemas);
       this.groupControl4.Controls.Add(this.boxIncludeSchemas);
-      this.groupControl4.Location = new System.Drawing.Point(12, 307);
+      this.groupControl4.Location = new System.Drawing.Point(12, 335);
       this.groupControl4.Name = "groupControl4";
       this.groupControl4.Size = new System.Drawing.Size(396, 81);
       this.groupControl4.TabIndex = 18;
@@ -1024,35 +1122,28 @@
       this.groupControl5.Controls.Add(pictureBox4);
       this.groupControl5.Controls.Add(this.boxIncludeObject);
       this.groupControl5.Controls.Add(this.boxExcludeObject);
-      this.groupControl5.Location = new System.Drawing.Point(12, 394);
+      this.groupControl5.Location = new System.Drawing.Point(12, 422);
       this.groupControl5.Name = "groupControl5";
       this.groupControl5.Size = new System.Drawing.Size(396, 81);
       this.groupControl5.TabIndex = 19;
       this.groupControl5.Text = "Object Filter (schema.table OR table OR %pattern%)";
       // 
-      // labelPadIndex
+      // boxShowSettingsWhenConnectionChanged
       // 
-      labelPadIndex.Location = new System.Drawing.Point(14, 189);
-      labelPadIndex.Name = "labelPadIndex";
-      labelPadIndex.Size = new System.Drawing.Size(85, 13);
-      labelPadIndex.TabIndex = 27;
-      labelPadIndex.Text = "PAD_INDEX = ON";
-      // 
-      // boxPadIndex
-      // 
-      this.boxPadIndex.Location = new System.Drawing.Point(221, 186);
-      this.boxPadIndex.Name = "boxPadIndex";
-      this.boxPadIndex.Properties.AllowFocused = false;
-      this.boxPadIndex.Properties.Caption = "";
-      this.boxPadIndex.Size = new System.Drawing.Size(19, 19);
-      this.boxPadIndex.TabIndex = 26;
-      this.boxPadIndex.TabStop = false;
+      this.boxShowSettingsWhenConnectionChanged.Location = new System.Drawing.Point(93, 513);
+      this.boxShowSettingsWhenConnectionChanged.Name = "boxShowSettingsWhenConnectionChanged";
+      this.boxShowSettingsWhenConnectionChanged.Properties.AllowFocused = false;
+      this.boxShowSettingsWhenConnectionChanged.Properties.Caption = "Open dialog when connection string changed";
+      this.boxShowSettingsWhenConnectionChanged.Size = new System.Drawing.Size(248, 19);
+      this.boxShowSettingsWhenConnectionChanged.TabIndex = 15;
+      this.boxShowSettingsWhenConnectionChanged.TabStop = false;
       // 
       // SettingsBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(715, 514);
+      this.ClientSize = new System.Drawing.Size(715, 544);
+      this.Controls.Add(this.boxShowSettingsWhenConnectionChanged);
       this.Controls.Add(this.groupControl5);
       this.Controls.Add(this.groupControl4);
       this.Controls.Add(groupControl3);
@@ -1074,6 +1165,7 @@
       ((System.ComponentModel.ISupportInitialize)(groupControl1)).EndInit();
       groupControl1.ResumeLayout(false);
       groupControl1.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxSkipThreshold.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxSecondThreshold.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxFirstThreshold.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxMinIndexSize.Properties)).EndInit();
@@ -1100,6 +1192,8 @@
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).EndInit();
       groupControl3.ResumeLayout(false);
       groupControl3.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxDelayAfterFix.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxNoRecompute.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxScanMode.Properties)).EndInit();
@@ -1126,7 +1220,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).EndInit();
       this.groupControl5.ResumeLayout(false);
       this.groupControl5.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxShowSettingsWhenConnectionChanged.Properties)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -1172,5 +1266,9 @@
     private DevExpress.XtraEditors.ComboBoxEdit boxFirstThreshold;
     private DevExpress.XtraEditors.ComboBoxEdit boxSecondThreshold;
     private DevExpress.XtraEditors.CheckEdit boxPadIndex;
+    private DevExpress.XtraEditors.LabelControl labelSkipThreshold;
+    private DevExpress.XtraEditors.ComboBoxEdit boxSkipThreshold;
+    private DevExpress.XtraEditors.SpinEdit boxDelayAfterFix;
+    private DevExpress.XtraEditors.CheckEdit boxShowSettingsWhenConnectionChanged;
   }
 }

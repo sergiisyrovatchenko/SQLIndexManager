@@ -283,4 +283,10 @@
   <data name="ServerName" xml:space="preserve">
     <value>ServerName</value>
   </data>
+  <data name="Fix" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
 </root>

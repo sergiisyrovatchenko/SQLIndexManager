@@ -49,7 +49,16 @@ namespace SQLIndexManager {
     CREATE_INDEX = 14,
 
     [Description("DROP TABLE")]
-    DROP_TABLE = 15
+    DROP_TABLE = 15,
+
+    [Description("NO ACTION")]
+    NO_ACTION = 16,
+
+    [Description("IGNORE")]
+    IGNORE = 17,
+
+    [Description("SKIP")]
+    SKIP = 18
   }
 
 }
