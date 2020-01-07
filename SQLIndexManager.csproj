@@ -92,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\AES.cs" />
+    <Compile Include="Common\GridMethod.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Common\Output.cs" />
     <Compile Include="Common\ThreadWorker.cs">
       <SubType>Component</SubType>
@@ -139,6 +142,7 @@
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Database.cs" />
     <Compile Include="Server\Index.cs" />
+    <Compile Include="Server\ProgressStatus.cs" />
     <Compile Include="Server\Query.cs" />
     <Compile Include="Types\ServerVersion.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />

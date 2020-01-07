@@ -1,7 +1,7 @@
-﻿using DevExpress.XtraEditors;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 
 namespace SQLIndexManager {
 

@@ -1,4 +1,15 @@
-﻿using DevExpress.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
+using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.Utils.Menu;
 using DevExpress.Utils.Taskbar.Core;
@@ -13,31 +24,22 @@ using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraPrinting;
 using SQLIndexManager.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace SQLIndexManager {
 
   public partial class MainBox : RibbonForm {
 
-    private long _totalDuration;
-
     public MainBox() {
       InitializeComponent();
       splitContainer.PanelVisibility = SplitPanelVisibility.Panel1;
 
-      Output.Current.SetOutputControl(labelInfo, gridControl2);
+      Output.Current.SetOutputControl(labelInfo, gridLog);
       Output.Current.Add($"Log folder: {Environment.CurrentDirectory}");
+
+      view.CustomColumnDisplayText += GridMethod.GridColumnDisplayText;
+      view.RowCellStyle += GridMethod.GridRowCellStyle;
+      view.DoubleClick += GridMethod.GridDoubleClick;
+
       popupIndexOperation.DataSource = Enum.GetValues(typeof(IndexOp)).Cast<IndexOp>().ToList();
 
       RestoreLayout();
@@ -53,7 +55,7 @@ namespace SQLIndexManager {
 
     private void RestoreLayout() {
       try {
-        grid.SaveLayoutToStream(defaultLayout);
+        view.SaveLayoutToStream(defaultLayout);
         defaultLayout.Seek(0, SeekOrigin.Begin);
       }
       catch { }
@@ -63,7 +65,7 @@ namespace SQLIndexManager {
           string layout = AES.Decrypt(File.ReadAllText(Settings.LayoutFileName));
 
           using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(layout))) {
-            grid.RestoreLayoutFromStream(stream);
+            view.RestoreLayoutFromStream(stream);
           }
           Output.Current.Add($"Grid layout restored: {Settings.LayoutFileName}");
         }
@@ -75,7 +77,7 @@ namespace SQLIndexManager {
 
     private void RestoreDefaultLayout(object sender, ItemClickEventArgs e) {
       try {
-        grid.RestoreLayoutFromStream(defaultLayout);
+        view.RestoreLayoutFromStream(defaultLayout);
         defaultLayout.Seek(0, SeekOrigin.Begin);
 
         Output.Current.Add("Default grid layout restored");
@@ -91,7 +93,7 @@ namespace SQLIndexManager {
       try {
         using (StreamWriter file = new StreamWriter(new FileStream(Settings.LayoutFileName, FileMode.Create))) {
           Stream str = new MemoryStream();
-          grid.SaveLayoutToStream(str);
+          view.SaveLayoutToStream(str);
           str.Seek(0, SeekOrigin.Begin);
           StreamReader reader = new StreamReader(str);
           string layout = reader.ReadToEnd();
@@ -110,13 +112,10 @@ namespace SQLIndexManager {
 
     #region Scan Indexes
 
-    private readonly List<Index> _scanIndexes = new List<Index>();
+    private readonly List<Index> _indexes = new List<Index>();
     private BackgroundWorker _workerScan;
-    private Stopwatch _scanDuration = new Stopwatch();
-    private int _errors;
 
     private void ScanIndexes(object sender, DoWorkEventArgs e) {
-      _errors = 0;
       using (ConnectionList connectionList = new ConnectionList(Settings.ActiveHost)) {
         foreach (var database in Settings.ActiveHost.Databases) {
           List<Index> idx = new List<Index>();
@@ -139,8 +138,8 @@ namespace SQLIndexManager {
               break;
             }
             catch (SqlException ex) {
-              _errors++;
-              if (!ex.Message.Contains("timeout")) {
+              _ps.Errors++;
+              if (!ex.Message.Contains("timeout") && !ex.Message.Contains("kill")) {
                 Output.Current.Add($"Error: {ex.Source}", ex.Message);
                 XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -159,6 +158,10 @@ namespace SQLIndexManager {
                              $"Post-describe: {(idx.Count(_ => _.Fragmentation == null))}", null, opw.ElapsedMilliseconds);
 
           List<int> clid = new List<int>();
+          _ps.IndexesTotal = idx.Count;
+          _ps.Indexes = idx.Count(_ => _.Fragmentation != null);
+          _ps.IndexesSize = idx.Where(_ => _.Fragmentation != null).Sum(_ => _.PagesCount);
+          _ps.SavedSpace = idx.Where(_ => _.Fragmentation != null).Sum(_ => _.UnusedPagesCount);
 
           foreach (Index index in idx.Where(_ => _.Fragmentation == null)
                                      .OrderBy(_ => _.ObjectId)
@@ -166,13 +169,15 @@ namespace SQLIndexManager {
                                      .ThenBy(_ => _.PartitionNumber)) {
             try {
               if (_workerScan.CancellationPending) {
-                _scanIndexes.AddRange(idx);
+                _indexes.AddRange(idx);
                 e.Cancel = true;
                 return;
               }
 
               connection = connectionList.Get(database);
               if (connection == null) break;
+
+              _ps.Indexes++;
 
               if (index.IndexType == IndexType.CLUSTERED_COLUMNSTORE || index.IndexType == IndexType.NONCLUSTERED_COLUMNSTORE) {
                 if (!clid.Exists(_ => _ == index.ObjectId)) {
@@ -197,19 +202,24 @@ namespace SQLIndexManager {
               }
             }
             catch (Exception ex) {
-              _errors++;
+              _ps.Errors++;
               Output.Current.Add($"Failed: {index}", ex.Message);
             }
+
+            _ps.Indexes = idx.Count(_ => _.Fragmentation != null);
+            _ps.IndexesSize = idx.Where(_ => _.Fragmentation != null).Sum(_ => _.PagesCount);
+            _ps.SavedSpace = idx.Where(_ => _.Fragmentation != null).Sum(_ => _.UnusedPagesCount);
+
+            _workerScan.ReportProgress(0);
           }
 
-          _scanIndexes.AddRange(idx);
+          _indexes.AddRange(idx);
         }
       }
     }
 
     private void ScanIndexesFinish(object sender, RunWorkerCompletedEventArgs e) {
       taskbar.ProgressMode = TaskbarButtonProgressMode.NoProgress;
-      _scanDuration.Stop();
 
       buttonOptions.Enabled =
         buttonDatabases.Enabled =
@@ -219,38 +229,37 @@ namespace SQLIndexManager {
 
       buttonStopScan.Visibility = BarItemVisibility.Never;
 
-      List<Index> indexes = _scanIndexes.Where(_ => _.Fragmentation >= (Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0)
-                                                 && _.PagesCount >= Settings.Options.MinIndexSize.PageSize()
-                                                 && _.PagesCount <= Settings.Options.MaxIndexSize.PageSize())
-                                        .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
-                                        .ThenByDescending(_ => _.PagesCount).ToList();
+      List<Index> indexes = _indexes.Where(_ => _.Fragmentation >= (Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0) 
+                                             && _.PagesCount >= Settings.Options.MinIndexSize.PageSize()
+                                             && _.PagesCount <= Settings.Options.MaxIndexSize.PageSize())
+                                        .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold ? 3 : (_.Fragmentation < Settings.Options.SecondThreshold ? 2 : 1 ))
+                                        .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
 
       QueryEngine.UpdateFixType(indexes);
       QueryEngine.FindDublicateIndexes(indexes);
       QueryEngine.FindUnusedIndexes(indexes);
 
-      labelIndex.Caption = indexes.Count.ToString();
-      labelError.Caption = _errors.ToString();
-      Output.Current.Add($"Processed: {_scanIndexes.Count}. Fragmented: {indexes.Count}", null, _scanDuration.ElapsedMilliseconds);
+      _ps.Indexes = _ps.IndexesTotal = indexes.Count;
+      _ps.IndexesSize = indexes.Sum(_ => _.PagesCount);
+      _ps.SavedSpace = indexes.Sum(_ => _.UnusedPagesCount);
+      UpdateProgressStats();
+      
+      Output.Current.Add($"Processed: {_indexes.Count}. Fragmented: {_ps.Indexes}");
 
-      grid.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
-      gridControl1.DataSource = indexes;
+      view.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
+      grid.DataSource = indexes;
     }
 
     private void RefreshIndexes() {
       if (_workerFix != null && _workerFix.IsBusy) return;
 
-      grid.CustomDrawEmptyForeground -= CustomDrawEmptyForeground;
-      gridControl1.DataSource = null;
-
-      labelDatabase.Caption = Settings.ActiveHost.Databases.Count.ToString();
-      labelIndex.Caption =
-        labelError.Caption = @"0";
+      view.CustomDrawEmptyForeground -= CustomDrawEmptyForeground;
+      grid.DataSource = null;
 
       RestoreSortRules();
 
-      grid.OptionsBehavior.Editable = true;
-      grid.OptionsSelection.MultiSelect = true;
+      view.OptionsBehavior.Editable = true;
+      view.OptionsSelection.MultiSelect = true;
 
       HideSystemColumns();
 
@@ -260,12 +269,12 @@ namespace SQLIndexManager {
               buttonRefreshIndex.Enabled =
                 buttonNewConnection.Enabled = false;
 
-      labelSavedSpace.Visibility = BarItemVisibility.Never;
       buttonStopScan.Visibility = BarItemVisibility.Always;
       taskbar.ProgressMode = TaskbarButtonProgressMode.Indeterminate;
 
-      _scanIndexes.Clear();
-      _scanDuration = Stopwatch.StartNew();
+      _indexes.Clear();
+      _ps = new ProgressStatus { Databases = Settings.ActiveHost.Databases.Count };
+      UpdateProgressStats();
 
       _workerScan = new ThreadWorker() { WorkerSupportsCancellation = true, WorkerReportsProgress = true };
       _workerScan.DoWork += ScanIndexes;
@@ -274,8 +283,31 @@ namespace SQLIndexManager {
       _workerScan.RunWorkerAsync();
     }
 
+    private ProgressStatus _ps;
+
     private void ScanIndexesProgressChanged(object sender, ProgressChangedEventArgs e) {
-      //taskbar.ProgressCurrentValue = e.ProgressPercentage;
+      UpdateProgressStats();
+    }
+
+    private void UpdateProgressStats() {
+      labelErrors.Visibility = _ps.Errors > 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      labelErrors.Caption = _ps.Errors.ToString();
+
+      labelDatabases.Visibility = _ps.Databases > 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      labelDatabases.Caption = _ps.Databases.ToString();
+
+      labelIndexes.Visibility = _ps.Indexes > 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      labelIndexes.Caption = _ps.Indexes != _ps.IndexesTotal ? $"{_ps.Indexes} / {_ps.IndexesTotal}" : _ps.Indexes.ToString();
+
+      labelIndexesSize.Visibility = _ps.IndexesSize > 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      labelIndexesSize.Caption = Convert.ToDecimal(_ps.IndexesSize * 8).FormatSize();
+
+      labelSavedSpace.Visibility = _ps.SavedSpace != 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      labelSavedSpace.Caption = Convert.ToDecimal(_ps.SavedSpace * 8).FormatSize();
+
+      labelElapsedTime.Visibility = _ps.Duration.ElapsedMilliseconds > 0 ? BarItemVisibility.Always : BarItemVisibility.Never;
+      DateTime duration = (new DateTime(0)).AddMilliseconds(_ps.Duration.ElapsedMilliseconds);
+      labelElapsedTime.Caption = duration.ToString("HH:mm:ss:fff");
     }
 
     #endregion
@@ -284,8 +316,6 @@ namespace SQLIndexManager {
 
     private void buttonFix_ItemClick(object sender, ItemClickEventArgs e) {
       if (_workerFix != null && _workerFix.IsBusy) return;
-
-      _totalDuration = 0;
 
       buttonFix.Enabled =
         buttonDatabases.Enabled =
@@ -296,15 +326,19 @@ namespace SQLIndexManager {
 
       buttonStopFix.Visibility = BarItemVisibility.Always;
 
-      List<Index> selIndex = ((List<Index>)grid.DataSource).Where(_ => _.IsSelected).ToList();
+      List<Index> selIndex = ((List<Index>)view.DataSource).Where(_ => _.IsSelected).ToList();
 
       List<Index> fixIndex =
           selIndex.Where(x => Settings.ActiveHost.Databases.Any(y => y == x.DatabaseName) && x.FixType != IndexOp.SKIP)
                   .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
                   .ThenByDescending(_ => _.PagesCount).ToList();
 
-      labelDatabase.Caption = fixIndex.Select(_ => _.DatabaseName).Distinct().Count().ToString();
-      labelIndex.Caption = fixIndex.Count.ToString();
+      _ps = new ProgressStatus
+                  {
+                    Databases = fixIndex.Select(_ => _.DatabaseName).Distinct().Count(),
+                    IndexesTotal = fixIndex.Count
+                  };
+      UpdateProgressStats();
 
       foreach (Index row in fixIndex) {
         row.Progress = imageCollection.Images[0];
@@ -312,22 +346,22 @@ namespace SQLIndexManager {
 
       SaveSortRules();
 
-      grid.ClearColumnsFilter();
-      grid.ClearSelection();
+      view.ClearColumnsFilter();
+      view.ClearSelection();
 
-      grid.Columns[Resources.Duration].Visible = true;
-      grid.Columns[Resources.Duration].VisibleIndex = 0;
+      view.Columns[Resources.Duration].Visible = true;
+      view.Columns[Resources.Duration].VisibleIndex = 0;
 
-      grid.Columns[Resources.Progress].Visible = true;
-      grid.Columns[Resources.Progress].VisibleIndex = 0;
+      view.Columns[Resources.Progress].Visible = true;
+      view.Columns[Resources.Progress].VisibleIndex = 0;
 
-      grid.Columns[Resources.PagesCountBefore].Visible = true;
-      grid.Columns[Resources.PagesCountBefore].VisibleIndex = grid.Columns[Resources.PagesCount].VisibleIndex + 1;
+      view.Columns[Resources.PagesCountBefore].Visible = true;
+      view.Columns[Resources.PagesCountBefore].VisibleIndex = view.Columns[Resources.PagesCount].VisibleIndex + 1;
 
-      gridControl1.DataSource = fixIndex;
+      grid.DataSource = fixIndex;
 
-      grid.OptionsBehavior.Editable = false;
-      grid.OptionsSelection.MultiSelect = false;
+      view.OptionsBehavior.Editable = false;
+      view.OptionsSelection.MultiSelect = false;
 
       Output.Current.Add("Start processing");
 
@@ -343,7 +377,8 @@ namespace SQLIndexManager {
 
     private void FixIndexesProgressChanged(object sender, ProgressChangedEventArgs e) {
       taskbar.ProgressCurrentValue = e.ProgressPercentage;
-      grid.RefreshData();
+      view.RefreshData();
+      UpdateProgressStats();
     }
 
     private BackgroundWorker _workerFix;
@@ -363,6 +398,8 @@ namespace SQLIndexManager {
           }
 
           item.Progress = imageCollection.Images[1];
+          _ps.Indexes++;
+          _ps.IndexesSize += item.PagesCount;
           _workerFix.ReportProgress(i + 1);
 
           Output.Current.AddCaption(item.ToString());
@@ -378,7 +415,6 @@ namespace SQLIndexManager {
 
           watch.Stop();
 
-          _totalDuration += watch.ElapsedMilliseconds;
           item.Duration = (new DateTime(0)).AddMilliseconds(watch.ElapsedMilliseconds);
 
           Output.Current.Add(item.ToString(), sql, watch.ElapsedMilliseconds);
@@ -387,6 +423,7 @@ namespace SQLIndexManager {
           if (!string.IsNullOrEmpty(item.Error)) {
             Output.Current.Add(item.ToString(), item.Error);
             item.Progress = imageCollection.Images[3];
+            _ps.Errors++;
           }
           else {
             if (Settings.Options.DelayAfterFix > 0 && i < indexes.Count - 1) {
@@ -396,6 +433,7 @@ namespace SQLIndexManager {
             }
           }
 
+          _ps.SavedSpace += (item.PagesCountBefore ?? 0);
           _workerFix.ReportProgress(i + 2);
         }
       }
@@ -413,15 +451,10 @@ namespace SQLIndexManager {
 
       buttonFix.Enabled = false;
 
-      List<Index> indexes = (List<Index>)grid.DataSource;
-
-      labelSavedSpace.Visibility = BarItemVisibility.Always;
-      labelSavedSpace.Caption = Convert.ToDecimal(indexes.Sum(_ => _.PagesCountBefore ?? 0) * 8).FormatSize();
-      labelError.Caption = indexes.Count(_ => _.Error != null).ToString();
-
       buttonStopFix.Visibility = BarItemVisibility.Never;
 
-      Output.Current.Add("Finished", null, _totalDuration);
+      UpdateProgressStats();
+      Output.Current.Add("Done!");
     }
 
     #endregion
@@ -434,8 +467,7 @@ namespace SQLIndexManager {
 
     private void ShowDatabaseBox(bool isConnectionChanged) {
       using (DatabaseBox form = new DatabaseBox()) {
-        DialogResult dr = form.ShowDialog(this);
-        if (dr == DialogResult.OK) {
+        if (form.ShowDialog(this) == DialogResult.OK) {
           List<string> dbs = form.GetDatabases();
           bool isDatabaseSelectionEqual = Settings.ActiveHost.Databases.OrderBy(t => t).SequenceEqual(dbs.OrderBy(t => t));
 
@@ -448,15 +480,15 @@ namespace SQLIndexManager {
           RefreshIndexes();
         }
         else {
-          labelDatabase.Caption = Settings.ActiveHost.Databases.Count.ToString();
+          labelDatabases.Caption = Settings.ActiveHost.Databases.Count.ToString();
+          labelDatabases.Visibility = BarItemVisibility.Always;
         }
       }
     }
 
     private void ShowConnectionBox() {
       using (ConnectionBox form = new ConnectionBox()) {
-        DialogResult dr = form.ShowDialog(this);
-        if (dr == DialogResult.OK) {
+        if (form.ShowDialog(this) == DialogResult.OK) {
           Host host = form.GetHost();
           Host lastHost = Settings.Hosts[0];
 
@@ -464,21 +496,16 @@ namespace SQLIndexManager {
                                   && !string.Equals(host.Server, (lastHost ?? new Host()).Server, StringComparison.CurrentCultureIgnoreCase);
 
           Settings.ActiveHost = host;
+          Text = host.Server.ToUpper();
 
           buttonDatabases.Enabled = true;
           buttonRefreshIndex.Enabled = host.Databases.Count > 0;
 
-          labelSavedSpace.Visibility = BarItemVisibility.Never;
-
-          labelServerInfo.Visibility =
-            labelDatabase.Visibility =
-              labelError.Visibility =
-                labelIndex.Visibility = BarItemVisibility.Always;
+          labelServerInfo.Visibility = BarItemVisibility.Always;
+          labelServerInfo.Caption = host.ServerInfo.ToString();
 
           Output.Current.Add($"Host: {host.Server}");
           Output.Current.Add($"Server: {host.ServerInfo}");
-          Text = host.Server.ToUpper();
-          labelServerInfo.Caption = host.ServerInfo.ToString();
 
           ShowDatabaseBox(isConnectionChanged);
         }
@@ -487,8 +514,7 @@ namespace SQLIndexManager {
 
     public void ShowSettingsBox() {
       using (SettingsBox form = new SettingsBox()) {
-        DialogResult dr = form.ShowDialog(this);
-        if (dr == DialogResult.OK) {
+        if (form.ShowDialog(this) == DialogResult.OK) {
           Settings.Options = form.GetSettings();
         }
       }
@@ -499,7 +525,7 @@ namespace SQLIndexManager {
     #region Grid Methods
 
     private string GetFixChanges() {
-      List<Index> fix = ((List<Index>)grid.DataSource).Where(_ => _.IsSelected).ToList();
+      List<Index> fix = ((List<Index>)view.DataSource).Where(_ => _.IsSelected).ToList();
       StringBuilder sb = new StringBuilder();
 
       var groupList = fix.GroupBy(u => u.DatabaseName).Select(grp => grp.ToList()).ToList();
@@ -518,21 +544,21 @@ namespace SQLIndexManager {
     }
 
     private void FixedOpPopupValueChanged(object sender, EventArgs e) {
-      Index row = (Index)grid.GetFocusedRow();
+      Index row = (Index)view.GetFocusedRow();
       if (row == null) return;
 
-      int rowIndex = grid.FindRow(row);
+      int rowIndex = view.FindRow(row);
 
-      grid.PostEditor();
-      grid.SelectRow(rowIndex);
-      grid.UpdateCurrentRow();
+      view.PostEditor();
+      view.SelectRow(rowIndex);
+      view.UpdateCurrentRow();
     }
 
     private void FixedOpPopup(object sender, EventArgs e) {
       LookUpEdit obj = (LookUpEdit)sender;
       obj.Properties.DataSource = null;
 
-      Index row = (Index)grid.GetFocusedRow();
+      Index row = (Index)view.GetFocusedRow();
       if (row == null) return;
 
       List<IndexOp> ops = GetIndexOperations(row);
@@ -603,35 +629,19 @@ namespace SQLIndexManager {
       return i;
     }
 
-    private void GridDoubleClick(object sender, EventArgs e) {
-      GridView obj = (GridView)sender;
-      Point pt = obj.GridControl.PointToClient(MousePosition);
-
-      GridHitInfo info = obj.CalcHitInfo(pt);
-      if (info.Column == null || info.Column.Caption == Resources.Fix || info.Column.Caption == Resources.Selection)
-        return;
-
-      if (info.InRow || info.InRowCell) {
-        if (obj.IsRowSelected(info.RowHandle))
-          obj.UnselectRow(info.RowHandle);
-        else
-          obj.SelectRow(info.RowHandle);
-      }
-    }
-
     private void GridSelectionChanged(object sender, SelectionChangedEventArgs e) {
       if (_workerFix != null && _workerFix.IsBusy) return;
 
       GridView obj = (GridView)sender;
 
-      int[] b = obj.GetSelectedRows();
-      foreach (int row in b) {
+      int[] rows = obj.GetSelectedRows();
+      foreach (int row in rows) {
         Index a = (Index)obj.GetRow(row);
         a.IsSelected = true;
       }
 
       for (int i = 0; i != obj.RowCount; i++) {
-        if (b.Contains(i)) continue;
+        if (rows.Contains(i)) continue;
 
         Index a = (Index)obj.GetRow(i);
         a.IsSelected = false;
@@ -673,32 +683,6 @@ namespace SQLIndexManager {
       }
     }
 
-    private void GridColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e) {
-      switch (e.Column.FieldName) {
-        case "PagesCount":
-        case "PagesCountBefore":
-        case "UnusedPagesCount":
-          if (e.Value != null)
-            e.DisplayText = (Convert.ToDecimal(e.Value) * 8).FormatSize() + " ";
-          break;
-
-        case "Fragmentation":
-        case "PageSpaceUsed":
-          if (e.Value != null) {
-            e.DisplayText = $"{e.Value:n1} % ";
-          }
-          break;
-
-        case "RowsCount":
-          e.DisplayText = $"{e.Value:n0} ";
-          break;
-
-        case "FixType":
-          e.DisplayText = ((IndexOp)e.Value).Description();
-          break;
-      }
-    }
-
     private void GridPopupMenuShowing(object sender, PopupMenuShowingEventArgs e) {
       var col = e.HitInfo.Column;
       if (col == null) return;
@@ -733,7 +717,7 @@ namespace SQLIndexManager {
 
     private void ChangeFixedColumnStyle(object sender, EventArgs e) {
       DXMenuItem mi = (DXMenuItem)sender;
-      GridColumn col = grid.Columns[mi.Tag.ToString()];
+      GridColumn col = view.Columns[mi.Tag.ToString()];
       if (col != null) {
         col.Fixed = (col.Fixed == FixedStyle.Left) ? FixedStyle.None : FixedStyle.Left;
       }
@@ -741,44 +725,48 @@ namespace SQLIndexManager {
 
     private void CopyCellValue(object sender, EventArgs e) {
       DXMenuItem mi = (DXMenuItem)sender;
-      GridColumn col = grid.Columns[mi.Tag.ToString()];
-      var cellValue = grid.GetFocusedRowCellValue(col);
+      GridColumn col = view.Columns[mi.Tag.ToString()];
+      var cellValue = view.GetFocusedRowCellValue(col);
       if (cellValue != null)
         Clipboard.SetText(cellValue.ToString());
     }
 
     private void FilterCellValue(object sender, EventArgs e) {
       DXMenuItem mi = (DXMenuItem)sender;
-      GridColumn col = grid.Columns[mi.Tag.ToString()];
-      var cellValue = grid.GetFocusedRowCellValue(col);
-      grid.SetRowCellValue(GridControl.AutoFilterRowHandle, col, cellValue);
+      GridColumn col = view.Columns[mi.Tag.ToString()];
+      var cellValue = view.GetFocusedRowCellValue(col);
+      view.SetRowCellValue(GridControl.AutoFilterRowHandle, col, cellValue);
     }
 
     private void ChangeFixAction(object sender, EventArgs e) {
       using (ActionBox form = new ActionBox()) {
-        DialogResult dr = form.ShowDialog(this);
-        if (dr == DialogResult.OK) {
+        if (form.ShowDialog(this) == DialogResult.OK) {
           UpdateFixAction(form.GetFixAction());
         }
       }
     }
 
     private void UpdateFixAction(IndexOp op) {
-      List<Index> indexes = (List<Index>)grid.DataSource;
+      List<Index> indexes = (List<Index>)view.DataSource;
 
-      for (int i = 0; i < grid.DataRowCount; i++) {
-        if (grid.IsDataRow(i)) {
-          var rowHandle = grid.GetDataSourceRowIndex(i);
+      for (int i = 0; i < view.DataRowCount; i++) {
+        if (view.IsDataRow(i)) {
+          var rowHandle = view.GetDataSourceRowIndex(i);
           Index index = indexes[rowHandle];
           if (index == null) continue;
 
-          List<IndexOp> ops = GetIndexOperations(index);
-          if (ops.Contains(op))
-            index.FixType = op;
+          if (op == IndexOp.REBUILD_NONE && index.DataCompression == DataCompression.NONE) {
+            index.FixType = IndexOp.REBUILD;
+          }
+          else {
+            List<IndexOp> ops = GetIndexOperations(index);
+            if (ops.Contains(op))
+              index.FixType = op;
+          }
         }
       }
 
-      grid.RefreshData();
+      view.RefreshData();
     }
 
     private void GridCustomizationMenu(object sender, RibbonCustomizationMenuEventArgs e) {
@@ -788,11 +776,11 @@ namespace SQLIndexManager {
     }
 
     private void GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e) {
-      if (e.Info == null || e.SelectedControl == gridControl1) {
-        GridHitInfo info = grid.CalcHitInfo(e.ControlMousePosition);
+      if (e.Info == null || e.SelectedControl == grid) {
+        GridHitInfo info = view.CalcHitInfo(e.ControlMousePosition);
 
         if (info.InRowCell && info.RowHandle != -1 && info.Column != null && info.Column.FieldName == Resources.Progress) {
-          Index index = (Index)grid.GetRow(info.RowHandle);
+          Index index = (Index)view.GetRow(info.RowHandle);
           e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", $"{index.GetQuery()}\n{index.Error}");
         }
       }
@@ -819,20 +807,14 @@ namespace SQLIndexManager {
       e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
     }
 
-    private void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
-      if (e.RowHandle == ((GridView) sender).FocusedRowHandle) {
-        e.Appearance.BackColor = Color.Silver;
-      }
-    }
-
     #endregion
 
     #region Controls
 
     private void HideSystemColumns() {
-      grid.Columns[Resources.Progress].Visible = false;
-      grid.Columns[Resources.Duration].Visible = false;
-      grid.Columns[Resources.PagesCountBefore].Visible = false;
+      view.Columns[Resources.Progress].Visible = false;
+      view.Columns[Resources.Duration].Visible = false;
+      view.Columns[Resources.PagesCountBefore].Visible = false;
     }
 
     private void ButtonLog(object sender, ItemClickEventArgs e) {
@@ -905,17 +887,17 @@ namespace SQLIndexManager {
     private readonly List<GridColumnSortInfo> _sortInfo = new List<GridColumnSortInfo>();
 
     private void SaveSortRules() {
-      foreach (GridColumnSortInfo col in grid.SortInfo) {
+      foreach (GridColumnSortInfo col in view.SortInfo) {
         _sortInfo.Add(col);
       }
 
-      grid.ClearSorting();
+      view.ClearSorting();
     }
 
     private void RestoreSortRules() {
-      if (_sortInfo.Count > 0 && grid.SortInfo.Count == 0) {
+      if (_sortInfo.Count > 0 && view.SortInfo.Count == 0) {
         foreach (GridColumnSortInfo sortCol in _sortInfo) {
-          grid.SortInfo.Add(sortCol);
+          view.SortInfo.Add(sortCol);
         }
 
         _sortInfo.Clear();
@@ -927,10 +909,7 @@ namespace SQLIndexManager {
     #region Export
 
     private void ExportCsv(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog {
-        Filter = @"CSV Files (*.csv)|*.csv",
-        RestoreDirectory = true
-      };
+      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"CSV Files (*.csv)|*.csv" };
 
       if (dialog.ShowDialog() == DialogResult.OK) {
         CsvExportOptionsEx advOptions = new CsvExportOptionsEx {
@@ -939,7 +918,7 @@ namespace SQLIndexManager {
         };
 
         try {
-          gridControl1.ExportToCsv(dialog.FileName, advOptions);
+          grid.ExportToCsv(dialog.FileName, advOptions);
           Output.Current.Add($"Export to CSV: {dialog.FileName}");
         }
         catch (Exception ex) {
@@ -950,10 +929,7 @@ namespace SQLIndexManager {
     }
 
     private void ExportExcel(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog {
-        Filter = @"Excel Files (*.xlsx)|*.xlsx",
-        RestoreDirectory = true
-      };
+      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"Excel Files (*.xlsx)|*.xlsx" };
 
       if (dialog.ShowDialog() == DialogResult.OK) {
         XlsxExportOptionsEx advOptions = new XlsxExportOptionsEx {
@@ -963,7 +939,7 @@ namespace SQLIndexManager {
         };
 
         try {
-          gridControl1.ExportToXlsx(dialog.FileName, advOptions);
+          grid.ExportToXlsx(dialog.FileName, advOptions);
           Output.Current.Add($"Export to Excel: {dialog.FileName}");
         }
         catch (Exception ex) {
@@ -974,14 +950,11 @@ namespace SQLIndexManager {
     }
 
     private void ExportText(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog {
-        Filter = @"Text Files (*.txt)|*.txt",
-        RestoreDirectory = true
-      };
+      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"Text Files (*.txt)|*.txt" };
 
       if (dialog.ShowDialog() == DialogResult.OK) {
         try {
-          gridControl1.ExportToText(dialog.FileName);
+          grid.ExportToText(dialog.FileName);
           Output.Current.Add($"Export to Text: {dialog.FileName}");
         }
         catch (Exception ex) {
@@ -992,14 +965,11 @@ namespace SQLIndexManager {
     }
 
     private void ExportHtml(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog {
-        Filter = @"HTML Files (*.html)|*.html",
-        RestoreDirectory = true
-      };
+      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"HTML Files (*.html)|*.html" };
 
       if (dialog.ShowDialog() == DialogResult.OK) {
         try {
-          gridControl1.ExportToHtml(dialog.FileName);
+          grid.ExportToHtml(dialog.FileName);
           Output.Current.Add($"Export to Html: {dialog.FileName}");
         }
         catch (Exception ex) {

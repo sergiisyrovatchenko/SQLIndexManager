@@ -33,18 +33,18 @@
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule4 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
-      this.colDataSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colDataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colLogSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colLogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colDatabase = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.DataSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.DataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.LogSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.LogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.DatabaseName = new DevExpress.XtraGrid.Columns.GridColumn();
       this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
       this.DatabaseBoxlayoutControl1ConvertedLayout = new DevExpress.XtraLayout.LayoutControl();
       this.searchControl1 = new DevExpress.XtraEditors.SearchControl();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
-      this.colRecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.colLogReuseWait = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.RecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.LogReuseWait = new DevExpress.XtraGrid.Columns.GridColumn();
       this.buttonRefresh = new DevExpress.XtraEditors.SimpleButton();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
       this.layoutControl = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -69,58 +69,58 @@
       ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
       this.SuspendLayout();
       // 
-      // colDataSize
+      // DataSize
       // 
-      this.colDataSize.Caption = "Data Size";
-      this.colDataSize.FieldName = "DataSize";
-      this.colDataSize.MaxWidth = 110;
-      this.colDataSize.MinWidth = 110;
-      this.colDataSize.Name = "colDataSize";
-      this.colDataSize.Visible = true;
-      this.colDataSize.VisibleIndex = 4;
-      this.colDataSize.Width = 110;
+      this.DataSize.Caption = "Data Size";
+      this.DataSize.FieldName = "DataSize";
+      this.DataSize.MaxWidth = 110;
+      this.DataSize.MinWidth = 110;
+      this.DataSize.Name = "DataSize";
+      this.DataSize.Visible = true;
+      this.DataSize.VisibleIndex = 4;
+      this.DataSize.Width = 110;
       // 
-      // colDataFreeSize
+      // DataFreeSize
       // 
-      this.colDataFreeSize.Caption = "Free Size";
-      this.colDataFreeSize.FieldName = "DataFreeSize";
-      this.colDataFreeSize.MaxWidth = 100;
-      this.colDataFreeSize.MinWidth = 100;
-      this.colDataFreeSize.Name = "colDataFreeSize";
-      this.colDataFreeSize.Visible = true;
-      this.colDataFreeSize.VisibleIndex = 5;
-      this.colDataFreeSize.Width = 100;
+      this.DataFreeSize.Caption = "Free Size";
+      this.DataFreeSize.FieldName = "DataFreeSize";
+      this.DataFreeSize.MaxWidth = 100;
+      this.DataFreeSize.MinWidth = 100;
+      this.DataFreeSize.Name = "DataFreeSize";
+      this.DataFreeSize.Visible = true;
+      this.DataFreeSize.VisibleIndex = 5;
+      this.DataFreeSize.Width = 100;
       // 
-      // colLogSize
+      // LogSize
       // 
-      this.colLogSize.Caption = "Log Size";
-      this.colLogSize.FieldName = "LogSize";
-      this.colLogSize.MaxWidth = 110;
-      this.colLogSize.MinWidth = 110;
-      this.colLogSize.Name = "colLogSize";
-      this.colLogSize.Visible = true;
-      this.colLogSize.VisibleIndex = 6;
-      this.colLogSize.Width = 110;
+      this.LogSize.Caption = "Log Size";
+      this.LogSize.FieldName = "LogSize";
+      this.LogSize.MaxWidth = 110;
+      this.LogSize.MinWidth = 110;
+      this.LogSize.Name = "LogSize";
+      this.LogSize.Visible = true;
+      this.LogSize.VisibleIndex = 6;
+      this.LogSize.Width = 110;
       // 
-      // colLogFreeSize
+      // LogFreeSize
       // 
-      this.colLogFreeSize.Caption = "Free Size";
-      this.colLogFreeSize.FieldName = "LogFreeSize";
-      this.colLogFreeSize.MaxWidth = 100;
-      this.colLogFreeSize.MinWidth = 100;
-      this.colLogFreeSize.Name = "colLogFreeSize";
-      this.colLogFreeSize.Visible = true;
-      this.colLogFreeSize.VisibleIndex = 7;
-      this.colLogFreeSize.Width = 100;
+      this.LogFreeSize.Caption = "Free Size";
+      this.LogFreeSize.FieldName = "LogFreeSize";
+      this.LogFreeSize.MaxWidth = 100;
+      this.LogFreeSize.MinWidth = 100;
+      this.LogFreeSize.Name = "LogFreeSize";
+      this.LogFreeSize.Visible = true;
+      this.LogFreeSize.VisibleIndex = 7;
+      this.LogFreeSize.Width = 100;
       // 
-      // colDatabase
+      // DatabaseName
       // 
-      this.colDatabase.Caption = "Database";
-      this.colDatabase.FieldName = "DatabaseName";
-      this.colDatabase.Name = "colDatabase";
-      this.colDatabase.Visible = true;
-      this.colDatabase.VisibleIndex = 1;
-      this.colDatabase.Width = 241;
+      this.DatabaseName.Caption = "Database";
+      this.DatabaseName.FieldName = "DatabaseName";
+      this.DatabaseName.Name = "DatabaseName";
+      this.DatabaseName.Visible = true;
+      this.DatabaseName.VisibleIndex = 1;
+      this.DatabaseName.Width = 241;
       // 
       // buttonCancel
       // 
@@ -189,16 +189,16 @@
       this.view.Appearance.SelectedRow.Options.UseBackColor = true;
       this.view.ColumnPanelRowHeight = 26;
       this.view.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.colDatabase,
-            this.colRecoveryModel,
-            this.colLogReuseWait,
-            this.colDataSize,
-            this.colDataFreeSize,
-            this.colLogSize,
-            this.colLogFreeSize});
+            this.DatabaseName,
+            this.RecoveryModel,
+            this.LogReuseWait,
+            this.DataSize,
+            this.DataFreeSize,
+            this.LogSize,
+            this.LogFreeSize});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-      gridFormatRule1.Column = this.colDataSize;
-      gridFormatRule1.ColumnApplyTo = this.colDataSize;
+      gridFormatRule1.Column = this.DataSize;
+      gridFormatRule1.ColumnApplyTo = this.DataSize;
       gridFormatRule1.Name = "DataSize";
       formatConditionRuleDataBar1.AllowNegativeAxis = false;
       formatConditionRuleDataBar1.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
@@ -217,8 +217,8 @@
       formatConditionRuleDataBar1.PredefinedName = null;
       formatConditionRuleDataBar1.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule1.Rule = formatConditionRuleDataBar1;
-      gridFormatRule2.Column = this.colDataFreeSize;
-      gridFormatRule2.ColumnApplyTo = this.colDataFreeSize;
+      gridFormatRule2.Column = this.DataFreeSize;
+      gridFormatRule2.ColumnApplyTo = this.DataFreeSize;
       gridFormatRule2.Name = "DataFreeSize";
       formatConditionRuleDataBar2.AllowNegativeAxis = false;
       formatConditionRuleDataBar2.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(180)))), ((int)(((byte)(247)))));
@@ -237,8 +237,8 @@
       formatConditionRuleDataBar2.PredefinedName = null;
       formatConditionRuleDataBar2.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule2.Rule = formatConditionRuleDataBar2;
-      gridFormatRule3.Column = this.colLogSize;
-      gridFormatRule3.ColumnApplyTo = this.colLogSize;
+      gridFormatRule3.Column = this.LogSize;
+      gridFormatRule3.ColumnApplyTo = this.LogSize;
       gridFormatRule3.Name = "LogSize";
       formatConditionRuleDataBar3.AllowNegativeAxis = false;
       formatConditionRuleDataBar3.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
@@ -257,8 +257,8 @@
       formatConditionRuleDataBar3.PredefinedName = null;
       formatConditionRuleDataBar3.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule3.Rule = formatConditionRuleDataBar3;
-      gridFormatRule4.Column = this.colLogFreeSize;
-      gridFormatRule4.ColumnApplyTo = this.colLogFreeSize;
+      gridFormatRule4.Column = this.LogFreeSize;
+      gridFormatRule4.ColumnApplyTo = this.LogFreeSize;
       gridFormatRule4.Name = "LogFreeSize";
       formatConditionRuleDataBar4.AllowNegativeAxis = false;
       formatConditionRuleDataBar4.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(218)))), ((int)(((byte)(206)))));
@@ -311,33 +311,30 @@
       this.view.OptionsView.ShowIndicator = false;
       this.view.RowHeight = 24;
       this.view.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.colDataSize, DevExpress.Data.ColumnSortOrder.Descending)});
-      this.view.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.GridRowCellStyle);
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.DataSize, DevExpress.Data.ColumnSortOrder.Descending)});
       this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
-      this.view.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridCustomColumnDisplayText);
-      this.view.DoubleClick += new System.EventHandler(this.GridDoubleClick);
       // 
-      // colRecoveryModel
+      // RecoveryModel
       // 
-      this.colRecoveryModel.Caption = "Recovery Model";
-      this.colRecoveryModel.FieldName = "RecoveryModel";
-      this.colRecoveryModel.MaxWidth = 105;
-      this.colRecoveryModel.MinWidth = 105;
-      this.colRecoveryModel.Name = "colRecoveryModel";
-      this.colRecoveryModel.Visible = true;
-      this.colRecoveryModel.VisibleIndex = 2;
-      this.colRecoveryModel.Width = 105;
+      this.RecoveryModel.Caption = "Recovery Model";
+      this.RecoveryModel.FieldName = "RecoveryModel";
+      this.RecoveryModel.MaxWidth = 105;
+      this.RecoveryModel.MinWidth = 105;
+      this.RecoveryModel.Name = "RecoveryModel";
+      this.RecoveryModel.Visible = true;
+      this.RecoveryModel.VisibleIndex = 2;
+      this.RecoveryModel.Width = 105;
       // 
-      // colLogReuseWait
+      // LogReuseWait
       // 
-      this.colLogReuseWait.Caption = "Log Reuse Wait";
-      this.colLogReuseWait.FieldName = "LogReuseWait";
-      this.colLogReuseWait.MaxWidth = 130;
-      this.colLogReuseWait.MinWidth = 130;
-      this.colLogReuseWait.Name = "colLogReuseWait";
-      this.colLogReuseWait.Visible = true;
-      this.colLogReuseWait.VisibleIndex = 3;
-      this.colLogReuseWait.Width = 130;
+      this.LogReuseWait.Caption = "Log Reuse Wait";
+      this.LogReuseWait.FieldName = "LogReuseWait";
+      this.LogReuseWait.MaxWidth = 130;
+      this.LogReuseWait.MinWidth = 130;
+      this.LogReuseWait.Name = "LogReuseWait";
+      this.LogReuseWait.Visible = true;
+      this.LogReuseWait.VisibleIndex = 3;
+      this.LogReuseWait.Width = 130;
       // 
       // buttonRefresh
       // 
@@ -482,14 +479,14 @@
     private DevExpress.XtraEditors.SimpleButton buttonRefresh;
     private DevExpress.XtraGrid.GridControl grid;
     private DevExpress.XtraGrid.Views.Grid.GridView view;
-    private DevExpress.XtraGrid.Columns.GridColumn colDataSize;
-    private DevExpress.XtraGrid.Columns.GridColumn colLogSize;
-    private DevExpress.XtraGrid.Columns.GridColumn colDatabase;
-    private DevExpress.XtraGrid.Columns.GridColumn colRecoveryModel;
-    private DevExpress.XtraGrid.Columns.GridColumn colLogReuseWait;
+    private DevExpress.XtraGrid.Columns.GridColumn DataSize;
+    private DevExpress.XtraGrid.Columns.GridColumn LogSize;
+    private DevExpress.XtraGrid.Columns.GridColumn DatabaseName;
+    private DevExpress.XtraGrid.Columns.GridColumn RecoveryModel;
+    private DevExpress.XtraGrid.Columns.GridColumn LogReuseWait;
     private DevExpress.XtraEditors.SearchControl searchControl1;
-    private DevExpress.XtraGrid.Columns.GridColumn colLogFreeSize;
-    private DevExpress.XtraGrid.Columns.GridColumn colDataFreeSize;
+    private DevExpress.XtraGrid.Columns.GridColumn LogFreeSize;
+    private DevExpress.XtraGrid.Columns.GridColumn DataFreeSize;
     private DevExpress.XtraLayout.LayoutControl DatabaseBoxlayoutControl1ConvertedLayout;
     private DevExpress.XtraLayout.LayoutControlGroup layoutControl;
     private DevExpress.XtraLayout.LayoutControlItem searchControl1item;

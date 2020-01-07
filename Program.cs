@@ -1,10 +1,10 @@
-﻿using DevExpress.LookAndFeel;
-using DevExpress.Skins;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using DevExpress.LookAndFeel;
+using DevExpress.Skins;
 
 namespace SQLIndexManager {
 

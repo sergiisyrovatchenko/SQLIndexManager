@@ -1,12 +1,12 @@
-﻿using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
-using SQLIndexManager.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 

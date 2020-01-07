@@ -1,9 +1,9 @@
-﻿using DevExpress.Utils;
-using DevExpress.XtraEditors;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
 
 namespace SQLIndexManager {
 

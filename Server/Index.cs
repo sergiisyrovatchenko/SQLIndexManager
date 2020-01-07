@@ -95,7 +95,7 @@ namespace SQLIndexManager {
               compression = DataCompression.ROW;
             else if (FixType == IndexOp.REBUILD_NONE)
               compression = DataCompression.NONE;
-            else if (Settings.Options.DataCompression != DataCompression.DEFAULT)
+            else if (Settings.Options.DataCompression != DataCompression.DEFAULT && FixType != IndexOp.REBUILD)
               compression = Settings.Options.DataCompression;
             else
               compression = DataCompression;
@@ -120,7 +120,7 @@ namespace SQLIndexManager {
               sqlHeader = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}\n    ";
 
             sql = sqlHeader +
-                    $"WITH (" +
+                    "WITH (" +
                     (IndexType == IndexType.HEAP
                       ? ""
                       : $"SORT_IN_TEMPDB = {Settings.Options.SortInTempDb.OnOff()}, ") +

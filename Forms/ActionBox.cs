@@ -1,6 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using DevExpress.XtraEditors;
 
 namespace SQLIndexManager {
 

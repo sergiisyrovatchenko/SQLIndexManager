@@ -68,21 +68,23 @@ namespace SQLIndexManager {
       this.Warning = new DevExpress.XtraGrid.Columns.GridColumn();
       this.PageSpaceUsed = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemHypertextLabel1 = new DevExpress.XtraEditors.Repository.RepositoryItemHypertextLabel();
-      this.gridControl1 = new DevExpress.XtraGrid.GridControl();
-      this.grid = new DevExpress.XtraGrid.Views.Grid.GridView();
+      this.grid = new DevExpress.XtraGrid.GridControl();
+      this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
       this.Duration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
       this.gridToolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.statusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
-      this.labelDatabase = new DevExpress.XtraBars.BarStaticItem();
-      this.labelError = new DevExpress.XtraBars.BarStaticItem();
-      this.labelIndex = new DevExpress.XtraBars.BarStaticItem();
+      this.labelDatabases = new DevExpress.XtraBars.BarStaticItem();
+      this.labelErrors = new DevExpress.XtraBars.BarStaticItem();
+      this.labelIndexes = new DevExpress.XtraBars.BarStaticItem();
+      this.labelIndexesSize = new DevExpress.XtraBars.BarStaticItem();
       this.labelSavedSpace = new DevExpress.XtraBars.BarStaticItem();
+      this.labelElapsedTime = new DevExpress.XtraBars.BarStaticItem();
       this.buttonStopScan = new DevExpress.XtraBars.BarButtonItem();
       this.buttonStopFix = new DevExpress.XtraBars.BarButtonItem();
       this.buttonLog = new DevExpress.XtraBars.BarButtonItem();
       this.labelInfo = new DevExpress.XtraBars.BarStaticItem();
-      this.labelServerInfo = new DevExpress.XtraBars.BarButtonItem();
+      this.labelServerInfo = new DevExpress.XtraBars.BarStaticItem();
       this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
       this.buttonNewConnection = new DevExpress.XtraBars.BarButtonItem();
       this.buttonFix = new DevExpress.XtraBars.BarButtonItem();
@@ -107,8 +109,8 @@ namespace SQLIndexManager {
       this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
       this.buttonFind = new DevExpress.XtraBars.BarButtonItem();
       this.splitContainer = new DevExpress.XtraEditors.SplitContainerControl();
-      this.gridControl2 = new DevExpress.XtraGrid.GridControl();
-      this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+      this.gridLog = new DevExpress.XtraGrid.GridControl();
+      this.viewLog = new DevExpress.XtraGrid.Views.Grid.GridView();
       this.colDuration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.colMessage = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
@@ -144,8 +146,8 @@ namespace SQLIndexManager {
       IncludedColumns = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).BeginInit();
@@ -153,8 +155,8 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
       this.splitContainer.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.gridLog)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.viewLog)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
       this.SuspendLayout();
       // 
@@ -711,39 +713,39 @@ namespace SQLIndexManager {
       // 
       this.repositoryItemHypertextLabel1.Name = "repositoryItemHypertextLabel1";
       // 
-      // gridControl1
-      // 
-      this.gridControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.gridControl1.Font = new System.Drawing.Font("Tahoma", 9F);
-      this.gridControl1.Location = new System.Drawing.Point(0, 0);
-      this.gridControl1.MainView = this.grid;
-      this.gridControl1.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
-      this.gridControl1.Name = "gridControl1";
-      this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.popupIndexOperation});
-      this.gridControl1.Size = new System.Drawing.Size(1190, 500);
-      this.gridControl1.TabIndex = 2;
-      this.gridControl1.ToolTipController = this.gridToolTipController;
-      this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.grid});
-      // 
       // grid
       // 
-      this.grid.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
-      this.grid.Appearance.EvenRow.Options.UseBackColor = true;
-      this.grid.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 8.75F);
-      this.grid.Appearance.HeaderPanel.Options.UseFont = true;
-      this.grid.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-      this.grid.Appearance.OddRow.Options.UseBackColor = true;
-      this.grid.Appearance.Row.BackColor = System.Drawing.Color.Silver;
-      this.grid.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
-      this.grid.Appearance.Row.Options.UseBackColor = true;
-      this.grid.Appearance.Row.Options.UseFont = true;
-      this.grid.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
-      this.grid.Appearance.SelectedRow.Options.UseBackColor = true;
-      this.grid.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-      this.grid.ColumnPanelRowHeight = 26;
-      this.grid.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+      this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.grid.Font = new System.Drawing.Font("Tahoma", 9F);
+      this.grid.Location = new System.Drawing.Point(0, 0);
+      this.grid.MainView = this.view;
+      this.grid.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+      this.grid.Name = "grid";
+      this.grid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.popupIndexOperation});
+      this.grid.Size = new System.Drawing.Size(1190, 500);
+      this.grid.TabIndex = 2;
+      this.grid.ToolTipController = this.gridToolTipController;
+      this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.view});
+      // 
+      // view
+      // 
+      this.view.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
+      this.view.Appearance.EvenRow.Options.UseBackColor = true;
+      this.view.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 8.75F);
+      this.view.Appearance.HeaderPanel.Options.UseFont = true;
+      this.view.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.view.Appearance.OddRow.Options.UseBackColor = true;
+      this.view.Appearance.Row.BackColor = System.Drawing.Color.Silver;
+      this.view.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
+      this.view.Appearance.Row.Options.UseBackColor = true;
+      this.view.Appearance.Row.Options.UseFont = true;
+      this.view.Appearance.SelectedRow.BackColor = System.Drawing.Color.Transparent;
+      this.view.Appearance.SelectedRow.Options.UseBackColor = true;
+      this.view.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+      this.view.ColumnPanelRowHeight = 26;
+      this.view.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             Progress,
             this.Duration,
             FixType,
@@ -777,7 +779,7 @@ namespace SQLIndexManager {
             IncludedColumns,
             this.Warning,
             this.Error});
-      this.grid.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+      this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = this.Warning;
       gridFormatRule1.ColumnApplyTo = IndexName;
       gridFormatRule1.Name = "Warning";
@@ -960,54 +962,51 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar6.PredefinedName = null;
       formatConditionRuleDataBar6.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule7.Rule = formatConditionRuleDataBar6;
-      this.grid.FormatRules.Add(gridFormatRule1);
-      this.grid.FormatRules.Add(gridFormatRule2);
-      this.grid.FormatRules.Add(gridFormatRule3);
-      this.grid.FormatRules.Add(gridFormatRule4);
-      this.grid.FormatRules.Add(gridFormatRule5);
-      this.grid.FormatRules.Add(gridFormatRule6);
-      this.grid.FormatRules.Add(gridFormatRule7);
-      this.grid.GridControl = this.gridControl1;
-      this.grid.Name = "grid";
-      this.grid.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
-      this.grid.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
-      this.grid.OptionsCustomization.AllowGroup = false;
-      this.grid.OptionsFind.AllowFindPanel = false;
-      this.grid.OptionsFind.FindFilterColumns = "DatabaseName;SchemaName;ObjectName;IndexName;FileGroupName;IndexColumns;IncludedC" +
+      this.view.FormatRules.Add(gridFormatRule1);
+      this.view.FormatRules.Add(gridFormatRule2);
+      this.view.FormatRules.Add(gridFormatRule3);
+      this.view.FormatRules.Add(gridFormatRule4);
+      this.view.FormatRules.Add(gridFormatRule5);
+      this.view.FormatRules.Add(gridFormatRule6);
+      this.view.FormatRules.Add(gridFormatRule7);
+      this.view.GridControl = this.grid;
+      this.view.Name = "view";
+      this.view.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
+      this.view.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
+      this.view.OptionsCustomization.AllowGroup = false;
+      this.view.OptionsFind.AllowFindPanel = false;
+      this.view.OptionsFind.FindFilterColumns = "DatabaseName;SchemaName;ObjectName;IndexName;FileGroupName;IndexColumns;IncludedC" +
     "olumns";
-      this.grid.OptionsFind.FindMode = DevExpress.XtraEditors.FindMode.Always;
-      this.grid.OptionsFind.FindNullPrompt = "";
-      this.grid.OptionsFind.ShowClearButton = false;
-      this.grid.OptionsFind.ShowCloseButton = false;
-      this.grid.OptionsFind.ShowFindButton = false;
-      this.grid.OptionsLayout.Columns.AddNewColumns = false;
-      this.grid.OptionsLayout.StoreDataSettings = false;
-      this.grid.OptionsLayout.StoreVisualOptions = false;
-      this.grid.OptionsMenu.EnableGroupPanelMenu = false;
-      this.grid.OptionsMenu.ShowAddNewSummaryItem = DevExpress.Utils.DefaultBoolean.False;
-      this.grid.OptionsMenu.ShowAutoFilterRowItem = false;
-      this.grid.OptionsSelection.CheckBoxSelectorColumnWidth = 35;
-      this.grid.OptionsSelection.EnableAppearanceFocusedRow = false;
-      this.grid.OptionsSelection.EnableAppearanceHideSelection = false;
-      this.grid.OptionsSelection.MultiSelect = true;
-      this.grid.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
-      this.grid.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
-      this.grid.OptionsSelection.ShowCheckBoxSelectorInGroupRow = DevExpress.Utils.DefaultBoolean.True;
-      this.grid.OptionsSelection.ShowCheckBoxSelectorInPrintExport = DevExpress.Utils.DefaultBoolean.False;
-      this.grid.OptionsSelection.UseIndicatorForSelection = false;
-      this.grid.OptionsView.ColumnAutoWidth = false;
-      this.grid.OptionsView.EnableAppearanceEvenRow = true;
-      this.grid.OptionsView.EnableAppearanceOddRow = true;
-      this.grid.OptionsView.ShowGroupPanel = false;
-      this.grid.OptionsView.ShowIndicator = false;
-      this.grid.RowHeight = 24;
-      this.grid.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.GridRowCellClick);
-      this.grid.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.GridRowCellStyle);
-      this.grid.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.GridPopupMenuShowing);
-      this.grid.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
-      this.grid.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.GridColumnDisplayText);
-      this.grid.DoubleClick += new System.EventHandler(this.GridDoubleClick);
-      this.grid.RowCountChanged += new System.EventHandler(this.GridRowCountChanged);
+      this.view.OptionsFind.FindMode = DevExpress.XtraEditors.FindMode.Always;
+      this.view.OptionsFind.FindNullPrompt = "";
+      this.view.OptionsFind.ShowClearButton = false;
+      this.view.OptionsFind.ShowCloseButton = false;
+      this.view.OptionsFind.ShowFindButton = false;
+      this.view.OptionsLayout.Columns.AddNewColumns = false;
+      this.view.OptionsLayout.StoreDataSettings = false;
+      this.view.OptionsLayout.StoreVisualOptions = false;
+      this.view.OptionsMenu.EnableGroupPanelMenu = false;
+      this.view.OptionsMenu.ShowAddNewSummaryItem = DevExpress.Utils.DefaultBoolean.False;
+      this.view.OptionsMenu.ShowAutoFilterRowItem = false;
+      this.view.OptionsSelection.CheckBoxSelectorColumnWidth = 35;
+      this.view.OptionsSelection.EnableAppearanceFocusedRow = false;
+      this.view.OptionsSelection.EnableAppearanceHideSelection = false;
+      this.view.OptionsSelection.MultiSelect = true;
+      this.view.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+      this.view.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
+      this.view.OptionsSelection.ShowCheckBoxSelectorInGroupRow = DevExpress.Utils.DefaultBoolean.True;
+      this.view.OptionsSelection.ShowCheckBoxSelectorInPrintExport = DevExpress.Utils.DefaultBoolean.False;
+      this.view.OptionsSelection.UseIndicatorForSelection = false;
+      this.view.OptionsView.ColumnAutoWidth = false;
+      this.view.OptionsView.EnableAppearanceEvenRow = true;
+      this.view.OptionsView.EnableAppearanceOddRow = true;
+      this.view.OptionsView.ShowGroupPanel = false;
+      this.view.OptionsView.ShowIndicator = false;
+      this.view.RowHeight = 24;
+      this.view.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.GridRowCellClick);
+      this.view.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.GridPopupMenuShowing);
+      this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
+      this.view.RowCountChanged += new System.EventHandler(this.GridRowCountChanged);
       // 
       // Duration
       // 
@@ -1052,10 +1051,12 @@ namespace SQLIndexManager {
       // 
       // statusBar
       // 
-      this.statusBar.ItemLinks.Add(this.labelDatabase);
-      this.statusBar.ItemLinks.Add(this.labelError);
-      this.statusBar.ItemLinks.Add(this.labelIndex);
+      this.statusBar.ItemLinks.Add(this.labelDatabases);
+      this.statusBar.ItemLinks.Add(this.labelErrors);
+      this.statusBar.ItemLinks.Add(this.labelIndexes);
+      this.statusBar.ItemLinks.Add(this.labelIndexesSize);
       this.statusBar.ItemLinks.Add(this.labelSavedSpace);
+      this.statusBar.ItemLinks.Add(this.labelElapsedTime);
       this.statusBar.ItemLinks.Add(this.buttonStopScan);
       this.statusBar.ItemLinks.Add(this.buttonStopFix);
       this.statusBar.ItemLinks.Add(this.buttonLog);
@@ -1067,47 +1068,61 @@ namespace SQLIndexManager {
       this.statusBar.Size = new System.Drawing.Size(1190, 31);
       this.statusBar.ToolTipController = this.toolTipController;
       // 
-      // labelDatabase
+      // labelDatabases
       // 
-      this.labelDatabase.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelDatabase.Caption = "0";
-      this.labelDatabase.Id = 12;
-      this.labelDatabase.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelDatabase.ImageOptions.Image")));
-      this.labelDatabase.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelDatabase.ImageOptions.LargeImage")));
-      this.labelDatabase.Name = "labelDatabase";
-      this.labelDatabase.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
-      this.labelDatabase.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      this.labelDatabases.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelDatabases.Id = 12;
+      this.labelDatabases.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelDatabases.ImageOptions.Image")));
+      this.labelDatabases.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelDatabases.ImageOptions.LargeImage")));
+      this.labelDatabases.Name = "labelDatabases";
+      this.labelDatabases.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+      this.labelDatabases.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
-      // labelError
+      // labelErrors
       // 
-      this.labelError.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelError.Caption = "0";
-      this.labelError.Id = 29;
-      this.labelError.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelError.ImageOptions.Image")));
-      this.labelError.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelError.ImageOptions.LargeImage")));
-      this.labelError.Name = "labelError";
-      this.labelError.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      this.labelErrors.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelErrors.Id = 29;
+      this.labelErrors.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelErrors.ImageOptions.Image")));
+      this.labelErrors.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelErrors.ImageOptions.LargeImage")));
+      this.labelErrors.Name = "labelErrors";
+      this.labelErrors.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
-      // labelIndex
+      // labelIndexes
       // 
-      this.labelIndex.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelIndex.Caption = "0";
-      this.labelIndex.Id = 13;
-      this.labelIndex.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelIndex.ImageOptions.Image")));
-      this.labelIndex.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelIndex.ImageOptions.LargeImage")));
-      this.labelIndex.Name = "labelIndex";
-      this.labelIndex.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
-      this.labelIndex.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      this.labelIndexes.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelIndexes.Id = 13;
+      this.labelIndexes.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelIndexes.ImageOptions.Image")));
+      this.labelIndexes.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelIndexes.ImageOptions.LargeImage")));
+      this.labelIndexes.Name = "labelIndexes";
+      this.labelIndexes.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+      this.labelIndexes.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      // 
+      // labelIndexesSize
+      // 
+      this.labelIndexesSize.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelIndexesSize.Id = 33;
+      this.labelIndexesSize.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelIndexesSize.ImageOptions.Image")));
+      this.labelIndexesSize.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelIndexesSize.ImageOptions.LargeImage")));
+      this.labelIndexesSize.Name = "labelIndexesSize";
+      this.labelIndexesSize.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelSavedSpace
       // 
       this.labelSavedSpace.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelSavedSpace.Caption = "0";
       this.labelSavedSpace.Id = 31;
       this.labelSavedSpace.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelSavedSpace.ImageOptions.Image")));
       this.labelSavedSpace.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelSavedSpace.ImageOptions.LargeImage")));
       this.labelSavedSpace.Name = "labelSavedSpace";
       this.labelSavedSpace.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      // 
+      // labelElapsedTime
+      // 
+      this.labelElapsedTime.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
+      this.labelElapsedTime.Id = 34;
+      this.labelElapsedTime.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelElapsedTime.ImageOptions.Image")));
+      this.labelElapsedTime.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelElapsedTime.ImageOptions.LargeImage")));
+      this.labelElapsedTime.Name = "labelElapsedTime";
+      this.labelElapsedTime.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonStopScan
       // 
@@ -1146,7 +1161,7 @@ namespace SQLIndexManager {
       // labelServerInfo
       // 
       this.labelServerInfo.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-      this.labelServerInfo.Id = 32;
+      this.labelServerInfo.Id = 35;
       this.labelServerInfo.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.Image")));
       this.labelServerInfo.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("labelServerInfo.ImageOptions.LargeImage")));
       this.labelServerInfo.Name = "labelServerInfo";
@@ -1169,8 +1184,8 @@ namespace SQLIndexManager {
             this.labelInfo,
             this.buttonStopFix,
             this.buttonCopyFix,
-            this.labelDatabase,
-            this.labelIndex,
+            this.labelDatabases,
+            this.labelIndexes,
             this.buttonDatabases,
             this.boxSearch,
             this.labelSeparator,
@@ -1181,11 +1196,13 @@ namespace SQLIndexManager {
             this.buttonLog,
             this.buttonExportHtml,
             this.buttonRestoreDefaultLayout,
-            this.labelError,
+            this.labelErrors,
             this.labelSavedSpace,
+            this.labelIndexesSize,
+            this.labelElapsedTime,
             this.labelServerInfo});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-      this.ribbonControl1.MaxItemId = 33;
+      this.ribbonControl1.MaxItemId = 36;
       this.ribbonControl1.Name = "ribbonControl1";
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonNewConnection);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonDatabases);
@@ -1370,7 +1387,7 @@ namespace SQLIndexManager {
       this.boxSearchControl.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Repository.ClearButton(),
             new DevExpress.XtraEditors.Repository.SearchButton()});
-      this.boxSearchControl.Client = this.gridControl1;
+      this.boxSearchControl.Client = this.grid;
       this.boxSearchControl.Name = "boxSearchControl";
       this.boxSearchControl.ShowDropDown = DevExpress.XtraEditors.Controls.ShowDropDown.Never;
       // 
@@ -1425,68 +1442,68 @@ namespace SQLIndexManager {
       this.splitContainer.Horizontal = false;
       this.splitContainer.Location = new System.Drawing.Point(0, 27);
       this.splitContainer.Name = "splitContainer";
-      this.splitContainer.Panel1.Controls.Add(this.gridControl1);
+      this.splitContainer.Panel1.Controls.Add(this.grid);
       this.splitContainer.Panel1.Text = "Panel1";
-      this.splitContainer.Panel2.Controls.Add(this.gridControl2);
+      this.splitContainer.Panel2.Controls.Add(this.gridLog);
       this.splitContainer.Panel2.Text = "Panel2";
       this.splitContainer.Size = new System.Drawing.Size(1190, 741);
       this.splitContainer.SplitterPosition = 500;
       this.splitContainer.TabIndex = 5;
       // 
-      // gridControl2
+      // gridLog
       // 
-      this.gridControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.gridControl2.Font = new System.Drawing.Font("Tahoma", 9F);
-      this.gridControl2.Location = new System.Drawing.Point(0, 0);
-      this.gridControl2.MainView = this.gridView2;
-      this.gridControl2.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
-      this.gridControl2.Name = "gridControl2";
-      this.gridControl2.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+      this.gridLog.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.gridLog.Font = new System.Drawing.Font("Tahoma", 9F);
+      this.gridLog.Location = new System.Drawing.Point(0, 0);
+      this.gridLog.MainView = this.viewLog;
+      this.gridLog.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
+      this.gridLog.Name = "gridLog";
+      this.gridLog.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemMemoEdit1});
-      this.gridControl2.Size = new System.Drawing.Size(1190, 236);
-      this.gridControl2.TabIndex = 4;
-      this.gridControl2.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView2});
+      this.gridLog.Size = new System.Drawing.Size(1190, 236);
+      this.gridLog.TabIndex = 4;
+      this.gridLog.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.viewLog});
       // 
-      // gridView2
+      // viewLog
       // 
-      this.gridView2.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
-      this.gridView2.Appearance.EvenRow.Options.UseBackColor = true;
-      this.gridView2.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-      this.gridView2.Appearance.FocusedRow.Options.UseBackColor = true;
-      this.gridView2.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 8.75F);
-      this.gridView2.Appearance.HeaderPanel.Options.UseFont = true;
-      this.gridView2.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.Transparent;
-      this.gridView2.Appearance.HideSelectionRow.Options.UseBackColor = true;
-      this.gridView2.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-      this.gridView2.Appearance.OddRow.Options.UseBackColor = true;
-      this.gridView2.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
-      this.gridView2.Appearance.Row.Options.UseFont = true;
-      this.gridView2.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-      this.gridView2.Appearance.SelectedRow.Options.UseBackColor = true;
-      this.gridView2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-      this.gridView2.ColumnPanelRowHeight = 22;
-      this.gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+      this.viewLog.Appearance.EvenRow.BackColor = System.Drawing.Color.Gainsboro;
+      this.viewLog.Appearance.EvenRow.Options.UseBackColor = true;
+      this.viewLog.Appearance.FocusedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.viewLog.Appearance.FocusedRow.Options.UseBackColor = true;
+      this.viewLog.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 8.75F);
+      this.viewLog.Appearance.HeaderPanel.Options.UseFont = true;
+      this.viewLog.Appearance.HideSelectionRow.BackColor = System.Drawing.Color.Transparent;
+      this.viewLog.Appearance.HideSelectionRow.Options.UseBackColor = true;
+      this.viewLog.Appearance.OddRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.viewLog.Appearance.OddRow.Options.UseBackColor = true;
+      this.viewLog.Appearance.Row.Font = new System.Drawing.Font("Tahoma", 8.75F);
+      this.viewLog.Appearance.Row.Options.UseFont = true;
+      this.viewLog.Appearance.SelectedRow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
+      this.viewLog.Appearance.SelectedRow.Options.UseBackColor = true;
+      this.viewLog.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+      this.viewLog.ColumnPanelRowHeight = 22;
+      this.viewLog.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             colDateTime,
             this.colDuration,
             this.colMessage});
-      this.gridView2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
-      this.gridView2.GridControl = this.gridControl2;
-      this.gridView2.Name = "gridView2";
-      this.gridView2.OptionsBehavior.Editable = false;
-      this.gridView2.OptionsCustomization.AllowColumnMoving = false;
-      this.gridView2.OptionsCustomization.AllowColumnResizing = false;
-      this.gridView2.OptionsCustomization.AllowFilter = false;
-      this.gridView2.OptionsCustomization.AllowGroup = false;
-      this.gridView2.OptionsCustomization.AllowQuickHideColumns = false;
-      this.gridView2.OptionsFilter.AllowFilterEditor = false;
-      this.gridView2.OptionsMenu.EnableColumnMenu = false;
-      this.gridView2.OptionsView.EnableAppearanceEvenRow = true;
-      this.gridView2.OptionsView.EnableAppearanceOddRow = true;
-      this.gridView2.OptionsView.RowAutoHeight = true;
-      this.gridView2.OptionsView.ShowGroupPanel = false;
-      this.gridView2.OptionsView.ShowIndicator = false;
-      this.gridView2.RowHeight = 22;
+      this.viewLog.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
+      this.viewLog.GridControl = this.gridLog;
+      this.viewLog.Name = "viewLog";
+      this.viewLog.OptionsBehavior.Editable = false;
+      this.viewLog.OptionsCustomization.AllowColumnMoving = false;
+      this.viewLog.OptionsCustomization.AllowColumnResizing = false;
+      this.viewLog.OptionsCustomization.AllowFilter = false;
+      this.viewLog.OptionsCustomization.AllowGroup = false;
+      this.viewLog.OptionsCustomization.AllowQuickHideColumns = false;
+      this.viewLog.OptionsFilter.AllowFilterEditor = false;
+      this.viewLog.OptionsMenu.EnableColumnMenu = false;
+      this.viewLog.OptionsView.EnableAppearanceEvenRow = true;
+      this.viewLog.OptionsView.EnableAppearanceOddRow = true;
+      this.viewLog.OptionsView.RowAutoHeight = true;
+      this.viewLog.OptionsView.ShowGroupPanel = false;
+      this.viewLog.OptionsView.ShowIndicator = false;
+      this.viewLog.RowHeight = 22;
       // 
       // colDuration
       // 
@@ -1539,8 +1556,8 @@ namespace SQLIndexManager {
       this.Shown += new System.EventHandler(this.MainBox_Shown);
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemHypertextLabel1)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupFix)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.popupExport)).EndInit();
@@ -1548,8 +1565,8 @@ namespace SQLIndexManager {
       ((System.ComponentModel.ISupportInitialize)(this.imageCollection)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
       this.splitContainer.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.gridLog)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.viewLog)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
@@ -1568,15 +1585,15 @@ namespace SQLIndexManager {
     private BarButtonItem buttonSaveFix;
     private BarStaticItem labelInfo;
     private BarButtonItem buttonStopFix;
-    private DevExpress.XtraGrid.Views.Grid.GridView grid;
+    private DevExpress.XtraGrid.Views.Grid.GridView view;
     private DevExpress.Utils.Taskbar.TaskbarAssistant taskbar;
-    private DevExpress.XtraGrid.GridControl gridControl1;
+    private DevExpress.XtraGrid.GridControl grid;
     private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit popupIndexOperation;
     private DevExpress.Utils.ImageCollection imageCollection;
     private DevExpress.XtraGrid.Columns.GridColumn Duration;
     private BarButtonItem buttonCopyFix;
-    private BarStaticItem labelDatabase;
-    private BarStaticItem labelIndex;
+    private BarStaticItem labelDatabases;
+    private BarStaticItem labelIndexes;
     private DevExpress.Utils.ToolTipController toolTipController;
     private BarButtonItem buttonDatabases;
     private BarEditItem boxSearch;
@@ -1592,8 +1609,8 @@ namespace SQLIndexManager {
     private BarButtonItem buttonExportText;
     private DevExpress.XtraEditors.SplitContainerControl splitContainer;
     private BarButtonItem buttonLog;
-    private DevExpress.XtraGrid.GridControl gridControl2;
-    private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+    private DevExpress.XtraGrid.GridControl gridLog;
+    private DevExpress.XtraGrid.Views.Grid.GridView viewLog;
     private DevExpress.XtraGrid.Columns.GridColumn colDuration;
     private DevExpress.XtraGrid.Columns.GridColumn colMessage;
     private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
@@ -1603,8 +1620,10 @@ namespace SQLIndexManager {
     private DevExpress.XtraGrid.Columns.GridColumn Warning;
     private BarButtonItem buttonRestoreDefaultLayout;
     private DevExpress.XtraGrid.Columns.GridColumn Error;
-    private BarStaticItem labelError;
+    private BarStaticItem labelErrors;
     private BarStaticItem labelSavedSpace;
-    private BarButtonItem labelServerInfo;
+    private BarStaticItem labelIndexesSize;
+    private BarStaticItem labelElapsedTime;
+    private BarStaticItem labelServerInfo;
   }
 }

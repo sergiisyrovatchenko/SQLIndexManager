@@ -1,9 +1,9 @@
-﻿using DevExpress.XtraBars;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.Grid;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using DevExpress.XtraBars;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace SQLIndexManager {
 

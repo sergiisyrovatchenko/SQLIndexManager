@@ -1,16 +1,13 @@
-﻿using DevExpress.Data;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace SQLIndexManager {
 
@@ -19,10 +16,14 @@ namespace SQLIndexManager {
     public DatabaseBox() {
       InitializeComponent();
 
+      view.CustomColumnDisplayText += GridMethod.GridColumnDisplayText;
+      view.RowCellStyle += GridMethod.GridRowCellStyle;
+      view.DoubleClick += GridMethod.GridDoubleClick;
+
       if (Settings.ServerInfo.IsAzure || !Settings.ServerInfo.IsSysAdmin) {
-        colDataSize.Visible = colLogSize.Visible = false;
+        DataSize.Visible = LogSize.Visible = false;
         view.SortInfo.Clear();
-        view.SortInfo.Add(new GridColumnSortInfo(colDatabase, ColumnSortOrder.Ascending));
+        view.SortInfo.Add(new GridColumnSortInfo(DatabaseName, ColumnSortOrder.Ascending));
       }
 
       RefreshDatabases(false);
@@ -48,17 +49,13 @@ namespace SQLIndexManager {
       grid.DataSource = null;
       buttonOK.Enabled = false;
 
-      colDataSize.Visible = colLogSize.Visible = !Settings.ServerInfo.IsAzure
-                                              && Settings.ServerInfo.IsSysAdmin;
-
-      colDataFreeSize.Visible = colLogFreeSize.Visible = scanUsedSpace
-                                                      && !Settings.ServerInfo.IsAzure
-                                                      && Settings.ServerInfo.IsSysAdmin;
+      DataSize.Visible = LogSize.Visible = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin;
+      DataFreeSize.Visible = LogFreeSize.Visible = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin && scanUsedSpace;
 
       Stopwatch ts = Stopwatch.StartNew();
+      Output.Current.Add("Refresh databases");
 
       using (SqlConnection connection = Connection.Create(Settings.ActiveHost)) {
-
         try {
           connection.Open();
 
@@ -69,12 +66,13 @@ namespace SQLIndexManager {
           }
 
           grid.DataSource = dbs;
-          Output.Current.Add($"Refresh {dbs.Count} databases", null, ts.ElapsedMilliseconds);
 
           foreach (string db in Settings.ActiveHost.Databases) {
-            int index = view.LocateByValue(colDatabase.FieldName, db);
+            int index = view.LocateByValue(DatabaseName.FieldName, db);
             view.SelectRow(index);
           }
+
+          Output.Current.Add($"Refreshed {dbs.Count} databases", null, ts.ElapsedMilliseconds);
         }
         catch (Exception ex) {
           Output.Current.Add("Refresh databases failed", ex.Message, ts.ElapsedMilliseconds);
@@ -106,44 +104,8 @@ namespace SQLIndexManager {
 
     #region Grid Methods
 
-    private void GridCustomColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e) {
-      if (e.Value == null)
-        return;
-      
-      if (   e.Column.FieldName == colDataSize.FieldName
-          || e.Column.FieldName == colDataFreeSize.FieldName
-          || e.Column.FieldName == colLogSize.FieldName
-          || e.Column.FieldName == colLogFreeSize.FieldName
-       ) {
-        e.DisplayText = (Convert.ToDecimal(e.Value) * 8).FormatSize();
-      }
-    }
-
     private void GridSelectionChanged(object sender, SelectionChangedEventArgs e) {
-      int[] rows = ((GridView)sender).GetSelectedRows();
-      buttonOK.Enabled = rows.Length > 0;
-    }
-
-    private void GridDoubleClick(object sender, EventArgs e) {
-      GridView obj = (GridView)sender;
-      Point pt = obj.GridControl.PointToClient(MousePosition);
-
-      GridHitInfo info = obj.CalcHitInfo(pt);
-      if (info.Column == null || info.Column.Caption == @"Selection")
-        return;
-
-      if (info.InRow || info.InRowCell) {
-        if (obj.IsRowSelected(info.RowHandle))
-          obj.UnselectRow(info.RowHandle);
-        else
-          obj.SelectRow(info.RowHandle);
-      }
-    }
-
-    private void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
-      if (e.RowHandle == ((GridView) sender).FocusedRowHandle) {
-        e.Appearance.BackColor = Color.Silver;
-      }
+      buttonOK.Enabled = ((GridView)sender).SelectedRowsCount > 0;
     }
 
     #endregion
