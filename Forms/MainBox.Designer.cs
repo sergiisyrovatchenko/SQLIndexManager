@@ -72,6 +72,8 @@ namespace SQLIndexManager {
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
       this.Duration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.ModifyDate = new DevExpress.XtraGrid.Columns.GridColumn();
       this.gridToolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.statusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
       this.labelDatabases = new DevExpress.XtraBars.BarStaticItem();
@@ -778,7 +780,9 @@ namespace SQLIndexManager {
             IndexColumns,
             IncludedColumns,
             this.Warning,
-            this.Error});
+            this.Error,
+            this.CreateDate,
+            this.ModifyDate});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = this.Warning;
       gridFormatRule1.ColumnApplyTo = IndexName;
@@ -1045,6 +1049,40 @@ namespace SQLIndexManager {
       this.Error.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       this.Error.Width = 120;
       // 
+      // CreateDate
+      // 
+      this.CreateDate.AppearanceCell.Options.UseTextOptions = true;
+      this.CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.CreateDate.Caption = "Create Date";
+      this.CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.CreateDate.FieldName = "CreateDate";
+      this.CreateDate.MaxWidth = 105;
+      this.CreateDate.MinWidth = 105;
+      this.CreateDate.Name = "CreateDate";
+      this.CreateDate.OptionsColumn.AllowEdit = false;
+      this.CreateDate.OptionsColumn.AllowFocus = false;
+      this.CreateDate.OptionsColumn.AllowSize = false;
+      this.CreateDate.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
+      this.CreateDate.Width = 105;
+      // 
+      // ModifyDate
+      // 
+      this.ModifyDate.AppearanceCell.Options.UseTextOptions = true;
+      this.ModifyDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.ModifyDate.Caption = "Modify Date";
+      this.ModifyDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.ModifyDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.ModifyDate.FieldName = "ModifyDate";
+      this.ModifyDate.MaxWidth = 105;
+      this.ModifyDate.MinWidth = 105;
+      this.ModifyDate.Name = "ModifyDate";
+      this.ModifyDate.OptionsColumn.AllowEdit = false;
+      this.ModifyDate.OptionsColumn.AllowFocus = false;
+      this.ModifyDate.OptionsColumn.AllowSize = false;
+      this.ModifyDate.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
+      this.ModifyDate.Width = 105;
+      // 
       // gridToolTipController
       // 
       this.gridToolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.GetActiveObjectInfo);
@@ -1259,7 +1297,7 @@ namespace SQLIndexManager {
       // 
       // buttonCopyFix
       // 
-      this.buttonCopyFix.Caption = "Copy Script";
+      this.buttonCopyFix.Caption = "Copy Fix Script";
       this.buttonCopyFix.Id = 7;
       this.buttonCopyFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.Image")));
       this.buttonCopyFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonCopyFix.ImageOptions.LargeImage")));
@@ -1268,7 +1306,7 @@ namespace SQLIndexManager {
       // 
       // buttonSaveFix
       // 
-      this.buttonSaveFix.Caption = "Save Script";
+      this.buttonSaveFix.Caption = "Save Fix Script";
       this.buttonSaveFix.Id = 23;
       this.buttonSaveFix.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.Image")));
       this.buttonSaveFix.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonSaveFix.ImageOptions.LargeImage")));
@@ -1426,6 +1464,8 @@ namespace SQLIndexManager {
       this.imageCollection.Images.SetKeyName(6, "showworktimeonly_16x16.png");
       this.imageCollection.InsertGalleryImage("replace_16x16.png", "office2013/format/replace_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("office2013/format/replace_16x16.png"), 7);
       this.imageCollection.Images.SetKeyName(7, "replace_16x16.png");
+      this.imageCollection.InsertGalleryImage("article_16x16.png", "office2013/support/article_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("office2013/support/article_16x16.png"), 8);
+      this.imageCollection.Images.SetKeyName(8, "article_16x16.png");
       // 
       // buttonFind
       // 
@@ -1625,5 +1665,7 @@ namespace SQLIndexManager {
     private BarStaticItem labelIndexesSize;
     private BarStaticItem labelElapsedTime;
     private BarStaticItem labelServerInfo;
+    private DevExpress.XtraGrid.Columns.GridColumn CreateDate;
+    private DevExpress.XtraGrid.Columns.GridColumn ModifyDate;
   }
 }

@@ -9,10 +9,8 @@ namespace SQLIndexManager {
 
   public static class QueryEngine {
 
-    public static List<Database> GetDatabases(SqlConnection connection, bool scanUsedSpace) {
-      string query = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin 
-                        ? string.Format(Query.DatabaseList, scanUsedSpace ? Query.DatabaseUsedSpace : string.Empty)
-                        : Query.DatabaseListAzure;
+    public static List<Database> GetDatabases(SqlConnection connection) {
+      string query = !Settings.ServerInfo.IsAzure ? Query.DatabaseList : Query.DatabaseListAzure;
 
       SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
@@ -30,6 +28,8 @@ namespace SQLIndexManager {
             DatabaseName  = _.Field<string>(Resources.DatabaseName),
             RecoveryModel = _.Field<string>(Resources.RecoveryModel),
             LogReuseWait  = _.Field<string>(Resources.LogReuseWait),
+            CreateDate    = _.Field<DateTime>(Resources.CreateDate),
+            TotalSize     = dataSize + logSize,
             DataSize      = dataSize,
             DataFreeSize  = dataSize - (_.Field<long?>(Resources.DataUsedSize) ?? 0),
             LogSize       = logSize,
@@ -39,6 +39,26 @@ namespace SQLIndexManager {
       }
 
       return dbs;
+    }
+
+    public static List<DiskInfo> GetDiskInfo(SqlConnection connection) {
+      SqlCommand cmd = new SqlCommand(Query.DiskInfo, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
+      adapter.Fill(data);
+
+      List<DiskInfo> di = new List<DiskInfo>();
+      foreach (DataRow _ in data.Tables[0].Rows) {
+        di.Add(
+          new DiskInfo {
+            Drive = _.Field<string>(0),
+            FreeSpace = _.Field<int>(1)
+          }
+        );
+      }
+
+      return di;
     }
 
     public static ServerInfo GetServerInfo(SqlConnection connection) {
@@ -186,6 +206,8 @@ namespace SQLIndexManager {
             TotalScans            = _.Field<long?>(Resources.TotalScans),
             TotalLookups          = _.Field<long?>(Resources.TotalLookups),
             LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
+            CreateDate            = _.Field<DateTime>(Resources.CreateDate),
+            ModifyDate            = _.Field<DateTime>(Resources.ModifyDate),
             DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
             Fragmentation         = _.Field<double?>(Resources.Fragmentation),
             PageSpaceUsed         = _.Field<double?>(Resources.PageSpaceUsed),

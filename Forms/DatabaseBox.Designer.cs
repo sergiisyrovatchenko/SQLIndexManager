@@ -33,6 +33,8 @@
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar3 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule4 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule5 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       this.DataSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.DataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogSize = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -55,6 +57,8 @@
       this.buttonCancelitem = new DevExpress.XtraLayout.LayoutControlItem();
       this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
       this.layoutConverter1 = new DevExpress.XtraLayout.Converter.LayoutConverter(this.components);
+      this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.TotalSize = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).BeginInit();
       this.DatabaseBoxlayoutControl1ConvertedLayout.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).BeginInit();
@@ -77,7 +81,7 @@
       this.DataSize.MinWidth = 110;
       this.DataSize.Name = "DataSize";
       this.DataSize.Visible = true;
-      this.DataSize.VisibleIndex = 4;
+      this.DataSize.VisibleIndex = 6;
       this.DataSize.Width = 110;
       // 
       // DataFreeSize
@@ -88,7 +92,7 @@
       this.DataFreeSize.MinWidth = 100;
       this.DataFreeSize.Name = "DataFreeSize";
       this.DataFreeSize.Visible = true;
-      this.DataFreeSize.VisibleIndex = 5;
+      this.DataFreeSize.VisibleIndex = 7;
       this.DataFreeSize.Width = 100;
       // 
       // LogSize
@@ -99,7 +103,7 @@
       this.LogSize.MinWidth = 110;
       this.LogSize.Name = "LogSize";
       this.LogSize.Visible = true;
-      this.LogSize.VisibleIndex = 6;
+      this.LogSize.VisibleIndex = 8;
       this.LogSize.Width = 110;
       // 
       // LogFreeSize
@@ -110,7 +114,7 @@
       this.LogFreeSize.MinWidth = 100;
       this.LogFreeSize.Name = "LogFreeSize";
       this.LogFreeSize.Visible = true;
-      this.LogFreeSize.VisibleIndex = 7;
+      this.LogFreeSize.VisibleIndex = 9;
       this.LogFreeSize.Width = 100;
       // 
       // DatabaseName
@@ -126,7 +130,7 @@
       // 
       this.buttonCancel.AllowFocus = false;
       this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(864, 366);
+      this.buttonCancel.Location = new System.Drawing.Point(1096, 427);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(76, 22);
       this.buttonCancel.StyleController = this.DatabaseBoxlayoutControl1ConvertedLayout;
@@ -145,13 +149,13 @@
       this.DatabaseBoxlayoutControl1ConvertedLayout.Name = "DatabaseBoxlayoutControl1ConvertedLayout";
       this.DatabaseBoxlayoutControl1ConvertedLayout.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(968, 152, 650, 400);
       this.DatabaseBoxlayoutControl1ConvertedLayout.Root = this.layoutControl;
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Size = new System.Drawing.Size(952, 400);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Size = new System.Drawing.Size(1184, 461);
       this.DatabaseBoxlayoutControl1ConvertedLayout.TabIndex = 5;
       // 
       // searchControl1
       // 
       this.searchControl1.Client = this.grid;
-      this.searchControl1.Location = new System.Drawing.Point(87, 367);
+      this.searchControl1.Location = new System.Drawing.Point(87, 428);
       this.searchControl1.Name = "searchControl1";
       this.searchControl1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Repository.ClearButton(),
@@ -168,7 +172,7 @@
       this.grid.MainView = this.view;
       this.grid.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
       this.grid.Name = "grid";
-      this.grid.Size = new System.Drawing.Size(928, 353);
+      this.grid.Size = new System.Drawing.Size(1160, 414);
       this.grid.TabIndex = 0;
       this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.view});
@@ -192,6 +196,8 @@
             this.DatabaseName,
             this.RecoveryModel,
             this.LogReuseWait,
+            this.CreateDate,
+            this.TotalSize,
             this.DataSize,
             this.DataFreeSize,
             this.LogSize,
@@ -277,10 +283,31 @@
       formatConditionRuleDataBar4.PredefinedName = null;
       formatConditionRuleDataBar4.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule4.Rule = formatConditionRuleDataBar4;
+      gridFormatRule5.Column = this.TotalSize;
+      gridFormatRule5.ColumnApplyTo = this.TotalSize;
+      gridFormatRule5.Name = "TotalSize";
+      formatConditionRuleDataBar5.AllowNegativeAxis = false;
+      formatConditionRuleDataBar5.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(121)))), ((int)(((byte)(121)))));
+      formatConditionRuleDataBar5.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(188)))), ((int)(((byte)(188)))));
+      formatConditionRuleDataBar5.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(121)))), ((int)(((byte)(121)))));
+      formatConditionRuleDataBar5.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar5.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar5.DrawAxis = false;
+      formatConditionRuleDataBar5.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar5.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar5.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar5.PredefinedName = null;
+      formatConditionRuleDataBar5.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule5.Rule = formatConditionRuleDataBar5;
       this.view.FormatRules.Add(gridFormatRule1);
       this.view.FormatRules.Add(gridFormatRule2);
       this.view.FormatRules.Add(gridFormatRule3);
       this.view.FormatRules.Add(gridFormatRule4);
+      this.view.FormatRules.Add(gridFormatRule5);
       this.view.GridControl = this.grid;
       this.view.Name = "view";
       this.view.OptionsBehavior.Editable = false;
@@ -311,7 +338,7 @@
       this.view.OptionsView.ShowIndicator = false;
       this.view.RowHeight = 24;
       this.view.SortInfo.AddRange(new DevExpress.XtraGrid.Columns.GridColumnSortInfo[] {
-            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.DataSize, DevExpress.Data.ColumnSortOrder.Descending)});
+            new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.TotalSize, DevExpress.Data.ColumnSortOrder.Descending)});
       this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
       // 
       // RecoveryModel
@@ -339,7 +366,7 @@
       // buttonRefresh
       // 
       this.buttonRefresh.AllowFocus = false;
-      this.buttonRefresh.Location = new System.Drawing.Point(12, 366);
+      this.buttonRefresh.Location = new System.Drawing.Point(12, 427);
       this.buttonRefresh.Name = "buttonRefresh";
       this.buttonRefresh.Size = new System.Drawing.Size(71, 22);
       this.buttonRefresh.StyleController = this.DatabaseBoxlayoutControl1ConvertedLayout;
@@ -352,7 +379,7 @@
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
       this.buttonOK.Enabled = false;
-      this.buttonOK.Location = new System.Drawing.Point(784, 366);
+      this.buttonOK.Location = new System.Drawing.Point(1016, 427);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(76, 22);
       this.buttonOK.StyleController = this.DatabaseBoxlayoutControl1ConvertedLayout;
@@ -372,13 +399,13 @@
             this.emptySpaceItem1});
       this.layoutControl.Name = "Root";
       this.layoutControl.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 5, 10);
-      this.layoutControl.Size = new System.Drawing.Size(952, 400);
+      this.layoutControl.Size = new System.Drawing.Size(1184, 461);
       this.layoutControl.TextVisible = false;
       // 
       // searchControl1item
       // 
       this.searchControl1item.Control = this.searchControl1;
-      this.searchControl1item.Location = new System.Drawing.Point(75, 359);
+      this.searchControl1item.Location = new System.Drawing.Point(75, 420);
       this.searchControl1item.MaxSize = new System.Drawing.Size(223, 26);
       this.searchControl1item.MinSize = new System.Drawing.Size(223, 26);
       this.searchControl1item.Name = "searchControl1item";
@@ -394,14 +421,14 @@
       this.griditem.Location = new System.Drawing.Point(0, 0);
       this.griditem.Name = "griditem";
       this.griditem.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 4);
-      this.griditem.Size = new System.Drawing.Size(932, 359);
+      this.griditem.Size = new System.Drawing.Size(1164, 420);
       this.griditem.TextSize = new System.Drawing.Size(0, 0);
       this.griditem.TextVisible = false;
       // 
       // buttonRefreshitem
       // 
       this.buttonRefreshitem.Control = this.buttonRefresh;
-      this.buttonRefreshitem.Location = new System.Drawing.Point(0, 359);
+      this.buttonRefreshitem.Location = new System.Drawing.Point(0, 420);
       this.buttonRefreshitem.MaxSize = new System.Drawing.Size(75, 26);
       this.buttonRefreshitem.MinSize = new System.Drawing.Size(75, 26);
       this.buttonRefreshitem.Name = "buttonRefreshitem";
@@ -413,7 +440,7 @@
       // buttonOKitem
       // 
       this.buttonOKitem.Control = this.buttonOK;
-      this.buttonOKitem.Location = new System.Drawing.Point(772, 359);
+      this.buttonOKitem.Location = new System.Drawing.Point(1004, 420);
       this.buttonOKitem.MaxSize = new System.Drawing.Size(80, 26);
       this.buttonOKitem.MinSize = new System.Drawing.Size(80, 26);
       this.buttonOKitem.Name = "buttonOKitem";
@@ -425,7 +452,7 @@
       // buttonCancelitem
       // 
       this.buttonCancelitem.Control = this.buttonCancel;
-      this.buttonCancelitem.Location = new System.Drawing.Point(852, 359);
+      this.buttonCancelitem.Location = new System.Drawing.Point(1084, 420);
       this.buttonCancelitem.MaxSize = new System.Drawing.Size(80, 26);
       this.buttonCancelitem.MinSize = new System.Drawing.Size(80, 26);
       this.buttonCancelitem.Name = "buttonCancelitem";
@@ -437,19 +464,45 @@
       // emptySpaceItem1
       // 
       this.emptySpaceItem1.AllowHotTrack = false;
-      this.emptySpaceItem1.Location = new System.Drawing.Point(298, 359);
+      this.emptySpaceItem1.Location = new System.Drawing.Point(298, 420);
       this.emptySpaceItem1.Name = "emptySpaceItem1";
-      this.emptySpaceItem1.Size = new System.Drawing.Size(474, 26);
+      this.emptySpaceItem1.Size = new System.Drawing.Size(706, 26);
       this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+      // 
+      // CreateDate
+      // 
+      this.CreateDate.AppearanceCell.Options.UseTextOptions = true;
+      this.CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.CreateDate.Caption = "Create Date";
+      this.CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.CreateDate.FieldName = "CreateDate";
+      this.CreateDate.MaxWidth = 105;
+      this.CreateDate.MinWidth = 105;
+      this.CreateDate.Name = "CreateDate";
+      this.CreateDate.Visible = true;
+      this.CreateDate.VisibleIndex = 4;
+      this.CreateDate.Width = 105;
+      // 
+      // TotalSize
+      // 
+      this.TotalSize.Caption = "Total Size";
+      this.TotalSize.FieldName = "TotalSize";
+      this.TotalSize.MaxWidth = 110;
+      this.TotalSize.MinWidth = 110;
+      this.TotalSize.Name = "TotalSize";
+      this.TotalSize.Visible = true;
+      this.TotalSize.VisibleIndex = 5;
+      this.TotalSize.Width = 110;
       // 
       // DatabaseBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(952, 400);
+      this.ClientSize = new System.Drawing.Size(1184, 461);
       this.Controls.Add(this.DatabaseBoxlayoutControl1ConvertedLayout);
       this.MinimizeBox = false;
-      this.MinimumSize = new System.Drawing.Size(868, 432);
+      this.MinimumSize = new System.Drawing.Size(1100, 500);
       this.Name = "DatabaseBox";
       this.ShowIcon = false;
       this.ShowInTaskbar = false;
@@ -496,5 +549,7 @@
     private DevExpress.XtraLayout.LayoutControlItem buttonCancelitem;
     private DevExpress.XtraLayout.Converter.LayoutConverter layoutConverter1;
     private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+    private DevExpress.XtraGrid.Columns.GridColumn CreateDate;
+    private DevExpress.XtraGrid.Columns.GridColumn TotalSize;
   }
 }

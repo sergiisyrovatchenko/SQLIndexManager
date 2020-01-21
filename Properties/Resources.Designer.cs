@@ -61,6 +61,24 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CreateDate.
+        /// </summary>
+        internal static string CreateDate {
+            get {
+                return ResourceManager.GetString("CreateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Databases.
+        /// </summary>
+        internal static string DatabaseBoxTitle {
+            get {
+                return ResourceManager.GetString("DatabaseBoxTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DatabaseName.
         /// </summary>
         internal static string DatabaseName {
@@ -393,6 +411,15 @@ namespace SQLIndexManager.Properties {
         internal static string MinVersionMessage {
             get {
                 return ResourceManager.GetString("MinVersionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ModifyDate.
+        /// </summary>
+        internal static string ModifyDate {
+            get {
+                return ResourceManager.GetString("ModifyDate", resourceCulture);
             }
         }
         

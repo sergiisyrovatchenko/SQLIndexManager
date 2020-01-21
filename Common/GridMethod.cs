@@ -34,6 +34,7 @@ namespace SQLIndexManager {
 
     public static void GridColumnDisplayText(object sender, CustomColumnDisplayTextEventArgs e) {
       switch (e.Column.FieldName) {
+        case "TotalSize":
         case "DataSize":
         case "DataFreeSize":
         case "LogSize":

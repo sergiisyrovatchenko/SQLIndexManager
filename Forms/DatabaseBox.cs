@@ -8,6 +8,7 @@ using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 
@@ -15,22 +16,23 @@ namespace SQLIndexManager {
 
     public DatabaseBox() {
       InitializeComponent();
+      Text = Resources.DatabaseBoxTitle;
 
       view.CustomColumnDisplayText += GridMethod.GridColumnDisplayText;
       view.RowCellStyle += GridMethod.GridRowCellStyle;
       view.DoubleClick += GridMethod.GridDoubleClick;
 
-      if (Settings.ServerInfo.IsAzure || !Settings.ServerInfo.IsSysAdmin) {
-        DataSize.Visible = LogSize.Visible = false;
+      if (Settings.ServerInfo.IsAzure) {
+        TotalSize.Visible = DataSize.Visible = LogSize.Visible = DataFreeSize.Visible = LogFreeSize.Visible = false;
         view.SortInfo.Clear();
         view.SortInfo.Add(new GridColumnSortInfo(DatabaseName, ColumnSortOrder.Ascending));
       }
 
-      RefreshDatabases(false);
+      RefreshDatabases();
     }
 
     private void ButtonRefreshClick(object sender, EventArgs e) {
-      RefreshDatabases(true);
+      RefreshDatabases();
     }
 
     public List<string> GetDatabases() {
@@ -45,22 +47,33 @@ namespace SQLIndexManager {
       return dbs;
     }
 
-    private void RefreshDatabases(bool scanUsedSpace) {
-      grid.DataSource = null;
-      buttonOK.Enabled = false;
-
-      DataSize.Visible = LogSize.Visible = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin;
-      DataFreeSize.Visible = LogFreeSize.Visible = !Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin && scanUsedSpace;
-
+    private void RefreshDatabases() {
       Stopwatch ts = Stopwatch.StartNew();
       Output.Current.Add("Refresh databases");
+
+      grid.DataSource = null;
+      buttonOK.Enabled = false;
+      TotalSize.Visible = DataSize.Visible = LogSize.Visible = DataFreeSize.Visible = LogFreeSize.Visible = !Settings.ServerInfo.IsAzure;
 
       using (SqlConnection connection = Connection.Create(Settings.ActiveHost)) {
         try {
           connection.Open();
 
-          List<Database> dbs = QueryEngine.GetDatabases(connection, scanUsedSpace);
-          var max = dbs.Max(_ => Math.Max(_.DataSize, _.LogSize));
+          if (!Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin) {
+            Output.Current.Add("Get disk info");
+            try {
+              List<DiskInfo> di = QueryEngine.GetDiskInfo(connection);
+              if (di.Count > 0) {
+                Text = $"{Resources.DatabaseBoxTitle}      {string.Join("  |  ", di.Select(_ => _.ToString()))}";
+              }
+            }
+            catch (Exception ex) {
+              Output.Current.Add("Refresh disk info failed", ex.Message);
+            }
+          }
+
+          List<Database> dbs = QueryEngine.GetDatabases(connection);
+          var max = dbs.Max(_ => _.TotalSize);
           foreach (var rule in view.FormatRules) {
             ((FormatConditionRuleDataBar)rule.Rule).Maximum = max;
           }
@@ -72,7 +85,7 @@ namespace SQLIndexManager {
             view.SelectRow(index);
           }
 
-          Output.Current.Add($"Refreshed {dbs.Count} databases", null, ts.ElapsedMilliseconds);
+          Output.Current.Add($"Found {dbs.Count} databases", null, ts.ElapsedMilliseconds);
         }
         catch (Exception ex) {
           Output.Current.Add("Refresh databases failed", ex.Message, ts.ElapsedMilliseconds);

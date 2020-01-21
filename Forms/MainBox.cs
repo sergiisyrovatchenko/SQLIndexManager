@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,7 +18,6 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Localization;
-using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraPrinting;
@@ -244,16 +242,14 @@ namespace SQLIndexManager {
       _ps.SavedSpace = indexes.Sum(_ => _.UnusedPagesCount);
       UpdateProgressStats();
       
-      Output.Current.Add($"Processed: {_indexes.Count}. Fragmented: {_ps.Indexes}");
+      Output.Current.Add($"Processed: {_indexes.Count}. Fragmented: {_ps.Indexes}{(_ps.Indexes == 0 ? ". No indexes found. Try searching again or change settings..." : string.Empty)}");
 
-      view.CustomDrawEmptyForeground += CustomDrawEmptyForeground;
       grid.DataSource = indexes;
     }
 
     private void RefreshIndexes() {
       if (_workerFix != null && _workerFix.IsBusy) return;
 
-      view.CustomDrawEmptyForeground -= CustomDrawEmptyForeground;
       grid.DataSource = null;
 
       RestoreSortRules();
@@ -330,8 +326,8 @@ namespace SQLIndexManager {
 
       List<Index> fixIndex =
           selIndex.Where(x => Settings.ActiveHost.Databases.Any(y => y == x.DatabaseName) && x.FixType != IndexOp.SKIP)
-                  .OrderByDescending(_ => Math.Ceiling(Math.Truncate(_.Fragmentation ?? 0) / 20) * 20)
-                  .ThenByDescending(_ => _.PagesCount).ToList();
+                  .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold ? 3 : (_.Fragmentation < Settings.Options.SecondThreshold ? 2 : 1 ))
+                  .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
 
       _ps = new ProgressStatus
                   {
@@ -506,6 +502,12 @@ namespace SQLIndexManager {
 
           Output.Current.Add($"Host: {host.Server}");
           Output.Current.Add($"Server: {host.ServerInfo}");
+
+          if (isConnectionChanged) {
+            grid.DataSource = null;
+            _ps = new ProgressStatus { Databases = host.Databases.Count };
+            UpdateProgressStats();
+          }
 
           ShowDatabaseBox(isConnectionChanged);
         }
@@ -710,6 +712,7 @@ namespace SQLIndexManager {
           return;
 
         e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, imageCollection.Images[7]));
+        e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, imageCollection.Images[8]));
         e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, imageCollection.Images[4]) { Tag = col.FieldName });
         e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, imageCollection.Images[5]) { Tag = col.FieldName });
       }
@@ -721,6 +724,14 @@ namespace SQLIndexManager {
       if (col != null) {
         col.Fixed = (col.Fixed == FixedStyle.Left) ? FixedStyle.None : FixedStyle.Left;
       }
+    }
+
+    private void CopyFixScript(object sender, EventArgs e) {
+      Index row = (Index)view.GetFocusedRow();
+      if (row == null) return;
+
+      string query = $"USE {row.DatabaseName.ToQuota()}\nGO\n{row.GetQuery()}\nGO\n";
+      Clipboard.SetText(query);
     }
 
     private void CopyCellValue(object sender, EventArgs e) {
@@ -784,27 +795,6 @@ namespace SQLIndexManager {
           e.Info = new ToolTipControlInfo($"{info.RowHandle} - {info.Column}", $"{index.GetQuery()}\n{index.Error}");
         }
       }
-    }
-
-    private void CustomDrawEmptyForeground(object sender, CustomDrawEventArgs e) {
-      string noIndexesFoundText = "No indexes found";
-      string trySearchingAgainText = "Try searching again or change settings";
-      int offset = 15;
-
-      e.DefaultDraw();
-      e.Appearance.Options.UseFont = true;
-      e.Appearance.Font = new Font("Tahoma", 12);
-      Size size = e.Appearance.CalcTextSize(e.Cache, noIndexesFoundText, e.Bounds.Width).ToSize();
-      int x = (e.Bounds.Width - size.Width) / 2;
-      int y = e.Bounds.Y + offset;
-      Rectangle noIndexesFoundBounds = new Rectangle(new Point(x, y), size);
-      e.Appearance.DrawString(e.Cache, noIndexesFoundText, noIndexesFoundBounds);
-      size = e.Appearance.CalcTextSize(e.Cache, trySearchingAgainText, e.Bounds.Width).ToSize();
-      x = noIndexesFoundBounds.X - (size.Width - noIndexesFoundBounds.Width) / 2;
-      y = noIndexesFoundBounds.Bottom + offset;
-      size.Width += offset;
-      Rectangle trySearchingAgainBounds = new Rectangle(new Point(x, y), size);
-      e.Appearance.DrawString(e.Cache, trySearchingAgainText, trySearchingAgainBounds);
     }
 
     #endregion

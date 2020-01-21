@@ -270,6 +270,8 @@ SELECT i.ObjectID
      , IsSparse         = CAST(CASE WHEN p.ObjectID IS NULL THEN 0 ELSE 1 END AS BIT)
      , IsPartitioned    = CAST(CASE WHEN dds.[data_space_id] IS NOT NULL THEN 1 ELSE 0 END AS BIT)
      , FileGroupName    = fg.[name]
+     , CreateDate       = o.create_date
+     , ModifyDate       = o.modify_date 
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue
@@ -561,6 +563,7 @@ CREATE TABLE #Databases (
     , RecoveryModel NVARCHAR(500)
     , LogReuseWait  NVARCHAR(500)
     , HasDBAccess   BIT
+    , CreateDate    DATETIME
 )
 
 INSERT INTO #Databases
@@ -569,43 +572,23 @@ SELECT DatabaseID    = [database_id]
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
      , HasDBAccess   = ISNULL(HAS_DBACCESS([name]), 1)
+     , CreateDate    = [create_date]
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND [user_access] = 0
-    AND [database_id] != 2
 
 IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
     DROP TABLE #UsedSpace
 
 CREATE TABLE #UsedSpace (
       DatabaseID   INT
+    , DataSize     BIGINT
+    , LogSize      BIGINT
     , DataUsedSize BIGINT
     , LogUsedSize  BIGINT
-){0}
+)
 
-SELECT t.DatabaseName
-     , d.DataSize
-     , u.DataUsedSize
-     , d.LogSize
-     , u.LogUsedSize
-     , t.RecoveryModel
-     , t.LogReuseWait
-FROM #Databases t
-LEFT JOIN #UsedSpace u ON u.DatabaseID = t.DatabaseID
-LEFT JOIN (
-    SELECT DatabaseID = [database_id]
-         , DataSize   = SUM(CASE WHEN [type] = 0 THEN CAST([size] AS BIGINT) END)
-         , LogSize    = SUM(CASE WHEN [type] = 1 THEN CAST([size] AS BIGINT) END)
-    FROM sys.master_files WITH(NOLOCK)
-    WHERE [state] = 0
-    GROUP BY [database_id]
-) d ON d.DatabaseID = t.DatabaseID
-WHERE t.HasDBAccess = 1
-";
-
-    public const string DatabaseUsedSpace = @"
-
-DECLARE @SQL NVARCHAR(MAX) 
+DECLARE @SQL NVARCHAR(MAX)
 SET @SQL = (
     SELECT '
     USE [' + REPLACE(REPLACE(DatabaseName, ']', ']]'), '[', '[[') + ']
@@ -613,8 +596,12 @@ SET @SQL = (
     SELECT DB_ID()
          , SUM(CASE WHEN [type] = 0 THEN [size] END)
          , SUM(CASE WHEN [type] = 1 THEN [size] END)
+         , SUM(CASE WHEN [type] = 0 THEN [usedsize] END)
+         , SUM(CASE WHEN [type] = 1 THEN [usedsize] END)
     FROM (
-        SELECT [type], [size] = SUM(CAST(FILEPROPERTY([name], ''SpaceUsed'') AS BIGINT))
+        SELECT [type]
+             , [size] = SUM(CAST([size] AS BIGINT))
+             , [usedsize] = SUM(CAST(FILEPROPERTY([name], ''SpaceUsed'') AS BIGINT))
         FROM sys.database_files WITH(NOLOCK)
         WHERE [state] = 0
         GROUP BY [type]
@@ -623,7 +610,20 @@ SET @SQL = (
     WHERE HasDBAccess = 1
     FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
 
-EXEC sys.sp_executesql @SQL";
+EXEC sys.sp_executesql @SQL
+
+SELECT t.DatabaseName
+     , u.DataSize
+     , u.DataUsedSize
+     , u.LogSize
+     , u.LogUsedSize
+     , t.RecoveryModel
+     , t.LogReuseWait
+     , t.CreateDate
+FROM #Databases t
+LEFT JOIN #UsedSpace u ON u.DatabaseID = t.DatabaseID
+WHERE t.HasDBAccess = 1
+";
 
     public const string DatabaseListAzure = @"
 SELECT DatabaseName  = [name]
@@ -633,6 +633,7 @@ SELECT DatabaseName  = [name]
      , LogUsedSize   = CAST(NULL AS BIGINT)
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
+     , CreateDate    = [create_date]
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND ISNULL(HAS_DBACCESS([name]), 1) = 1
@@ -713,6 +714,10 @@ SELECT @SQL = (
     FOR XML PATH(''), TYPE).value('(./text())[1]', 'NVARCHAR(MAX)')
 
 EXEC sys.sp_executesql @SQL
+";
+
+    public const string DiskInfo = @"
+EXEC sys.xp_fixeddrives
 ";
 
   }

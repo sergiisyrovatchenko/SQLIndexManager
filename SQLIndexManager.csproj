@@ -141,6 +141,7 @@
     <Compile Include="Server\ConnectionList.cs" />
     <Compile Include="Server\Connection.cs" />
     <Compile Include="Server\Database.cs" />
+    <Compile Include="Server\DiskInfo.cs" />
     <Compile Include="Server\Index.cs" />
     <Compile Include="Server\ProgressStatus.cs" />
     <Compile Include="Server\Query.cs" />

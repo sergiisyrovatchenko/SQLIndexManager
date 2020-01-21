@@ -24,11 +24,11 @@ namespace SQLIndexManager {
     }
 
     private void Copyright_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      RunHyperlink("www.linkedin.com/in/sergeysyrovatchenko");
+      RunHyperlink("www.linkedin.com/in/sergiisyrovatchenko");
     }
 
     private void GitHub_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      RunHyperlink("www.github.com/sergeysyrovatchenko/SQLIndexManager");
+      RunHyperlink("www.github.com/sergiisyrovatchenko/SQLIndexManager");
     }
 
     private void RunHyperlink(string hyperlink) {

@@ -289,4 +289,13 @@
   <data name="Selection" xml:space="preserve">
     <value>Selection</value>
   </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>CreateDate</value>
+  </data>
+  <data name="ModifyDate" xml:space="preserve">
+    <value>ModifyDate</value>
+  </data>
+  <data name="DatabaseBoxTitle" xml:space="preserve">
+    <value>Select Databases</value>
+  </data>
 </root>

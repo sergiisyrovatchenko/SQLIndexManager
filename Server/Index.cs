@@ -27,6 +27,8 @@ namespace SQLIndexManager {
     public long? TotalSeeks { get; set; }
     public long? TotalLookups { get; set; }
 
+    public DateTime CreateDate { get; set; }
+    public DateTime ModifyDate { get; set; }
     public DateTime? LastUsage { get; set; }
     public DataCompression DataCompression { get; set; }
     public int FillFactor { get; set; }
