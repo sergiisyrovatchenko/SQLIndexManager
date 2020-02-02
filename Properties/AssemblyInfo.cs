@@ -7,5 +7,5 @@
 [assembly: AssemblyCopyright("Sergii Syrovatchenko")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersion("1.0.0.58")]
-[assembly: AssemblyFileVersion("1.0.0.58")]
+[assembly: AssemblyVersion("1.0.0.59")]
+[assembly: AssemblyFileVersion("1.0.0.59")]
