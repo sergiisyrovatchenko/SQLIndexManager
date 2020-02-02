@@ -60,7 +60,7 @@ namespace SQLIndexManager {
 
       OutputEvent ev = new OutputEvent {
         DateTime = now,
-        Message = string.IsNullOrEmpty(message2) ? message : $"{message}\n{message2}",
+        Message = string.IsNullOrEmpty(message2) ? message : $"{message}{Environment.NewLine}{message2}",
         Duration = duration
       };
 

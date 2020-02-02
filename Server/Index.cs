@@ -68,14 +68,14 @@ namespace SQLIndexManager {
           case IndexOp.REBUILD_COLUMNSTORE:
           case IndexOp.REBUILD_COLUMNSTORE_ARCHIVE:
             DataCompression compression = (FixType == IndexOp.REBUILD_COLUMNSTORE) ? DataCompression.COLUMNSTORE : DataCompression.COLUMNSTORE_ARCHIVE;
-            sql = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}\n    " +
+            sql = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}{Environment.NewLine}    " +
                     $"WITH (DATA_COMPRESSION = {(FixType == IndexOp.REBUILD ? DataCompression : compression)}, MAXDOP = {Settings.Options.MaxDop});";
             break;
 
           case IndexOp.REORGANIZE:
           case IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS:
             sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}" +
-                    $"{(FixType == IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS ? "\n    WITH (COMPRESS_ALL_ROW_GROUPS = ON)" : "")};";
+                    $"{(FixType == IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS ? $"{Environment.NewLine}    WITH (COMPRESS_ALL_ROW_GROUPS = ON)" : "")};";
             break;
         }
 
@@ -114,12 +114,12 @@ namespace SQLIndexManager {
 
             string sqlHeader;
             if (IndexType == IndexType.MISSING_INDEX)
-              sqlHeader = $"CREATE NONCLUSTERED INDEX {fullIndexName}\n    ({IndexColumns})\n    " 
-                        + (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE ({IncludedColumns})\n    ");
+              sqlHeader = $"CREATE NONCLUSTERED INDEX {fullIndexName}{Environment.NewLine}    ({IndexColumns}){Environment.NewLine}    " 
+                        + (string.IsNullOrEmpty(IncludedColumns) ? "" : $"INCLUDE ({IncludedColumns}){Environment.NewLine}    ");
             else if (IndexType == IndexType.HEAP)
-              sqlHeader = $"ALTER TABLE {objectName} REBUILD PARTITION = {partition}\n    ";
+              sqlHeader = $"ALTER TABLE {objectName} REBUILD PARTITION = {partition}{Environment.NewLine}    ";
             else
-              sqlHeader = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}\n    ";
+              sqlHeader = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}{Environment.NewLine}    ";
 
             sql = sqlHeader +
                     "WITH (" +
@@ -143,7 +143,7 @@ namespace SQLIndexManager {
             break;
 
           case IndexOp.REORGANIZE:
-            sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}\n    " +
+            sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}{Environment.NewLine}    " +
                     $"WITH (LOB_COMPACTION = {Settings.Options.LobCompaction.OnOff()});";
             break;
 
@@ -162,7 +162,7 @@ namespace SQLIndexManager {
           case IndexOp.UPDATE_STATISTICS_SAMPLE:
           case IndexOp.UPDATE_STATISTICS_RESAMPLE:
           case IndexOp.UPDATE_STATISTICS_FULL:
-            sql = $"UPDATE STATISTICS {objectName} {indexName}\n    " + (
+            sql = $"UPDATE STATISTICS {objectName} {indexName}{Environment.NewLine}    " + (
                 FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
                     ? $"WITH SAMPLE {Settings.Options.SampleStatsPercent} PERCENT;"
                     : (FixType == IndexOp.UPDATE_STATISTICS_FULL ? "WITH FULLSCAN;" : "WITH RESAMPLE;")

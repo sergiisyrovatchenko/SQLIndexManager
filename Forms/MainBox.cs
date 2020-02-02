@@ -137,7 +137,13 @@ namespace SQLIndexManager {
             }
             catch (SqlException ex) {
               _ps.Errors++;
-              if (!ex.Message.Contains("timeout") && !ex.Message.Contains("kill")) {
+
+              if (ex.Message.Contains("kill")) {
+                Output.Current.Add($"Cancel: {ex.Source}", ex.Message);
+                return;
+              }
+
+              if (!ex.Message.Contains("timeout")) {
                 Output.Current.Add($"Error: {ex.Source}", ex.Message);
                 XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -532,13 +538,13 @@ namespace SQLIndexManager {
 
       var groupList = fix.GroupBy(u => u.DatabaseName).Select(grp => grp.ToList()).ToList();
       foreach (var group in groupList) {
-        sb.AppendLine($"USE {group[0].DatabaseName.ToQuota()}\nGO\n");
+        sb.AppendLine($"USE {group[0].DatabaseName.ToQuota()}{Environment.NewLine}GO{Environment.NewLine}");
 
         foreach (Index i in group.OrderBy(_ => _.SchemaName)
                                  .ThenBy(_ => _.ObjectName)
                                  .ThenBy(_ => _.IndexName)
                                  .ThenBy(_ => _.PartitionNumber)) {
-          sb.AppendLine($"RAISERROR(N'{i}', 0, 1) WITH NOWAIT\n{i.GetQuery()}\nGO\n");
+          sb.AppendLine($"RAISERROR(N'{i}', 0, 1) WITH NOWAIT{Environment.NewLine}{i.GetQuery()}{Environment.NewLine}GO{Environment.NewLine}");
         }
       }
 
@@ -730,7 +736,7 @@ namespace SQLIndexManager {
       Index row = (Index)view.GetFocusedRow();
       if (row == null) return;
 
-      string query = $"USE {row.DatabaseName.ToQuota()}\nGO\n{row.GetQuery()}\nGO\n";
+      string query = $"USE {row.DatabaseName.ToQuota()}{Environment.NewLine}GO{Environment.NewLine}{row.GetQuery()}{Environment.NewLine}GO{Environment.NewLine}";
       Clipboard.SetText(query);
     }
 
