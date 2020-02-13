@@ -717,7 +717,10 @@ namespace SQLIndexManager {
         if (col.Caption == Resources.Selection || col.Caption == Resources.Progress)
           return;
 
-        e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, imageCollection.Images[7]));
+        if (view.OptionsBehavior.Editable) {
+          e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, imageCollection.Images[7]));
+        }
+        
         e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, imageCollection.Images[8]));
         e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, imageCollection.Images[4]) { Tag = col.FieldName });
         e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, imageCollection.Images[5]) { Tag = col.FieldName });

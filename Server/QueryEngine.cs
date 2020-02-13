@@ -351,33 +351,37 @@ namespace SQLIndexManager {
 
       if (string.IsNullOrEmpty(ix.Error)) {
 
-        if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
-          ix.IndexStats = DateTime.Now;
-        }
-        else if (ix.FixType == IndexOp.CREATE_INDEX) {
-          ix.IndexStats = DateTime.Now;
-          ix.Fragmentation = 0;
-        }
-        else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
-          ix.PagesCountBefore = ix.PagesCount;
-          ix.Fragmentation = 0;
-          ix.PagesCount = 0;
-          ix.UnusedPagesCount = 0;
-          ix.RowsCount = 0;
-        }
-        else if (data.Tables.Count == 1 && data.Tables[0].Rows.Count == 1) {
-          DataRow row = data.Tables[0].Rows[0];
+        try {
+          if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
+            ix.IndexStats = DateTime.Now;
+          }
+          else if (ix.FixType == IndexOp.CREATE_INDEX) {
+            ix.IndexStats = DateTime.Now;
+            ix.Fragmentation = 0;
+          }
+          else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
+            ix.PagesCountBefore = ix.PagesCount;
+            ix.Fragmentation = 0;
+            ix.PagesCount = 0;
+            ix.UnusedPagesCount = 0;
+            ix.RowsCount = 0;
+          }
+          else if (data.Tables.Count == 1 && data.Tables[0].Rows.Count == 1) {
+            DataRow row = data.Tables[0].Rows[0];
 
-          ix.PagesCountBefore = ix.PagesCount - row.Field<long>(Resources.PagesCount);
-          ix.Fragmentation = row.Field<double>(Resources.Fragmentation);
-          ix.PageSpaceUsed = row.Field<double?>(Resources.PageSpaceUsed);
-          ix.PagesCount = row.Field<long>(Resources.PagesCount);
-          ix.UnusedPagesCount = row.Field<long>(Resources.UnusedPagesCount);
-          ix.RowsCount = row.Field<long>(Resources.RowsCount);
-          ix.DataCompression = ((DataCompression)row.Field<byte>(Resources.DataCompression));
-          ix.IndexStats = row.Field<DateTime?>(Resources.IndexStats);
+            ix.PagesCountBefore = ix.PagesCount - row.Field<long>(Resources.PagesCount);
+            ix.Fragmentation = row.Field<double>(Resources.Fragmentation);
+            ix.PageSpaceUsed = row.Field<double?>(Resources.PageSpaceUsed);
+            ix.PagesCount = row.Field<long>(Resources.PagesCount);
+            ix.UnusedPagesCount = row.Field<long>(Resources.UnusedPagesCount);
+            ix.RowsCount = row.Field<long>(Resources.RowsCount);
+            ix.DataCompression = ((DataCompression)row.Field<byte>(Resources.DataCompression));
+            ix.IndexStats = row.Field<DateTime?>(Resources.IndexStats);
+          }
         }
-
+        catch (Exception ex) {
+          ix.Error = ex.Message;
+        }
       }
 
       return query;

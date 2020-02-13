@@ -81,16 +81,18 @@ namespace SQLIndexManager {
         Text = $"{Resources.DatabaseBoxTitle}      {string.Join("  |  ", _disks.Select(_ => _.ToString()))}";
       }
 
-      var max = _databases.Max(_ => _.TotalSize);
-      foreach (var rule in view.FormatRules) {
-        ((FormatConditionRuleDataBar)rule.Rule).Maximum = max;
-      }
+      if (_databases.Count > 0) {
+        var max = _databases.Max(_ => _.TotalSize);
+        foreach (var rule in view.FormatRules) {
+          ((FormatConditionRuleDataBar)rule.Rule).Maximum = max;
+        }
 
-      grid.DataSource = _databases;
+        grid.DataSource = _databases;
 
-      foreach (string db in Settings.ActiveHost.Databases) {
-        int index = view.LocateByValue(DatabaseName.FieldName, db);
-        view.SelectRow(index);
+        foreach (string db in Settings.ActiveHost.Databases) {
+          int index = view.LocateByValue(DatabaseName.FieldName, db);
+          view.SelectRow(index);
+        }
       }
 
       _ts.Stop();

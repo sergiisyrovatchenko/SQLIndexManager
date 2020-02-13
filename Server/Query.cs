@@ -692,6 +692,7 @@ WHERE [index_id] = {1}
     AND [partition_number] = {2}
 
 SELECT Fragmentation    = @Fragmentation
+     , PageSpaceUsed    = NULL
      , PagesCount       = ISNULL(@PagesCount, 0)
      , UnusedPagesCount = ISNULL(@UnusedPageCount, 0)
      , RowsCount        = ISNULL([rows], 0)
