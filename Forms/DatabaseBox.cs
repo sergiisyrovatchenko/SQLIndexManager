@@ -124,6 +124,15 @@ namespace SQLIndexManager {
 
     #region Override Methods
 
+    protected override bool ProcessKeyPreview(ref Message m) {
+      if ((Keys)m.WParam == Keys.F5) {
+        RefreshDatabases();
+        return true;
+      }
+
+      return base.ProcessKeyPreview(ref m);
+    }
+
     protected override bool ProcessDialogKey(Keys keyData) {
       if (keyData == Keys.Escape) {
         DialogResult = DialogResult.Cancel;

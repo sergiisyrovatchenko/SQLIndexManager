@@ -63,17 +63,31 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule7 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar6 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule8 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar7 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule9 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar8 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule10 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar9 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule11 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar10 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule12 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar11 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule13 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar12 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.Warning = new DevExpress.XtraGrid.Columns.GridColumn();
       this.PageSpaceUsed = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.Duration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.repositoryItemHypertextLabel1 = new DevExpress.XtraEditors.Repository.RepositoryItemHypertextLabel();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
-      this.Duration = new DevExpress.XtraGrid.Columns.GridColumn();
       this.Error = new DevExpress.XtraGrid.Columns.GridColumn();
       this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
       this.ModifyDate = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.LastRead = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.LastWrite = new DevExpress.XtraGrid.Columns.GridColumn();
       this.gridToolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.statusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
       this.labelDatabases = new DevExpress.XtraBars.BarStaticItem();
@@ -106,6 +120,7 @@ namespace SQLIndexManager {
       this.boxSearch = new DevExpress.XtraBars.BarEditItem();
       this.boxSearchControl = new DevExpress.XtraEditors.Repository.RepositoryItemSearchControl();
       this.labelSeparator = new DevExpress.XtraBars.BarStaticItem();
+      this.buttonFeedback = new DevExpress.XtraBars.BarButtonItem();
       this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.taskbar = new DevExpress.Utils.Taskbar.TaskbarAssistant();
       this.imageCollection = new DevExpress.Utils.ImageCollection(this.components);
@@ -644,6 +659,8 @@ namespace SQLIndexManager {
       // TotalLookups
       // 
       TotalLookups.Caption = "Lookups";
+      TotalLookups.DisplayFormat.FormatString = "N0";
+      TotalLookups.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalLookups.FieldName = "TotalLookups";
       TotalLookups.MaxWidth = 95;
       TotalLookups.MinWidth = 95;
@@ -710,6 +727,29 @@ namespace SQLIndexManager {
       this.PageSpaceUsed.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
       this.PageSpaceUsed.UnboundType = DevExpress.Data.UnboundColumnType.String;
       this.PageSpaceUsed.Width = 103;
+      // 
+      // Duration
+      // 
+      this.Duration.AppearanceCell.Options.UseTextOptions = true;
+      this.Duration.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.Duration.Caption = "Duration";
+      this.Duration.FieldName = "Duration";
+      this.Duration.MaxWidth = 73;
+      this.Duration.MinWidth = 73;
+      this.Duration.Name = "Duration";
+      this.Duration.OptionsColumn.AllowEdit = false;
+      this.Duration.OptionsColumn.AllowFocus = false;
+      this.Duration.OptionsColumn.AllowIncrementalSearch = false;
+      this.Duration.OptionsColumn.AllowMove = false;
+      this.Duration.OptionsColumn.AllowShowHide = false;
+      this.Duration.OptionsColumn.AllowSize = false;
+      this.Duration.OptionsColumn.ReadOnly = true;
+      this.Duration.OptionsColumn.ShowInCustomizationForm = false;
+      this.Duration.OptionsColumn.ShowInExpressionEditor = false;
+      this.Duration.OptionsColumn.TabStop = false;
+      this.Duration.OptionsFilter.AllowAutoFilter = false;
+      this.Duration.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      this.Duration.Width = 73;
       // 
       // repositoryItemHypertextLabel1
       // 
@@ -782,7 +822,9 @@ namespace SQLIndexManager {
             this.Warning,
             this.Error,
             this.CreateDate,
-            this.ModifyDate});
+            this.ModifyDate,
+            this.LastRead,
+            this.LastWrite});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = this.Warning;
       gridFormatRule1.ColumnApplyTo = IndexName;
@@ -956,9 +998,9 @@ namespace SQLIndexManager {
             0,
             0,
             0});
-      formatConditionRuleDataBar6.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar6.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
       formatConditionRuleDataBar6.Minimum = new decimal(new int[] {
-            64,
+            1,
             0,
             0,
             0});
@@ -966,6 +1008,156 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar6.PredefinedName = null;
       formatConditionRuleDataBar6.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule7.Rule = formatConditionRuleDataBar6;
+      gridFormatRule8.Column = this.Duration;
+      gridFormatRule8.ColumnApplyTo = this.Duration;
+      gridFormatRule8.Name = "Duration";
+      formatConditionRuleDataBar7.AllowNegativeAxis = false;
+      formatConditionRuleDataBar7.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
+      formatConditionRuleDataBar7.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(237)))), ((int)(((byte)(179)))));
+      formatConditionRuleDataBar7.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
+      formatConditionRuleDataBar7.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar7.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar7.DrawAxis = false;
+      formatConditionRuleDataBar7.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar7.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar7.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar7.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar7.PredefinedName = null;
+      formatConditionRuleDataBar7.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule8.Rule = formatConditionRuleDataBar7;
+      gridFormatRule9.Column = TotalReads;
+      gridFormatRule9.ColumnApplyTo = TotalReads;
+      gridFormatRule9.Name = "TotalReads";
+      formatConditionRuleDataBar8.AllowNegativeAxis = false;
+      formatConditionRuleDataBar8.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
+      formatConditionRuleDataBar8.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+      formatConditionRuleDataBar8.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar8.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar8.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar8.DrawAxis = false;
+      formatConditionRuleDataBar8.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar8.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar8.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar8.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar8.PredefinedName = null;
+      formatConditionRuleDataBar8.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule9.Rule = formatConditionRuleDataBar8;
+      gridFormatRule10.Column = TotalWrites;
+      gridFormatRule10.ColumnApplyTo = TotalWrites;
+      gridFormatRule10.Name = "TotalWrites";
+      formatConditionRuleDataBar9.AllowNegativeAxis = false;
+      formatConditionRuleDataBar9.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
+      formatConditionRuleDataBar9.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+      formatConditionRuleDataBar9.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar9.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar9.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar9.DrawAxis = false;
+      formatConditionRuleDataBar9.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar9.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar9.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar9.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar9.PredefinedName = null;
+      formatConditionRuleDataBar9.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule10.Rule = formatConditionRuleDataBar9;
+      gridFormatRule11.Column = TotalSeeks;
+      gridFormatRule11.ColumnApplyTo = TotalSeeks;
+      gridFormatRule11.Name = "TotalSeeks";
+      formatConditionRuleDataBar10.AllowNegativeAxis = false;
+      formatConditionRuleDataBar10.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
+      formatConditionRuleDataBar10.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+      formatConditionRuleDataBar10.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar10.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar10.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar10.DrawAxis = false;
+      formatConditionRuleDataBar10.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar10.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar10.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar10.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar10.PredefinedName = null;
+      formatConditionRuleDataBar10.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule11.Rule = formatConditionRuleDataBar10;
+      gridFormatRule12.Column = TotalScans;
+      gridFormatRule12.ColumnApplyTo = TotalScans;
+      gridFormatRule12.Name = "TotalScans";
+      formatConditionRuleDataBar11.AllowNegativeAxis = false;
+      formatConditionRuleDataBar11.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
+      formatConditionRuleDataBar11.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+      formatConditionRuleDataBar11.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar11.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar11.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar11.DrawAxis = false;
+      formatConditionRuleDataBar11.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar11.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar11.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar11.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar11.PredefinedName = null;
+      formatConditionRuleDataBar11.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule12.Rule = formatConditionRuleDataBar11;
+      gridFormatRule13.Column = TotalLookups;
+      gridFormatRule13.ColumnApplyTo = TotalLookups;
+      gridFormatRule13.Name = "TotalLookups";
+      formatConditionRuleDataBar12.AllowNegativeAxis = false;
+      formatConditionRuleDataBar12.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
+      formatConditionRuleDataBar12.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
+      formatConditionRuleDataBar12.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar12.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar12.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar12.DrawAxis = false;
+      formatConditionRuleDataBar12.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar12.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
+      formatConditionRuleDataBar12.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar12.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar12.PredefinedName = null;
+      formatConditionRuleDataBar12.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule13.Rule = formatConditionRuleDataBar12;
       this.view.FormatRules.Add(gridFormatRule1);
       this.view.FormatRules.Add(gridFormatRule2);
       this.view.FormatRules.Add(gridFormatRule3);
@@ -973,6 +1165,12 @@ namespace SQLIndexManager {
       this.view.FormatRules.Add(gridFormatRule5);
       this.view.FormatRules.Add(gridFormatRule6);
       this.view.FormatRules.Add(gridFormatRule7);
+      this.view.FormatRules.Add(gridFormatRule8);
+      this.view.FormatRules.Add(gridFormatRule9);
+      this.view.FormatRules.Add(gridFormatRule10);
+      this.view.FormatRules.Add(gridFormatRule11);
+      this.view.FormatRules.Add(gridFormatRule12);
+      this.view.FormatRules.Add(gridFormatRule13);
       this.view.GridControl = this.grid;
       this.view.Name = "view";
       this.view.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
@@ -1011,31 +1209,6 @@ namespace SQLIndexManager {
       this.view.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.GridPopupMenuShowing);
       this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
       this.view.RowCountChanged += new System.EventHandler(this.GridRowCountChanged);
-      // 
-      // Duration
-      // 
-      this.Duration.AppearanceCell.Options.UseTextOptions = true;
-      this.Duration.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.Duration.Caption = "Duration";
-      this.Duration.DisplayFormat.FormatString = "mm:ss.fff";
-      this.Duration.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-      this.Duration.FieldName = "Duration";
-      this.Duration.MaxWidth = 70;
-      this.Duration.MinWidth = 70;
-      this.Duration.Name = "Duration";
-      this.Duration.OptionsColumn.AllowEdit = false;
-      this.Duration.OptionsColumn.AllowFocus = false;
-      this.Duration.OptionsColumn.AllowIncrementalSearch = false;
-      this.Duration.OptionsColumn.AllowMove = false;
-      this.Duration.OptionsColumn.AllowShowHide = false;
-      this.Duration.OptionsColumn.AllowSize = false;
-      this.Duration.OptionsColumn.ReadOnly = true;
-      this.Duration.OptionsColumn.ShowInCustomizationForm = false;
-      this.Duration.OptionsColumn.ShowInExpressionEditor = false;
-      this.Duration.OptionsColumn.TabStop = false;
-      this.Duration.OptionsFilter.AllowAutoFilter = false;
-      this.Duration.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      this.Duration.Width = 70;
       // 
       // Error
       // 
@@ -1082,6 +1255,40 @@ namespace SQLIndexManager {
       this.ModifyDate.OptionsColumn.AllowSize = false;
       this.ModifyDate.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       this.ModifyDate.Width = 105;
+      // 
+      // LastRead
+      // 
+      this.LastRead.AppearanceCell.Options.UseTextOptions = true;
+      this.LastRead.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.LastRead.Caption = "Last Read";
+      this.LastRead.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.LastRead.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.LastRead.FieldName = "LastRead";
+      this.LastRead.MaxWidth = 105;
+      this.LastRead.MinWidth = 105;
+      this.LastRead.Name = "LastRead";
+      this.LastRead.OptionsColumn.AllowEdit = false;
+      this.LastRead.OptionsColumn.AllowFocus = false;
+      this.LastRead.OptionsColumn.AllowSize = false;
+      this.LastRead.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
+      this.LastRead.Width = 105;
+      // 
+      // LastWrite
+      // 
+      this.LastWrite.AppearanceCell.Options.UseTextOptions = true;
+      this.LastWrite.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.LastWrite.Caption = "Last Write";
+      this.LastWrite.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.LastWrite.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.LastWrite.FieldName = "LastWrite";
+      this.LastWrite.MaxWidth = 105;
+      this.LastWrite.MinWidth = 105;
+      this.LastWrite.Name = "LastWrite";
+      this.LastWrite.OptionsColumn.AllowEdit = false;
+      this.LastWrite.OptionsColumn.AllowFocus = false;
+      this.LastWrite.OptionsColumn.AllowSize = false;
+      this.LastWrite.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
+      this.LastWrite.Width = 105;
       // 
       // gridToolTipController
       // 
@@ -1238,9 +1445,10 @@ namespace SQLIndexManager {
             this.labelSavedSpace,
             this.labelIndexesSize,
             this.labelElapsedTime,
-            this.labelServerInfo});
+            this.labelServerInfo,
+            this.buttonFeedback});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-      this.ribbonControl1.MaxItemId = 36;
+      this.ribbonControl1.MaxItemId = 38;
       this.ribbonControl1.Name = "ribbonControl1";
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonNewConnection);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonDatabases);
@@ -1249,6 +1457,7 @@ namespace SQLIndexManager {
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonOptions);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonAbout);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.labelSeparator);
+      this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonFeedback);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.boxSearch);
       this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.boxSearchControl});
@@ -1436,6 +1645,15 @@ namespace SQLIndexManager {
       this.labelSeparator.Name = "labelSeparator";
       this.labelSeparator.ShowImageInToolbar = false;
       this.labelSeparator.Width = 68;
+      // 
+      // buttonFeedback
+      // 
+      this.buttonFeedback.Caption = "Feature Requests, Suggestions && Bugs";
+      this.buttonFeedback.Id = 36;
+      this.buttonFeedback.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonFeedback.ImageOptions.Image")));
+      this.buttonFeedback.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonFeedback.ImageOptions.LargeImage")));
+      this.buttonFeedback.Name = "buttonFeedback";
+      this.buttonFeedback.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonFeedbackClick);
       // 
       // toolTipController
       // 
@@ -1667,5 +1885,8 @@ namespace SQLIndexManager {
     private BarStaticItem labelServerInfo;
     private DevExpress.XtraGrid.Columns.GridColumn CreateDate;
     private DevExpress.XtraGrid.Columns.GridColumn ModifyDate;
+    private DevExpress.XtraGrid.Columns.GridColumn LastRead;
+    private DevExpress.XtraGrid.Columns.GridColumn LastWrite;
+    private BarButtonItem buttonFeedback;
   }
 }

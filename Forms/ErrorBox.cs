@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 
@@ -12,7 +13,7 @@ namespace SQLIndexManager {
 
       edError.Text =
         "Application has encountered an unexpected error" +
-        $"{Environment.NewLine}Please send error detail to https://github.com/sergiisyrovatchenko/SQLIndexManager/issues" +
+        $"{Environment.NewLine}Please send error detail to {Resources.GitHubLink}" +
         $"{Environment.NewLine}Build: {AssemblyVersion}" +
         $"{Environment.NewLine}OS: {Environment.OSVersion}" +
         $"{Environment.NewLine}{Environment.NewLine}{ex.Message}" +

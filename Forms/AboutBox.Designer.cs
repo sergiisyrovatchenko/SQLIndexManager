@@ -30,7 +30,7 @@
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
       this.labelProductDescription = new DevExpress.XtraEditors.LabelControl();
       this.labelGitHubControl = new DevExpress.XtraEditors.HyperlinkLabelControl();
-      this.labelCopyright = new DevExpress.XtraEditors.HyperlinkLabelControl();
+      this.labelCopyright = new DevExpress.XtraEditors.LabelControl();
       this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
@@ -99,19 +99,11 @@
       // 
       // labelCopyright
       // 
-      this.labelCopyright.Appearance.ForeColor = System.Drawing.Color.White;
-      this.labelCopyright.Appearance.LinkColor = System.Drawing.Color.White;
-      this.labelCopyright.Appearance.Options.UseForeColor = true;
-      this.labelCopyright.Appearance.Options.UseLinkColor = true;
-      this.labelCopyright.Cursor = System.Windows.Forms.Cursors.Hand;
-      this.labelCopyright.LineColor = System.Drawing.Color.White;
-      this.labelCopyright.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
       this.labelCopyright.Location = new System.Drawing.Point(215, 60);
       this.labelCopyright.Name = "labelCopyright";
       this.labelCopyright.Size = new System.Drawing.Size(26, 13);
       this.labelCopyright.TabIndex = 12;
       this.labelCopyright.Text = "Value";
-      this.labelCopyright.HyperlinkClick += new DevExpress.Utils.HyperlinkClickEventHandler(this.Copyright_HyperlinkClick);
       // 
       // labelControl1
       // 
@@ -157,7 +149,7 @@
     private System.Windows.Forms.PictureBox pictureBox1;
     private DevExpress.XtraEditors.LabelControl labelProductDescription;
     private DevExpress.XtraEditors.HyperlinkLabelControl labelGitHubControl;
-    private DevExpress.XtraEditors.HyperlinkLabelControl labelCopyright;
+    private DevExpress.XtraEditors.LabelControl labelCopyright;
     private DevExpress.XtraEditors.LabelControl labelControl1;
   }
 }

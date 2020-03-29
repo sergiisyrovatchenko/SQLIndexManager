@@ -196,6 +196,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to www.github.com/sergiisyrovatchenko/SQLIndexManager.
+        /// </summary>
+        internal static string GitHubLink {
+            get {
+                return ResourceManager.GetString("GitHubLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap icon {
@@ -361,11 +370,20 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LastUsage.
+        ///   Looks up a localized string similar to LastRead.
         /// </summary>
-        internal static string LastUsage {
+        internal static string LastRead {
             get {
-                return ResourceManager.GetString("LastUsage", resourceCulture);
+                return ResourceManager.GetString("LastRead", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LastWrite.
+        /// </summary>
+        internal static string LastWrite {
+            get {
+                return ResourceManager.GetString("LastWrite", resourceCulture);
             }
         }
         
@@ -555,15 +573,6 @@ namespace SQLIndexManager.Properties {
         internal static string TotalLookups {
             get {
                 return ResourceManager.GetString("TotalLookups", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TotalReads.
-        /// </summary>
-        internal static string TotalReads {
-            get {
-                return ResourceManager.GetString("TotalReads", resourceCulture);
             }
         }
         

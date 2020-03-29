@@ -256,11 +256,11 @@ SELECT i.ObjectID
      , i.IndexType
      , i.IsAllowPageLocks
      , u.TotalWrites
-     , u.TotalReads
      , u.TotalSeeks
      , u.TotalScans
      , u.TotalLookups
-     , u.LastUsage
+     , u.LastWrite
+     , u.LastRead
      , i.DataCompression
      , f.Fragmentation
      , f.PageSpaceUsed
@@ -306,10 +306,9 @@ IF OBJECT_ID('tempdb.dbo.#Indexes') IS NOT NULL
 
 SELECT ObjectID     = d.[object_id]
      , UserImpact   = gs.[avg_user_impact]
-     , TotalReads   = gs.[user_seeks] + gs.[user_scans]
      , TotalSeeks   = gs.[user_seeks]
      , TotalScans   = gs.[user_scans]
-     , LastUsage    = ISNULL(gs.[last_user_scan], gs.[last_user_seek])
+     , LastRead     = ISNULL(gs.[last_user_scan], gs.[last_user_seek])
      , IndexColumns =
                 CASE
                     WHEN d.[equality_columns] IS NOT NULL AND d.[inequality_columns] IS NOT NULL
@@ -350,13 +349,12 @@ FROM (
     SELECT i.ObjectID
          , ObjectName    = o.[name]
          , SchemaName    = s.[name]
-         , Fragmentation = CAST(100. * (i.UserImpact * i.TotalReads) / MAX(i.UserImpact * i.TotalReads) OVER() AS FLOAT)
+         , Fragmentation = CAST(100. * (i.UserImpact * (i.TotalSeeks + i.TotalScans)) / MAX(i.UserImpact * (i.TotalSeeks + i.TotalScans)) OVER() AS FLOAT)
          , a.RowsCount
          , a.PagesCount
-         , i.TotalReads
          , i.TotalSeeks
          , i.TotalScans
-         , i.LastUsage
+         , i.LastRead
          , a.IndexStats
          , i.IndexColumns
          , i.IncludedColumns
@@ -407,22 +405,21 @@ WHERE [object_id] > 255
     AND [object_id] IN (SELECT * FROM #IncludeList)";
 
     public const string IndexStats = @"
-    SELECT ObjectID      = [object_id]
-         , IndexID       = [index_id]
-         , TotalWrites   = NULLIF([user_updates], 0)
-         , TotalReads    = NULLIF([user_seeks] + [user_scans] + [user_lookups], 0)
-         , TotalSeeks    = NULLIF([user_seeks], 0)
-         , TotalScans    = NULLIF([user_scans], 0)
-         , TotalLookups  = NULLIF([user_lookups], 0)
-         , LastUsage     = (
-                                SELECT MAX(dt)
-                                FROM (
-                                    VALUES ([last_user_seek])
-                                         , ([last_user_scan])
-                                         , ([last_user_lookup])
-                                         , ([last_user_update])
-                                ) t(dt)
-                           )
+    SELECT ObjectID     = [object_id]
+         , IndexID      = [index_id]
+         , TotalWrites  = NULLIF([user_updates], 0)
+         , TotalSeeks   = NULLIF([user_seeks], 0)
+         , TotalScans   = NULLIF([user_scans], 0)
+         , TotalLookups = NULLIF([user_lookups], 0)
+         , LastWrite    = [last_user_update]
+         , LastRead     = (
+                               SELECT MAX(dt)
+                               FROM (
+                                   VALUES ([last_user_seek])
+                                        , ([last_user_scan])
+                                        , ([last_user_lookup])
+                               ) t(dt)
+                          )
     FROM sys.dm_db_index_usage_stats WITH(NOLOCK)
     WHERE [database_id] = @DBID
 ";
@@ -432,11 +429,11 @@ WHERE [object_id] > 255
     SELECT ObjectID     = NULL
          , IndexID      = NULL
          , TotalWrites  = NULL
-         , TotalReads   = NULL
          , TotalSeeks   = NULL
          , TotalScans   = NULL
          , TotalLookups = NULL
-         , LastUsage    = NULL
+         , LastWrite    = NULL
+         , LastRead     = NULL
 ";
 
     public const string Lob2008 = @"

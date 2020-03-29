@@ -24,7 +24,6 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-      this.components = new System.ComponentModel.Container();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
@@ -35,10 +34,13 @@
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule5 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraLayout.LayoutControlGroup layoutControl;
+      DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
       this.DataSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.DataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.TotalSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.DatabaseName = new DevExpress.XtraGrid.Columns.GridColumn();
       this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
       this.DatabaseBoxlayoutControl1ConvertedLayout = new DevExpress.XtraLayout.LayoutControl();
@@ -47,30 +49,28 @@
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
       this.RecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogReuseWait = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
       this.buttonRefresh = new DevExpress.XtraEditors.SimpleButton();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
-      this.layoutControl = new DevExpress.XtraLayout.LayoutControlGroup();
       this.searchControl1item = new DevExpress.XtraLayout.LayoutControlItem();
       this.griditem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonRefreshitem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonOKitem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonCancelitem = new DevExpress.XtraLayout.LayoutControlItem();
-      this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-      this.layoutConverter1 = new DevExpress.XtraLayout.Converter.LayoutConverter(this.components);
-      this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.TotalSize = new DevExpress.XtraGrid.Columns.GridColumn();
+      layoutControl = new DevExpress.XtraLayout.LayoutControlGroup();
+      emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
       ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).BeginInit();
       this.DatabaseBoxlayoutControl1ConvertedLayout.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.layoutControl)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(layoutControl)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.griditem)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonRefreshitem)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonOKitem)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonCancelitem)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(emptySpaceItem1)).BeginInit();
       this.SuspendLayout();
       // 
       // DataSize
@@ -117,6 +117,17 @@
       this.LogFreeSize.VisibleIndex = 9;
       this.LogFreeSize.Width = 100;
       // 
+      // TotalSize
+      // 
+      this.TotalSize.Caption = "Total Size";
+      this.TotalSize.FieldName = "TotalSize";
+      this.TotalSize.MaxWidth = 110;
+      this.TotalSize.MinWidth = 110;
+      this.TotalSize.Name = "TotalSize";
+      this.TotalSize.Visible = true;
+      this.TotalSize.VisibleIndex = 5;
+      this.TotalSize.Width = 110;
+      // 
       // DatabaseName
       // 
       this.DatabaseName.Caption = "Database";
@@ -148,7 +159,7 @@
       this.DatabaseBoxlayoutControl1ConvertedLayout.Location = new System.Drawing.Point(0, 0);
       this.DatabaseBoxlayoutControl1ConvertedLayout.Name = "DatabaseBoxlayoutControl1ConvertedLayout";
       this.DatabaseBoxlayoutControl1ConvertedLayout.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(968, 152, 650, 400);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Root = this.layoutControl;
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Root = layoutControl;
       this.DatabaseBoxlayoutControl1ConvertedLayout.Size = new System.Drawing.Size(1184, 461);
       this.DatabaseBoxlayoutControl1ConvertedLayout.TabIndex = 5;
       // 
@@ -363,6 +374,21 @@
       this.LogReuseWait.VisibleIndex = 3;
       this.LogReuseWait.Width = 130;
       // 
+      // CreateDate
+      // 
+      this.CreateDate.AppearanceCell.Options.UseTextOptions = true;
+      this.CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.CreateDate.Caption = "Create Date";
+      this.CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
+      this.CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+      this.CreateDate.FieldName = "CreateDate";
+      this.CreateDate.MaxWidth = 105;
+      this.CreateDate.MinWidth = 105;
+      this.CreateDate.Name = "CreateDate";
+      this.CreateDate.Visible = true;
+      this.CreateDate.VisibleIndex = 4;
+      this.CreateDate.Width = 105;
+      // 
       // buttonRefresh
       // 
       this.buttonRefresh.AllowFocus = false;
@@ -388,19 +414,22 @@
       // 
       // layoutControl
       // 
-      this.layoutControl.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-      this.layoutControl.GroupBordersVisible = false;
-      this.layoutControl.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+      layoutControl.AllowCustomizeChildren = false;
+      layoutControl.AllowHide = false;
+      layoutControl.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+      layoutControl.GroupBordersVisible = false;
+      layoutControl.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.searchControl1item,
             this.griditem,
             this.buttonRefreshitem,
             this.buttonOKitem,
             this.buttonCancelitem,
-            this.emptySpaceItem1});
-      this.layoutControl.Name = "Root";
-      this.layoutControl.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 5, 10);
-      this.layoutControl.Size = new System.Drawing.Size(1184, 461);
-      this.layoutControl.TextVisible = false;
+            emptySpaceItem1});
+      layoutControl.Name = "Root";
+      layoutControl.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 5, 10);
+      layoutControl.ShowInCustomizationForm = false;
+      layoutControl.Size = new System.Drawing.Size(1184, 461);
+      layoutControl.TextVisible = false;
       // 
       // searchControl1item
       // 
@@ -463,37 +492,12 @@
       // 
       // emptySpaceItem1
       // 
-      this.emptySpaceItem1.AllowHotTrack = false;
-      this.emptySpaceItem1.Location = new System.Drawing.Point(298, 420);
-      this.emptySpaceItem1.Name = "emptySpaceItem1";
-      this.emptySpaceItem1.Size = new System.Drawing.Size(706, 26);
-      this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
-      // 
-      // CreateDate
-      // 
-      this.CreateDate.AppearanceCell.Options.UseTextOptions = true;
-      this.CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.CreateDate.Caption = "Create Date";
-      this.CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
-      this.CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-      this.CreateDate.FieldName = "CreateDate";
-      this.CreateDate.MaxWidth = 105;
-      this.CreateDate.MinWidth = 105;
-      this.CreateDate.Name = "CreateDate";
-      this.CreateDate.Visible = true;
-      this.CreateDate.VisibleIndex = 4;
-      this.CreateDate.Width = 105;
-      // 
-      // TotalSize
-      // 
-      this.TotalSize.Caption = "Total Size";
-      this.TotalSize.FieldName = "TotalSize";
-      this.TotalSize.MaxWidth = 110;
-      this.TotalSize.MinWidth = 110;
-      this.TotalSize.Name = "TotalSize";
-      this.TotalSize.Visible = true;
-      this.TotalSize.VisibleIndex = 5;
-      this.TotalSize.Width = 110;
+      emptySpaceItem1.AllowHotTrack = false;
+      emptySpaceItem1.Location = new System.Drawing.Point(298, 420);
+      emptySpaceItem1.Name = "emptySpaceItem1";
+      emptySpaceItem1.ShowInCustomizationForm = false;
+      emptySpaceItem1.Size = new System.Drawing.Size(706, 26);
+      emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
       // 
       // DatabaseBox
       // 
@@ -514,13 +518,13 @@
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.layoutControl)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(layoutControl)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.griditem)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonRefreshitem)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonOKitem)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonCancelitem)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(emptySpaceItem1)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -541,14 +545,11 @@
     private DevExpress.XtraGrid.Columns.GridColumn LogFreeSize;
     private DevExpress.XtraGrid.Columns.GridColumn DataFreeSize;
     private DevExpress.XtraLayout.LayoutControl DatabaseBoxlayoutControl1ConvertedLayout;
-    private DevExpress.XtraLayout.LayoutControlGroup layoutControl;
     private DevExpress.XtraLayout.LayoutControlItem searchControl1item;
     private DevExpress.XtraLayout.LayoutControlItem griditem;
     private DevExpress.XtraLayout.LayoutControlItem buttonRefreshitem;
     private DevExpress.XtraLayout.LayoutControlItem buttonOKitem;
     private DevExpress.XtraLayout.LayoutControlItem buttonCancelitem;
-    private DevExpress.XtraLayout.Converter.LayoutConverter layoutConverter1;
-    private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     private DevExpress.XtraGrid.Columns.GridColumn CreateDate;
     private DevExpress.XtraGrid.Columns.GridColumn TotalSize;
   }

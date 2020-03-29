@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
 
@@ -23,17 +24,9 @@ namespace SQLIndexManager {
       labelVersion.Text = assembly.GetName().Version.ToString();
     }
 
-    private void Copyright_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      RunHyperlink("www.linkedin.com/in/sergiisyrovatchenko");
-    }
-
     private void GitHub_HyperlinkClick(object sender, HyperlinkClickEventArgs e) {
-      RunHyperlink("www.github.com/sergiisyrovatchenko/SQLIndexManager");
-    }
-
-    private void RunHyperlink(string hyperlink) {
       try {
-        Process.Start(hyperlink);
+        Process.Start(Resources.GitHubLink);
       }
       catch (Exception ex) {
         Output.Current.Add($"Error: {ex.Source}", ex.Message);

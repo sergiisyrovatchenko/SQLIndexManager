@@ -59,6 +59,11 @@ namespace SQLIndexManager {
         case "FixType":
           e.DisplayText = ((IndexOp)e.Value).Description();
           break;
+
+        case "Duration":
+          if (e.Value != null)
+            e.DisplayText = $"{new DateTime(0).AddMilliseconds(Convert.ToInt64(e.Value)):mm:ss.fff}";
+          break;
       }
     }
 

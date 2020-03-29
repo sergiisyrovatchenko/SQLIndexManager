@@ -417,9 +417,8 @@ namespace SQLIndexManager {
 
           watch.Stop();
 
-          item.Duration = (new DateTime(0)).AddMilliseconds(watch.ElapsedMilliseconds);
-
-          Output.Current.Add(item.ToString(), sql, watch.ElapsedMilliseconds);
+          item.Duration = watch.ElapsedMilliseconds;
+          Output.Current.Add(item.ToString(), sql, item.Duration);
           _workerFix.ReportProgress(i + 1);
 
           if (!string.IsNullOrEmpty(item.Error)) {
@@ -876,6 +875,16 @@ namespace SQLIndexManager {
     private void ButtonAboutClick(object sender, ItemClickEventArgs e) {
       using (AboutBox form = new AboutBox()) {
         form.ShowDialog(this);
+      }
+    }
+
+    private void ButtonFeedbackClick(object sender, ItemClickEventArgs e) {
+      try {
+        Process.Start(Resources.GitHubLink);
+      }
+      catch (Exception ex) {
+        Output.Current.Add($"Error: {ex.Source}", ex.Message);
+        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
     }
 

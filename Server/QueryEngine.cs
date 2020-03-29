@@ -181,6 +181,12 @@ namespace SQLIndexManager {
             }
           }
 
+          DateTime? lastWrite = _.Field<DateTime?>(Resources.LastWrite);
+          DateTime? lastRead = _.Field<DateTime?>(Resources.LastRead);
+          long? seeks = _.Field<long?>(Resources.TotalSeeks);
+          long? scans = _.Field<long?>(Resources.TotalScans);
+          long? lookups = _.Field<long?>(Resources.TotalLookups);
+
           Index index = new Index {
             DatabaseName          = connection.Database,
             ObjectId              = _.Field<int>(Resources.ObjectID),
@@ -201,11 +207,13 @@ namespace SQLIndexManager {
             FillFactor            = _.Field<int>(Resources.FillFactor),
             IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
             TotalWrites           = _.Field<long?>(Resources.TotalWrites),
-            TotalReads            = _.Field<long?>(Resources.TotalReads),
-            TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
-            TotalScans            = _.Field<long?>(Resources.TotalScans),
-            TotalLookups          = _.Field<long?>(Resources.TotalLookups),
-            LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
+            TotalReads            = (seeks ?? 0) + (scans ?? 0) > 0 ? (seeks ?? 0) + (scans ?? 0) : (long?)null,
+            TotalSeeks            = seeks,
+            TotalScans            = scans,
+            TotalLookups          = lookups,
+            LastWrite             = lastWrite,
+            LastRead              = lastRead,
+            LastUsage             = Nullable.Compare(lastWrite, lastRead) > 0 ? lastWrite : lastRead,
             CreateDate            = _.Field<DateTime>(Resources.CreateDate),
             ModifyDate            = _.Field<DateTime>(Resources.ModifyDate),
             DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
@@ -243,27 +251,32 @@ namespace SQLIndexManager {
                                     .Replace("]", string.Empty)
                                     .Replace(" ", string.Empty).Truncate(240);
 
+          long? seeks = _.Field<long?>(Resources.TotalSeeks);
+          long? scans = _.Field<long?>(Resources.TotalScans);
+          DateTime? lastRead = _.Field<DateTime?>(Resources.LastRead);
+
           Index index = new Index {
-            DatabaseName          = connection.Database,
-            ObjectId              = _.Field<int>(Resources.ObjectID),
-            IndexName             = indexName,
-            ObjectName            = objName,
-            SchemaName            = _.Field<string>(Resources.SchemaName),
-            PagesCount            = _.Field<long>(Resources.PagesCount),
-            RowsCount             = _.Field<long>(Resources.RowsCount),
-            FileGroupName         = "PRIMARY",
-            IndexType             = IndexType.MISSING_INDEX,
-            IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
-            TotalReads            = _.Field<long?>(Resources.TotalReads),
-            TotalSeeks            = _.Field<long?>(Resources.TotalSeeks),
-            TotalScans            = _.Field<long?>(Resources.TotalScans),
-            LastUsage             = _.Field<DateTime?>(Resources.LastUsage),
-            DataCompression       = DataCompression.NONE,
-            Fragmentation         = _.Field<double>(Resources.Fragmentation),
-            IsAllowOnlineRebuild  = false,
-            IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable,
-            IndexColumns          = indexCols,
-            IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
+            DatabaseName         = connection.Database,
+            ObjectId             = _.Field<int>(Resources.ObjectID),
+            IndexName            = indexName,
+            ObjectName           = objName,
+            SchemaName           = _.Field<string>(Resources.SchemaName),
+            PagesCount           = _.Field<long>(Resources.PagesCount),
+            RowsCount            = _.Field<long>(Resources.RowsCount),
+            FileGroupName        = "PRIMARY",
+            IndexType            = IndexType.MISSING_INDEX,
+            IndexStats           = _.Field<DateTime?>(Resources.IndexStats),
+            TotalReads           = (seeks ?? 0) + (scans ?? 0) > 0 ? (seeks ?? 0) + (scans ?? 0) : (long?)null,
+            TotalSeeks           = seeks,
+            TotalScans           = scans,
+            LastRead             = lastRead,
+            LastUsage            = lastRead,
+            DataCompression      = DataCompression.NONE,
+            Fragmentation        = _.Field<double>(Resources.Fragmentation),
+            IsAllowOnlineRebuild = false,
+            IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable,
+            IndexColumns         = indexCols,
+            IncludedColumns      = _.Field<string>(Resources.IncludedColumns)
           };
 
           indexes.Add(index);

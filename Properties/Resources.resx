@@ -129,9 +129,6 @@
   <data name="ObjectName" xml:space="preserve">
     <value>ObjectName</value>
   </data>
-  <data name="TotalReads" xml:space="preserve">
-    <value>TotalReads</value>
-  </data>
   <data name="IsUnique" xml:space="preserve">
     <value>IsUnique</value>
   </data>
@@ -217,8 +214,8 @@
   <data name="DataFreeSize" xml:space="preserve">
     <value>DataFreeSize</value>
   </data>
-  <data name="LastUsage" xml:space="preserve">
-    <value>LastUsage</value>
+  <data name="LastWrite" xml:space="preserve">
+    <value>LastWrite</value>
   </data>
   <data name="IsSysAdmin" xml:space="preserve">
     <value>IsSysAdmin</value>
@@ -297,5 +294,11 @@
   </data>
   <data name="DatabaseBoxTitle" xml:space="preserve">
     <value>Select Databases</value>
+  </data>
+  <data name="LastRead" xml:space="preserve">
+    <value>LastRead</value>
+  </data>
+  <data name="GitHubLink" xml:space="preserve">
+    <value>www.github.com/sergiisyrovatchenko/SQLIndexManager</value>
   </data>
 </root>

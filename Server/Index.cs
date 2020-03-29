@@ -26,10 +26,12 @@ namespace SQLIndexManager {
     public long? TotalScans { get; set; }
     public long? TotalSeeks { get; set; }
     public long? TotalLookups { get; set; }
+    public DateTime? LastUsage { get; set; }
+    public DateTime? LastWrite { get; set; }
+    public DateTime? LastRead { get; set; }
 
     public DateTime CreateDate { get; set; }
     public DateTime ModifyDate { get; set; }
-    public DateTime? LastUsage { get; set; }
     public DataCompression DataCompression { get; set; }
     public int FillFactor { get; set; }
     public DateTime? IndexStats { get; set; }
@@ -49,7 +51,7 @@ namespace SQLIndexManager {
 
     public string Error { get; set; }
     public Image Progress { get; set; }
-    public DateTime? Duration { get; set; }
+    public long? Duration { get; set; }
     public IndexOp FixType { get; set; }
     public WarningType? Warning { get; set; }
     public bool IsSelected { get; set; }
