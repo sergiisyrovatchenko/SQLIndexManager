@@ -92,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\AES.cs" />
+    <Compile Include="Common\AppInfo.cs" />
     <Compile Include="Common\GridMethod.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,6 +133,12 @@
     </Compile>
     <Compile Include="Forms\AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SplashScreenBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SplashScreenBox.Designer.cs">
+      <DependentUpon>SplashScreenBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -198,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ConnectionBox.resx">
       <DependentUpon>ConnectionBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SplashScreenBox.resx">
+      <DependentUpon>SplashScreenBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

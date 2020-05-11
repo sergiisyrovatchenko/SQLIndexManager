@@ -25,7 +25,6 @@
     /// </summary>
     private void InitializeComponent() {
       this.labelProductName = new DevExpress.XtraEditors.LabelControl();
-      this.label2 = new DevExpress.XtraEditors.LabelControl();
       this.labelVersion = new DevExpress.XtraEditors.LabelControl();
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
       this.labelProductDescription = new DevExpress.XtraEditors.LabelControl();
@@ -45,21 +44,13 @@
       this.labelProductName.TabIndex = 0;
       this.labelProductName.Text = "ProductName";
       // 
-      // label2
-      // 
-      this.label2.Location = new System.Drawing.Point(149, 60);
-      this.label2.Name = "label2";
-      this.label2.Size = new System.Drawing.Size(62, 13);
-      this.label2.TabIndex = 3;
-      this.label2.Text = "Copyright by";
-      // 
       // labelVersion
       // 
       this.labelVersion.Location = new System.Drawing.Point(275, 14);
       this.labelVersion.Name = "labelVersion";
-      this.labelVersion.Size = new System.Drawing.Size(26, 13);
+      this.labelVersion.Size = new System.Drawing.Size(35, 13);
       this.labelVersion.TabIndex = 6;
-      this.labelVersion.Text = "Value";
+      this.labelVersion.Text = "Version";
       // 
       // pictureBox1
       // 
@@ -99,11 +90,11 @@
       // 
       // labelCopyright
       // 
-      this.labelCopyright.Location = new System.Drawing.Point(215, 60);
+      this.labelCopyright.Location = new System.Drawing.Point(149, 58);
       this.labelCopyright.Name = "labelCopyright";
-      this.labelCopyright.Size = new System.Drawing.Size(26, 13);
+      this.labelCopyright.Size = new System.Drawing.Size(47, 13);
       this.labelCopyright.TabIndex = 12;
-      this.labelCopyright.Text = "Value";
+      this.labelCopyright.Text = "Copyright";
       // 
       // labelControl1
       // 
@@ -124,7 +115,6 @@
       this.Controls.Add(this.labelProductDescription);
       this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.labelVersion);
-      this.Controls.Add(this.label2);
       this.Controls.Add(this.labelProductName);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
       this.MaximizeBox = false;
@@ -144,7 +134,6 @@
     #endregion
 
     private DevExpress.XtraEditors.LabelControl labelProductName;
-    private DevExpress.XtraEditors.LabelControl label2;
     private DevExpress.XtraEditors.LabelControl labelVersion;
     private System.Windows.Forms.PictureBox pictureBox1;
     private DevExpress.XtraEditors.LabelControl labelProductDescription;

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using DevExpress.LookAndFeel;
-using DevExpress.Skins;
+using DevExpress.XtraSplashScreen;
 
 namespace SQLIndexManager {
 
@@ -37,10 +37,14 @@ namespace SQLIndexManager {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
 
-        SkinManager.EnableFormSkins();
         UserLookAndFeel.Default.SetSkinStyle("Office 2016 Dark");
 
-        Application.Run(new MainBox());
+        SplashScreenManager.ShowForm(typeof(SplashScreenBox));
+        var mainBox = new MainBox();
+        Thread.Sleep(100);
+        SplashScreenManager.CloseForm();
+
+        Application.Run(mainBox);
       }
     }
 
