@@ -21,8 +21,7 @@ namespace SQLIndexManager {
     public int PartitionNumber { get; set; }
     public long RowsCount { get; set; }
 
-    public long? TotalWrites { get; set; }
-    public long? TotalReads { get; set; }
+    public long? TotalUpdates { get; set; }
     public long? TotalScans { get; set; }
     public long? TotalSeeks { get; set; }
     public long? TotalLookups { get; set; }

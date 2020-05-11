@@ -226,8 +226,8 @@
   <data name="TotalLookups" xml:space="preserve">
     <value>TotalLookups</value>
   </data>
-  <data name="TotalWrites" xml:space="preserve">
-    <value>TotalWrites</value>
+  <data name="TotalUpdates" xml:space="preserve">
+    <value>TotalUpdates</value>
   </data>
   <data name="IndexColumns" xml:space="preserve">
     <value>IndexColumns</value>

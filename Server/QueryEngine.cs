@@ -183,47 +183,43 @@ namespace SQLIndexManager {
 
           DateTime? lastWrite = _.Field<DateTime?>(Resources.LastWrite);
           DateTime? lastRead = _.Field<DateTime?>(Resources.LastRead);
-          long? seeks = _.Field<long?>(Resources.TotalSeeks);
-          long? scans = _.Field<long?>(Resources.TotalScans);
-          long? lookups = _.Field<long?>(Resources.TotalLookups);
 
           Index index = new Index {
-            DatabaseName          = connection.Database,
-            ObjectId              = _.Field<int>(Resources.ObjectID),
-            IndexId               = _.Field<int>(Resources.IndexID),
-            IndexName             = _.Field<string>(Resources.IndexName),
-            ObjectName            = _.Field<string>(Resources.ObjectName),
-            SchemaName            = _.Field<string>(Resources.SchemaName),
-            PagesCount            = _.Field<long>(Resources.PagesCount),
-            UnusedPagesCount      = _.Field<long>(Resources.UnusedPagesCount),
-            PartitionNumber       = _.Field<int>(Resources.PartitionNumber),
-            RowsCount             = _.Field<long>(Resources.RowsCount),
-            FileGroupName         = _.Field<string>(Resources.FileGroupName),
-            IndexType             = indexType,
-            IsPartitioned         = _.Field<bool>(Resources.IsPartitioned),
-            IsUnique              = _.Field<bool>(Resources.IsUnique),
-            IsPK                  = _.Field<bool>(Resources.IsPK),
-            IsFiltered            = _.Field<bool>(Resources.IsFiltered),
-            FillFactor            = _.Field<int>(Resources.FillFactor),
-            IndexStats            = _.Field<DateTime?>(Resources.IndexStats),
-            TotalWrites           = _.Field<long?>(Resources.TotalWrites),
-            TotalReads            = (seeks ?? 0) + (scans ?? 0) > 0 ? (seeks ?? 0) + (scans ?? 0) : (long?)null,
-            TotalSeeks            = seeks,
-            TotalScans            = scans,
-            TotalLookups          = lookups,
-            LastWrite             = lastWrite,
-            LastRead              = lastRead,
-            LastUsage             = Nullable.Compare(lastWrite, lastRead) > 0 ? lastWrite : lastRead,
-            CreateDate            = _.Field<DateTime>(Resources.CreateDate),
-            ModifyDate            = _.Field<DateTime>(Resources.ModifyDate),
-            DataCompression       = (DataCompression)_.Field<byte>(Resources.DataCompression),
-            Fragmentation         = _.Field<double?>(Resources.Fragmentation),
-            PageSpaceUsed         = _.Field<double?>(Resources.PageSpaceUsed),
-            IsAllowReorganize     = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
-            IsAllowOnlineRebuild  = isOnlineRebuild,
-            IsAllowCompression    = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
-            IndexColumns          = _.Field<string>(Resources.IndexColumns),
-            IncludedColumns       = _.Field<string>(Resources.IncludedColumns)
+            DatabaseName         = connection.Database,
+            ObjectId             = _.Field<int>(Resources.ObjectID),
+            IndexId              = _.Field<int>(Resources.IndexID),
+            IndexName            = _.Field<string>(Resources.IndexName),
+            ObjectName           = _.Field<string>(Resources.ObjectName),
+            SchemaName           = _.Field<string>(Resources.SchemaName),
+            PagesCount           = _.Field<long>(Resources.PagesCount),
+            UnusedPagesCount     = _.Field<long>(Resources.UnusedPagesCount),
+            PartitionNumber      = _.Field<int>(Resources.PartitionNumber),
+            RowsCount            = _.Field<long>(Resources.RowsCount),
+            FileGroupName        = _.Field<string>(Resources.FileGroupName),
+            IndexType            = indexType,
+            IsPartitioned        = _.Field<bool>(Resources.IsPartitioned),
+            IsUnique             = _.Field<bool>(Resources.IsUnique),
+            IsPK                 = _.Field<bool>(Resources.IsPK),
+            IsFiltered           = _.Field<bool>(Resources.IsFiltered),
+            FillFactor           = _.Field<int>(Resources.FillFactor),
+            IndexStats           = _.Field<DateTime?>(Resources.IndexStats),
+            TotalUpdates         = _.Field<long?>(Resources.TotalUpdates),
+            TotalSeeks           = _.Field<long?>(Resources.TotalSeeks),
+            TotalScans           = _.Field<long?>(Resources.TotalScans),
+            TotalLookups         = _.Field<long?>(Resources.TotalLookups),
+            LastWrite            = lastWrite,
+            LastRead             = lastRead,
+            LastUsage            = Nullable.Compare(lastWrite, lastRead) > 0 ? lastWrite : lastRead,
+            CreateDate           = _.Field<DateTime>(Resources.CreateDate),
+            ModifyDate           = _.Field<DateTime>(Resources.ModifyDate),
+            DataCompression      = (DataCompression)_.Field<byte>(Resources.DataCompression),
+            Fragmentation        = _.Field<double?>(Resources.Fragmentation),
+            PageSpaceUsed        = _.Field<double?>(Resources.PageSpaceUsed),
+            IsAllowReorganize    = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
+            IsAllowOnlineRebuild = isOnlineRebuild,
+            IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
+            IndexColumns         = _.Field<string>(Resources.IndexColumns),
+            IncludedColumns      = _.Field<string>(Resources.IncludedColumns)
           };
 
           indexes.Add(index);
@@ -251,8 +247,6 @@ namespace SQLIndexManager {
                                     .Replace("]", string.Empty)
                                     .Replace(" ", string.Empty).Truncate(240);
 
-          long? seeks = _.Field<long?>(Resources.TotalSeeks);
-          long? scans = _.Field<long?>(Resources.TotalScans);
           DateTime? lastRead = _.Field<DateTime?>(Resources.LastRead);
 
           Index index = new Index {
@@ -266,9 +260,8 @@ namespace SQLIndexManager {
             FileGroupName        = "PRIMARY",
             IndexType            = IndexType.MISSING_INDEX,
             IndexStats           = _.Field<DateTime?>(Resources.IndexStats),
-            TotalReads           = (seeks ?? 0) + (scans ?? 0) > 0 ? (seeks ?? 0) + (scans ?? 0) : (long?)null,
-            TotalSeeks           = seeks,
-            TotalScans           = scans,
+            TotalSeeks           = _.Field<long?>(Resources.TotalSeeks),
+            TotalScans           = _.Field<long?>(Resources.TotalScans),
             LastRead             = lastRead,
             LastUsage            = lastRead,
             DataCompression      = DataCompression.NONE,
@@ -404,8 +397,8 @@ namespace SQLIndexManager {
       foreach (Index ix in indexes.Where(
                   _ => !_.IsPartitioned
                     && _.Warning == null
-                    && _.TotalWrites > 50000
-                    && (_.TotalReads ?? 0) < _.TotalWrites / 20
+                    && _.TotalUpdates > 50000
+                    && (_.TotalScans ?? 0) + (_.TotalSeeks ?? 0) < (_.TotalUpdates ?? 0) / 20
                     && (_.IndexType == IndexType.CLUSTERED || _.IndexType == IndexType.NONCLUSTERED || _.IndexType == IndexType.HEAP))) {
         ix.Warning = WarningType.UNUSED;
       }

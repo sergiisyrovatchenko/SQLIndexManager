@@ -7,23 +7,6 @@ SET NOCOUNT ON
 SET ARITHABORT ON
 SET NUMERIC_ROUNDABORT OFF
 
-IF OBJECT_ID('tempdb.dbo.#AllocationUnits') IS NOT NULL
-    DROP TABLE #AllocationUnits
-
-CREATE TABLE #AllocationUnits (
-      ContainerID   BIGINT PRIMARY KEY
-    , ReservedPages BIGINT NOT NULL
-    , UsedPages     BIGINT NOT NULL
-)
-
-INSERT INTO #AllocationUnits (ContainerID, ReservedPages, UsedPages)
-SELECT [container_id]
-     , SUM([total_pages])
-     , SUM([used_pages])
-FROM sys.allocation_units WITH(NOLOCK)
-GROUP BY [container_id]
-HAVING SUM([total_pages]) BETWEEN @MinIndexSize AND @MaxIndexSize
-
 IF OBJECT_ID('tempdb.dbo.#ExcludeList') IS NOT NULL
     DROP TABLE #ExcludeList
 
@@ -83,10 +66,17 @@ FROM (
          , PartitionNumber  = p.[partition_number]
          , DataCompression  = MAX(p.[data_compression])
          , RowsCount        = ISNULL(SUM(p.[rows]), 0)
-         , PagesCount       = SUM(a.ReservedPages)
-         , UnusedPagesCount = SUM(CASE WHEN ABS(a.ReservedPages - a.UsedPages) > 32 THEN a.ReservedPages - a.UsedPages ELSE 0 END)
-    FROM #AllocationUnits a
-    JOIN #Partitions p ON a.ContainerID = p.[partition_id]
+         , PagesCount       = SUM(a.[total_pages])
+         , UnusedPagesCount = SUM(CASE WHEN ABS(a.[total_pages] - a.[used_pages]) > 32 THEN a.[total_pages] - a.[used_pages] ELSE 0 END)
+    FROM #Partitions p
+    JOIN (
+        SELECT [container_id]
+             , [total_pages] = SUM([total_pages])
+             , [used_pages]  = SUM([used_pages])
+        FROM sys.allocation_units WITH(NOLOCK)
+        WHERE [total_pages] > 0
+        GROUP BY [container_id]
+    ) a ON a.[container_id] = p.[partition_id]
     GROUP BY p.[object_id]
            , p.[index_id]
            , p.[partition_number]
@@ -94,6 +84,11 @@ FROM (
 JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.ObjectID AND i.[index_id] = p.IndexID {6}
 WHERE i.[type] IN ({0})
     AND i.[object_id] > 255
+    AND (
+            (i.[type] IN (0, 1, 2) AND p.PagesCount BETWEEN @MinIndexSize AND @MaxIndexSize)
+        OR
+            (i.[type] IN (5, 6) AND p.PagesCount <= @MaxIndexSize)
+    )
 
 DECLARE @files TABLE (ID INT PRIMARY KEY)
 INSERT INTO @files
@@ -255,7 +250,7 @@ SELECT i.ObjectID
      , i.RowsCount
      , i.IndexType
      , i.IsAllowPageLocks
-     , u.TotalWrites
+     , u.TotalUpdates
      , u.TotalSeeks
      , u.TotalScans
      , u.TotalLookups
@@ -407,7 +402,7 @@ WHERE [object_id] > 255
     public const string IndexStats = @"
     SELECT ObjectID     = [object_id]
          , IndexID      = [index_id]
-         , TotalWrites  = NULLIF([user_updates], 0)
+         , TotalUpdates = NULLIF([user_updates], 0)
          , TotalSeeks   = NULLIF([user_seeks], 0)
          , TotalScans   = NULLIF([user_scans], 0)
          , TotalLookups = NULLIF([user_lookups], 0)
@@ -428,7 +423,7 @@ WHERE [object_id] > 255
     public const string IndexStatsAzureMaster = @"
     SELECT ObjectID     = NULL
          , IndexID      = NULL
-         , TotalWrites  = NULL
+         , TotalUpdates = NULL
          , TotalSeeks   = NULL
          , TotalScans   = NULL
          , TotalLookups = NULL

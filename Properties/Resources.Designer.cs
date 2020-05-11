@@ -595,11 +595,11 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TotalWrites.
+        ///   Looks up a localized string similar to TotalUpdates.
         /// </summary>
-        internal static string TotalWrites {
+        internal static string TotalUpdates {
             get {
-                return ResourceManager.GetString("TotalWrites", resourceCulture);
+                return ResourceManager.GetString("TotalUpdates", resourceCulture);
             }
         }
         

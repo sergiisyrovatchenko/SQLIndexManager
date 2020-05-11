@@ -25,8 +25,7 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn IndexType;
       DevExpress.XtraGrid.Columns.GridColumn PartitionNumber;
       DevExpress.XtraGrid.Columns.GridColumn IndexStats;
-      DevExpress.XtraGrid.Columns.GridColumn TotalWrites;
-      DevExpress.XtraGrid.Columns.GridColumn TotalReads;
+      DevExpress.XtraGrid.Columns.GridColumn TotalUpdates;
       DevExpress.XtraGrid.Columns.GridColumn LastUsage;
       DevExpress.XtraGrid.Columns.GridColumn FixType;
       DevExpress.XtraGrid.Columns.GridColumn Progress;
@@ -73,8 +72,6 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar10 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule12 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar11 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
-      DevExpress.XtraGrid.GridFormatRule gridFormatRule13 = new DevExpress.XtraGrid.GridFormatRule();
-      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar12 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.Warning = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -141,8 +138,7 @@ namespace SQLIndexManager {
       IndexType = new DevExpress.XtraGrid.Columns.GridColumn();
       PartitionNumber = new DevExpress.XtraGrid.Columns.GridColumn();
       IndexStats = new DevExpress.XtraGrid.Columns.GridColumn();
-      TotalWrites = new DevExpress.XtraGrid.Columns.GridColumn();
-      TotalReads = new DevExpress.XtraGrid.Columns.GridColumn();
+      TotalUpdates = new DevExpress.XtraGrid.Columns.GridColumn();
       LastUsage = new DevExpress.XtraGrid.Columns.GridColumn();
       FixType = new DevExpress.XtraGrid.Columns.GridColumn();
       Progress = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -280,8 +276,6 @@ namespace SQLIndexManager {
       FileGroupName.OptionsColumn.AllowEdit = false;
       FileGroupName.OptionsColumn.AllowFocus = false;
       FileGroupName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
-      FileGroupName.Visible = true;
-      FileGroupName.VisibleIndex = 17;
       FileGroupName.Width = 78;
       // 
       // IndexName
@@ -341,8 +335,8 @@ namespace SQLIndexManager {
       IndexStats.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       IndexStats.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       IndexStats.FieldName = "IndexStats";
-      IndexStats.MaxWidth = 105;
-      IndexStats.MinWidth = 105;
+      IndexStats.MaxWidth = 104;
+      IndexStats.MinWidth = 104;
       IndexStats.Name = "IndexStats";
       IndexStats.OptionsColumn.AllowEdit = false;
       IndexStats.OptionsColumn.AllowFocus = false;
@@ -350,41 +344,24 @@ namespace SQLIndexManager {
       IndexStats.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       IndexStats.Visible = true;
       IndexStats.VisibleIndex = 12;
-      IndexStats.Width = 105;
+      IndexStats.Width = 104;
       // 
-      // TotalWrites
+      // TotalUpdates
       // 
-      TotalWrites.Caption = "Writes";
-      TotalWrites.DisplayFormat.FormatString = "N0";
-      TotalWrites.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-      TotalWrites.FieldName = "TotalWrites";
-      TotalWrites.MaxWidth = 95;
-      TotalWrites.MinWidth = 95;
-      TotalWrites.Name = "TotalWrites";
-      TotalWrites.OptionsColumn.AllowEdit = false;
-      TotalWrites.OptionsColumn.AllowFocus = false;
-      TotalWrites.OptionsColumn.AllowSize = false;
-      TotalWrites.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      TotalWrites.Visible = true;
-      TotalWrites.VisibleIndex = 14;
-      TotalWrites.Width = 95;
-      // 
-      // TotalReads
-      // 
-      TotalReads.Caption = "Reads";
-      TotalReads.DisplayFormat.FormatString = "N0";
-      TotalReads.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-      TotalReads.FieldName = "TotalReads";
-      TotalReads.MaxWidth = 95;
-      TotalReads.MinWidth = 95;
-      TotalReads.Name = "TotalReads";
-      TotalReads.OptionsColumn.AllowEdit = false;
-      TotalReads.OptionsColumn.AllowFocus = false;
-      TotalReads.OptionsColumn.AllowSize = false;
-      TotalReads.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      TotalReads.Visible = true;
-      TotalReads.VisibleIndex = 13;
-      TotalReads.Width = 95;
+      TotalUpdates.Caption = "Updates";
+      TotalUpdates.DisplayFormat.FormatString = "N0";
+      TotalUpdates.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+      TotalUpdates.FieldName = "TotalUpdates";
+      TotalUpdates.MaxWidth = 90;
+      TotalUpdates.MinWidth = 90;
+      TotalUpdates.Name = "TotalUpdates";
+      TotalUpdates.OptionsColumn.AllowEdit = false;
+      TotalUpdates.OptionsColumn.AllowFocus = false;
+      TotalUpdates.OptionsColumn.AllowSize = false;
+      TotalUpdates.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      TotalUpdates.Visible = true;
+      TotalUpdates.VisibleIndex = 16;
+      TotalUpdates.Width = 90;
       // 
       // LastUsage
       // 
@@ -394,16 +371,16 @@ namespace SQLIndexManager {
       LastUsage.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       LastUsage.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       LastUsage.FieldName = "LastUsage";
-      LastUsage.MaxWidth = 105;
-      LastUsage.MinWidth = 105;
+      LastUsage.MaxWidth = 104;
+      LastUsage.MinWidth = 104;
       LastUsage.Name = "LastUsage";
       LastUsage.OptionsColumn.AllowEdit = false;
       LastUsage.OptionsColumn.AllowFocus = false;
       LastUsage.OptionsColumn.AllowSize = false;
       LastUsage.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       LastUsage.Visible = true;
-      LastUsage.VisibleIndex = 15;
-      LastUsage.Width = 105;
+      LastUsage.VisibleIndex = 17;
+      LastUsage.Width = 104;
       // 
       // FixType
       // 
@@ -502,7 +479,7 @@ namespace SQLIndexManager {
       Compression.OptionsColumn.AllowFocus = false;
       Compression.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.CheckedList;
       Compression.Visible = true;
-      Compression.VisibleIndex = 16;
+      Compression.VisibleIndex = 13;
       Compression.Width = 78;
       // 
       // DatabaseName
@@ -632,14 +609,16 @@ namespace SQLIndexManager {
       TotalSeeks.DisplayFormat.FormatString = "N0";
       TotalSeeks.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalSeeks.FieldName = "TotalSeeks";
-      TotalSeeks.MaxWidth = 95;
-      TotalSeeks.MinWidth = 95;
+      TotalSeeks.MaxWidth = 90;
+      TotalSeeks.MinWidth = 90;
       TotalSeeks.Name = "TotalSeeks";
       TotalSeeks.OptionsColumn.AllowEdit = false;
       TotalSeeks.OptionsColumn.AllowFocus = false;
       TotalSeeks.OptionsColumn.AllowSize = false;
       TotalSeeks.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      TotalSeeks.Width = 95;
+      TotalSeeks.Visible = true;
+      TotalSeeks.VisibleIndex = 15;
+      TotalSeeks.Width = 90;
       // 
       // TotalScans
       // 
@@ -647,14 +626,16 @@ namespace SQLIndexManager {
       TotalScans.DisplayFormat.FormatString = "N0";
       TotalScans.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
       TotalScans.FieldName = "TotalScans";
-      TotalScans.MaxWidth = 95;
-      TotalScans.MinWidth = 95;
+      TotalScans.MaxWidth = 90;
+      TotalScans.MinWidth = 90;
       TotalScans.Name = "TotalScans";
       TotalScans.OptionsColumn.AllowEdit = false;
       TotalScans.OptionsColumn.AllowFocus = false;
       TotalScans.OptionsColumn.AllowSize = false;
       TotalScans.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
-      TotalScans.Width = 95;
+      TotalScans.Visible = true;
+      TotalScans.VisibleIndex = 14;
+      TotalScans.Width = 90;
       // 
       // TotalLookups
       // 
@@ -804,18 +785,17 @@ namespace SQLIndexManager {
             UnusedPagesCount,
             RowsCount,
             IndexStats,
-            TotalReads,
-            TotalWrites,
-            LastUsage,
             Compression,
+            TotalScans,
+            TotalSeeks,
+            TotalUpdates,
+            LastUsage,
             FileGroupName,
             FillFactor,
             IsPK,
             IsUnique,
             IsFiltered,
             IsPartitioned,
-            TotalSeeks,
-            TotalScans,
             TotalLookups,
             IndexColumns,
             IncludedColumns,
@@ -1033,13 +1013,13 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar7.PredefinedName = null;
       formatConditionRuleDataBar7.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule8.Rule = formatConditionRuleDataBar7;
-      gridFormatRule9.Column = TotalReads;
-      gridFormatRule9.ColumnApplyTo = TotalReads;
-      gridFormatRule9.Name = "TotalReads";
+      gridFormatRule9.Column = TotalUpdates;
+      gridFormatRule9.ColumnApplyTo = TotalUpdates;
+      gridFormatRule9.Name = "TotalUpdates";
       formatConditionRuleDataBar8.AllowNegativeAxis = false;
-      formatConditionRuleDataBar8.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
-      formatConditionRuleDataBar8.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
-      formatConditionRuleDataBar8.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar8.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
+      formatConditionRuleDataBar8.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(237)))), ((int)(((byte)(179)))));
+      formatConditionRuleDataBar8.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
       formatConditionRuleDataBar8.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar8.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar8.DrawAxis = false;
@@ -1058,13 +1038,13 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar8.PredefinedName = null;
       formatConditionRuleDataBar8.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule9.Rule = formatConditionRuleDataBar8;
-      gridFormatRule10.Column = TotalWrites;
-      gridFormatRule10.ColumnApplyTo = TotalWrites;
-      gridFormatRule10.Name = "TotalWrites";
+      gridFormatRule10.Column = TotalSeeks;
+      gridFormatRule10.ColumnApplyTo = TotalSeeks;
+      gridFormatRule10.Name = "TotalSeeks";
       formatConditionRuleDataBar9.AllowNegativeAxis = false;
-      formatConditionRuleDataBar9.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
-      formatConditionRuleDataBar9.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
-      formatConditionRuleDataBar9.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar9.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(155)))));
+      formatConditionRuleDataBar9.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(245)))), ((int)(((byte)(164)))));
+      formatConditionRuleDataBar9.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(115)))));
       formatConditionRuleDataBar9.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar9.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar9.DrawAxis = false;
@@ -1083,13 +1063,13 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar9.PredefinedName = null;
       formatConditionRuleDataBar9.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule10.Rule = formatConditionRuleDataBar9;
-      gridFormatRule11.Column = TotalSeeks;
-      gridFormatRule11.ColumnApplyTo = TotalSeeks;
-      gridFormatRule11.Name = "TotalSeeks";
+      gridFormatRule11.Column = TotalScans;
+      gridFormatRule11.ColumnApplyTo = TotalScans;
+      gridFormatRule11.Name = "TotalScans";
       formatConditionRuleDataBar10.AllowNegativeAxis = false;
-      formatConditionRuleDataBar10.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
-      formatConditionRuleDataBar10.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
-      formatConditionRuleDataBar10.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar10.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(155)))));
+      formatConditionRuleDataBar10.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(245)))), ((int)(((byte)(164)))));
+      formatConditionRuleDataBar10.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(115)))));
       formatConditionRuleDataBar10.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar10.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar10.DrawAxis = false;
@@ -1108,13 +1088,13 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar10.PredefinedName = null;
       formatConditionRuleDataBar10.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule11.Rule = formatConditionRuleDataBar10;
-      gridFormatRule12.Column = TotalScans;
-      gridFormatRule12.ColumnApplyTo = TotalScans;
-      gridFormatRule12.Name = "TotalScans";
+      gridFormatRule12.Column = TotalLookups;
+      gridFormatRule12.ColumnApplyTo = TotalLookups;
+      gridFormatRule12.Name = "TotalLookups";
       formatConditionRuleDataBar11.AllowNegativeAxis = false;
-      formatConditionRuleDataBar11.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
-      formatConditionRuleDataBar11.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
-      formatConditionRuleDataBar11.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
+      formatConditionRuleDataBar11.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(155)))));
+      formatConditionRuleDataBar11.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(245)))), ((int)(((byte)(164)))));
+      formatConditionRuleDataBar11.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(229)))), ((int)(((byte)(115)))));
       formatConditionRuleDataBar11.Appearance.Options.UseBackColor = true;
       formatConditionRuleDataBar11.Appearance.Options.UseBorderColor = true;
       formatConditionRuleDataBar11.DrawAxis = false;
@@ -1133,31 +1113,6 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar11.PredefinedName = null;
       formatConditionRuleDataBar11.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule12.Rule = formatConditionRuleDataBar11;
-      gridFormatRule13.Column = TotalLookups;
-      gridFormatRule13.ColumnApplyTo = TotalLookups;
-      gridFormatRule13.Name = "TotalLookups";
-      formatConditionRuleDataBar12.AllowNegativeAxis = false;
-      formatConditionRuleDataBar12.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(110)))));
-      formatConditionRuleDataBar12.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(215)))));
-      formatConditionRuleDataBar12.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(247)))), ((int)(((byte)(90)))));
-      formatConditionRuleDataBar12.Appearance.Options.UseBackColor = true;
-      formatConditionRuleDataBar12.Appearance.Options.UseBorderColor = true;
-      formatConditionRuleDataBar12.DrawAxis = false;
-      formatConditionRuleDataBar12.Maximum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-      formatConditionRuleDataBar12.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Percent;
-      formatConditionRuleDataBar12.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-      formatConditionRuleDataBar12.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
-      formatConditionRuleDataBar12.PredefinedName = null;
-      formatConditionRuleDataBar12.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
-      gridFormatRule13.Rule = formatConditionRuleDataBar12;
       this.view.FormatRules.Add(gridFormatRule1);
       this.view.FormatRules.Add(gridFormatRule2);
       this.view.FormatRules.Add(gridFormatRule3);
@@ -1170,7 +1125,6 @@ namespace SQLIndexManager {
       this.view.FormatRules.Add(gridFormatRule10);
       this.view.FormatRules.Add(gridFormatRule11);
       this.view.FormatRules.Add(gridFormatRule12);
-      this.view.FormatRules.Add(gridFormatRule13);
       this.view.GridControl = this.grid;
       this.view.Name = "view";
       this.view.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
@@ -1648,7 +1602,7 @@ namespace SQLIndexManager {
       // 
       // buttonFeedback
       // 
-      this.buttonFeedback.Caption = "Feature Requests, Suggestions && Bugs";
+      this.buttonFeedback.Caption = "Feature Requests && Bugs";
       this.buttonFeedback.Id = 36;
       this.buttonFeedback.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonFeedback.ImageOptions.Image")));
       this.buttonFeedback.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonFeedback.ImageOptions.LargeImage")));
