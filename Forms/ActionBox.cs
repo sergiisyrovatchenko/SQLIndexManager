@@ -25,6 +25,10 @@ namespace SQLIndexManager {
             IndexOp.REBUILD_COLUMNSTORE_ARCHIVE
           }
         );
+
+        if (Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) {
+          indexOps.Add(IndexOp.CREATE_COLUMNSTORE_INDEX);
+        }
       }
 
       if (Settings.ServerInfo.IsOnlineRebuildAvailable) {

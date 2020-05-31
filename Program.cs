@@ -41,7 +41,6 @@ namespace SQLIndexManager {
 
         SplashScreenManager.ShowForm(typeof(SplashScreenBox));
         var mainBox = new MainBox();
-        Thread.Sleep(100);
         SplashScreenManager.CloseForm();
 
         Application.Run(mainBox);

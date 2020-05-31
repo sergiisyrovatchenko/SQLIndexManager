@@ -81,7 +81,7 @@ FROM (
            , p.[index_id]
            , p.[partition_number]
 ) p
-JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.ObjectID AND i.[index_id] = p.IndexID {6}
+JOIN sys.indexes i WITH(NOLOCK) ON i.[object_id] = p.ObjectID AND i.[index_id] = p.IndexID {6} {8}
 WHERE i.[type] IN ({0})
     AND i.[object_id] > 255
     AND (
@@ -371,7 +371,7 @@ SELECT [object_id]
 INTO #Partitions
 FROM sys.partitions WITH(NOLOCK)
 WHERE [object_id] > 255
-    AND [rows] > 0
+    AND [rows] > {0}
     AND [object_id] NOT IN (SELECT * FROM #ExcludeList)";
 
     public const string IncludeList = @"
@@ -384,7 +384,7 @@ INSERT INTO #IncludeList
 SELECT [object_id]
 FROM sys.objects WITH(NOLOCK)
 WHERE [type] IN ('V', 'U')
-    {0}{1}
+    {1}{2}
 
 SELECT [object_id]
      , [index_id]
@@ -395,7 +395,7 @@ SELECT [object_id]
 INTO #Partitions
 FROM sys.partitions WITH(NOLOCK)
 WHERE [object_id] > 255
-    AND [rows] > 0
+    AND [rows] > {0}
     AND [object_id] NOT IN (SELECT * FROM #ExcludeList)
     AND [object_id] IN (SELECT * FROM #IncludeList)";
 

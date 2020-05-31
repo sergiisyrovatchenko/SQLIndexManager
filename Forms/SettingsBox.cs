@@ -51,7 +51,9 @@ namespace SQLIndexManager {
       boxPadIndex.Checked = o.PadIndex;
       boxSortInTempDb.Checked = o.SortInTempDb;
       boxLobCompaction.Checked = o.LobCompaction;
+      boxMultiThreadingCount.Value = o.DelayAfterFix;
       boxDelayAfterFix.Value = o.DelayAfterFix;
+      boxMultiThreadingCount.Value = o.MultiThreadingCount;
       boxMaxDod.Value = o.MaxDop;
       boxStatsSamplePercent.Value = o.SampleStatsPercent;
       boxConnectionTimeout.Value = o.ConnectionTimeout;
@@ -78,6 +80,8 @@ namespace SQLIndexManager {
       boxExcludeObject.EditValue = string.Join(";", o.ExcludeObject);
       boxIgnorePermissions.Checked = o.IgnorePermissions;
       boxIgnoreReadOnlyFL.Checked = o.IgnoreReadOnlyFL;
+      boxIgnoreHeapWithCompression.Checked = o.IgnoreHeapWithCompression;
+      boxShowOnlyMore1000Rows.Checked = o.ShowOnlyMore1000Rows;
     }
 
     public Options GetSettings() {
@@ -91,6 +95,7 @@ namespace SQLIndexManager {
         PreDescribeSize = boxMinIndexSize.Value.Maximum,
         MaxIndexSize = boxMaxIndexSize.Value,
         DelayAfterFix = (int)boxDelayAfterFix.Value,
+        MultiThreadingCount = (int)boxMultiThreadingCount.Value,
         MaxDop = (int)boxMaxDod.Value,
         Online = boxOnline.Checked,
         PadIndex = boxPadIndex.Checked,
@@ -120,7 +125,9 @@ namespace SQLIndexManager {
         IncludeObject = new List<string> (boxIncludeObject.EditValue.ToString().Split(';')),
         ExcludeObject = new List<string> (boxExcludeObject.EditValue.ToString().Split(';')),
         IgnorePermissions = boxIgnorePermissions.Checked,
-        IgnoreReadOnlyFL = boxIgnoreReadOnlyFL.Checked
+        IgnoreReadOnlyFL = boxIgnoreReadOnlyFL.Checked,
+        IgnoreHeapWithCompression = boxIgnoreHeapWithCompression.Checked,
+        ShowOnlyMore1000Rows = boxShowOnlyMore1000Rows.Checked
       };
 
     }

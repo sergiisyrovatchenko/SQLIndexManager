@@ -58,7 +58,10 @@ namespace SQLIndexManager {
     IGNORE = 17,
 
     [Description("SKIP")]
-    SKIP = 18
+    SKIP = 18,
+
+    [Description("CREATE COLUMNSTORE INDEX")]
+    CREATE_COLUMNSTORE_INDEX = 19
   }
 
 }

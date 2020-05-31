@@ -62,7 +62,10 @@ namespace SQLIndexManager {
       string fullIndexName = $"{indexName} ON {objectName}";
       string partition = IsPartitioned ? PartitionNumber.ToString() : "ALL";
 
-      if (IsColumnstore) {
+      if (IndexType == IndexType.HEAP && FixType == IndexOp.CREATE_COLUMNSTORE_INDEX) {
+        sql = $"CREATE CLUSTERED COLUMNSTORE INDEX [CCL] ON {objectName} WITH (COMPRESSION_DELAY = 0, DATA_COMPRESSION = {DataCompression.COLUMNSTORE});";
+      }
+      else if (IsColumnstore) {
 
         switch (FixType) {
           case IndexOp.REBUILD:

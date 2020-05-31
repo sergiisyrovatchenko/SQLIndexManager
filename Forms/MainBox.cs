@@ -605,6 +605,10 @@ namespace SQLIndexManager {
               ? IndexOp.REBUILD_ROW
               : IndexOp.REBUILD_PAGE);
           }
+
+          if (!ix.IsPartitioned && ix.IndexType == IndexType.HEAP && Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) {
+            i.Add(IndexOp.CREATE_COLUMNSTORE_INDEX);
+          }
         }
 
         if (ix.IsAllowOnlineRebuild)
@@ -691,9 +695,6 @@ namespace SQLIndexManager {
     }
 
     private void GridPopupMenuShowing(object sender, PopupMenuShowingEventArgs e) {
-      var col = e.HitInfo.Column;
-      if (col == null) return;
-
       if (e.MenuType == GridMenuType.Column) {
         string[] columns = {
                     GridLocalizer.Active.GetLocalizedString(GridStringId.MenuColumnGroup),
@@ -704,7 +705,12 @@ namespace SQLIndexManager {
           if (columns.Contains(item.Caption))
             item.Visible = false;
         }
+      }
 
+      var col = e.HitInfo.Column;
+      if (col == null) return;
+
+      if (e.MenuType == GridMenuType.Column) {
         if (col.Caption == Resources.Selection || col.Caption == Resources.Progress)
           return;
 

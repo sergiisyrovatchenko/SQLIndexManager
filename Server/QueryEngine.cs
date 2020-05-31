@@ -42,20 +42,24 @@ namespace SQLIndexManager {
     }
 
     public static List<DiskInfo> GetDiskInfo(SqlConnection connection) {
-      SqlCommand cmd = new SqlCommand(Query.DiskInfo, connection) { CommandTimeout = Settings.Options.CommandTimeout };
-
-      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-      DataSet data = new DataSet();
-      adapter.Fill(data);
-
       List<DiskInfo> di = new List<DiskInfo>();
-      foreach (DataRow _ in data.Tables[0].Rows) {
-        di.Add(
-          new DiskInfo {
-            Drive = _.Field<string>(0),
-            FreeSpace = _.Field<int>(1)
-          }
-        );
+
+      if (!Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin) {
+        SqlCommand cmd = new SqlCommand(Query.DiskInfo, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        DataSet data = new DataSet();
+        adapter.Fill(data);
+
+        
+        foreach (DataRow _ in data.Tables[0].Rows) {
+          di.Add(
+            new DiskInfo {
+              Drive = _.Field<string>(0),
+              FreeSpace = _.Field<int>(1)
+            }
+          );
+        }
       }
 
       return di;
@@ -135,24 +139,27 @@ namespace SQLIndexManager {
         if (!string.IsNullOrEmpty(includeListObject))
           includeListObject = $"AND ( 1 = 0 {includeListObject})";
 
-        string includeList = string.IsNullOrEmpty(includeListSchemas) && string.IsNullOrEmpty(includeListObject)
-                                ? Query.IncludeListEmpty
-                                : string.Format(Query.IncludeList, includeListSchemas, includeListObject);
+        int filterRows = Settings.Options.ShowOnlyMore1000Rows ? 1000 : 0;
 
-        string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0";
-        string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2";
+        string includeList = string.IsNullOrEmpty(includeListSchemas) && string.IsNullOrEmpty(includeListObject)
+                                ? string.Format(Query.IncludeListEmpty, filterRows)
+                                : string.Format(Query.IncludeList, filterRows, includeListSchemas, includeListObject);
+
+        string ignoreReadOnlyFL = Settings.Options.IgnoreReadOnlyFL ? "" : "AND fg.[is_read_only] = 0 ";
+        string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2 ";
+        string ignoreHeapWithCompression = Settings.Options.IgnoreHeapWithCompression ? "AND (i.[type] != 0 OR (i.[type] = 0 AND p.DataCompression = 0)) " : "";
 
         string query = string.Format(Query.PreDescribeIndexes,
                                     string.Join(", ", it), excludeList, indexQuery, lob,
-                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList);
+                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList, ignoreHeapWithCompression);
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
-        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)  { Value = threshold });
-        cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MinIndexSize.PageSize() });
-        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt) { Value = Settings.Options.MaxIndexSize.PageSize() });
-        cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt) { Value = Settings.Options.PreDescribeSize.PageSize() });
-        cmd.Parameters.Add(new SqlParameter("@ScanMode", SqlDbType.NVarChar, 100) { Value = Settings.Options.ScanMode });
+        cmd.Parameters.Add(new SqlParameter("@Fragmentation",   SqlDbType.Float)         { Value = threshold });
+        cmd.Parameters.Add(new SqlParameter("@MinIndexSize",    SqlDbType.BigInt)        { Value = Settings.Options.MinIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@MaxIndexSize",    SqlDbType.BigInt)        { Value = Settings.Options.MaxIndexSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@PreDescribeSize", SqlDbType.BigInt)        { Value = Settings.Options.PreDescribeSize.PageSize() });
+        cmd.Parameters.Add(new SqlParameter("@ScanMode",        SqlDbType.NVarChar, 100) { Value = Settings.Options.ScanMode });
 
         SqlDataAdapter adapter = new SqlDataAdapter(cmd);
         DataSet data = new DataSet();
@@ -330,8 +337,10 @@ namespace SQLIndexManager {
     }
 
     public static string FixIndex(SqlConnection connection, Index ix) {
+      int indexId = ix.FixType == IndexOp.CREATE_COLUMNSTORE_INDEX && ix.IndexType == IndexType.HEAP ? 1 : ix.IndexId;
+
       string sqlInfo = string.Format(ix.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
-                                     ix.ObjectId, ix.IndexId, ix.PartitionNumber, Settings.Options.ScanMode);
+                                     ix.ObjectId, indexId, ix.PartitionNumber, Settings.Options.ScanMode);
 
       string query = ix.GetQuery();
       string sql = ix.FixType == IndexOp.DISABLE_INDEX
@@ -356,7 +365,6 @@ namespace SQLIndexManager {
       }
 
       if (string.IsNullOrEmpty(ix.Error)) {
-
         try {
           if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
             ix.IndexStats = DateTime.Now;
@@ -383,6 +391,11 @@ namespace SQLIndexManager {
             ix.RowsCount = row.Field<long>(Resources.RowsCount);
             ix.DataCompression = ((DataCompression)row.Field<byte>(Resources.DataCompression));
             ix.IndexStats = row.Field<DateTime?>(Resources.IndexStats);
+
+            if (ix.FixType == IndexOp.CREATE_COLUMNSTORE_INDEX) {
+              ix.IndexName = "CCL";
+              ix.IndexType = IndexType.CLUSTERED_COLUMNSTORE;
+            }
           }
         }
         catch (Exception ex) {
@@ -447,10 +460,10 @@ namespace SQLIndexManager {
         if (Settings.Options.DataCompression == DataCompression.NONE && ix.DataCompression != DataCompression.NONE)
           return IndexOp.REBUILD_NONE;
 
-        if (Settings.Options.DataCompression == DataCompression.ROW)
+        if (Settings.Options.DataCompression == DataCompression.ROW && ix.DataCompression != DataCompression.ROW)
           return IndexOp.REBUILD_ROW;
 
-        if (Settings.Options.DataCompression == DataCompression.PAGE)
+        if (Settings.Options.DataCompression == DataCompression.PAGE && ix.DataCompression != DataCompression.PAGE)
           return IndexOp.REBUILD_PAGE;
       }
 
