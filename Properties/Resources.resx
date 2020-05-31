@@ -293,7 +293,7 @@
     <value>ModifyDate</value>
   </data>
   <data name="DatabaseBoxTitle" xml:space="preserve">
-    <value>Select Databases</value>
+    <value>Databases</value>
   </data>
   <data name="LastRead" xml:space="preserve">
     <value>LastRead</value>

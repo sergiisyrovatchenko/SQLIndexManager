@@ -70,7 +70,7 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Databases.
+        ///   Looks up a localized string similar to Databases.
         /// </summary>
         internal static string DatabaseBoxTitle {
             get {

@@ -60,10 +60,7 @@ namespace SQLIndexManager {
         try {
           connection.Open();
 
-          if (!Settings.ServerInfo.IsAzure && Settings.ServerInfo.IsSysAdmin) {
-            _disks = QueryEngine.GetDiskInfo(connection);
-          }
-
+          _disks = QueryEngine.GetDiskInfo(connection);
           _databases = QueryEngine.GetDatabases(connection);
         }
         catch (Exception ex) {
@@ -77,9 +74,11 @@ namespace SQLIndexManager {
     }
 
     private void ScanDatabasesFinish(object sender, RunWorkerCompletedEventArgs e) {
-      if (_disks.Count > 0) {
-        Text = $"{Resources.DatabaseBoxTitle}      {string.Join("  |  ", _disks.Select(_ => _.ToString()))}";
-      }
+      Text = _disks.Count > 0
+          ? $"{Resources.DatabaseBoxTitle}      {string.Join("  |  ", _disks.Select(_ => _.ToString()))}"
+          : Resources.DatabaseBoxTitle;
+
+      grid.DataSource = null;
 
       if (_databases.Count > 0) {
         var max = _databases.Max(_ => _.TotalSize);
@@ -106,10 +105,6 @@ namespace SQLIndexManager {
       Output.Current.Add("Refresh databases...");
 
       _ts = Stopwatch.StartNew();
-      _databases.Clear();
-      _disks.Clear();
-
-      grid.DataSource = null;
       buttonOK.Enabled = false;
       buttonRefresh.Enabled = false;
       TotalSize.Visible = DataSize.Visible = LogSize.Visible = DataFreeSize.Visible = LogFreeSize.Visible = !Settings.ServerInfo.IsAzure;
