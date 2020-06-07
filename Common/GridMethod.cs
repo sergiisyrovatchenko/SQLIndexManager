@@ -53,6 +53,10 @@ namespace SQLIndexManager {
           break;
 
         case "RowsCount":
+        case "TotalUpdates":
+        case "TotalScans":
+        case "TotalSeeks":
+        case "TotalLookups":
           e.DisplayText = $"{e.Value:n0} ";
           break;
 

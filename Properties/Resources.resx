@@ -117,188 +117,269 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FileGroupName" xml:space="preserve">
-    <value>FileGroupName</value>
-  </data>
-  <data name="PagesCountBefore" xml:space="preserve">
-    <value>PagesCountBefore</value>
-  </data>
-  <data name="IsLob" xml:space="preserve">
-    <value>IsLob</value>
-  </data>
-  <data name="ObjectName" xml:space="preserve">
-    <value>ObjectName</value>
-  </data>
-  <data name="IsUnique" xml:space="preserve">
-    <value>IsUnique</value>
-  </data>
-  <data name="RecoveryModel" xml:space="preserve">
-    <value>RecoveryModel</value>
-  </data>
-  <data name="SchemaName" xml:space="preserve">
-    <value>SchemaName</value>
-  </data>
-  <data name="UnusedPagesCount" xml:space="preserve">
-    <value>UnusedPagesCount</value>
-  </data>
-  <data name="IsFiltered" xml:space="preserve">
-    <value>IsFiltered</value>
-  </data>
-  <data name="MinVersionMessage" xml:space="preserve">
-    <value>SQL Server 2000/2005 is not supported.</value>
-  </data>
-  <data name="DatabaseName" xml:space="preserve">
-    <value>DatabaseName</value>
-  </data>
-  <data name="ServerVersion" xml:space="preserve">
-    <value>ServerVersion</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="icon_include" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon_include.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ProductLevel" xml:space="preserve">
-    <value>ProductLevel</value>
-  </data>
-  <data name="PartitionNumber" xml:space="preserve">
-    <value>PartitionNumber</value>
-  </data>
-  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Progress" xml:space="preserve">
-    <value>Progress</value>
-  </data>
-  <data name="DatamaseMaster" xml:space="preserve">
-    <value>master</value>
-  </data>
-  <data name="IndexID" xml:space="preserve">
-    <value>IndexID</value>
-  </data>
-  <data name="IndexType" xml:space="preserve">
-    <value>IndexType</value>
-  </data>
-  <data name="IsSparse" xml:space="preserve">
-    <value>IsSparse</value>
-  </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Duration</value>
-  </data>
-  <data name="Fragmentation" xml:space="preserve">
-    <value>Fragmentation</value>
-  </data>
-  <data name="IndexStats" xml:space="preserve">
-    <value>IndexStats</value>
-  </data>
-  <data name="DataUsedSize" xml:space="preserve">
-    <value>DataUsedSize</value>
-  </data>
-  <data name="IndexName" xml:space="preserve">
-    <value>IndexName</value>
-  </data>
-  <data name="DataCompression" xml:space="preserve">
-    <value>DataCompression</value>
-  </data>
-  <data name="DataSize" xml:space="preserve">
-    <value>DataSize</value>
-  </data>
-  <data name="TotalSeeks" xml:space="preserve">
-    <value>TotalSeeks</value>
-  </data>
-  <data name="RowsCount" xml:space="preserve">
-    <value>RowsCount</value>
-  </data>
-  <data name="TotalScans" xml:space="preserve">
-    <value>TotalScans</value>
-  </data>
-  <data name="DataFreeSize" xml:space="preserve">
-    <value>DataFreeSize</value>
-  </data>
-  <data name="LastWrite" xml:space="preserve">
-    <value>LastWrite</value>
-  </data>
-  <data name="IsSysAdmin" xml:space="preserve">
-    <value>IsSysAdmin</value>
-  </data>
-  <data name="PagesCount" xml:space="preserve">
-    <value>PagesCount</value>
-  </data>
-  <data name="TotalLookups" xml:space="preserve">
-    <value>TotalLookups</value>
-  </data>
-  <data name="TotalUpdates" xml:space="preserve">
-    <value>TotalUpdates</value>
-  </data>
-  <data name="IndexColumns" xml:space="preserve">
-    <value>IndexColumns</value>
-  </data>
-  <data name="ObjectID" xml:space="preserve">
-    <value>ObjectID</value>
-  </data>
-  <data name="LogReuseWait" xml:space="preserve">
-    <value>LogReuseWait</value>
-  </data>
-  <data name="IsAllowPageLocks" xml:space="preserve">
-    <value>IsAllowPageLocks</value>
-  </data>
-  <data name="IncludedColumns" xml:space="preserve">
-    <value>IncludedColumns</value>
-  </data>
-  <data name="IsPK" xml:space="preserve">
-    <value>IsPK</value>
-  </data>
-  <data name="Edition" xml:space="preserve">
-    <value>Edition</value>
-  </data>
-  <data name="FillFactor" xml:space="preserve">
-    <value>FillFactorValue</value>
-  </data>
-  <data name="LogFreeSize" xml:space="preserve">
-    <value>LogFreeSize</value>
-  </data>
   <data name="IsPartitioned" xml:space="preserve">
     <value>IsPartitioned</value>
-  </data>
-  <data name="LogSize" xml:space="preserve">
-    <value>LogSize</value>
-  </data>
-  <data name="IsLobLegacy" xml:space="preserve">
-    <value>IsLobLegacy</value>
-  </data>
-  <data name="LogUsedSize" xml:space="preserve">
-    <value>LogUsedSize</value>
-  </data>
-  <data name="icon_exclude" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\icon_exclude.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FixType" xml:space="preserve">
-    <value>FixType</value>
-  </data>
-  <data name="PageSpaceUsed" xml:space="preserve">
-    <value>PageSpaceUsed</value>
-  </data>
-  <data name="ServerName" xml:space="preserve">
-    <value>ServerName</value>
-  </data>
-  <data name="Fix" xml:space="preserve">
-    <value>Fix</value>
-  </data>
-  <data name="Selection" xml:space="preserve">
-    <value>Selection</value>
   </data>
   <data name="CreateDate" xml:space="preserve">
     <value>CreateDate</value>
   </data>
-  <data name="ModifyDate" xml:space="preserve">
-    <value>ModifyDate</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="IconDatabases" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_databases.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DatabaseBoxTitle" xml:space="preserve">
-    <value>Databases</value>
+  <data name="IconExclude" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_exclude.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FillFactor" xml:space="preserve">
+    <value>FillFactorValue</value>
+  </data>
+  <data name="IconIndexes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_indexes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IndexStats" xml:space="preserve">
+    <value>IndexStats</value>
+  </data>
+  <data name="LogSize" xml:space="preserve">
+    <value>LogSize</value>
+  </data>
+  <data name="IconStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnusedPagesCount" xml:space="preserve">
+    <value>UnusedPagesCount</value>
+  </data>
+  <data name="IsPK" xml:space="preserve">
+    <value>IsPK</value>
+  </data>
+  <data name="PageSpaceUsed" xml:space="preserve">
+    <value>PageSpaceUsed</value>
   </data>
   <data name="LastRead" xml:space="preserve">
     <value>LastRead</value>
   </data>
+  <data name="IconCopyFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_copy_fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_server_info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ModifyDate" xml:space="preserve">
+    <value>ModifyDate</value>
+  </data>
+  <data name="IconOptions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_options.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RecoveryModel" xml:space="preserve">
+    <value>RecoveryModel</value>
+  </data>
+  <data name="IndexType" xml:space="preserve">
+    <value>IndexType</value>
+  </data>
+  <data name="IndexColumns" xml:space="preserve">
+    <value>IndexColumns</value>
+  </data>
+  <data name="Edition" xml:space="preserve">
+    <value>Edition</value>
+  </data>
+  <data name="IconElapsedTime" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_elapsed_time.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="IconLog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_log.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconScan" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_scan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IsFiltered" xml:space="preserve">
+    <value>IsFiltered</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>Selection</value>
+  </data>
+  <data name="IsSparse" xml:space="preserve">
+    <value>IsSparse</value>
+  </data>
+  <data name="IconFeedback" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_feedback.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FixType" xml:space="preserve">
+    <value>FixType</value>
+  </data>
+  <data name="DataCompression" xml:space="preserve">
+    <value>DataCompression</value>
+  </data>
+  <data name="IsLobLegacy" xml:space="preserve">
+    <value>IsLobLegacy</value>
+  </data>
+  <data name="LogFreeSize" xml:space="preserve">
+    <value>LogFreeSize</value>
+  </data>
+  <data name="TotalScans" xml:space="preserve">
+    <value>TotalScans</value>
+  </data>
+  <data name="PagesCount" xml:space="preserve">
+    <value>PagesCount</value>
+  </data>
+  <data name="PartitionNumber" xml:space="preserve">
+    <value>PartitionNumber</value>
+  </data>
+  <data name="SchemaName" xml:space="preserve">
+    <value>SchemaName</value>
+  </data>
+  <data name="Fix" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="IconErrors" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_errors.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FileGroupName" xml:space="preserve">
+    <value>FileGroupName</value>
+  </data>
+  <data name="IconInclude" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_include.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IsLob" xml:space="preserve">
+    <value>IsLob</value>
+  </data>
+  <data name="ServerVersion" xml:space="preserve">
+    <value>ServerVersion</value>
+  </data>
+  <data name="IsUnique" xml:space="preserve">
+    <value>IsUnique</value>
+  </data>
+  <data name="IsAllowPageLocks" xml:space="preserve">
+    <value>IsAllowPageLocks</value>
+  </data>
+  <data name="LogReuseWait" xml:space="preserve">
+    <value>LogReuseWait</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="IconNewConnection" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_new_connection.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="GitHubLink" xml:space="preserve">
     <value>www.github.com/sergiisyrovatchenko/SQLIndexManager</value>
+  </data>
+  <data name="LastWrite" xml:space="preserve">
+    <value>LastWrite</value>
+  </data>
+  <data name="IndexID" xml:space="preserve">
+    <value>IndexID</value>
+  </data>
+  <data name="RowsCount" xml:space="preserve">
+    <value>RowsCount</value>
+  </data>
+  <data name="IsSysAdmin" xml:space="preserve">
+    <value>IsSysAdmin</value>
+  </data>
+  <data name="TotalUpdates" xml:space="preserve">
+    <value>TotalUpdates</value>
+  </data>
+  <data name="TotalSeeks" xml:space="preserve">
+    <value>TotalSeeks</value>
+  </data>
+  <data name="TotalLookups" xml:space="preserve">
+    <value>TotalLookups</value>
+  </data>
+  <data name="DatabaseName" xml:space="preserve">
+    <value>DatabaseName</value>
+  </data>
+  <data name="PagesCountBefore" xml:space="preserve">
+    <value>PagesCountBefore</value>
+  </data>
+  <data name="ObjectName" xml:space="preserve">
+    <value>ObjectName</value>
+  </data>
+  <data name="LogUsedSize" xml:space="preserve">
+    <value>LogUsedSize</value>
+  </data>
+  <data name="ServerName" xml:space="preserve">
+    <value>ServerName</value>
+  </data>
+  <data name="IconAbout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_about.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatabaseBoxTitle" xml:space="preserve">
+    <value>Databases</value>
+  </data>
+  <data name="IncludedColumns" xml:space="preserve">
+    <value>IncludedColumns</value>
+  </data>
+  <data name="DataUsedSize" xml:space="preserve">
+    <value>DataUsedSize</value>
+  </data>
+  <data name="Fragmentation" xml:space="preserve">
+    <value>Fragmentation</value>
+  </data>
+  <data name="DataFreeSize" xml:space="preserve">
+    <value>DataFreeSize</value>
+  </data>
+  <data name="IndexName" xml:space="preserve">
+    <value>IndexName</value>
+  </data>
+  <data name="MinVersionMessage" xml:space="preserve">
+    <value>SQL Server 2000/2005 is not supported.</value>
+  </data>
+  <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProductLevel" xml:space="preserve">
+    <value>ProductLevel</value>
+  </data>
+  <data name="IconIndexesSize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_indexes_size.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRefresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataSize" xml:space="preserve">
+    <value>DataSize</value>
+  </data>
+  <data name="ObjectID" xml:space="preserve">
+    <value>ObjectID</value>
+  </data>
+  <data name="IconSavedSpace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_saved_space.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DatamaseMaster" xml:space="preserve">
+    <value>master</value>
+  </data>
+  <data name="IiconSaveFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_save_fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDelay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_delay.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_filter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconOk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_ok.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconReplace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_replace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRestoreLayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_restore_layout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRun" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_run.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconLeftCol" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_left_col.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

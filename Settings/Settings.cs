@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 
@@ -64,18 +62,10 @@ namespace SQLIndexManager {
       }
     }
 
-    public static string ExeName => Process.GetCurrentProcess().ProcessName;
-    public static string ExePath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-    public static string ApplicationName => $"{ExeName}-{Process.GetCurrentProcess().Id}";
-
-    public static readonly string LayoutFileName = $"{ExePath}\\{ExeName}.layout";
-    public static readonly string SettingFileName = $"{ExePath}\\{ExeName}.cfg";
-    public static readonly string LogFileName = $"{ExePath}\\{ExeName}.log";
-
-    public static void Save() {
-      if (File.Exists(SettingFileName)) {
+    private static void Save() {
+      if (File.Exists(AppInfo.SettingFileName)) {
         try {
-          File.Delete(SettingFileName);
+          File.Delete(AppInfo.SettingFileName);
         }
         catch { }
       }
@@ -83,7 +73,7 @@ namespace SQLIndexManager {
       XmlSerializer serializer = new XmlSerializer(typeof(GlobalSettings));
 
       try {
-        using (FileStream writer = File.OpenWrite(SettingFileName)) {
+        using (FileStream writer = File.OpenWrite(AppInfo.SettingFileName)) {
           _current.Hosts.RemoveAll(s => !s.IsUserConnection);
           _current.Hosts.ForEach(s => {
             if (s.AuthType == AuthTypes.SQLSERVER && s.Password != null) {
@@ -102,11 +92,11 @@ namespace SQLIndexManager {
     }
 
     private static void Load() {
-      if (File.Exists(SettingFileName)) {
+      if (File.Exists(AppInfo.SettingFileName)) {
         XmlSerializer serializer = new XmlSerializer(typeof(GlobalSettings));
 
         try {
-          using (StreamReader reader = File.OpenText(SettingFileName)) {
+          using (StreamReader reader = File.OpenText(AppInfo.SettingFileName)) {
 
             _current = (GlobalSettings)serializer.Deserialize(reader);
 

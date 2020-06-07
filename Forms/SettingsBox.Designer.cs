@@ -1054,7 +1054,7 @@
       // 
       // pictureBox2
       // 
-      pictureBox2.Image = global::SQLIndexManager.Properties.Resources.icon_exclude;
+      pictureBox2.Image = global::SQLIndexManager.Properties.Resources.IconExclude;
       pictureBox2.Location = new System.Drawing.Point(12, 49);
       pictureBox2.Name = "pictureBox2";
       pictureBox2.Size = new System.Drawing.Size(20, 20);
@@ -1064,7 +1064,7 @@
       // 
       // pictureBox1
       // 
-      pictureBox1.Image = global::SQLIndexManager.Properties.Resources.icon_include;
+      pictureBox1.Image = global::SQLIndexManager.Properties.Resources.IconInclude;
       pictureBox1.Location = new System.Drawing.Point(12, 23);
       pictureBox1.Name = "pictureBox1";
       pictureBox1.Size = new System.Drawing.Size(20, 20);
@@ -1074,7 +1074,7 @@
       // 
       // pictureBox3
       // 
-      pictureBox3.Image = global::SQLIndexManager.Properties.Resources.icon_exclude;
+      pictureBox3.Image = global::SQLIndexManager.Properties.Resources.IconExclude;
       pictureBox3.Location = new System.Drawing.Point(12, 49);
       pictureBox3.Name = "pictureBox3";
       pictureBox3.Size = new System.Drawing.Size(20, 20);
@@ -1084,7 +1084,7 @@
       // 
       // pictureBox4
       // 
-      pictureBox4.Image = global::SQLIndexManager.Properties.Resources.icon_include;
+      pictureBox4.Image = global::SQLIndexManager.Properties.Resources.IconInclude;
       pictureBox4.Location = new System.Drawing.Point(12, 23);
       pictureBox4.Name = "pictureBox4";
       pictureBox4.Size = new System.Drawing.Size(20, 20);

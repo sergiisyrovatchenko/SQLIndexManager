@@ -20,7 +20,6 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.XtraPrinting;
 using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
@@ -29,9 +28,8 @@ namespace SQLIndexManager {
 
     public MainBox() {
       InitializeComponent();
-      splitContainer.PanelVisibility = SplitPanelVisibility.Panel1;
 
-      Output.Current.SetOutputControl(labelInfo, gridLog);
+      Output.Current.SetOutputControl(labelInfo);
       Output.Current.Add($"Log folder: {Environment.CurrentDirectory}");
 
       view.CustomColumnDisplayText += GridMethod.GridColumnDisplayText;
@@ -49,23 +47,23 @@ namespace SQLIndexManager {
       SaveLayout();
     }
 
-    readonly Stream defaultLayout = new MemoryStream();
+    readonly Stream _defaultLayout = new MemoryStream();
 
     private void RestoreLayout() {
       try {
-        view.SaveLayoutToStream(defaultLayout);
-        defaultLayout.Seek(0, SeekOrigin.Begin);
+        view.SaveLayoutToStream(_defaultLayout);
+        _defaultLayout.Seek(0, SeekOrigin.Begin);
       }
       catch { }
 
-      if (File.Exists(Settings.LayoutFileName)) {
+      if (File.Exists(AppInfo.LayoutFileName)) {
         try {
-          string layout = AES.Decrypt(File.ReadAllText(Settings.LayoutFileName));
+          string layout = AES.Decrypt(File.ReadAllText(AppInfo.LayoutFileName));
 
           using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(layout))) {
             view.RestoreLayoutFromStream(stream);
           }
-          Output.Current.Add($"Grid layout restored: {Settings.LayoutFileName}");
+          Output.Current.Add($"Grid layout restored: {AppInfo.LayoutFileName}");
         }
         catch {
           Output.Current.Add("Failed to restore layout");
@@ -73,23 +71,11 @@ namespace SQLIndexManager {
       }
     }
 
-    private void RestoreDefaultLayout(object sender, ItemClickEventArgs e) {
-      try {
-        view.RestoreLayoutFromStream(defaultLayout);
-        defaultLayout.Seek(0, SeekOrigin.Begin);
-
-        Output.Current.Add("Default grid layout restored");
-      }
-      catch {
-        Output.Current.Add("Failed to restore default layout");
-      }
-    }
-
     private void SaveLayout() {
       HideSystemColumns();
 
       try {
-        using (StreamWriter file = new StreamWriter(new FileStream(Settings.LayoutFileName, FileMode.Create))) {
+        using (StreamWriter file = new StreamWriter(new FileStream(AppInfo.LayoutFileName, FileMode.Create))) {
           Stream str = new MemoryStream();
           view.SaveLayoutToStream(str);
           str.Seek(0, SeekOrigin.Begin);
@@ -98,7 +84,7 @@ namespace SQLIndexManager {
 
           file.Write(AES.Encrypt(layout));
           file.Close();
-          Output.Current.Add($"Grid layout saved: {Settings.LayoutFileName}");
+          Output.Current.Add($"Grid layout saved: {AppInfo.LayoutFileName}");
         }
       }
       catch {
@@ -228,8 +214,7 @@ namespace SQLIndexManager {
       buttonOptions.Enabled =
         buttonDatabases.Enabled =
           buttonRefreshIndex.Enabled =
-            buttonNewConnection.Enabled =
-              buttonRestoreDefaultLayout.Enabled = true;
+            buttonNewConnection.Enabled = true;
 
       buttonStopScan.Visibility = BarItemVisibility.Never;
 
@@ -323,8 +308,7 @@ namespace SQLIndexManager {
         buttonDatabases.Enabled =
           buttonRefreshIndex.Enabled =
             buttonNewConnection.Enabled =
-              buttonOptions.Enabled =
-                buttonRestoreDefaultLayout.Enabled = false;
+              buttonOptions.Enabled = false;
 
       buttonStopFix.Visibility = BarItemVisibility.Always;
 
@@ -343,7 +327,7 @@ namespace SQLIndexManager {
       UpdateProgressStats();
 
       foreach (Index row in fixIndex) {
-        row.Progress = imageCollection.Images[0];
+        row.Progress = Resources.IconElapsedTime;
       }
 
       SaveSortRules();
@@ -399,7 +383,7 @@ namespace SQLIndexManager {
             return;
           }
 
-          item.Progress = imageCollection.Images[1];
+          item.Progress = Resources.IconRun;
           _ps.Indexes++;
           _ps.IndexesSize += item.PagesCount;
           _workerFix.ReportProgress(i + 1);
@@ -413,7 +397,7 @@ namespace SQLIndexManager {
             sql = QueryEngine.FixIndex(connection, item);
           }
 
-          item.Progress = imageCollection.Images[2];
+          item.Progress = Resources.IconOk;
 
           watch.Stop();
 
@@ -423,14 +407,14 @@ namespace SQLIndexManager {
 
           if (!string.IsNullOrEmpty(item.Error)) {
             Output.Current.Add(item.ToString(), item.Error);
-            item.Progress = imageCollection.Images[3];
+            item.Progress = Resources.IconError;
             _ps.Errors++;
           }
           else {
             if (Settings.Options.DelayAfterFix > 0 && i < indexes.Count - 1) {
-              item.Progress = imageCollection.Images[6];
+              item.Progress = Resources.IconDelay;
               Thread.Sleep(Settings.Options.DelayAfterFix);
-              item.Progress = imageCollection.Images[2];
+              item.Progress = Resources.IconOk;
             }
           }
 
@@ -519,7 +503,7 @@ namespace SQLIndexManager {
       }
     }
 
-    public void ShowSettingsBox() {
+    private void ShowSettingsBox() {
       using (SettingsBox form = new SettingsBox()) {
         if (form.ShowDialog(this) == DialogResult.OK) {
           Settings.Options = form.GetSettings();
@@ -715,7 +699,11 @@ namespace SQLIndexManager {
           return;
 
         string colName = (col.Fixed == FixedStyle.None) ? "Freeze Column" : "Unfreeze Column";
-        e.Menu.Items.Add(new DXMenuItem(colName, ChangeFixedColumnStyle) { Tag = col.FieldName });
+        e.Menu.Items.Add(new DXMenuItem(colName, ChangeFixedColumnStyle, Resources.IconLeftCol) { Tag = col.FieldName });
+
+        if (view.Editable) {
+          e.Menu.Items.Add(new DXMenuItem("Restore Default Layout", RestoreDefaultLayout, Resources.IconRestoreLayout));
+        }
       }
       else if (e.MenuType == GridMenuType.Row) {
 
@@ -723,12 +711,28 @@ namespace SQLIndexManager {
           return;
 
         if (view.OptionsBehavior.Editable) {
-          e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, imageCollection.Images[7]));
+          e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, Resources.IconReplace));
         }
         
-        e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, imageCollection.Images[8]));
-        e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, imageCollection.Images[4]) { Tag = col.FieldName });
-        e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, imageCollection.Images[5]) { Tag = col.FieldName });
+        e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, Resources.IconCopyFix));
+        e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, Resources.IconCopy) { Tag = col.FieldName });
+        e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, Resources.IconFilter) { Tag = col.FieldName });
+      }
+    }
+
+    private void RestoreDefaultLayout(object sender, EventArgs e) {
+      try {
+        foreach (GridColumn col in view.Columns.Where(_ => _.Fixed != FixedStyle.None)) {
+          col.Fixed = FixedStyle.None;
+        }
+
+        view.RestoreLayoutFromStream(_defaultLayout);
+        _defaultLayout.Seek(0, SeekOrigin.Begin);
+
+        Output.Current.Add("Default grid layout restored");
+      }
+      catch {
+        Output.Current.Add("Failed to restore default layout");
       }
     }
 
@@ -822,7 +826,12 @@ namespace SQLIndexManager {
     }
 
     private void ButtonLog(object sender, ItemClickEventArgs e) {
-      splitContainer.PanelVisibility = buttonLog.Down ? SplitPanelVisibility.Both : SplitPanelVisibility.Panel1;
+      try {
+        Process.Start(AppInfo.LogFileName);
+      }
+      catch (Exception ex) {
+        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+      }
     }
 
     private void ButtonNewConnectionClick(object sender, ItemClickEventArgs e) {
@@ -915,81 +924,6 @@ namespace SQLIndexManager {
         }
 
         _sortInfo.Clear();
-      }
-    }
-
-    #endregion
-
-    #region Export
-
-    private void ExportCsv(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"CSV Files (*.csv)|*.csv" };
-
-      if (dialog.ShowDialog() == DialogResult.OK) {
-        CsvExportOptionsEx advOptions = new CsvExportOptionsEx {
-          ExportType = DevExpress.Export.ExportType.WYSIWYG,
-          TextExportMode = TextExportMode.Value
-        };
-
-        try {
-          grid.ExportToCsv(dialog.FileName, advOptions);
-          Output.Current.Add($"Export to CSV: {dialog.FileName}");
-        }
-        catch (Exception ex) {
-          Output.Current.Add("Export to CSV failed", ex.Message);
-          XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-      }
-    }
-
-    private void ExportExcel(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"Excel Files (*.xlsx)|*.xlsx" };
-
-      if (dialog.ShowDialog() == DialogResult.OK) {
-        XlsxExportOptionsEx advOptions = new XlsxExportOptionsEx {
-          ExportType = DevExpress.Export.ExportType.DataAware,
-          TextExportMode = TextExportMode.Value,
-          SheetName = Settings.ActiveHost.Server
-        };
-
-        try {
-          grid.ExportToXlsx(dialog.FileName, advOptions);
-          Output.Current.Add($"Export to Excel: {dialog.FileName}");
-        }
-        catch (Exception ex) {
-          Output.Current.Add("Export to Excel failed", ex.Message);
-          XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-      }
-    }
-
-    private void ExportText(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"Text Files (*.txt)|*.txt" };
-
-      if (dialog.ShowDialog() == DialogResult.OK) {
-        try {
-          grid.ExportToText(dialog.FileName);
-          Output.Current.Add($"Export to Text: {dialog.FileName}");
-        }
-        catch (Exception ex) {
-          Output.Current.Add("Export to Text failed", ex.Message);
-          XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-      }
-    }
-
-    private void ExportHtml(object sender, ItemClickEventArgs e) {
-      SaveFileDialog dialog = new SaveFileDialog { RestoreDirectory = true, Filter = @"HTML Files (*.html)|*.html" };
-
-      if (dialog.ShowDialog() == DialogResult.OK) {
-        try {
-          grid.ExportToHtml(dialog.FileName);
-          Output.Current.Add($"Export to Html: {dialog.FileName}");
-        }
-        catch (Exception ex) {
-          Output.Current.Add("Export to Html failed", ex.Message);
-          XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
       }
     }
 

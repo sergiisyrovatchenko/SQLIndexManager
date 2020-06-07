@@ -46,17 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Data.v17.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Images.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\DevExpress.Images.v17.2.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Printing.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.Printing.v17.2.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Sparkline.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\DevExpress.Sparkline.v17.2.Core.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,10 +69,6 @@
     <Reference Include="DevExpress.XtraLayout.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\DevExpress.XtraLayout.v17.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.XtraPrinting.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\DevExpress.XtraPrinting.v17.2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -222,8 +210,35 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\icon_left_col.png" />
+    <None Include="Images\icon_replace.png" />
+    <None Include="Images\icon_ok.png" />
+    <None Include="Images\icon_run.png" />
+    <None Include="Images\icon_restore_layout.png" />
+    <None Include="Images\icon_save_fix.png" />
+    <None Include="Images\icon_refresh.png" />
+    <None Include="Images\icon_scan.png" />
+    <None Include="Images\icon_new_connection.png" />
+    <None Include="Images\icon_options.png" />
+    <None Include="Images\icon_stop.png" />
+    <None Include="Images\icon_log.png" />
+    <None Include="Images\icon_server_info.png" />
+    <None Include="Images\icon_saved_space.png" />
+    <None Include="Images\icon_indexes_size.png" />
+    <None Include="Images\icon_indexes.png" />
+    <None Include="Images\icon_databases.png" />
+    <None Include="Images\icon_errors.png" />
+    <None Include="Images\icon_elapsed_time.png" />
+    <None Include="Images\icon_about.png" />
+    <None Include="Images\icon_copy_fix.png" />
+    <None Include="Images\icon_copy.png" />
+    <None Include="Images\icon_error.png" />
+    <None Include="Images\icon_delay.png" />
     <Content Include="Images\icon_exclude.png" />
     <Content Include="Images\icon.ico" />
+    <None Include="Images\icon_feedback.png" />
+    <None Include="Images\icon_fix.png" />
+    <None Include="Images\icon_filter.png" />
     <Content Include="Images\icon_include.png" />
     <None Include="Images\icon.png" />
   </ItemGroup>

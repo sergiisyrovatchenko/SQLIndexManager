@@ -6,7 +6,7 @@
     public int FreeSpace;
 
     public override string ToString() {
-      return $"{Drive}: {(((double)FreeSpace) / 1024).ToString("N2")}";
+      return $"{Drive}: {(((double)FreeSpace) / 1024):N2}";
     }
 
   }

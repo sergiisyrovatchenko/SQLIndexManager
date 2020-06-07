@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using SQLIndexManager.Properties;
@@ -14,14 +13,12 @@ namespace SQLIndexManager {
       edError.Text =
         "Application has encountered an unexpected error" +
         $"{Environment.NewLine}Please send error detail to {Resources.GitHubLink}" +
-        $"{Environment.NewLine}Build: {AssemblyVersion}" +
+        $"{Environment.NewLine}Build: {AppInfo.Version}" +
         $"{Environment.NewLine}OS: {Environment.OSVersion}" +
         $"{Environment.NewLine}{Environment.NewLine}{ex.Message}" +
         $"{Environment.NewLine}{ex.Source}" +
         $"{Environment.NewLine}{ex.StackTrace}";
     }
-
-    private static string AssemblyVersion => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
     #region Override Methods
 

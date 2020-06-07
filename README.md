@@ -21,7 +21,6 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 * Detect duplicate indexes
 * Drop or disable unused indexes
 * Index rebuild with compression options
-* Export of scan results into Excel, CSV, HTML and text files
 * Support for any editions of SQL Server 2008+ and Azure
 * And a lot of other improvements :)
 

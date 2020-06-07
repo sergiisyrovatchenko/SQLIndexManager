@@ -28,7 +28,7 @@
     public bool IsOnlineRebuildAvailable => IsAzure
          || (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon);
 
-    public string ProductVersion {
+    private string ProductVersion {
       get {
         switch (MajorVersion) {
           case ServerVersion.Sql2005:

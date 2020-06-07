@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using DevExpress.XtraBars;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.Grid;
 
 namespace SQLIndexManager {
 
@@ -18,27 +15,21 @@ namespace SQLIndexManager {
   public class Output {
 
     private static Output _log;
-    private readonly List<OutputEvent> _events;
     private BarStaticItem _control;
-    private GridControl _secondaryControl;
 
     public static Output Current => _log ?? (_log = new Output());
 
     private Output() {
-      _events = new List<OutputEvent>();
-
-      if (File.Exists(Settings.LogFileName)) {
+      if (File.Exists(AppInfo.LogFileName)) {
         try {
-          File.Delete(Settings.LogFileName);
+          File.Delete(AppInfo.LogFileName);
         }
         catch { }
       }
     }
 
-    public void SetOutputControl(BarStaticItem control, GridControl secondaryControl) {
+    public void SetOutputControl(BarStaticItem control) {
       _control = control;
-      _secondaryControl = secondaryControl;
-      _secondaryControl.DataSource = _events;
     }
 
     public void AddCaption(string message) {
@@ -64,20 +55,13 @@ namespace SQLIndexManager {
         Duration = duration
       };
 
-      _events.Add(ev);
-
       try {
         if (_control != null) {
           _control.Caption = msg;
         }
 
-        if (_secondaryControl != null) {
-          GridView grid = (GridView)_secondaryControl.MainView;
-          grid.RefreshData();
-        }
-
-        using (StreamWriter sw = File.AppendText(Settings.LogFileName)) {
-          sw.WriteLine($"[ {now:HH:mm:ss.fff} ] {msg}");
+        using (StreamWriter sw = File.AppendText(AppInfo.LogFileName)) {
+          sw.WriteLine($"{now:HH:mm:ss.fff} - {msg}");
           if (!string.IsNullOrEmpty(message2))
             sw.WriteLine(message2);
         }

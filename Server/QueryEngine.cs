@@ -499,7 +499,7 @@ namespace SQLIndexManager {
         try {
           connection.Open();
           SqlCommand cmd = new SqlCommand(Query.KillActiveSessions, connection) { CommandTimeout = Settings.Options.CommandTimeout };
-          cmd.Parameters.Add(new SqlParameter("@ApplicationName", SqlDbType.NVarChar, 128) { Value = Settings.ApplicationName });
+          cmd.Parameters.Add(new SqlParameter("@ApplicationName", SqlDbType.NVarChar, 128) { Value = AppInfo.ApplicationName });
           cmd.ExecuteNonQuery();
         }
         catch { }

@@ -7,7 +7,7 @@ namespace SQLIndexManager {
     private static string GetConnectionString(Host host, string database) {
 
       SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder() {
-        ApplicationName = Settings.ApplicationName,
+        ApplicationName = AppInfo.ApplicationName,
         ConnectTimeout = Settings.Options.ConnectionTimeout,
         DataSource = host.Server,
         InitialCatalog = database ?? "master"
