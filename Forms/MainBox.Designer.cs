@@ -108,7 +108,6 @@ namespace SQLIndexManager {
       this.boxSearch = new DevExpress.XtraBars.BarEditItem();
       this.boxSearchControl = new DevExpress.XtraEditors.Repository.RepositoryItemSearchControl();
       this.labelSeparator = new DevExpress.XtraBars.BarStaticItem();
-      this.buttonFeedback = new DevExpress.XtraBars.BarButtonItem();
       this.toolTipController = new DevExpress.Utils.ToolTipController(this.components);
       this.taskbar = new DevExpress.Utils.Taskbar.TaskbarAssistant();
       this.buttonFind = new DevExpress.XtraBars.BarButtonItem();
@@ -1301,7 +1300,6 @@ namespace SQLIndexManager {
       // 
       // buttonLog
       // 
-      this.buttonLog.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check;
       this.buttonLog.Id = 26;
       this.buttonLog.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconLog;
       this.buttonLog.Name = "buttonLog";
@@ -1348,8 +1346,7 @@ namespace SQLIndexManager {
             this.labelSavedSpace,
             this.labelIndexesSize,
             this.labelElapsedTime,
-            this.labelServerInfo,
-            this.buttonFeedback});
+            this.labelServerInfo});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
       this.ribbonControl1.MaxItemId = 41;
       this.ribbonControl1.Name = "ribbonControl1";
@@ -1360,7 +1357,6 @@ namespace SQLIndexManager {
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonOptions);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonAbout);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.labelSeparator);
-      this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonFeedback);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.boxSearch);
       this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.boxSearchControl});
@@ -1482,15 +1478,7 @@ namespace SQLIndexManager {
       this.labelSeparator.Id = 16;
       this.labelSeparator.Name = "labelSeparator";
       this.labelSeparator.ShowImageInToolbar = false;
-      this.labelSeparator.Width = 68;
-      // 
-      // buttonFeedback
-      // 
-      this.buttonFeedback.Caption = "Feature Requests && Bugs";
-      this.buttonFeedback.Id = 36;
-      this.buttonFeedback.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconFeedback;
-      this.buttonFeedback.Name = "buttonFeedback";
-      this.buttonFeedback.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonFeedbackClick);
+      this.labelSeparator.Width = 25;
       // 
       // toolTipController
       // 
@@ -1571,6 +1559,5 @@ namespace SQLIndexManager {
     private BarStaticItem labelIndexesSize;
     private BarStaticItem labelElapsedTime;
     private BarStaticItem labelServerInfo;
-    private BarButtonItem buttonFeedback;
   }
 }

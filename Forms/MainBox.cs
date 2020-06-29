@@ -221,7 +221,12 @@ namespace SQLIndexManager {
       List<Index> indexes = _indexes.Where(_ => _.Fragmentation >= (Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0) 
                                              && _.PagesCount >= Settings.Options.MinIndexSize.PageSize()
                                              && _.PagesCount <= Settings.Options.MaxIndexSize.PageSize())
-                                        .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold ? 3 : (_.Fragmentation < Settings.Options.SecondThreshold ? 2 : 1 ))
+                                        .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold
+                                                            && Settings.Options.SkipOperation != Settings.Options.FirstOperation
+                                                      ? 3
+                                                      :  _.Fragmentation < Settings.Options.SecondThreshold 
+                                                        && Settings.Options.FirstOperation != Settings.Options.SecondOperation 
+                                                            ? 2 : 1 )
                                         .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
 
       QueryEngine.UpdateFixType(indexes);
@@ -312,11 +317,16 @@ namespace SQLIndexManager {
 
       buttonStopFix.Visibility = BarItemVisibility.Always;
 
-      List<Index> selIndex = ((List<Index>)view.DataSource).Where(_ => _.IsSelected).ToList();
+      List<Index> selIndex = ((List<Index>)view.DataSource).Where(_ => _.IsSelected && _.FixType != IndexOp.SKIP).ToList();
 
       List<Index> fixIndex =
-          selIndex.Where(x => Settings.ActiveHost.Databases.Any(y => y == x.DatabaseName) && x.FixType != IndexOp.SKIP)
-                  .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold ? 3 : (_.Fragmentation < Settings.Options.SecondThreshold ? 2 : 1 ))
+          selIndex.Where(x => Settings.ActiveHost.Databases.Any(y => y == x.DatabaseName))
+                  .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold
+                                && Settings.Options.SkipOperation != Settings.Options.FirstOperation
+                    ? 3
+                    :  _.Fragmentation < Settings.Options.SecondThreshold
+                       && Settings.Options.FirstOperation != Settings.Options.SecondOperation
+                      ? 2 : 1 )
                   .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
 
       _ps = new ProgressStatus
@@ -362,9 +372,20 @@ namespace SQLIndexManager {
     }
 
     private void FixIndexesProgressChanged(object sender, ProgressChangedEventArgs e) {
-      taskbar.ProgressCurrentValue = e.ProgressPercentage;
-      view.RefreshData();
+      taskbar.ProgressCurrentValue = e.ProgressPercentage + 1;
       UpdateProgressStats();
+
+      if (e.UserState != null) {
+        Index index = (Index)e.UserState;
+        var rowHandle = view.FindRow(index);
+        if (rowHandle != GridControl.InvalidRowHandle) {
+          view.RefreshRow(rowHandle);
+          view.SelectRow(rowHandle);
+          view.MakeRowVisible(rowHandle);
+        }
+      }
+
+      view.RefreshData();
     }
 
     private BackgroundWorker _workerFix;
@@ -376,50 +397,48 @@ namespace SQLIndexManager {
       using (var connectionList = new ConnectionList(Settings.ActiveHost)) {
 
         for (int i = 0; i < indexes.Count; i++) {
-          Index item = indexes[i];
+          Index index = indexes[i];
           if (_workerFix.CancellationPending) {
             Output.Current.Add("Canceled");
             e.Cancel = true;
             return;
           }
 
-          item.Progress = Resources.IconRun;
+          index.Progress = Resources.IconRun;
           _ps.Indexes++;
-          _ps.IndexesSize += item.PagesCount;
-          _workerFix.ReportProgress(i + 1);
+          _ps.IndexesSize += index.PagesCount;
+          _workerFix.ReportProgress(i, index);
 
-          Output.Current.AddCaption(item.ToString());
+          Output.Current.AddCaption(index.ToString());
           Stopwatch watch = Stopwatch.StartNew();
 
           string sql = string.Empty;
-          SqlConnection connection = connectionList.Get(item.DatabaseName);
+          SqlConnection connection = connectionList.Get(index.DatabaseName);
           if (connection != null) {
-            sql = QueryEngine.FixIndex(connection, item);
+            sql = QueryEngine.FixIndex(connection, index);
           }
-
-          item.Progress = Resources.IconOk;
-
           watch.Stop();
+          Output.Current.Add(index.ToString(), sql, index.Duration);
 
-          item.Duration = watch.ElapsedMilliseconds;
-          Output.Current.Add(item.ToString(), sql, item.Duration);
-          _workerFix.ReportProgress(i + 1);
+          index.Progress = Resources.IconOk;
+          index.Duration = watch.ElapsedMilliseconds;
+          _ps.SavedSpace += (index.PagesCountBefore ?? 0);
 
-          if (!string.IsNullOrEmpty(item.Error)) {
-            Output.Current.Add(item.ToString(), item.Error);
-            item.Progress = Resources.IconError;
+          if (!string.IsNullOrEmpty(index.Error)) {
+            Output.Current.Add(index.ToString(), index.Error);
+            index.Progress = Resources.IconError;
             _ps.Errors++;
           }
           else {
             if (Settings.Options.DelayAfterFix > 0 && i < indexes.Count - 1) {
-              item.Progress = Resources.IconDelay;
+              _workerFix.ReportProgress(i, index);
+              index.Progress = Resources.IconDelay;
               Thread.Sleep(Settings.Options.DelayAfterFix);
-              item.Progress = Resources.IconOk;
+              index.Progress = Resources.IconOk;
             }
           }
 
-          _ps.SavedSpace += (item.PagesCountBefore ?? 0);
-          _workerFix.ReportProgress(i + 2);
+          _workerFix.ReportProgress(i, index);
         }
       }
     }
@@ -890,16 +909,6 @@ namespace SQLIndexManager {
     private void ButtonAboutClick(object sender, ItemClickEventArgs e) {
       using (AboutBox form = new AboutBox()) {
         form.ShowDialog(this);
-      }
-    }
-
-    private void ButtonFeedbackClick(object sender, ItemClickEventArgs e) {
-      try {
-        Process.Start(Resources.GitHubLink);
-      }
-      catch (Exception ex) {
-        Output.Current.Add($"Error: {ex.Source}", ex.Message);
-        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
     }
 

@@ -307,16 +307,6 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap IconFeedback {
-            get {
-                object obj = ResourceManager.GetObject("IconFeedback", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap IconFilter {
             get {
                 object obj = ResourceManager.GetObject("IconFilter", resourceCulture);

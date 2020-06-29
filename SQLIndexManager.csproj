@@ -236,7 +236,6 @@
     <None Include="Images\icon_delay.png" />
     <Content Include="Images\icon_exclude.png" />
     <Content Include="Images\icon.ico" />
-    <None Include="Images\icon_feedback.png" />
     <None Include="Images\icon_fix.png" />
     <None Include="Images\icon_filter.png" />
     <Content Include="Images\icon_include.png" />
