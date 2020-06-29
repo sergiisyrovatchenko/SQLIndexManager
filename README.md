@@ -3,8 +3,9 @@
 This tool lets you quickly find out the status of your indexes and discover which databases need maintenance.   
 You can do maintenance through the UI, or generate a T-SQL script to run in SSMS.
 
+[SQL Index Manager – Wiki Page](https://github.com/sergiisyrovatchenko/SQLIndexManager/wiki)
+
 [SQL Index Manager – CodeProject](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
-[SQL Index Manager – Wiki](https://github.com/sergiisyrovatchenko/SQLIndexManager/wiki)
 
 ## Key Features
 
