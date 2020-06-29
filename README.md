@@ -3,7 +3,8 @@
 This tool lets you quickly find out the status of your indexes and discover which databases need maintenance.   
 You can do maintenance through the UI, or generate a T-SQL script to run in SSMS.
 
-[SQL Index Manager – Free GUI Tool for Index Maintenance on SQL Server and Azure](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
+[SQL Index Manager – CodeProject](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
+[SQL Index Manager – Wiki](https://github.com/sergiisyrovatchenko/SQLIndexManager/wiki)
 
 ## Key Features
 
@@ -31,5 +32,5 @@ You can download .zip file with the latest build of the master branch from [Rele
 ## Screenshots
 
 ![SQL Index Manager](https://habrastorage.org/webt/kp/51/5j/kp515jeoogbtnlvrtsmtjbhnr20.png)
-![SQL Index Manager](https://habrastorage.org/webt/kg/tm/v7/kgtmv7iwn3smu5-lu9bz0nmt_kk.png)
+![SQL Index Manager](https://habrastorage.org/webt/4r/3b/3y/4r3b3ygwapb7isvmir6vaeimuhw.png)
 ![SQL Index Manager](https://habrastorage.org/webt/cg/-q/ya/cg-qyao9faekhlogcddlur3qp_a.png)
