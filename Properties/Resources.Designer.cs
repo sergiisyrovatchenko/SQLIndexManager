@@ -585,6 +585,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsNoRecompute.
+        /// </summary>
+        internal static string IsNoRecompute {
+            get {
+                return ResourceManager.GetString("IsNoRecompute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsPartitioned.
         /// </summary>
         internal static string IsPartitioned {
@@ -801,6 +810,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RowsSampled.
+        /// </summary>
+        internal static string RowsSampled {
+            get {
+                return ResourceManager.GetString("RowsSampled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SchemaName.
         /// </summary>
         internal static string SchemaName {
@@ -833,6 +851,15 @@ namespace SQLIndexManager.Properties {
         internal static string ServerVersion {
             get {
                 return ResourceManager.GetString("ServerVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StatsSampled.
+        /// </summary>
+        internal static string StatsSampled {
+            get {
+                return ResourceManager.GetString("StatsSampled", resourceCulture);
             }
         }
         

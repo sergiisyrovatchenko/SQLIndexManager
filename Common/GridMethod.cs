@@ -48,11 +48,13 @@ namespace SQLIndexManager {
 
         case "Fragmentation":
         case "PageSpaceUsed":
+        case "StatsSampled":
           if (e.Value != null)
             e.DisplayText = $"{e.Value:n1} % ";
           break;
 
         case "RowsCount":
+        case "RowsSampled":
         case "TotalUpdates":
         case "TotalScans":
         case "TotalSeeks":

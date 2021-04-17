@@ -34,6 +34,9 @@ namespace SQLIndexManager {
     public DataCompression DataCompression { get; set; }
     public int FillFactor { get; set; }
     public DateTime? IndexStats { get; set; }
+    public bool? IsNoRecompute { get; set; }
+    public double? StatsSampled { get; set; }
+    public long? RowsSampled { get; set; }
     public string FileGroupName { get; set; }
 
     public string IndexColumns { get; set; }

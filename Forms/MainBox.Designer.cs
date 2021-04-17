@@ -51,6 +51,8 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn ModifyDate;
       DevExpress.XtraGrid.Columns.GridColumn LastRead;
       DevExpress.XtraGrid.Columns.GridColumn LastWrite;
+      DevExpress.XtraGrid.Columns.GridColumn StatsSampled;
+      DevExpress.XtraGrid.Columns.GridColumn IsNoRecompute;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleIconSet formatConditionRuleIconSet1 = new DevExpress.XtraEditors.FormatConditionRuleIconSet();
       DevExpress.XtraEditors.FormatConditionIconSet formatConditionIconSet1 = new DevExpress.XtraEditors.FormatConditionIconSet();
@@ -79,6 +81,9 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar10 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule12 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar11 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.GridFormatRule gridFormatRule13 = new DevExpress.XtraGrid.GridFormatRule();
+      DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar12 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.XtraGrid.Columns.GridColumn RowsSampled;
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -147,6 +152,9 @@ namespace SQLIndexManager {
       ModifyDate = new DevExpress.XtraGrid.Columns.GridColumn();
       LastRead = new DevExpress.XtraGrid.Columns.GridColumn();
       LastWrite = new DevExpress.XtraGrid.Columns.GridColumn();
+      StatsSampled = new DevExpress.XtraGrid.Columns.GridColumn();
+      IsNoRecompute = new DevExpress.XtraGrid.Columns.GridColumn();
+      RowsSampled = new DevExpress.XtraGrid.Columns.GridColumn();
       ((System.ComponentModel.ISupportInitialize)(this.popupIndexOperation)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
@@ -779,6 +787,35 @@ namespace SQLIndexManager {
       LastWrite.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.DateSmart;
       LastWrite.Width = 105;
       // 
+      // StatsSampled
+      // 
+      StatsSampled.Caption = "Stats Sampled";
+      StatsSampled.FieldName = "StatsSampled";
+      StatsSampled.MaxWidth = 90;
+      StatsSampled.MinWidth = 90;
+      StatsSampled.Name = "StatsSampled";
+      StatsSampled.OptionsColumn.AllowEdit = false;
+      StatsSampled.OptionsColumn.AllowFocus = false;
+      StatsSampled.OptionsColumn.AllowSize = false;
+      StatsSampled.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
+      StatsSampled.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
+      StatsSampled.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
+      StatsSampled.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
+      StatsSampled.Width = 90;
+      // 
+      // IsNoRecompute
+      // 
+      IsNoRecompute.Caption = "No Recompute";
+      IsNoRecompute.FieldName = "IsNoRecompute";
+      IsNoRecompute.MaxWidth = 90;
+      IsNoRecompute.MinWidth = 90;
+      IsNoRecompute.Name = "IsNoRecompute";
+      IsNoRecompute.OptionsColumn.AllowEdit = false;
+      IsNoRecompute.OptionsColumn.AllowFocus = false;
+      IsNoRecompute.OptionsColumn.AllowSize = false;
+      IsNoRecompute.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
+      IsNoRecompute.Width = 90;
+      // 
       // grid
       // 
       this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -847,7 +884,10 @@ namespace SQLIndexManager {
             CreateDate,
             ModifyDate,
             LastRead,
-            LastWrite});
+            LastWrite,
+            IsNoRecompute,
+            StatsSampled,
+            RowsSampled});
       this.view.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.None;
       gridFormatRule1.Column = Warning;
       gridFormatRule1.ColumnApplyTo = IndexName;
@@ -1156,6 +1196,31 @@ namespace SQLIndexManager {
       formatConditionRuleDataBar11.PredefinedName = null;
       formatConditionRuleDataBar11.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
       gridFormatRule12.Rule = formatConditionRuleDataBar11;
+      gridFormatRule13.Column = StatsSampled;
+      gridFormatRule13.ColumnApplyTo = StatsSampled;
+      gridFormatRule13.Name = "StatsSampled";
+      formatConditionRuleDataBar12.AllowNegativeAxis = false;
+      formatConditionRuleDataBar12.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
+      formatConditionRuleDataBar12.Appearance.BackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(237)))), ((int)(((byte)(179)))));
+      formatConditionRuleDataBar12.Appearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(214)))), ((int)(((byte)(135)))));
+      formatConditionRuleDataBar12.Appearance.Options.UseBackColor = true;
+      formatConditionRuleDataBar12.Appearance.Options.UseBorderColor = true;
+      formatConditionRuleDataBar12.DrawAxis = false;
+      formatConditionRuleDataBar12.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar12.MaximumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar12.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      formatConditionRuleDataBar12.MinimumType = DevExpress.XtraEditors.FormatConditionValueType.Number;
+      formatConditionRuleDataBar12.PredefinedName = null;
+      formatConditionRuleDataBar12.RightToLeft = DevExpress.Utils.DefaultBoolean.False;
+      gridFormatRule13.Rule = formatConditionRuleDataBar12;
       this.view.FormatRules.Add(gridFormatRule1);
       this.view.FormatRules.Add(gridFormatRule2);
       this.view.FormatRules.Add(gridFormatRule3);
@@ -1168,6 +1233,7 @@ namespace SQLIndexManager {
       this.view.FormatRules.Add(gridFormatRule10);
       this.view.FormatRules.Add(gridFormatRule11);
       this.view.FormatRules.Add(gridFormatRule12);
+      this.view.FormatRules.Add(gridFormatRule13);
       this.view.GridControl = this.grid;
       this.view.Name = "view";
       this.view.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
@@ -1495,6 +1561,22 @@ namespace SQLIndexManager {
       this.buttonFind.Enabled = false;
       this.buttonFind.Id = 11;
       this.buttonFind.Name = "buttonFind";
+      // 
+      // RowsSampled
+      // 
+      RowsSampled.Caption = "Rows Sampled";
+      RowsSampled.FieldName = "RowsSampled";
+      RowsSampled.MaxWidth = 100;
+      RowsSampled.MinWidth = 100;
+      RowsSampled.Name = "RowsSampled";
+      RowsSampled.OptionsColumn.AllowEdit = false;
+      RowsSampled.OptionsColumn.AllowFocus = false;
+      RowsSampled.OptionsColumn.AllowSize = false;
+      RowsSampled.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
+      RowsSampled.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
+      RowsSampled.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
+      RowsSampled.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
+      RowsSampled.Width = 100;
       // 
       // MainBox
       // 

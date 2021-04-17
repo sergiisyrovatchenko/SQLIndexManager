@@ -239,6 +239,39 @@ FROM (
     WHERE IndexType IN (1, 2)
 ) t
 
+IF OBJECT_ID('tempdb.dbo.#Stats') IS NOT NULL
+    DROP TABLE #Stats
+
+CREATE TABLE #Stats (
+      ObjectID      INT NOT NULL
+    , IndexID       INT NOT NULL
+    , IsNoRecompute BIT
+    , StatsSampled  FLOAT
+    , RowsSampled   BIGINT
+    , PRIMARY KEY (ObjectID, IndexID)
+)
+
+INSERT INTO #Stats
+SELECT s.[object_id]
+     , s.[stats_id]
+     , s.[no_recompute]
+     , p.[rows_sampled] * 100. / NULLIF(p.[rows], 0)
+     , p.[rows_sampled]
+FROM (
+    SELECT DISTINCT s.[object_id]
+                  , s.[stats_id]
+                  , s.[no_recompute]
+    FROM sys.[stats] s WITH(NOLOCK)
+    WHERE EXISTS(
+            SELECT *
+            FROM #Indexes i
+            WHERE s.[object_id] = i.ObjectID
+                AND s.[stats_id] = i.IndexID
+                AND i.IndexType IN (1, 2)
+        )
+) s
+CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p
+
 SELECT i.ObjectID
      , i.IndexID
      , i.IndexName
@@ -265,17 +298,21 @@ SELECT i.ObjectID
      , IsSparse         = CAST(CASE WHEN p.ObjectID IS NULL THEN 0 ELSE 1 END AS BIT)
      , IsPartitioned    = CAST(CASE WHEN dds.[data_space_id] IS NOT NULL THEN 1 ELSE 0 END AS BIT)
      , FileGroupName    = fg.[name]
-     , CreateDate       = o.create_date
-     , ModifyDate       = o.modify_date 
+     , CreateDate       = o.[create_date]
+     , ModifyDate       = o.[modify_date]
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue
      , i.IsFiltered
      , a.IndexColumns
      , a.IncludedColumns
+     , ss.IsNoRecompute
+     , ss.StatsSampled
+     , ss.RowsSampled
 FROM #Indexes i
 JOIN sys.objects o WITH(NOLOCK) ON o.[object_id] = i.ObjectID
 JOIN sys.schemas s WITH(NOLOCK) ON s.[schema_id] = o.[schema_id]
+LEFT JOIN #Stats ss ON ss.ObjectID = i.ObjectID AND ss.IndexID = i.IndexID
 LEFT JOIN #AggColumns a ON a.ObjectID = i.ObjectID AND a.IndexID = i.IndexID
 LEFT JOIN #Sparse p ON p.ObjectID = i.ObjectID
 LEFT JOIN #Fragmentation f ON f.ObjectID = i.ObjectID AND f.IndexID = i.IndexID AND f.PartitionNumber = i.PartitionNumber

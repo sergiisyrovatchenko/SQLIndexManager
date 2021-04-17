@@ -382,4 +382,13 @@
   <data name="ProductUpdateLevel" xml:space="preserve">
     <value>ProductUpdateLevel</value>
   </data>
+  <data name="IsNoRecompute" xml:space="preserve">
+    <value>IsNoRecompute</value>
+  </data>
+  <data name="StatsSampled" xml:space="preserve">
+    <value>StatsSampled</value>
+  </data>
+  <data name="RowsSampled" xml:space="preserve">
+    <value>RowsSampled</value>
+  </data>
 </root>

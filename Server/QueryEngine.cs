@@ -227,7 +227,10 @@ namespace SQLIndexManager {
             IsAllowOnlineRebuild = isOnlineRebuild,
             IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
             IndexColumns         = _.Field<string>(Resources.IndexColumns),
-            IncludedColumns      = _.Field<string>(Resources.IncludedColumns)
+            IncludedColumns      = _.Field<string>(Resources.IncludedColumns),
+            IsNoRecompute        = _.Field<bool?>(Resources.IsNoRecompute),
+            StatsSampled         = _.Field<double?>(Resources.StatsSampled),
+            RowsSampled          = _.Field<long?>(Resources.RowsSampled)
           };
 
           indexes.Add(index);
