@@ -71,11 +71,8 @@
       this.boxServer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
       this.boxServer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[]
       {
-        new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-        new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Search)
+        new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
       });
-      this.boxServer.Properties.ButtonClick +=
-        new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.BoxServerPropertiesClick);
       this.boxServer.Size = new System.Drawing.Size(263, 20);
       this.boxServer.TabIndex = 1;
       this.boxServer.SelectedIndexChanged += new System.EventHandler(this.BoxServerSelectionChanged);

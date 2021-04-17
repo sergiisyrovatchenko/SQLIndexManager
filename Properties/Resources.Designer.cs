@@ -765,6 +765,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProductUpdateLevel.
+        /// </summary>
+        internal static string ProductUpdateLevel {
+            get {
+                return ResourceManager.GetString("ProductUpdateLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Progress.
         /// </summary>
         internal static string Progress {

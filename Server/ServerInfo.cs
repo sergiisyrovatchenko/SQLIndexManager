@@ -3,6 +3,7 @@
   public class ServerInfo {
     public readonly string ServerName;
     private readonly string ProductLevel;
+    private readonly string ProductUpdateLevel;
     private readonly string Edition;
     public readonly bool IsSysAdmin;
     private readonly string Version;
@@ -13,7 +14,9 @@
 
     public bool IsAzure => Edition == "SQL Azure";
     private bool IsMaxEdititon => Edition.StartsWith("Enterprise") || Edition.StartsWith("Developer");
-    public override string ToString() => $"SQL Server {ProductVersion} {ProductLevel} ({Version}) {Edition}";
+    public override string ToString() => $"SQL Server {ProductVersion} " +
+                                         $"{(string.IsNullOrEmpty(ProductUpdateLevel) ? ProductLevel : $"{ProductLevel} {ProductUpdateLevel}")} " +
+                                         $"({Version}) {Edition}";
 
     public bool IsColumnstoreAvailable => IsAzure
          || (MajorVersion >= ServerVersion.Sql2014 && IsMaxEdititon)
@@ -45,15 +48,18 @@
             return "2017";
           case ServerVersion.Sql2019:
             return "2019";
+          case ServerVersion.Sql2021:
+            return "2021";
           default:
             return "?";
         }
       }
     }
 
-    public ServerInfo(string serverName, string productLevel, string edition, string serverVersion, bool isSysAdmin) {
+    public ServerInfo(string serverName, string productLevel, string productUpdateLevel, string edition, string serverVersion, bool isSysAdmin) {
       ServerName = serverName;
       ProductLevel = productLevel;
+      ProductUpdateLevel = productUpdateLevel;
       Edition = edition;
       Version = serverVersion;
       IsSysAdmin = isSysAdmin;

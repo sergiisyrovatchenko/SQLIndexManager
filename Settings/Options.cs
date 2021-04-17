@@ -13,7 +13,7 @@ namespace SQLIndexManager {
     private int _firstThreshold = 15;
     private int _secondThreshold = 30;
     private int _minIndexSize = 6;
-    private int _preDescribeSize = 256;
+    private int _preDescribeSize = 128;
     private int _maxIndexSize = 8192;
     private int _connectionTimeout = 15;
     private int _commandTimeout = 120;

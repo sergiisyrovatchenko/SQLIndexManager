@@ -13,9 +13,6 @@ namespace SQLIndexManager {
     [XmlElement]
     public List<Host> Hosts = new List<Host>();
 
-    [XmlIgnore]
-    public List<string> NetworkHosts = new List<string>();
-
   }
 
 }

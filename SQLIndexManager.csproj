@@ -110,12 +110,6 @@
     <Compile Include="Forms\DatabaseBox.Designer.cs">
       <DependentUpon>DatabaseBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NetworkBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NetworkBox.Designer.cs">
-      <DependentUpon>NetworkBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,9 +178,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DatabaseBox.resx">
       <DependentUpon>DatabaseBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NetworkBox.resx">
-      <DependentUpon>NetworkBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainBox.resx">
       <DependentUpon>MainBox.cs</DependentUpon>

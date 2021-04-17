@@ -33,11 +33,6 @@ namespace SQLIndexManager {
 
     public static List<Host> Hosts => Instance.Hosts;
 
-    public static List<string> NetworkHosts {
-      get => Instance.NetworkHosts;
-      set => Instance.NetworkHosts = value;
-    }
-    
     public static Options Options {
       get => Instance.Options;
       set => Instance.Options = value;

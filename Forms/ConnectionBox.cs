@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
 using SQLIndexManager.Properties;
 
 namespace SQLIndexManager {
@@ -141,24 +140,6 @@ namespace SQLIndexManager {
 
     private void ButtonCancelClick(object sender, EventArgs e) {
       CancelConnection();
-    }
-
-    private void BoxServerPropertiesClick(object sender, ButtonPressedEventArgs e) {
-      if (e.Button.Kind == ButtonPredefines.Search) {
-        using (NetworkBox form = new NetworkBox()) {
-          DialogResult dr = form.ShowDialog(this);
-
-          if (dr == DialogResult.OK) {
-            string host = form.GetNetworkHost();
-            if (!string.IsNullOrEmpty(host)) {
-              boxServer.Text = host;
-            }
-          }
-        }
-      }
-      else {
-        ((ComboBoxEdit)sender).ShowPopup();
-      }
     }
 
     private void BoxServerSelectionChanged(object sender, EventArgs e) {

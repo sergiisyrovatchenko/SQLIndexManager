@@ -76,11 +76,12 @@ namespace SQLIndexManager {
 
       string serverName = row.Field<string>(Resources.ServerName);
       string productLevel = row.Field<string>(Resources.ProductLevel);
+      string productUpdateLevel = row.Field<string>(Resources.ProductUpdateLevel);
       string edition = row.Field<string>(Resources.Edition);
       string serverVersion = row.Field<string>(Resources.ServerVersion);
       bool isSysAdmin = row.Field<bool?>(Resources.IsSysAdmin) ?? false;
 
-      return new ServerInfo(serverName, productLevel, edition, serverVersion, isSysAdmin);
+      return new ServerInfo(serverName, productLevel, productUpdateLevel, edition, serverVersion, isSysAdmin);
     }
 
     public static List<Index> GetIndexes(SqlConnection connection) {
