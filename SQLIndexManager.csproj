@@ -229,6 +229,7 @@
     <Content Include="Images\icon.ico" />
     <None Include="Images\icon_fix.png" />
     <None Include="Images\icon_filter.png" />
+    <None Include="Images\icon_hide.png" />
     <Content Include="Images\icon_include.png" />
     <None Include="Images\icon.png" />
   </ItemGroup>

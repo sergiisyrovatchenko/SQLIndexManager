@@ -53,6 +53,7 @@ namespace SQLIndexManager {
       DevExpress.XtraGrid.Columns.GridColumn LastWrite;
       DevExpress.XtraGrid.Columns.GridColumn StatsSampled;
       DevExpress.XtraGrid.Columns.GridColumn IsNoRecompute;
+      DevExpress.XtraGrid.Columns.GridColumn RowsSampled;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleIconSet formatConditionRuleIconSet1 = new DevExpress.XtraEditors.FormatConditionRuleIconSet();
       DevExpress.XtraEditors.FormatConditionIconSet formatConditionIconSet1 = new DevExpress.XtraEditors.FormatConditionIconSet();
@@ -83,7 +84,7 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar11 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule13 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar12 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
-      DevExpress.XtraGrid.Columns.GridColumn RowsSampled;
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -815,6 +816,22 @@ namespace SQLIndexManager {
       IsNoRecompute.OptionsColumn.AllowSize = false;
       IsNoRecompute.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.List;
       IsNoRecompute.Width = 90;
+      // 
+      // RowsSampled
+      // 
+      RowsSampled.Caption = "Rows Sampled";
+      RowsSampled.FieldName = "RowsSampled";
+      RowsSampled.MaxWidth = 100;
+      RowsSampled.MinWidth = 100;
+      RowsSampled.Name = "RowsSampled";
+      RowsSampled.OptionsColumn.AllowEdit = false;
+      RowsSampled.OptionsColumn.AllowFocus = false;
+      RowsSampled.OptionsColumn.AllowSize = false;
+      RowsSampled.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
+      RowsSampled.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
+      RowsSampled.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
+      RowsSampled.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
+      RowsSampled.Width = 100;
       // 
       // grid
       // 
@@ -1561,22 +1578,6 @@ namespace SQLIndexManager {
       this.buttonFind.Enabled = false;
       this.buttonFind.Id = 11;
       this.buttonFind.Name = "buttonFind";
-      // 
-      // RowsSampled
-      // 
-      RowsSampled.Caption = "Rows Sampled";
-      RowsSampled.FieldName = "RowsSampled";
-      RowsSampled.MaxWidth = 100;
-      RowsSampled.MinWidth = 100;
-      RowsSampled.Name = "RowsSampled";
-      RowsSampled.OptionsColumn.AllowEdit = false;
-      RowsSampled.OptionsColumn.AllowFocus = false;
-      RowsSampled.OptionsColumn.AllowSize = false;
-      RowsSampled.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Excel;
-      RowsSampled.OptionsFilter.PopupExcelFilterDefaultTab = DevExpress.XtraGrid.Columns.ExcelFilterDefaultTab.Values;
-      RowsSampled.OptionsFilter.PopupExcelFilterEnumFilters = DevExpress.XtraGrid.Columns.ExcelFilterEnumFilters.EqualityFilters;
-      RowsSampled.OptionsFilter.PopupExcelFilterNumericValuesTabFilterType = DevExpress.XtraGrid.Columns.ExcelFilterNumericValuesTabFilterType.Range;
-      RowsSampled.Width = 100;
       // 
       // MainBox
       // 

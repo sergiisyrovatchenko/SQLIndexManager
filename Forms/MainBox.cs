@@ -736,6 +736,19 @@ namespace SQLIndexManager {
         e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, Resources.IconCopyFix));
         e.Menu.Items.Add(new DXMenuItem("Copy Value", CopyCellValue, Resources.IconCopy) { Tag = col.FieldName });
         e.Menu.Items.Add(new DXMenuItem("Filter Value", FilterCellValue, Resources.IconFilter) { Tag = col.FieldName });
+
+        if (view.OptionsBehavior.Editable) {
+          string[] columns = {
+                    Resources.DatabaseName,
+                    Resources.SchemaName,
+                    Resources.ObjectName,
+                    Resources.IndexName
+                };
+
+          if (columns.Contains(col.FieldName)) {
+            e.Menu.Items.Add(new DXMenuItem("Exclude Value", HideCellValue, Resources.IconHide) { Tag = col.FieldName });
+          }
+        }
       }
     }
 
@@ -784,6 +797,19 @@ namespace SQLIndexManager {
       GridColumn col = view.Columns[mi.Tag.ToString()];
       var cellValue = view.GetFocusedRowCellValue(col);
       view.SetRowCellValue(GridControl.AutoFilterRowHandle, col, cellValue);
+    }
+
+    private void HideCellValue(object sender, EventArgs e) {
+      DXMenuItem mi = (DXMenuItem)sender;
+      GridColumn col = view.Columns[mi.Tag.ToString()];
+      var cellValue = (string)view.GetFocusedRowCellValue(col);
+      var ds = (List<Index>)view.DataSource;
+
+      List<Index> items = ds.Where(_ => (col.FieldName == Resources.DatabaseName && _.DatabaseName != cellValue)
+                                     || (col.FieldName == Resources.SchemaName && _.SchemaName != cellValue)
+                                     || (col.FieldName == Resources.ObjectName && _.ObjectName != cellValue)
+                                     || (col.FieldName == Resources.IndexName && _.IndexName != cellValue)).ToList();
+      grid.DataSource = items;
     }
 
     private void ChangeFixAction(object sender, EventArgs e) {
