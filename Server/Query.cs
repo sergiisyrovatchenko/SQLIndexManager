@@ -261,7 +261,7 @@ FROM (
     SELECT DISTINCT s.[object_id]
                   , s.[stats_id]
                   , s.[no_recompute]
-    FROM sys.[stats] s WITH(NOLOCK)
+    FROM sys.stats s WITH(NOLOCK)
     WHERE EXISTS(
             SELECT *
             FROM #Indexes i

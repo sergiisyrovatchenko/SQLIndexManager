@@ -128,6 +128,10 @@ namespace SQLIndexManager {
             else
               sqlHeader = $"ALTER INDEX {fullIndexName} REBUILD PARTITION = {partition}{Environment.NewLine}    ";
 
+            string nr = Settings.Options.NoRecompute == NoRecompute.DEFAULT 
+                            ? ((IsNoRecompute ?? false) ? "ON" : "OFF")
+                            : Settings.Options.NoRecompute.ToString();
+
             sql = sqlHeader +
                     "WITH (" +
                     (IndexType == IndexType.HEAP
@@ -139,9 +143,9 @@ namespace SQLIndexManager {
                     (IsPartitioned || Settings.Options.FillFactor == 0
                       ? ""
                       : $"FILLFACTOR = {Settings.Options.FillFactor}, ") +
-                    (IsPartitioned || Settings.Options.NoRecompute == NoRecompute.DEFAULT || IndexType == IndexType.HEAP
+                    (IndexType == IndexType.HEAP
                       ? ""
-                      : $"STATISTICS_NORECOMPUTE = {Settings.Options.NoRecompute}, ") +
+                      : $"STATISTICS_NORECOMPUTE = {nr}, ") +
                     (!IsAllowCompression
                       ? ""
                       : $"DATA_COMPRESSION = {compression}, ") +
@@ -169,10 +173,15 @@ namespace SQLIndexManager {
           case IndexOp.UPDATE_STATISTICS_SAMPLE:
           case IndexOp.UPDATE_STATISTICS_RESAMPLE:
           case IndexOp.UPDATE_STATISTICS_FULL:
+            string nr2 =    (Settings.Options.NoRecompute == NoRecompute.DEFAULT && (IsNoRecompute ?? false)) 
+                         || Settings.Options.NoRecompute == NoRecompute.ON
+                            ? ", NORECOMPUTE"
+                            : "";
+
             sql = $"UPDATE STATISTICS {objectName} {indexName}{Environment.NewLine}    " + (
                 FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
-                    ? $"WITH SAMPLE {Settings.Options.SampleStatsPercent} PERCENT;"
-                    : (FixType == IndexOp.UPDATE_STATISTICS_FULL ? "WITH FULLSCAN;" : "WITH RESAMPLE;")
+                    ? $"WITH SAMPLE {Settings.Options.SampleStatsPercent} PERCENT{nr2};"
+                    : (FixType == IndexOp.UPDATE_STATISTICS_FULL ? $"WITH FULLSCAN{nr2};" : $"WITH RESAMPLE{nr2};")
             );
             break;
         }
