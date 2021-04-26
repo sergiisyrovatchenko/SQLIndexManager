@@ -379,7 +379,6 @@
       this.CreateDate.AppearanceCell.Options.UseTextOptions = true;
       this.CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       this.CreateDate.Caption = "Create Date";
-      this.CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       this.CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       this.CreateDate.FieldName = "CreateDate";
       this.CreateDate.MaxWidth = 105;

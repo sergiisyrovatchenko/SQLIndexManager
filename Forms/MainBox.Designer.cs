@@ -323,7 +323,6 @@ namespace SQLIndexManager {
       IndexStats.AppearanceCell.Options.UseTextOptions = true;
       IndexStats.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       IndexStats.Caption = "Statistics";
-      IndexStats.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       IndexStats.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       IndexStats.FieldName = "IndexStats";
       IndexStats.MaxWidth = 104;
@@ -360,7 +359,6 @@ namespace SQLIndexManager {
       LastUsage.AppearanceCell.Options.UseTextOptions = true;
       LastUsage.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       LastUsage.Caption = "Last Usage";
-      LastUsage.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       LastUsage.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       LastUsage.FieldName = "LastUsage";
       LastUsage.MaxWidth = 104;
@@ -725,7 +723,6 @@ namespace SQLIndexManager {
       CreateDate.AppearanceCell.Options.UseTextOptions = true;
       CreateDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       CreateDate.Caption = "Create Date";
-      CreateDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       CreateDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       CreateDate.FieldName = "CreateDate";
       CreateDate.MaxWidth = 105;
@@ -742,7 +739,6 @@ namespace SQLIndexManager {
       ModifyDate.AppearanceCell.Options.UseTextOptions = true;
       ModifyDate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       ModifyDate.Caption = "Modify Date";
-      ModifyDate.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       ModifyDate.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       ModifyDate.FieldName = "ModifyDate";
       ModifyDate.MaxWidth = 105;
@@ -759,7 +755,6 @@ namespace SQLIndexManager {
       LastRead.AppearanceCell.Options.UseTextOptions = true;
       LastRead.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       LastRead.Caption = "Last Read";
-      LastRead.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       LastRead.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       LastRead.FieldName = "LastRead";
       LastRead.MaxWidth = 105;
@@ -776,7 +771,6 @@ namespace SQLIndexManager {
       LastWrite.AppearanceCell.Options.UseTextOptions = true;
       LastWrite.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
       LastWrite.Caption = "Last Write";
-      LastWrite.DisplayFormat.FormatString = "dd/MM/yy HH:mm";
       LastWrite.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
       LastWrite.FieldName = "LastWrite";
       LastWrite.MaxWidth = 105;

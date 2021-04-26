@@ -272,6 +272,9 @@ FROM (
 ) s
 CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p
 
+DECLARE @MINUTE INT
+SET @MINUTE = DATEDIFF(MINUTE, GETUTCDATE(), GETDATE())
+
 SELECT i.ObjectID
      , i.IndexID
      , i.IndexName
@@ -292,14 +295,14 @@ SELECT i.ObjectID
      , i.DataCompression
      , f.Fragmentation
      , f.PageSpaceUsed
-     , IndexStats       = STATS_DATE(i.ObjectID, i.IndexID)
+     , IndexStats       = DATEADD(MINUTE, -@MINUTE, STATS_DATE(i.ObjectID, i.IndexID))
      , IsLobLegacy      = ISNULL(lob.IsLobLegacy, 0)
      , IsLob            = ISNULL(lob.IsLob, 0)
      , IsSparse         = CAST(CASE WHEN p.ObjectID IS NULL THEN 0 ELSE 1 END AS BIT)
      , IsPartitioned    = CAST(CASE WHEN dds.[data_space_id] IS NOT NULL THEN 1 ELSE 0 END AS BIT)
      , FileGroupName    = fg.[name]
-     , CreateDate       = o.[create_date]
-     , ModifyDate       = o.[modify_date]
+     , CreateDate       = DATEADD(MINUTE, -@MINUTE, o.[create_date])
+     , ModifyDate       = DATEADD(MINUTE, -@MINUTE, o.[modify_date])
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue
@@ -340,7 +343,7 @@ SELECT ObjectID     = d.[object_id]
      , UserImpact   = gs.[avg_user_impact]
      , TotalSeeks   = gs.[user_seeks]
      , TotalScans   = gs.[user_scans]
-     , LastRead     = ISNULL(gs.[last_user_scan], gs.[last_user_seek])
+     , LastRead     = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), ISNULL(gs.[last_user_scan], gs.[last_user_seek]))
      , IndexColumns =
                 CASE
                     WHEN d.[equality_columns] IS NOT NULL AND d.[inequality_columns] IS NOT NULL
@@ -362,7 +365,7 @@ IF OBJECT_ID('tempdb.dbo.#AllocationUnits') IS NOT NULL
 SELECT ObjectID   = p.[object_id]
      , RowsCount  = SUM(p.[rows])
      , PagesCount = SUM(t.[total_pages])
-     , IndexStats = STATS_DATE(p.[object_id], 1)
+     , IndexStats = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), STATS_DATE(p.[object_id], 1))
 INTO #AllocationUnits
 FROM sys.partitions p WITH(NOLOCK)
 JOIN (
@@ -443,15 +446,15 @@ WHERE [object_id] > 255
          , TotalSeeks   = NULLIF([user_seeks], 0)
          , TotalScans   = NULLIF([user_scans], 0)
          , TotalLookups = NULLIF([user_lookups], 0)
-         , LastWrite    = [last_user_update]
-         , LastRead     = (
+         , LastWrite    = DATEADD(MINUTE, -@MINUTE, [last_user_update])
+         , LastRead     = DATEADD(MINUTE, -@MINUTE, (
                                SELECT MAX(dt)
                                FROM (
                                    VALUES ([last_user_seek])
                                         , ([last_user_scan])
                                         , ([last_user_lookup])
                                ) t(dt)
-                          )
+                          ))
     FROM sys.dm_db_index_usage_stats WITH(NOLOCK)
     WHERE [database_id] = @DBID
 ";
@@ -602,7 +605,7 @@ SELECT DatabaseID    = [database_id]
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
      , HasDBAccess   = ISNULL(HAS_DBACCESS([name]), 1)
-     , CreateDate    = [create_date]
+     , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND [user_access] = 0
@@ -663,7 +666,7 @@ SELECT DatabaseName  = [name]
      , LogUsedSize   = CAST(NULL AS BIGINT)
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
-     , CreateDate    = [create_date]
+     , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND ISNULL(HAS_DBACCESS([name]), 1) = 1
@@ -701,7 +704,7 @@ SELECT Fragmentation    = [avg_fragmentation_in_percent]
      , PagesCount       = ISNULL(@ReservedPageCount, 0)
      , UnusedPagesCount = ISNULL(CASE WHEN ABS(@ReservedPageCount - @UnusedPagesCount) > 32 THEN @ReservedPageCount - @UnusedPagesCount END, 0)
      , RowsCount        = ISNULL(@RowsCount, 0)
-     , IndexStats       = STATS_DATE({0}, {1})
+     , IndexStats       = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), STATS_DATE({0}, {1}))
      , DataCompression  = @Compression
 FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, '{3}')
 WHERE [index_level] = 0

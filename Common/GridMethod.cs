@@ -53,6 +53,16 @@ namespace SQLIndexManager {
             e.DisplayText = $"{e.Value:n1} % ";
           break;
 
+        case "CreateDate":
+        case "ModifyDate":
+        case "IndexStats":
+        case "LastUsage":
+        case "LastWrite":
+        case "LastRead":
+          if (e.Value != null)
+            e.DisplayText = $"{((DateTime)e.Value).ToLocalTime():dd/MM/yy HH:mm}";
+          break;
+
         case "RowsCount":
         case "RowsSampled":
         case "TotalUpdates":

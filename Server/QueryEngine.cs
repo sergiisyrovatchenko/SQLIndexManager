@@ -371,10 +371,10 @@ namespace SQLIndexManager {
       if (string.IsNullOrEmpty(ix.Error)) {
         try {
           if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
-            ix.IndexStats = DateTime.Now;
+            ix.IndexStats = DateTime.UtcNow;
           }
           else if (ix.FixType == IndexOp.CREATE_INDEX) {
-            ix.IndexStats = DateTime.Now;
+            ix.IndexStats = DateTime.UtcNow;
             ix.Fragmentation = 0;
           }
           else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
