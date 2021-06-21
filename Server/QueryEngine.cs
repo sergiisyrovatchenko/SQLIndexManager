@@ -150,9 +150,11 @@ namespace SQLIndexManager {
         string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2 ";
         string ignoreHeapWithCompression = Settings.Options.IgnoreHeapWithCompression ? "AND (i.[type] != 0 OR (i.[type] = 0 AND p.DataCompression = 0)) " : "";
 
+        string statsInfo = Settings.ServerInfo.IsFullStats ? Query.StatsFull : Query.StatsLite;
+
         string query = string.Format(Query.PreDescribeIndexes,
                                     string.Join(", ", it), excludeList, indexQuery, lob,
-                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList, ignoreHeapWithCompression);
+                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList, ignoreHeapWithCompression, statsInfo);
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 

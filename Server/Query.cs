@@ -250,27 +250,7 @@ CREATE TABLE #Stats (
     , RowsSampled   BIGINT
     , PRIMARY KEY (ObjectID, IndexID)
 )
-
-INSERT INTO #Stats
-SELECT s.[object_id]
-     , s.[stats_id]
-     , s.[no_recompute]
-     , p.[rows_sampled] * 100. / NULLIF(p.[rows], 0)
-     , p.[rows_sampled]
-FROM (
-    SELECT DISTINCT s.[object_id]
-                  , s.[stats_id]
-                  , s.[no_recompute]
-    FROM sys.stats s WITH(NOLOCK)
-    WHERE EXISTS(
-            SELECT *
-            FROM #Indexes i
-            WHERE s.[object_id] = i.ObjectID
-                AND s.[stats_id] = i.IndexID
-                AND i.IndexType IN (1, 2)
-        )
-) s
-CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p
+{9}
 
 DECLARE @MINUTE INT
 SET @MINUTE = DATEDIFF(MINUTE, GETUTCDATE(), GETDATE())
@@ -332,6 +312,42 @@ WHERE o.[type] IN ('V', 'U')
             i.IndexType IN (5, 6)
     )
 ";
+
+    public const string StatsLite = @"
+INSERT INTO #Stats (ObjectID, IndexID, IsNoRecompute)
+SELECT DISTINCT s.[object_id]
+              , s.[stats_id]
+              , s.[no_recompute]
+FROM sys.stats s WITH(NOLOCK)
+WHERE EXISTS(
+        SELECT *
+        FROM #Indexes i
+        WHERE s.[object_id] = i.ObjectID
+            AND s.[stats_id] = i.IndexID
+            AND i.IndexType IN (1, 2)
+    )";
+
+    public const string StatsFull = @"
+INSERT INTO #Stats (ObjectID, IndexID, IsNoRecompute, StatsSampled, RowsSampled)
+SELECT s.[object_id]
+     , s.[stats_id]
+     , s.[no_recompute]
+     , p.[rows_sampled] * 100. / NULLIF(p.[rows], 0)
+     , p.[rows_sampled]
+FROM (
+    SELECT DISTINCT s.[object_id]
+                  , s.[stats_id]
+                  , s.[no_recompute]
+    FROM sys.stats s WITH(NOLOCK)
+    WHERE EXISTS(
+            SELECT *
+            FROM #Indexes i
+            WHERE s.[object_id] = i.ObjectID
+                AND s.[stats_id] = i.IndexID
+                AND i.IndexType IN (1, 2)
+        )
+) s
+CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p";
 
     public const string MissingIndex = @"
 SET NOCOUNT ON
