@@ -598,7 +598,7 @@ SELECT ServerName         = @@SERVERNAME
      , IsSysAdmin         = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)
 ";
 
-    public const string DatabaseList = @"
+    public const string DatabaseSizeList = @"
 SET NOCOUNT ON
 SET ARITHABORT ON
 SET NUMERIC_ROUNDABORT OFF
@@ -607,29 +607,21 @@ IF OBJECT_ID('tempdb.dbo.#Databases') IS NOT NULL
     DROP TABLE #Databases
 
 CREATE TABLE #Databases (
-      DatabaseID    INT
-    , DatabaseName  NVARCHAR(500)
-    , RecoveryModel NVARCHAR(500)
-    , LogReuseWait  NVARCHAR(500)
-    , HasDBAccess   BIT
-    , CreateDate    DATETIME
+      DatabaseName NVARCHAR(500)
+    , HasDBAccess  BIT
 )
 
 INSERT INTO #Databases
-SELECT DatabaseID    = [database_id]
-     , DatabaseName  = [name]
-     , RecoveryModel = [recovery_model_desc]
-     , LogReuseWait  = [log_reuse_wait_desc]
-     , HasDBAccess   = ISNULL(HAS_DBACCESS([name]), 1)
-     , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])
+SELECT DatabaseName = [name]
+     , HasDBAccess  = ISNULL(HAS_DBACCESS([name]), 1)
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND [user_access] = 0
 
-IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
-    DROP TABLE #UsedSpace
+IF OBJECT_ID('tempdb.dbo.#DatabaseSize') IS NOT NULL
+    DROP TABLE #DatabaseSize
 
-CREATE TABLE #UsedSpace (
+CREATE TABLE #DatabaseSize (
       DatabaseID   INT
     , DataSize     BIGINT
     , LogSize      BIGINT
@@ -641,7 +633,7 @@ DECLARE @SQL NVARCHAR(MAX)
 SET @SQL = (
     SELECT '
     USE [' + REPLACE(REPLACE(DatabaseName, ']', ']]'), '[', '[[') + ']
-    INSERT INTO #UsedSpace
+    INSERT INTO #DatabaseSize
     SELECT DB_ID()
          , SUM(CASE WHEN [type] = 0 THEN [size] END)
          , SUM(CASE WHEN [type] = 1 THEN [size] END)
@@ -661,25 +653,13 @@ SET @SQL = (
 
 EXEC sys.sp_executesql @SQL
 
-SELECT t.DatabaseName
-     , u.DataSize
-     , u.DataUsedSize
-     , u.LogSize
-     , u.LogUsedSize
-     , t.RecoveryModel
-     , t.LogReuseWait
-     , t.CreateDate
-FROM #Databases t
-LEFT JOIN #UsedSpace u ON u.DatabaseID = t.DatabaseID
-WHERE t.HasDBAccess = 1
+SELECT *
+FROM #DatabaseSize
 ";
 
-    public const string DatabaseListAzure = @"
-SELECT DatabaseName  = [name]
-     , DataSize      = CAST(NULL AS BIGINT)
-     , DataUsedSize  = CAST(NULL AS BIGINT)
-     , LogSize       = CAST(NULL AS BIGINT)
-     , LogUsedSize   = CAST(NULL AS BIGINT)
+    public const string DatabaseList = @"
+SELECT DatabaseId    = [database_id]
+     , DatabaseName  = [name]
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
      , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])

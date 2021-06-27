@@ -79,6 +79,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DatabaseId.
+        /// </summary>
+        internal static string DatabaseId {
+            get {
+                return ResourceManager.GetString("DatabaseId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DatabaseName.
         /// </summary>
         internal static string DatabaseName {

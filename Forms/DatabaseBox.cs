@@ -60,8 +60,17 @@ namespace SQLIndexManager {
         try {
           connection.Open();
 
-          _disks = QueryEngine.GetDiskInfo(connection);
-          _databases = QueryEngine.GetDatabases(connection);
+          try { _disks = QueryEngine.GetDiskInfo(connection); }
+          catch (Exception ex) { Output.Current.Add("Refresh disk info failed", ex.Message); }
+
+          try { _databases = QueryEngine.GetDatabases(connection); }
+          catch (Exception ex) { Output.Current.Add("Refresh databases failed", ex.Message); }
+
+          if (_databases.Count > 0 && !Settings.ServerInfo.IsAzure) {
+            try { QueryEngine.RefreshDatabaseSize(connection, _databases); }
+            catch (Exception ex) { Output.Current.Add("Refresh database sizes failed", ex.Message); }
+          }
+          
         }
         catch (Exception ex) {
           Output.Current.Add("Refresh failed", ex.Message);

@@ -10,32 +10,45 @@ namespace SQLIndexManager {
   public static class QueryEngine {
 
     public static List<Database> GetDatabases(SqlConnection connection) {
-      string query = !Settings.ServerInfo.IsAzure ? Query.DatabaseList : Query.DatabaseListAzure;
-
-      SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+      SqlCommand cmd = new SqlCommand(Query.DatabaseList, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
       DataSet data = new DataSet();
       adapter.Fill(data);
 
       List<Database> dbs = new List<Database>();
-      foreach (DataRow _ in data.Tables[0].Rows) {
-        long dataSize = _.Field<long?>(Resources.DataSize) ?? 0;
-        long logSize = _.Field<long?>(Resources.LogSize) ?? 0;
-
+      foreach (DataRow r in data.Tables[0].Rows) {
         dbs.Add(
           new Database {
-            DatabaseName  = _.Field<string>(Resources.DatabaseName),
-            RecoveryModel = _.Field<string>(Resources.RecoveryModel),
-            LogReuseWait  = _.Field<string>(Resources.LogReuseWait),
-            CreateDate    = _.Field<DateTime>(Resources.CreateDate),
-            TotalSize     = dataSize + logSize,
-            DataSize      = dataSize,
-            DataFreeSize  = dataSize - (_.Field<long?>(Resources.DataUsedSize) ?? 0),
-            LogSize       = logSize,
-            LogFreeSize   = logSize - (_.Field<long?>(Resources.LogUsedSize) ?? 0)
+            DatabaseId    = r.Field<int>(Resources.DatabaseId),
+            DatabaseName  = r.Field<string>(Resources.DatabaseName),
+            RecoveryModel = r.Field<string>(Resources.RecoveryModel),
+            LogReuseWait  = r.Field<string>(Resources.LogReuseWait),
+            CreateDate    = r.Field<DateTime>(Resources.CreateDate)
           }
         );
+      }
+
+      return dbs;
+    }
+
+    public static List<Database> RefreshDatabaseSize(SqlConnection connection, List<Database> dbs) {
+      SqlCommand cmd = new SqlCommand(Query.DatabaseSizeList, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
+      adapter.Fill(data);
+
+      foreach (DataRow r in data.Tables[0].Rows) {
+        int databaseId = r.Field<int>(Resources.DatabaseId);
+        Database db = dbs.FirstOrDefault(_ => _.DatabaseId == databaseId);
+
+        if (db != null) {
+            db.DataSize     = r.Field<long?>(Resources.DataSize) ?? 0;
+            db.DataUsedSize = r.Field<long?>(Resources.DataUsedSize) ?? 0;
+            db.LogSize      = r.Field<long?>(Resources.LogSize) ?? 0;
+            db.LogUsedSize  = r.Field<long?>(Resources.LogUsedSize) ?? 0;
+        }
       }
 
       return dbs;
@@ -51,7 +64,6 @@ namespace SQLIndexManager {
         DataSet data = new DataSet();
         adapter.Fill(data);
 
-        
         foreach (DataRow _ in data.Tables[0].Rows) {
           di.Add(
             new DiskInfo {
