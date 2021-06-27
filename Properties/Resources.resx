@@ -409,4 +409,7 @@
   <data name="IsTable" xml:space="preserve">
     <value>IsTable</value>
   </data>
+  <data name="IsFKs" xml:space="preserve">
+    <value>IsFKs</value>
+  </data>
 </root>

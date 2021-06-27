@@ -633,7 +633,7 @@ namespace SQLIndexManager {
         }
       }
 
-      if (ix.IsTable) {
+      if (ix.IsTable && !ix.IsFKs && ((ix.IsPartitioned && Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) || !ix.IsPartitioned)) {
         i.Add(IndexOp.TRUNCATE_TABLE);
       }
       

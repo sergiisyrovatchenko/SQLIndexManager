@@ -255,6 +255,22 @@ CREATE TABLE #Stats (
 DECLARE @MINUTE INT
 SET @MINUTE = DATEDIFF(MINUTE, GETUTCDATE(), GETDATE())
 
+IF OBJECT_ID('tempdb.dbo.#FKs') IS NOT NULL
+    DROP TABLE #FKs
+
+CREATE TABLE #FKs (ObjectID INT PRIMARY KEY)
+INSERT INTO #FKs
+SELECT i.ObjectID
+FROM (
+    SELECT DISTINCT ObjectID
+    FROM #Indexes
+) i
+WHERE EXISTS(
+        SELECT *
+        FROM sys.foreign_keys f WITH(NOLOCK)
+        WHERE f.[referenced_object_id] = i.ObjectID
+    )
+
 SELECT i.ObjectID
      , i.IndexID
      , i.IndexName
@@ -284,6 +300,7 @@ SELECT i.ObjectID
      , CreateDate       = DATEADD(MINUTE, -@MINUTE, o.[create_date])
      , ModifyDate       = DATEADD(MINUTE, -@MINUTE, o.[modify_date])
      , IsTable          = CAST(CASE WHEN o.[type] = 'U' THEN 1 ELSE 0 END AS BIT)
+     , IsFKs            = CAST(CASE WHEN fk.ObjectID IS NULL THEN 0 ELSE 1 END AS BIT)
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue
@@ -296,6 +313,7 @@ SELECT i.ObjectID
 FROM #Indexes i
 JOIN sys.objects o WITH(NOLOCK) ON o.[object_id] = i.ObjectID
 JOIN sys.schemas s WITH(NOLOCK) ON s.[schema_id] = o.[schema_id]
+LEFT JOIN #FKs fk ON fk.ObjectID = i.ObjectID
 LEFT JOIN #Stats ss ON ss.ObjectID = i.ObjectID AND ss.IndexID = i.IndexID
 LEFT JOIN #AggColumns a ON a.ObjectID = i.ObjectID AND a.IndexID = i.IndexID
 LEFT JOIN #Sparse p ON p.ObjectID = i.ObjectID

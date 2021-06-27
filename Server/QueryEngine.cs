@@ -238,6 +238,7 @@ namespace SQLIndexManager {
             Fragmentation        = _.Field<double?>(Resources.Fragmentation),
             PageSpaceUsed        = _.Field<double?>(Resources.PageSpaceUsed),
             IsTable              = _.Field<bool>(Resources.IsTable),
+            IsFKs                = _.Field<bool>(Resources.IsFKs),
             IsAllowReorganize    = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
             IsAllowOnlineRebuild = isOnlineRebuild,
             IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),

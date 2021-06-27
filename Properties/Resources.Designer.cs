@@ -616,6 +616,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsFKs.
+        /// </summary>
+        internal static string IsFKs {
+            get {
+                return ResourceManager.GetString("IsFKs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsLob.
         /// </summary>
         internal static string IsLob {
