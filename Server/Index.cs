@@ -145,7 +145,7 @@ namespace SQLIndexManager {
                     (IsPartitioned || Settings.Options.FillFactor == 0
                       ? ""
                       : $"FILLFACTOR = {Settings.Options.FillFactor}, ") +
-                    (IndexType == IndexType.HEAP
+                    (IndexType == IndexType.HEAP || IsPartitioned
                       ? ""
                       : $"STATISTICS_NORECOMPUTE = {nr}, ") +
                     (!IsAllowCompression
