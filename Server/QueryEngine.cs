@@ -237,6 +237,7 @@ namespace SQLIndexManager {
             DataCompression      = (DataCompression)_.Field<byte>(Resources.DataCompression),
             Fragmentation        = _.Field<double?>(Resources.Fragmentation),
             PageSpaceUsed        = _.Field<double?>(Resources.PageSpaceUsed),
+            IsTable              = _.Field<bool>(Resources.IsTable),
             IsAllowReorganize    = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
             IsAllowOnlineRebuild = isOnlineRebuild,
             IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
@@ -391,7 +392,7 @@ namespace SQLIndexManager {
             ix.IndexStats = DateTime.UtcNow;
             ix.Fragmentation = 0;
           }
-          else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
+          else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE || ix.FixType == IndexOp.TRUNCATE_TABLE) {
             ix.PagesCountBefore = ix.PagesCount;
             ix.Fragmentation = 0;
             ix.PagesCount = 0;

@@ -283,6 +283,7 @@ SELECT i.ObjectID
      , FileGroupName    = fg.[name]
      , CreateDate       = DATEADD(MINUTE, -@MINUTE, o.[create_date])
      , ModifyDate       = DATEADD(MINUTE, -@MINUTE, o.[modify_date])
+     , IsTable          = CAST(CASE WHEN o.[type] = 'U' THEN 1 ELSE 0 END AS BIT)
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue

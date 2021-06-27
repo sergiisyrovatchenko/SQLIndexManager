@@ -236,6 +236,16 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconClear {
+            get {
+                object obj = ResourceManager.GetObject("IconClear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconCopy {
             get {
                 object obj = ResourceManager.GetObject("IconCopy", resourceCulture);
@@ -675,6 +685,15 @@ namespace SQLIndexManager.Properties {
         internal static string IsSysAdmin {
             get {
                 return ResourceManager.GetString("IsSysAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTable.
+        /// </summary>
+        internal static string IsTable {
+            get {
+                return ResourceManager.GetString("IsTable", resourceCulture);
             }
         }
         

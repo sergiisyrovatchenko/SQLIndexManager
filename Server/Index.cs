@@ -49,6 +49,7 @@ namespace SQLIndexManager {
     public bool IsAllowReorganize { get; set; }
     public bool IsAllowOnlineRebuild { get; set; }
     public bool IsAllowCompression { get; set; }
+    public bool IsTable { get; set; }
     public bool IsColumnstore => (IndexType == IndexType.CLUSTERED_COLUMNSTORE || IndexType == IndexType.NONCLUSTERED_COLUMNSTORE);
 
     public string Error { get; set; }
@@ -168,6 +169,10 @@ namespace SQLIndexManager {
 
           case IndexOp.DROP_TABLE:
             sql = $"DROP TABLE {objectName};";
+            break;
+
+          case IndexOp.TRUNCATE_TABLE:
+            sql = $"TRUNCATE TABLE {objectName};";
             break;
 
           case IndexOp.UPDATE_STATISTICS_SAMPLE:

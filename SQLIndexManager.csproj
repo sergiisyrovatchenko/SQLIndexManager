@@ -219,6 +219,7 @@
     <None Include="Images\icon_error.png" />
     <None Include="Images\icon_delay.png" />
     <None Include="Images\icon_delete.png" />
+    <None Include="Images\icon_clear.png" />
     <Content Include="Images\icon_exclude.png" />
     <Content Include="Images\icon.ico" />
     <None Include="Images\icon_fix.png" />

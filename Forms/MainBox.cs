@@ -638,6 +638,10 @@ namespace SQLIndexManager {
         }
       }
 
+      if (ix.IsTable) {
+        i.Add(IndexOp.TRUNCATE_TABLE);
+      }
+      
       i.Add(IndexOp.SKIP);
 
       return i;
@@ -756,11 +760,14 @@ namespace SQLIndexManager {
             }
           }
 
-          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_SAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_FULL.Description(), ChangeFixAction, Resources.IconUpdateStats) { BeginGroup = true });
           ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_RESAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats));
-          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_FULL.Description(), ChangeFixAction, Resources.IconUpdateStats));
-          ci.Items.Add(new DXMenuItem(IndexOp.DISABLE_INDEX.Description(), ChangeFixAction, Resources.IconHide) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_SAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats));
+
+          ci.Items.Add(new DXMenuItem(IndexOp.TRUNCATE_TABLE.Description(), ChangeFixAction, Resources.IconClear) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.DISABLE_INDEX.Description(), ChangeFixAction, Resources.IconHide));
           ci.Items.Add(new DXMenuItem(IndexOp.DROP_TABLE.Description(), ChangeFixAction, Resources.IconDelete));
+
           ci.Items.Add(new DXMenuItem(IndexOp.SKIP.Description(), ChangeFixAction, Resources.IconSkip) { BeginGroup = true });
         }
         
