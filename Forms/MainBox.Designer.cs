@@ -98,6 +98,7 @@ namespace SQLIndexManager {
       this.labelElapsedTime = new DevExpress.XtraBars.BarStaticItem();
       this.buttonStopScan = new DevExpress.XtraBars.BarButtonItem();
       this.buttonStopFix = new DevExpress.XtraBars.BarButtonItem();
+      this.buttonAutoScroll = new DevExpress.XtraBars.BarButtonItem();
       this.buttonLog = new DevExpress.XtraBars.BarButtonItem();
       this.labelInfo = new DevExpress.XtraBars.BarStaticItem();
       this.labelServerInfo = new DevExpress.XtraBars.BarStaticItem();
@@ -462,7 +463,7 @@ namespace SQLIndexManager {
       // 
       Compression.Caption = "Compression";
       Compression.FieldName = "DataCompression";
-      Compression.MaxWidth = 100;
+      Compression.MaxWidth = 120;
       Compression.MinWidth = 78;
       Compression.Name = "Compression";
       Compression.OptionsColumn.AllowEdit = false;
@@ -1298,6 +1299,7 @@ namespace SQLIndexManager {
       this.statusBar.ItemLinks.Add(this.labelElapsedTime);
       this.statusBar.ItemLinks.Add(this.buttonStopScan);
       this.statusBar.ItemLinks.Add(this.buttonStopFix);
+      this.statusBar.ItemLinks.Add(this.buttonAutoScroll);
       this.statusBar.ItemLinks.Add(this.buttonLog);
       this.statusBar.ItemLinks.Add(this.labelInfo);
       this.statusBar.ItemLinks.Add(this.labelServerInfo);
@@ -1375,6 +1377,16 @@ namespace SQLIndexManager {
       this.buttonStopFix.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       this.buttonStopFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonStopFixClick);
       // 
+      // buttonAutoScroll
+      // 
+      this.buttonAutoScroll.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check;
+      this.buttonAutoScroll.Down = true;
+      this.buttonAutoScroll.Id = 41;
+      this.buttonAutoScroll.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonAutoScroll.ImageOptions.Image")));
+      this.buttonAutoScroll.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonAutoScroll.ImageOptions.LargeImage")));
+      this.buttonAutoScroll.Name = "buttonAutoScroll";
+      this.buttonAutoScroll.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+      // 
       // buttonLog
       // 
       this.buttonLog.Id = 26;
@@ -1423,9 +1435,10 @@ namespace SQLIndexManager {
             this.labelSavedSpace,
             this.labelIndexesSize,
             this.labelElapsedTime,
-            this.labelServerInfo});
+            this.labelServerInfo,
+            this.buttonAutoScroll});
       this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-      this.ribbonControl1.MaxItemId = 41;
+      this.ribbonControl1.MaxItemId = 42;
       this.ribbonControl1.Name = "ribbonControl1";
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonNewConnection);
       this.ribbonControl1.QuickToolbarItemLinks.Add(this.buttonDatabases);
@@ -1636,5 +1649,6 @@ namespace SQLIndexManager {
     private BarStaticItem labelIndexesSize;
     private BarStaticItem labelElapsedTime;
     private BarStaticItem labelServerInfo;
+    private BarButtonItem buttonAutoScroll;
   }
 }

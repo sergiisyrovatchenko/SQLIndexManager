@@ -37,8 +37,6 @@
       DevExpress.XtraEditors.LabelControl labelControl6;
       DevExpress.XtraEditors.GroupControl db3;
       DevExpress.XtraEditors.GroupControl groupControl3;
-      DevExpress.XtraEditors.LabelControl labelControl1;
-      DevExpress.XtraEditors.LabelControl labelControl3;
       DevExpress.XtraEditors.LabelControl labelPadIndex;
       DevExpress.XtraEditors.LabelControl labelControl7;
       DevExpress.XtraEditors.LabelControl labelControl13;
@@ -74,8 +72,6 @@
       this.boxScanNonClusteredColumnstore = new DevExpress.XtraEditors.CheckEdit();
       this.boxIgnoreReadOnlyFL = new DevExpress.XtraEditors.CheckEdit();
       this.boxScanHeap = new DevExpress.XtraEditors.CheckEdit();
-      this.boxDelayAfterFix = new DevExpress.XtraEditors.SpinEdit();
-      this.boxMultiThreadingCount = new DevExpress.XtraEditors.SpinEdit();
       this.boxPadIndex = new DevExpress.XtraEditors.CheckEdit();
       this.boxNoRecompute = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxStatsSamplePercent = new DevExpress.XtraEditors.SpinEdit();
@@ -110,8 +106,6 @@
       labelControl6 = new DevExpress.XtraEditors.LabelControl();
       db3 = new DevExpress.XtraEditors.GroupControl();
       groupControl3 = new DevExpress.XtraEditors.GroupControl();
-      labelControl1 = new DevExpress.XtraEditors.LabelControl();
-      labelControl3 = new DevExpress.XtraEditors.LabelControl();
       labelPadIndex = new DevExpress.XtraEditors.LabelControl();
       labelControl7 = new DevExpress.XtraEditors.LabelControl();
       labelControl13 = new DevExpress.XtraEditors.LabelControl();
@@ -153,8 +147,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxScanHeap.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).BeginInit();
       groupControl3.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.boxDelayAfterFix.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxMultiThreadingCount.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxNoRecompute.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).BeginInit();
@@ -227,7 +219,7 @@
       // 
       buttonCancel.AllowFocus = false;
       buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      buttonCancel.Location = new System.Drawing.Point(642, 542);
+      buttonCancel.Location = new System.Drawing.Point(642, 573);
       buttonCancel.Name = "buttonCancel";
       buttonCancel.Size = new System.Drawing.Size(75, 23);
       buttonCancel.TabIndex = 0;
@@ -237,7 +229,7 @@
       // buttonRestore
       // 
       buttonRestore.AllowFocus = false;
-      buttonRestore.Location = new System.Drawing.Point(12, 542);
+      buttonRestore.Location = new System.Drawing.Point(12, 573);
       buttonRestore.Name = "buttonRestore";
       buttonRestore.Size = new System.Drawing.Size(75, 23);
       buttonRestore.TabIndex = 0;
@@ -260,13 +252,13 @@
       groupControl1.Controls.Add(this.labelSize);
       groupControl1.Location = new System.Drawing.Point(12, 4);
       groupControl1.Name = "groupControl1";
-      groupControl1.Size = new System.Drawing.Size(396, 205);
+      groupControl1.Size = new System.Drawing.Size(396, 228);
       groupControl1.TabIndex = 8;
       groupControl1.Text = "Filters";
       // 
       // labelSkipThreshold
       // 
-      this.labelSkipThreshold.Location = new System.Drawing.Point(211, 91);
+      this.labelSkipThreshold.Location = new System.Drawing.Point(211, 104);
       this.labelSkipThreshold.Name = "labelSkipThreshold";
       this.labelSkipThreshold.Size = new System.Drawing.Size(25, 13);
       this.labelSkipThreshold.TabIndex = 33;
@@ -275,7 +267,7 @@
       // boxSkipThreshold
       // 
       this.boxSkipThreshold.EditValue = "";
-      this.boxSkipThreshold.Location = new System.Drawing.Point(13, 88);
+      this.boxSkipThreshold.Location = new System.Drawing.Point(13, 101);
       this.boxSkipThreshold.Name = "boxSkipThreshold";
       this.boxSkipThreshold.Properties.AllowFocused = false;
       this.boxSkipThreshold.Properties.Appearance.Options.UseTextOptions = true;
@@ -290,7 +282,7 @@
       // boxSecondThreshold
       // 
       this.boxSecondThreshold.EditValue = "";
-      this.boxSecondThreshold.Location = new System.Drawing.Point(13, 140);
+      this.boxSecondThreshold.Location = new System.Drawing.Point(13, 159);
       this.boxSecondThreshold.Name = "boxSecondThreshold";
       this.boxSecondThreshold.Properties.AllowFocused = false;
       this.boxSecondThreshold.Properties.Appearance.Options.UseTextOptions = true;
@@ -305,7 +297,7 @@
       // boxFirstThreshold
       // 
       this.boxFirstThreshold.EditValue = "";
-      this.boxFirstThreshold.Location = new System.Drawing.Point(13, 114);
+      this.boxFirstThreshold.Location = new System.Drawing.Point(13, 130);
       this.boxFirstThreshold.Name = "boxFirstThreshold";
       this.boxFirstThreshold.Properties.AllowFocused = false;
       this.boxFirstThreshold.Properties.Appearance.Options.UseTextOptions = true;
@@ -319,7 +311,7 @@
       // 
       // labelFirstThreshold
       // 
-      this.labelFirstThreshold.Location = new System.Drawing.Point(211, 117);
+      this.labelFirstThreshold.Location = new System.Drawing.Point(211, 133);
       this.labelFirstThreshold.Name = "labelFirstThreshold";
       this.labelFirstThreshold.Size = new System.Drawing.Size(25, 13);
       this.labelFirstThreshold.TabIndex = 3;
@@ -327,7 +319,7 @@
       // 
       // labelSecondThreshold
       // 
-      this.labelSecondThreshold.Location = new System.Drawing.Point(211, 143);
+      this.labelSecondThreshold.Location = new System.Drawing.Point(211, 162);
       this.labelSecondThreshold.Name = "labelSecondThreshold";
       this.labelSecondThreshold.Size = new System.Drawing.Size(25, 13);
       this.labelSecondThreshold.TabIndex = 8;
@@ -379,7 +371,7 @@
       // boxThreshold
       // 
       this.boxThreshold.EditValue = new DevExpress.XtraEditors.Repository.TrackBarRange(1, 1);
-      this.boxThreshold.Location = new System.Drawing.Point(6, 171);
+      this.boxThreshold.Location = new System.Drawing.Point(6, 190);
       this.boxThreshold.Name = "boxThreshold";
       this.boxThreshold.Properties.AllowFocused = false;
       this.boxThreshold.Properties.HighlightSelectedRange = false;
@@ -408,7 +400,7 @@
       groupControl2.Controls.Add(this.boxConnectionTimeout);
       groupControl2.Controls.Add(labelControl6);
       groupControl2.Controls.Add(this.boxCommandTimeout);
-      groupControl2.Location = new System.Drawing.Point(414, 453);
+      groupControl2.Location = new System.Drawing.Point(414, 395);
       groupControl2.Name = "groupControl2";
       groupControl2.Size = new System.Drawing.Size(303, 81);
       groupControl2.TabIndex = 14;
@@ -512,15 +504,15 @@
       db3.Controls.Add(this.boxScanNonClusteredColumnstore);
       db3.Controls.Add(this.boxIgnoreReadOnlyFL);
       db3.Controls.Add(this.boxScanHeap);
-      db3.Location = new System.Drawing.Point(12, 215);
+      db3.Location = new System.Drawing.Point(12, 239);
       db3.Name = "db3";
-      db3.Size = new System.Drawing.Size(396, 145);
+      db3.Size = new System.Drawing.Size(396, 150);
       db3.TabIndex = 16;
       db3.Text = "Object Scan";
       // 
       // boxShowOnlyMore1000Rows
       // 
-      this.boxShowOnlyMore1000Rows.Location = new System.Drawing.Point(228, 115);
+      this.boxShowOnlyMore1000Rows.Location = new System.Drawing.Point(228, 117);
       this.boxShowOnlyMore1000Rows.Name = "boxShowOnlyMore1000Rows";
       this.boxShowOnlyMore1000Rows.Properties.AllowFocused = false;
       this.boxShowOnlyMore1000Rows.Properties.Caption = " ONLY WHEN ROWS > 1000";
@@ -530,7 +522,7 @@
       // 
       // boxIgnoreHeapWithCompression
       // 
-      this.boxIgnoreHeapWithCompression.Location = new System.Drawing.Point(13, 115);
+      this.boxIgnoreHeapWithCompression.Location = new System.Drawing.Point(13, 117);
       this.boxIgnoreHeapWithCompression.Name = "boxIgnoreHeapWithCompression";
       this.boxIgnoreHeapWithCompression.Properties.AllowFocused = false;
       this.boxIgnoreHeapWithCompression.Properties.Caption = " IGNORE HEAP WITH COMPRESSION";
@@ -626,10 +618,6 @@
       // 
       // groupControl3
       // 
-      groupControl3.Controls.Add(this.boxDelayAfterFix);
-      groupControl3.Controls.Add(labelControl1);
-      groupControl3.Controls.Add(this.boxMultiThreadingCount);
-      groupControl3.Controls.Add(labelControl3);
       groupControl3.Controls.Add(labelPadIndex);
       groupControl3.Controls.Add(this.boxPadIndex);
       groupControl3.Controls.Add(this.boxNoRecompute);
@@ -658,95 +646,9 @@
       groupControl3.Controls.Add(this.boxOnline);
       groupControl3.Location = new System.Drawing.Point(414, 4);
       groupControl3.Name = "groupControl3";
-      groupControl3.Size = new System.Drawing.Size(303, 443);
+      groupControl3.Size = new System.Drawing.Size(303, 385);
       groupControl3.TabIndex = 17;
       groupControl3.Text = "Indexes";
-      // 
-      // boxDelayAfterFix
-      // 
-      this.boxDelayAfterFix.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-      this.boxDelayAfterFix.Location = new System.Drawing.Point(200, 413);
-      this.boxDelayAfterFix.Name = "boxDelayAfterFix";
-      this.boxDelayAfterFix.Properties.AllowFocused = false;
-      this.boxDelayAfterFix.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxDelayAfterFix.Properties.Appearance.Options.UseTextOptions = true;
-      this.boxDelayAfterFix.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.boxDelayAfterFix.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-      this.boxDelayAfterFix.Properties.DisplayFormat.FormatString = "N00";
-      this.boxDelayAfterFix.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxDelayAfterFix.Properties.EditFormat.FormatString = "n0";
-      this.boxDelayAfterFix.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxDelayAfterFix.Properties.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-      this.boxDelayAfterFix.Properties.IsFloatValue = false;
-      this.boxDelayAfterFix.Properties.Mask.EditMask = "N00";
-      this.boxDelayAfterFix.Properties.MaxValue = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
-      this.boxDelayAfterFix.Size = new System.Drawing.Size(88, 20);
-      this.boxDelayAfterFix.TabIndex = 32;
-      this.boxDelayAfterFix.TabStop = false;
-      // 
-      // labelControl1
-      // 
-      labelControl1.Location = new System.Drawing.Point(14, 416);
-      labelControl1.Name = "labelControl1";
-      labelControl1.Size = new System.Drawing.Size(122, 13);
-      labelControl1.TabIndex = 31;
-      labelControl1.Text = "DELAY_MS_AFTER_FIX =";
-      // 
-      // boxMultiThreadingCount
-      // 
-      this.boxMultiThreadingCount.EditValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-      this.boxMultiThreadingCount.Location = new System.Drawing.Point(200, 383);
-      this.boxMultiThreadingCount.Name = "boxMultiThreadingCount";
-      this.boxMultiThreadingCount.Properties.AllowFocused = false;
-      this.boxMultiThreadingCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxMultiThreadingCount.Properties.Appearance.Options.UseTextOptions = true;
-      this.boxMultiThreadingCount.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-      this.boxMultiThreadingCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-      this.boxMultiThreadingCount.Properties.DisplayFormat.FormatString = "N00";
-      this.boxMultiThreadingCount.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxMultiThreadingCount.Properties.EditFormat.FormatString = "n0";
-      this.boxMultiThreadingCount.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-      this.boxMultiThreadingCount.Properties.IsFloatValue = false;
-      this.boxMultiThreadingCount.Properties.Mask.EditMask = "N00";
-      this.boxMultiThreadingCount.Properties.MaxValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-      this.boxMultiThreadingCount.Properties.MinValue = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-      this.boxMultiThreadingCount.Size = new System.Drawing.Size(88, 20);
-      this.boxMultiThreadingCount.TabIndex = 30;
-      this.boxMultiThreadingCount.TabStop = false;
-      // 
-      // labelControl3
-      // 
-      labelControl3.Location = new System.Drawing.Point(14, 386);
-      labelControl3.Name = "labelControl3";
-      labelControl3.Size = new System.Drawing.Size(173, 13);
-      labelControl3.TabIndex = 28;
-      labelControl3.Text = "MULTI-THREADING_PROCESSING =";
       // 
       // labelPadIndex
       // 
@@ -1127,7 +1029,7 @@
             " "});
       this.boxExcludeObject.Properties.ShowDropDown = false;
       this.boxExcludeObject.Properties.ValidateToken += new DevExpress.XtraEditors.TokenEditValidateTokenEventHandler(this.TokenValidate);
-      this.boxExcludeObject.Size = new System.Drawing.Size(343, 20);
+      this.boxExcludeObject.Size = new System.Drawing.Size(652, 20);
       this.boxExcludeObject.TabIndex = 8;
       // 
       // boxExcludeSchemas
@@ -1153,7 +1055,7 @@
       // 
       this.buttonOK.AllowFocus = false;
       this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.buttonOK.Location = new System.Drawing.Point(561, 542);
+      this.buttonOK.Location = new System.Drawing.Point(561, 573);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
       this.buttonOK.TabIndex = 1;
@@ -1176,7 +1078,7 @@
             " "});
       this.boxIncludeObject.Properties.ShowDropDown = false;
       this.boxIncludeObject.Properties.ValidateToken += new DevExpress.XtraEditors.TokenEditValidateTokenEventHandler(this.TokenValidate);
-      this.boxIncludeObject.Size = new System.Drawing.Size(343, 20);
+      this.boxIncludeObject.Size = new System.Drawing.Size(652, 20);
       this.boxIncludeObject.TabIndex = 15;
       // 
       // groupControl4
@@ -1185,7 +1087,7 @@
       this.groupControl4.Controls.Add(pictureBox1);
       this.groupControl4.Controls.Add(this.boxExcludeSchemas);
       this.groupControl4.Controls.Add(this.boxIncludeSchemas);
-      this.groupControl4.Location = new System.Drawing.Point(12, 366);
+      this.groupControl4.Location = new System.Drawing.Point(12, 395);
       this.groupControl4.Name = "groupControl4";
       this.groupControl4.Size = new System.Drawing.Size(396, 81);
       this.groupControl4.TabIndex = 18;
@@ -1197,15 +1099,15 @@
       this.groupControl5.Controls.Add(pictureBox4);
       this.groupControl5.Controls.Add(this.boxIncludeObject);
       this.groupControl5.Controls.Add(this.boxExcludeObject);
-      this.groupControl5.Location = new System.Drawing.Point(12, 453);
+      this.groupControl5.Location = new System.Drawing.Point(12, 482);
       this.groupControl5.Name = "groupControl5";
-      this.groupControl5.Size = new System.Drawing.Size(396, 81);
+      this.groupControl5.Size = new System.Drawing.Size(705, 81);
       this.groupControl5.TabIndex = 19;
       this.groupControl5.Text = "Object Filter (schema.table OR table OR %pattern%)";
       // 
       // boxShowSettingsWhenConnectionChanged
       // 
-      this.boxShowSettingsWhenConnectionChanged.Location = new System.Drawing.Point(93, 544);
+      this.boxShowSettingsWhenConnectionChanged.Location = new System.Drawing.Point(93, 575);
       this.boxShowSettingsWhenConnectionChanged.Name = "boxShowSettingsWhenConnectionChanged";
       this.boxShowSettingsWhenConnectionChanged.Properties.AllowFocused = false;
       this.boxShowSettingsWhenConnectionChanged.Properties.Caption = "Open dialog when connection string changed";
@@ -1217,7 +1119,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(726, 575);
+      this.ClientSize = new System.Drawing.Size(726, 605);
       this.Controls.Add(this.boxShowSettingsWhenConnectionChanged);
       this.Controls.Add(this.groupControl5);
       this.Controls.Add(this.groupControl4);
@@ -1269,8 +1171,6 @@
       ((System.ComponentModel.ISupportInitialize)(groupControl3)).EndInit();
       groupControl3.ResumeLayout(false);
       groupControl3.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.boxDelayAfterFix.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxMultiThreadingCount.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPadIndex.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxNoRecompute.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxStatsSamplePercent.Properties)).EndInit();
@@ -1346,10 +1246,8 @@
     private DevExpress.XtraEditors.CheckEdit boxPadIndex;
     private DevExpress.XtraEditors.LabelControl labelSkipThreshold;
     private DevExpress.XtraEditors.ComboBoxEdit boxSkipThreshold;
-    private DevExpress.XtraEditors.SpinEdit boxMultiThreadingCount;
     private DevExpress.XtraEditors.CheckEdit boxShowSettingsWhenConnectionChanged;
     private DevExpress.XtraEditors.CheckEdit boxIgnoreHeapWithCompression;
-    private DevExpress.XtraEditors.SpinEdit boxDelayAfterFix;
     private DevExpress.XtraEditors.CheckEdit boxShowOnlyMore1000Rows;
   }
 }

@@ -17,8 +17,6 @@ namespace SQLIndexManager {
     private int _maxIndexSize = 8192;
     private int _connectionTimeout = 15;
     private int _commandTimeout = 120;
-    private int _delayAfterFix;
-    private int _multiThreadingCount = 1;
     private int _maxDop;
     private int _fillFactor;
     private int _sampleStatsPercent = 100;
@@ -87,18 +85,6 @@ namespace SQLIndexManager {
     public int SecondThreshold {
       get => _secondThreshold;
       set => UpdateThreshold(_firstThreshold, value);
-    }
-
-    [XmlAttribute]
-    public int DelayAfterFix {
-      get => _delayAfterFix;
-      set => _delayAfterFix = value.IsBetween(0, 5000) ? value : _delayAfterFix;
-    }
-
-    [XmlAttribute]
-    public int MultiThreadingCount {
-      get => _multiThreadingCount;
-      set => _multiThreadingCount = value.IsBetween(1, 1) ? value : _multiThreadingCount;
     }
 
     [XmlAttribute]

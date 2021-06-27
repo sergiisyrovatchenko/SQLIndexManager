@@ -315,7 +315,8 @@ namespace SQLIndexManager {
             buttonNewConnection.Enabled =
               buttonOptions.Enabled = false;
 
-      buttonStopFix.Visibility = BarItemVisibility.Always;
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Always;
 
       List<Index> selIndex = ((List<Index>)view.DataSource).Where(_ => _.IsSelected && _.FixType != IndexOp.SKIP).ToList();
 
@@ -375,13 +376,14 @@ namespace SQLIndexManager {
       taskbar.ProgressCurrentValue = e.ProgressPercentage + 1;
       UpdateProgressStats();
 
-      if (e.UserState != null) {
+      if (e.UserState != null && buttonAutoScroll.Down) {
         Index index = (Index)e.UserState;
         var rowHandle = view.FindRow(index);
         if (rowHandle != GridControl.InvalidRowHandle) {
-          view.RefreshRow(rowHandle);
-          view.SelectRow(rowHandle);
-          view.MakeRowVisible(rowHandle);
+          if (view.IsRowVisible(rowHandle) == RowVisibleState.Hidden) {
+            view.MoveNextPage();
+            view.MakeRowVisible(rowHandle);
+          }
         }
       }
 
@@ -429,14 +431,6 @@ namespace SQLIndexManager {
             index.Progress = Resources.IconError;
             _ps.Errors++;
           }
-          else {
-            if (Settings.Options.DelayAfterFix > 0 && i < indexes.Count - 1) {
-              _workerFix.ReportProgress(i, index);
-              index.Progress = Resources.IconDelay;
-              Thread.Sleep(Settings.Options.DelayAfterFix);
-              index.Progress = Resources.IconOk;
-            }
-          }
 
           _workerFix.ReportProgress(i, index);
         }
@@ -455,7 +449,8 @@ namespace SQLIndexManager {
 
       buttonFix.Enabled = false;
 
-      buttonStopFix.Visibility = BarItemVisibility.Never;
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Never;
 
       UpdateProgressStats();
       Output.Current.Add("Done!");
@@ -938,7 +933,9 @@ namespace SQLIndexManager {
       Output.Current.Add("Canceling...");
       QueryEngine.KillActiveSessions();
       _workerFix.CancelAsync();
-      buttonStopFix.Visibility = BarItemVisibility.Never;
+
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Never;
     }
 
     private void ButtonCopyFixClick(object sender, ItemClickEventArgs e) {

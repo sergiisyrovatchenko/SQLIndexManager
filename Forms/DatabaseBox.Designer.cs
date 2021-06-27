@@ -24,6 +24,7 @@
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
+      DevExpress.XtraLayout.LayoutControlGroup layoutControl;
       DevExpress.XtraGrid.GridFormatRule gridFormatRule1 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar1 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule2 = new DevExpress.XtraGrid.GridFormatRule();
@@ -34,38 +35,37 @@
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar4 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule5 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar5 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
-      DevExpress.XtraLayout.LayoutControlGroup layoutControl;
       DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
       this.DataSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.DataFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogFreeSize = new DevExpress.XtraGrid.Columns.GridColumn();
       this.TotalSize = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.DatabaseName = new DevExpress.XtraGrid.Columns.GridColumn();
-      this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
-      this.DatabaseBoxlayoutControl1ConvertedLayout = new DevExpress.XtraLayout.LayoutControl();
+      this.searchControl1item = new DevExpress.XtraLayout.LayoutControlItem();
       this.searchControl1 = new DevExpress.XtraEditors.SearchControl();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
+      this.DatabaseName = new DevExpress.XtraGrid.Columns.GridColumn();
       this.RecoveryModel = new DevExpress.XtraGrid.Columns.GridColumn();
       this.LogReuseWait = new DevExpress.XtraGrid.Columns.GridColumn();
       this.CreateDate = new DevExpress.XtraGrid.Columns.GridColumn();
+      this.DatabaseBoxlayoutControl1ConvertedLayout = new DevExpress.XtraLayout.LayoutControl();
       this.buttonRefresh = new DevExpress.XtraEditors.SimpleButton();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
-      this.searchControl1item = new DevExpress.XtraLayout.LayoutControlItem();
+      this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
       this.griditem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonRefreshitem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonOKitem = new DevExpress.XtraLayout.LayoutControlItem();
       this.buttonCancelitem = new DevExpress.XtraLayout.LayoutControlItem();
       layoutControl = new DevExpress.XtraLayout.LayoutControlGroup();
       emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-      ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).BeginInit();
-      this.DatabaseBoxlayoutControl1ConvertedLayout.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(layoutControl)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(layoutControl)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).BeginInit();
+      this.DatabaseBoxlayoutControl1ConvertedLayout.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.griditem)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonRefreshitem)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonOKitem)).BeginInit();
@@ -128,40 +128,37 @@
       this.TotalSize.VisibleIndex = 5;
       this.TotalSize.Width = 110;
       // 
-      // DatabaseName
+      // layoutControl
       // 
-      this.DatabaseName.Caption = "Database";
-      this.DatabaseName.FieldName = "DatabaseName";
-      this.DatabaseName.Name = "DatabaseName";
-      this.DatabaseName.Visible = true;
-      this.DatabaseName.VisibleIndex = 1;
-      this.DatabaseName.Width = 241;
+      layoutControl.AllowCustomizeChildren = false;
+      layoutControl.AllowHide = false;
+      layoutControl.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+      layoutControl.GroupBordersVisible = false;
+      layoutControl.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.searchControl1item,
+            this.griditem,
+            this.buttonRefreshitem,
+            this.buttonOKitem,
+            this.buttonCancelitem,
+            emptySpaceItem1});
+      layoutControl.Name = "Root";
+      layoutControl.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 5, 10);
+      layoutControl.ShowInCustomizationForm = false;
+      layoutControl.Size = new System.Drawing.Size(1184, 461);
+      layoutControl.TextVisible = false;
       // 
-      // buttonCancel
+      // searchControl1item
       // 
-      this.buttonCancel.AllowFocus = false;
-      this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-      this.buttonCancel.Location = new System.Drawing.Point(1096, 427);
-      this.buttonCancel.Name = "buttonCancel";
-      this.buttonCancel.Size = new System.Drawing.Size(76, 22);
-      this.buttonCancel.StyleController = this.DatabaseBoxlayoutControl1ConvertedLayout;
-      this.buttonCancel.TabIndex = 3;
-      this.buttonCancel.Text = "Cancel";
-      // 
-      // DatabaseBoxlayoutControl1ConvertedLayout
-      // 
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.searchControl1);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.grid);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonRefresh);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonOK);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonCancel);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Location = new System.Drawing.Point(0, 0);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Name = "DatabaseBoxlayoutControl1ConvertedLayout";
-      this.DatabaseBoxlayoutControl1ConvertedLayout.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(968, 152, 650, 400);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Root = layoutControl;
-      this.DatabaseBoxlayoutControl1ConvertedLayout.Size = new System.Drawing.Size(1184, 461);
-      this.DatabaseBoxlayoutControl1ConvertedLayout.TabIndex = 5;
+      this.searchControl1item.Control = this.searchControl1;
+      this.searchControl1item.Location = new System.Drawing.Point(75, 420);
+      this.searchControl1item.MaxSize = new System.Drawing.Size(223, 26);
+      this.searchControl1item.MinSize = new System.Drawing.Size(223, 26);
+      this.searchControl1item.Name = "searchControl1item";
+      this.searchControl1item.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 3, 2);
+      this.searchControl1item.Size = new System.Drawing.Size(223, 26);
+      this.searchControl1item.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+      this.searchControl1item.TextSize = new System.Drawing.Size(0, 0);
+      this.searchControl1item.TextVisible = false;
       // 
       // searchControl1
       // 
@@ -352,6 +349,15 @@
             new DevExpress.XtraGrid.Columns.GridColumnSortInfo(this.TotalSize, DevExpress.Data.ColumnSortOrder.Descending)});
       this.view.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.GridSelectionChanged);
       // 
+      // DatabaseName
+      // 
+      this.DatabaseName.Caption = "Database";
+      this.DatabaseName.FieldName = "DatabaseName";
+      this.DatabaseName.Name = "DatabaseName";
+      this.DatabaseName.Visible = true;
+      this.DatabaseName.VisibleIndex = 1;
+      this.DatabaseName.Width = 241;
+      // 
       // RecoveryModel
       // 
       this.RecoveryModel.Caption = "Recovery Model";
@@ -367,12 +373,12 @@
       // 
       this.LogReuseWait.Caption = "Log Reuse Wait";
       this.LogReuseWait.FieldName = "LogReuseWait";
-      this.LogReuseWait.MaxWidth = 130;
-      this.LogReuseWait.MinWidth = 130;
+      this.LogReuseWait.MaxWidth = 150;
+      this.LogReuseWait.MinWidth = 150;
       this.LogReuseWait.Name = "LogReuseWait";
       this.LogReuseWait.Visible = true;
       this.LogReuseWait.VisibleIndex = 3;
-      this.LogReuseWait.Width = 130;
+      this.LogReuseWait.Width = 150;
       // 
       // CreateDate
       // 
@@ -387,6 +393,21 @@
       this.CreateDate.Visible = true;
       this.CreateDate.VisibleIndex = 4;
       this.CreateDate.Width = 105;
+      // 
+      // DatabaseBoxlayoutControl1ConvertedLayout
+      // 
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.searchControl1);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.grid);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonRefresh);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonOK);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Controls.Add(this.buttonCancel);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Location = new System.Drawing.Point(0, 0);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Name = "DatabaseBoxlayoutControl1ConvertedLayout";
+      this.DatabaseBoxlayoutControl1ConvertedLayout.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(968, 152, 650, 400);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Root = layoutControl;
+      this.DatabaseBoxlayoutControl1ConvertedLayout.Size = new System.Drawing.Size(1184, 461);
+      this.DatabaseBoxlayoutControl1ConvertedLayout.TabIndex = 5;
       // 
       // buttonRefresh
       // 
@@ -411,37 +432,16 @@
       this.buttonOK.TabIndex = 2;
       this.buttonOK.Text = "OK";
       // 
-      // layoutControl
+      // buttonCancel
       // 
-      layoutControl.AllowCustomizeChildren = false;
-      layoutControl.AllowHide = false;
-      layoutControl.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-      layoutControl.GroupBordersVisible = false;
-      layoutControl.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.searchControl1item,
-            this.griditem,
-            this.buttonRefreshitem,
-            this.buttonOKitem,
-            this.buttonCancelitem,
-            emptySpaceItem1});
-      layoutControl.Name = "Root";
-      layoutControl.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 5, 10);
-      layoutControl.ShowInCustomizationForm = false;
-      layoutControl.Size = new System.Drawing.Size(1184, 461);
-      layoutControl.TextVisible = false;
-      // 
-      // searchControl1item
-      // 
-      this.searchControl1item.Control = this.searchControl1;
-      this.searchControl1item.Location = new System.Drawing.Point(75, 420);
-      this.searchControl1item.MaxSize = new System.Drawing.Size(223, 26);
-      this.searchControl1item.MinSize = new System.Drawing.Size(223, 26);
-      this.searchControl1item.Name = "searchControl1item";
-      this.searchControl1item.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 3, 2);
-      this.searchControl1item.Size = new System.Drawing.Size(223, 26);
-      this.searchControl1item.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-      this.searchControl1item.TextSize = new System.Drawing.Size(0, 0);
-      this.searchControl1item.TextVisible = false;
+      this.buttonCancel.AllowFocus = false;
+      this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+      this.buttonCancel.Location = new System.Drawing.Point(1096, 427);
+      this.buttonCancel.Name = "buttonCancel";
+      this.buttonCancel.Size = new System.Drawing.Size(76, 22);
+      this.buttonCancel.StyleController = this.DatabaseBoxlayoutControl1ConvertedLayout;
+      this.buttonCancel.TabIndex = 3;
+      this.buttonCancel.Text = "Cancel";
       // 
       // griditem
       // 
@@ -512,13 +512,13 @@
       this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "Select Databases";
-      ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).EndInit();
-      this.DatabaseBoxlayoutControl1ConvertedLayout.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(layoutControl)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.searchControl1.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(layoutControl)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.searchControl1item)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.DatabaseBoxlayoutControl1ConvertedLayout)).EndInit();
+      this.DatabaseBoxlayoutControl1ConvertedLayout.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.griditem)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonRefreshitem)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.buttonOKitem)).EndInit();
