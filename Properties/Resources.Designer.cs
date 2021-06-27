@@ -276,6 +276,16 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconDelete {
+            get {
+                object obj = ResourceManager.GetObject("IconDelete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconElapsedTime {
             get {
                 object obj = ResourceManager.GetObject("IconElapsedTime", resourceCulture);
@@ -486,9 +496,29 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconSaveFix {
+            get {
+                object obj = ResourceManager.GetObject("IconSaveFix", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconScan {
             get {
                 object obj = ResourceManager.GetObject("IconScan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconSkip {
+            get {
+                object obj = ResourceManager.GetObject("IconSkip", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -506,9 +536,9 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap IiconSaveFix {
+        internal static System.Drawing.Bitmap IconUpdateStats {
             get {
-                object obj = ResourceManager.GetObject("IiconSaveFix", resourceCulture);
+                object obj = ResourceManager.GetObject("IconUpdateStats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

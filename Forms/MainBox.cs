@@ -730,7 +730,38 @@ namespace SQLIndexManager {
           return;
 
         if (view.OptionsBehavior.Editable) {
-          e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, Resources.IconReplace));
+          DXSubMenuItem ci = new DXSubMenuItem("Change Fix Action");
+          ci.ImageOptions.Image = Resources.IconReplace;
+          e.Menu.Items.Add(ci);
+
+          ci.Items.Add(new DXMenuItem(IndexOp.REBUILD.Description(), ChangeFixAction, Resources.IconIndexes));
+          ci.Items.Add(new DXMenuItem(IndexOp.REORGANIZE.Description(), ChangeFixAction, Resources.IconIndexes));
+
+          if (Settings.ServerInfo.IsCompressionAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_ROW.Description(), ChangeFixAction, Resources.IconIndexes) { BeginGroup = true });
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_PAGE.Description(), ChangeFixAction, Resources.IconIndexes));
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_NONE.Description(), ChangeFixAction, Resources.IconIndexes));
+          }
+
+          if (Settings.ServerInfo.IsOnlineRebuildAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_ONLINE.Description(), ChangeFixAction, Resources.IconIndexes));
+          }
+
+          if (Settings.ServerInfo.IsColumnstoreAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_COLUMNSTORE.Description(), ChangeFixAction, Resources.IconIndexes) { BeginGroup = true });
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_COLUMNSTORE_ARCHIVE.Description(), ChangeFixAction, Resources.IconIndexes));
+
+            if (Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) {
+              ci.Items.Add(new DXMenuItem(IndexOp.CREATE_COLUMNSTORE_INDEX.Description(), ChangeFixAction, Resources.IconReplace));
+            }
+          }
+
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_SAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_RESAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats));
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_FULL.Description(), ChangeFixAction, Resources.IconUpdateStats));
+          ci.Items.Add(new DXMenuItem(IndexOp.DISABLE_INDEX.Description(), ChangeFixAction, Resources.IconHide) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.DROP_TABLE.Description(), ChangeFixAction, Resources.IconDelete));
+          ci.Items.Add(new DXMenuItem(IndexOp.SKIP.Description(), ChangeFixAction, Resources.IconSkip) { BeginGroup = true });
         }
         
         e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, Resources.IconCopyFix));
@@ -813,11 +844,9 @@ namespace SQLIndexManager {
     }
 
     private void ChangeFixAction(object sender, EventArgs e) {
-      using (ActionBox form = new ActionBox()) {
-        if (form.ShowDialog(this) == DialogResult.OK) {
-          UpdateFixAction(form.GetFixAction());
-        }
-      }
+      DXMenuItem mi = (DXMenuItem)sender;
+      IndexOp op = Utils.GetValueFromDescription<IndexOp>(mi.Caption);
+      UpdateFixAction(op);
     }
 
     private void UpdateFixAction(IndexOp op) {

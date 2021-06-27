@@ -1490,7 +1490,7 @@ namespace SQLIndexManager {
       // 
       this.buttonSaveFix.Caption = "Save Fix Script";
       this.buttonSaveFix.Id = 23;
-      this.buttonSaveFix.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IiconSaveFix;
+      this.buttonSaveFix.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconSaveFix;
       this.buttonSaveFix.Name = "buttonSaveFix";
       this.buttonSaveFix.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonSaveFixClick);
       // 

@@ -349,7 +349,7 @@
   <data name="DatamaseMaster" xml:space="preserve">
     <value>master</value>
   </data>
-  <data name="IiconSaveFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="IconSaveFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon_save_fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="IconCopy" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -396,5 +396,14 @@
   </data>
   <data name="DatabaseId" xml:space="preserve">
     <value>DatabaseId</value>
+  </data>
+  <data name="IconDelete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSkip" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_skip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconUpdateStats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\icon_update_stats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

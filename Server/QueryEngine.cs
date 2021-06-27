@@ -44,10 +44,10 @@ namespace SQLIndexManager {
         Database db = dbs.FirstOrDefault(_ => _.DatabaseId == databaseId);
 
         if (db != null) {
-            db.DataSize     = r.Field<long?>(Resources.DataSize) ?? 0;
-            db.DataUsedSize = r.Field<long?>(Resources.DataUsedSize) ?? 0;
-            db.LogSize      = r.Field<long?>(Resources.LogSize) ?? 0;
-            db.LogUsedSize  = r.Field<long?>(Resources.LogUsedSize) ?? 0;
+          db.DataSize     = r.Field<long?>(Resources.DataSize) ?? 0;
+          db.DataUsedSize = r.Field<long?>(Resources.DataUsedSize) ?? 0;
+          db.LogSize      = r.Field<long?>(Resources.LogSize) ?? 0;
+          db.LogUsedSize  = r.Field<long?>(Resources.LogUsedSize) ?? 0;
         }
       }
 
