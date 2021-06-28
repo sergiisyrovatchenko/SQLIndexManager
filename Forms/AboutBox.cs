@@ -23,8 +23,7 @@ namespace SQLIndexManager {
         Process.Start(Resources.GitHubLink);
       }
       catch (Exception ex) {
-        Output.Current.Add($"Error: {ex.Source}", ex.Message);
-        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        Utils.ShowErrorFrom(ex);
       }
     }
 

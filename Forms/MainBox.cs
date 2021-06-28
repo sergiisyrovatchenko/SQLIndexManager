@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using DevExpress.Data;
 using DevExpress.Utils;
@@ -130,8 +129,7 @@ namespace SQLIndexManager {
               }
 
               if (!ex.Message.Contains("timeout")) {
-                Output.Current.Add($"Error: {ex.Source}", ex.Message);
-                XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utils.ShowErrorFrom(ex);
                 return;
               }
 
@@ -906,7 +904,7 @@ namespace SQLIndexManager {
         Process.Start(AppInfo.LogFileName);
       }
       catch (Exception ex) {
-        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        Utils.ShowErrorFrom(ex);
       }
     }
 

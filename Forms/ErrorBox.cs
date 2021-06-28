@@ -10,11 +10,14 @@ namespace SQLIndexManager {
     public ErrorBox(Exception ex) {
       InitializeComponent();
 
+      ServerInfo si = null;
+      try { si = Settings.ServerInfo; } catch { }
+
       edError.Text =
-        "Application has encountered an unexpected error" +
-        $"{Environment.NewLine}Please send error detail to {Resources.GitHubLink}" +
+        $"Application has encountered an unexpected error{Environment.NewLine}" +
+        $"Please send error detail to {Resources.GitHubLink}{Environment.NewLine}" +
+        (si == null ? "" : $"{Environment.NewLine}SQL Server: {si}") +
         $"{Environment.NewLine}Build: {AppInfo.Version}" +
-        $"{Environment.NewLine}OS: {Environment.OSVersion}" +
         $"{Environment.NewLine}{Environment.NewLine}{ex.Message}" +
         $"{Environment.NewLine}{ex.Source}" +
         $"{Environment.NewLine}{ex.StackTrace}";
