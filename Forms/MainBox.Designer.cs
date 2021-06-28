@@ -84,7 +84,23 @@ namespace SQLIndexManager {
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar11 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
       DevExpress.XtraGrid.GridFormatRule gridFormatRule13 = new DevExpress.XtraGrid.GridFormatRule();
       DevExpress.XtraEditors.FormatConditionRuleDataBar formatConditionRuleDataBar12 = new DevExpress.XtraEditors.FormatConditionRuleDataBar();
+      DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem1 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem2 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem3 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem4 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem5 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem6 = new DevExpress.Utils.ToolTipTitleItem();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainBox));
+      DevExpress.Utils.SuperToolTip superToolTip7 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem7 = new DevExpress.Utils.ToolTipTitleItem();
+      DevExpress.Utils.SuperToolTip superToolTip8 = new DevExpress.Utils.SuperToolTip();
+      DevExpress.Utils.ToolTipTitleItem toolTipTitleItem8 = new DevExpress.Utils.ToolTipTitleItem();
       this.popupIndexOperation = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
       this.grid = new DevExpress.XtraGrid.GridControl();
       this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -832,13 +848,13 @@ namespace SQLIndexManager {
       // 
       this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
       this.grid.Font = new System.Drawing.Font("Tahoma", 9F);
-      this.grid.Location = new System.Drawing.Point(0, 27);
+      this.grid.Location = new System.Drawing.Point(0, 32);
       this.grid.MainView = this.view;
       this.grid.Margin = new System.Windows.Forms.Padding(3, 8, 3, 3);
       this.grid.Name = "grid";
       this.grid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.popupIndexOperation});
-      this.grid.Size = new System.Drawing.Size(1190, 741);
+      this.grid.Size = new System.Drawing.Size(1190, 746);
       this.grid.TabIndex = 2;
       this.grid.ToolTipController = this.gridToolTipController;
       this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1287,6 +1303,8 @@ namespace SQLIndexManager {
       // 
       // gridToolTipController
       // 
+      this.gridToolTipController.ToolTipAnchor = DevExpress.Utils.ToolTipAnchor.Object;
+      this.gridToolTipController.ToolTipLocation = DevExpress.Utils.ToolTipLocation.TopCenter;
       this.gridToolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.GetActiveObjectInfo);
       // 
       // statusBar
@@ -1303,10 +1321,10 @@ namespace SQLIndexManager {
       this.statusBar.ItemLinks.Add(this.buttonLog);
       this.statusBar.ItemLinks.Add(this.labelInfo);
       this.statusBar.ItemLinks.Add(this.labelServerInfo);
-      this.statusBar.Location = new System.Drawing.Point(0, 768);
+      this.statusBar.Location = new System.Drawing.Point(0, 778);
       this.statusBar.Name = "statusBar";
       this.statusBar.Ribbon = this.ribbonControl1;
-      this.statusBar.Size = new System.Drawing.Size(1190, 31);
+      this.statusBar.Size = new System.Drawing.Size(1190, 21);
       this.statusBar.ToolTipController = this.toolTipController;
       // 
       // labelDatabases
@@ -1316,6 +1334,9 @@ namespace SQLIndexManager {
       this.labelDatabases.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconDatabases;
       this.labelDatabases.Name = "labelDatabases";
       this.labelDatabases.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+      toolTipTitleItem1.Text = "Databases";
+      superToolTip1.Items.Add(toolTipTitleItem1);
+      this.labelDatabases.SuperTip = superToolTip1;
       this.labelDatabases.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelErrors
@@ -1324,6 +1345,9 @@ namespace SQLIndexManager {
       this.labelErrors.Id = 29;
       this.labelErrors.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconErrors;
       this.labelErrors.Name = "labelErrors";
+      toolTipTitleItem2.Text = "Errors";
+      superToolTip2.Items.Add(toolTipTitleItem2);
+      this.labelErrors.SuperTip = superToolTip2;
       this.labelErrors.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelIndexes
@@ -1333,6 +1357,9 @@ namespace SQLIndexManager {
       this.labelIndexes.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconIndexes;
       this.labelIndexes.Name = "labelIndexes";
       this.labelIndexes.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+      toolTipTitleItem3.Text = "Indexes";
+      superToolTip3.Items.Add(toolTipTitleItem3);
+      this.labelIndexes.SuperTip = superToolTip3;
       this.labelIndexes.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelIndexesSize
@@ -1341,6 +1368,9 @@ namespace SQLIndexManager {
       this.labelIndexesSize.Id = 33;
       this.labelIndexesSize.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconIndexesSize;
       this.labelIndexesSize.Name = "labelIndexesSize";
+      toolTipTitleItem4.Text = "Index Size";
+      superToolTip4.Items.Add(toolTipTitleItem4);
+      this.labelIndexesSize.SuperTip = superToolTip4;
       this.labelIndexesSize.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelSavedSpace
@@ -1349,6 +1379,9 @@ namespace SQLIndexManager {
       this.labelSavedSpace.Id = 31;
       this.labelSavedSpace.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconSavedSpace;
       this.labelSavedSpace.Name = "labelSavedSpace";
+      toolTipTitleItem5.Text = "Saved Space";
+      superToolTip5.Items.Add(toolTipTitleItem5);
+      this.labelSavedSpace.SuperTip = superToolTip5;
       this.labelSavedSpace.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // labelElapsedTime
@@ -1357,6 +1390,9 @@ namespace SQLIndexManager {
       this.labelElapsedTime.Id = 34;
       this.labelElapsedTime.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconElapsedTime;
       this.labelElapsedTime.Name = "labelElapsedTime";
+      toolTipTitleItem6.Text = "Elapsed Time";
+      superToolTip6.Items.Add(toolTipTitleItem6);
+      this.labelElapsedTime.SuperTip = superToolTip6;
       this.labelElapsedTime.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonStopScan
@@ -1380,24 +1416,31 @@ namespace SQLIndexManager {
       // buttonAutoScroll
       // 
       this.buttonAutoScroll.ButtonStyle = DevExpress.XtraBars.BarButtonStyle.Check;
+      this.buttonAutoScroll.Caption = "Auto Scroll Window";
       this.buttonAutoScroll.Down = true;
       this.buttonAutoScroll.Id = 41;
       this.buttonAutoScroll.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("buttonAutoScroll.ImageOptions.Image")));
       this.buttonAutoScroll.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("buttonAutoScroll.ImageOptions.LargeImage")));
       this.buttonAutoScroll.Name = "buttonAutoScroll";
+      this.buttonAutoScroll.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
       this.buttonAutoScroll.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // buttonLog
       // 
+      this.buttonLog.Caption = "Show Log  File";
       this.buttonLog.Id = 26;
       this.buttonLog.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconLog;
       this.buttonLog.Name = "buttonLog";
+      this.buttonLog.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.SmallWithoutText;
       this.buttonLog.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.ButtonLog);
       // 
       // labelInfo
       // 
       this.labelInfo.Id = 24;
       this.labelInfo.Name = "labelInfo";
+      toolTipTitleItem7.Text = "Output";
+      superToolTip7.Items.Add(toolTipTitleItem7);
+      this.labelInfo.SuperTip = superToolTip7;
       // 
       // labelServerInfo
       // 
@@ -1405,6 +1448,9 @@ namespace SQLIndexManager {
       this.labelServerInfo.Id = 35;
       this.labelServerInfo.ImageOptions.Image = global::SQLIndexManager.Properties.Resources.IconInfo;
       this.labelServerInfo.Name = "labelServerInfo";
+      toolTipTitleItem8.Text = "Version";
+      superToolTip8.Items.Add(toolTipTitleItem8);
+      this.labelServerInfo.SuperTip = superToolTip8;
       this.labelServerInfo.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
       // 
       // ribbonControl1
@@ -1458,7 +1504,7 @@ namespace SQLIndexManager {
       this.ribbonControl1.ShowPageHeadersMode = DevExpress.XtraBars.Ribbon.ShowPageHeadersMode.Hide;
       this.ribbonControl1.ShowQatLocationSelector = false;
       this.ribbonControl1.ShowToolbarCustomizeItem = false;
-      this.ribbonControl1.Size = new System.Drawing.Size(1190, 27);
+      this.ribbonControl1.Size = new System.Drawing.Size(1190, 32);
       this.ribbonControl1.StatusBar = this.statusBar;
       this.ribbonControl1.Toolbar.ShowCustomizeItem = false;
       this.ribbonControl1.ShowCustomizationMenu += new DevExpress.XtraBars.Ribbon.RibbonCustomizationMenuEventHandler(this.GridCustomizationMenu);
@@ -1572,7 +1618,8 @@ namespace SQLIndexManager {
       // 
       // toolTipController
       // 
-      this.toolTipController.Active = false;
+      this.toolTipController.ToolTipAnchor = DevExpress.Utils.ToolTipAnchor.Object;
+      this.toolTipController.ToolTipLocation = DevExpress.Utils.ToolTipLocation.TopCenter;
       // 
       // taskbar
       // 
