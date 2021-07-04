@@ -10,32 +10,45 @@ namespace SQLIndexManager {
   public static class QueryEngine {
 
     public static List<Database> GetDatabases(SqlConnection connection) {
-      string query = !Settings.ServerInfo.IsAzure ? Query.DatabaseList : Query.DatabaseListAzure;
-
-      SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+      SqlCommand cmd = new SqlCommand(Query.DatabaseList, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
       DataSet data = new DataSet();
       adapter.Fill(data);
 
       List<Database> dbs = new List<Database>();
-      foreach (DataRow _ in data.Tables[0].Rows) {
-        long dataSize = _.Field<long?>(Resources.DataSize) ?? 0;
-        long logSize = _.Field<long?>(Resources.LogSize) ?? 0;
-
+      foreach (DataRow r in data.Tables[0].Rows) {
         dbs.Add(
           new Database {
-            DatabaseName  = _.Field<string>(Resources.DatabaseName),
-            RecoveryModel = _.Field<string>(Resources.RecoveryModel),
-            LogReuseWait  = _.Field<string>(Resources.LogReuseWait),
-            CreateDate    = _.Field<DateTime>(Resources.CreateDate),
-            TotalSize     = dataSize + logSize,
-            DataSize      = dataSize,
-            DataFreeSize  = dataSize - (_.Field<long?>(Resources.DataUsedSize) ?? 0),
-            LogSize       = logSize,
-            LogFreeSize   = logSize - (_.Field<long?>(Resources.LogUsedSize) ?? 0)
+            DatabaseId    = r.Field<int>(Resources.DatabaseId),
+            DatabaseName  = r.Field<string>(Resources.DatabaseName),
+            RecoveryModel = r.Field<string>(Resources.RecoveryModel),
+            LogReuseWait  = r.Field<string>(Resources.LogReuseWait),
+            CreateDate    = r.Field<DateTime>(Resources.CreateDate)
           }
         );
+      }
+
+      return dbs;
+    }
+
+    public static List<Database> RefreshDatabaseSize(SqlConnection connection, List<Database> dbs) {
+      SqlCommand cmd = new SqlCommand(Query.DatabaseSizeList, connection) { CommandTimeout = Settings.Options.CommandTimeout };
+
+      SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+      DataSet data = new DataSet();
+      adapter.Fill(data);
+
+      foreach (DataRow r in data.Tables[0].Rows) {
+        int databaseId = r.Field<int>(Resources.DatabaseId);
+        Database db = dbs.FirstOrDefault(_ => _.DatabaseId == databaseId);
+
+        if (db != null) {
+          db.DataSize     = r.Field<long?>(Resources.DataSize) ?? 0;
+          db.DataUsedSize = r.Field<long?>(Resources.DataUsedSize) ?? 0;
+          db.LogSize      = r.Field<long?>(Resources.LogSize) ?? 0;
+          db.LogUsedSize  = r.Field<long?>(Resources.LogUsedSize) ?? 0;
+        }
       }
 
       return dbs;
@@ -51,7 +64,6 @@ namespace SQLIndexManager {
         DataSet data = new DataSet();
         adapter.Fill(data);
 
-        
         foreach (DataRow _ in data.Tables[0].Rows) {
           di.Add(
             new DiskInfo {
@@ -150,9 +162,11 @@ namespace SQLIndexManager {
         string ignorePermissions = Settings.Options.IgnorePermissions ? "" : "AND PERMISSIONS(i.[object_id]) & 2 = 2 ";
         string ignoreHeapWithCompression = Settings.Options.IgnoreHeapWithCompression ? "AND (i.[type] != 0 OR (i.[type] = 0 AND p.DataCompression = 0)) " : "";
 
+        string statsInfo = Settings.ServerInfo.IsFullStats ? Query.StatsFull : Query.StatsLite;
+
         string query = string.Format(Query.PreDescribeIndexes,
                                     string.Join(", ", it), excludeList, indexQuery, lob,
-                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList, ignoreHeapWithCompression);
+                                    indexStats, ignoreReadOnlyFL, ignorePermissions, includeList, ignoreHeapWithCompression, statsInfo);
 
         SqlCommand cmd = new SqlCommand(query, connection) { CommandTimeout = Settings.Options.CommandTimeout };
 
@@ -223,6 +237,8 @@ namespace SQLIndexManager {
             DataCompression      = (DataCompression)_.Field<byte>(Resources.DataCompression),
             Fragmentation        = _.Field<double?>(Resources.Fragmentation),
             PageSpaceUsed        = _.Field<double?>(Resources.PageSpaceUsed),
+            IsTable              = _.Field<bool>(Resources.IsTable),
+            IsFKs                = _.Field<bool>(Resources.IsFKs),
             IsAllowReorganize    = _.Field<bool>(Resources.IsAllowPageLocks) && indexType != IndexType.HEAP,
             IsAllowOnlineRebuild = isOnlineRebuild,
             IsAllowCompression   = Settings.ServerInfo.IsCompressionAvailable && !_.Field<bool>(Resources.IsSparse),
@@ -377,7 +393,7 @@ namespace SQLIndexManager {
             ix.IndexStats = DateTime.UtcNow;
             ix.Fragmentation = 0;
           }
-          else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE) {
+          else if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE || ix.FixType == IndexOp.TRUNCATE_TABLE) {
             ix.PagesCountBefore = ix.PagesCount;
             ix.Fragmentation = 0;
             ix.PagesCount = 0;

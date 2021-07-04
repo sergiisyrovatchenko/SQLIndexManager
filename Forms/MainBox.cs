@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using DevExpress.Data;
 using DevExpress.Utils;
@@ -130,8 +129,7 @@ namespace SQLIndexManager {
               }
 
               if (!ex.Message.Contains("timeout")) {
-                Output.Current.Add($"Error: {ex.Source}", ex.Message);
-                XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Utils.ShowErrorFrom(ex);
                 return;
               }
 
@@ -315,7 +313,8 @@ namespace SQLIndexManager {
             buttonNewConnection.Enabled =
               buttonOptions.Enabled = false;
 
-      buttonStopFix.Visibility = BarItemVisibility.Always;
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Always;
 
       List<Index> selIndex = ((List<Index>)view.DataSource).Where(_ => _.IsSelected && _.FixType != IndexOp.SKIP).ToList();
 
@@ -375,13 +374,14 @@ namespace SQLIndexManager {
       taskbar.ProgressCurrentValue = e.ProgressPercentage + 1;
       UpdateProgressStats();
 
-      if (e.UserState != null) {
+      if (e.UserState != null && buttonAutoScroll.Down) {
         Index index = (Index)e.UserState;
         var rowHandle = view.FindRow(index);
         if (rowHandle != GridControl.InvalidRowHandle) {
-          view.RefreshRow(rowHandle);
-          view.SelectRow(rowHandle);
-          view.MakeRowVisible(rowHandle);
+          if (view.IsRowVisible(rowHandle) == RowVisibleState.Hidden) {
+            view.MoveNextPage();
+            view.MakeRowVisible(rowHandle);
+          }
         }
       }
 
@@ -429,14 +429,6 @@ namespace SQLIndexManager {
             index.Progress = Resources.IconError;
             _ps.Errors++;
           }
-          else {
-            if (Settings.Options.DelayAfterFix > 0 && i < indexes.Count - 1) {
-              _workerFix.ReportProgress(i, index);
-              index.Progress = Resources.IconDelay;
-              Thread.Sleep(Settings.Options.DelayAfterFix);
-              index.Progress = Resources.IconOk;
-            }
-          }
 
           _workerFix.ReportProgress(i, index);
         }
@@ -455,7 +447,8 @@ namespace SQLIndexManager {
 
       buttonFix.Enabled = false;
 
-      buttonStopFix.Visibility = BarItemVisibility.Never;
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Never;
 
       UpdateProgressStats();
       Output.Current.Add("Done!");
@@ -647,6 +640,10 @@ namespace SQLIndexManager {
         }
       }
 
+      if (ix.IsTable && !ix.IsFKs && ((ix.IsPartitioned && Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) || !ix.IsPartitioned)) {
+        i.Add(IndexOp.TRUNCATE_TABLE);
+      }
+      
       i.Add(IndexOp.SKIP);
 
       return i;
@@ -739,7 +736,41 @@ namespace SQLIndexManager {
           return;
 
         if (view.OptionsBehavior.Editable) {
-          e.Menu.Items.Add(new DXMenuItem("Change Fix Action", ChangeFixAction, Resources.IconReplace));
+          DXSubMenuItem ci = new DXSubMenuItem("Change Fix Action");
+          ci.ImageOptions.Image = Resources.IconReplace;
+          e.Menu.Items.Add(ci);
+
+          ci.Items.Add(new DXMenuItem(IndexOp.REBUILD.Description(), ChangeFixAction, Resources.IconIndexes));
+          ci.Items.Add(new DXMenuItem(IndexOp.REORGANIZE.Description(), ChangeFixAction, Resources.IconIndexes));
+
+          if (Settings.ServerInfo.IsCompressionAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_ROW.Description(), ChangeFixAction, Resources.IconIndexes) { BeginGroup = true });
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_PAGE.Description(), ChangeFixAction, Resources.IconIndexes));
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_NONE.Description(), ChangeFixAction, Resources.IconIndexes));
+          }
+
+          if (Settings.ServerInfo.IsOnlineRebuildAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_ONLINE.Description(), ChangeFixAction, Resources.IconIndexes));
+          }
+
+          if (Settings.ServerInfo.IsColumnstoreAvailable) {
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_COLUMNSTORE.Description(), ChangeFixAction, Resources.IconIndexes) { BeginGroup = true });
+            ci.Items.Add(new DXMenuItem(IndexOp.REBUILD_COLUMNSTORE_ARCHIVE.Description(), ChangeFixAction, Resources.IconIndexes));
+
+            if (Settings.ServerInfo.MajorVersion >= ServerVersion.Sql2016) {
+              ci.Items.Add(new DXMenuItem(IndexOp.CREATE_COLUMNSTORE_INDEX.Description(), ChangeFixAction, Resources.IconReplace));
+            }
+          }
+
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_FULL.Description(), ChangeFixAction, Resources.IconUpdateStats) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_RESAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats));
+          ci.Items.Add(new DXMenuItem(IndexOp.UPDATE_STATISTICS_SAMPLE.Description(), ChangeFixAction, Resources.IconUpdateStats));
+
+          ci.Items.Add(new DXMenuItem(IndexOp.TRUNCATE_TABLE.Description(), ChangeFixAction, Resources.IconClear) { BeginGroup = true });
+          ci.Items.Add(new DXMenuItem(IndexOp.DISABLE_INDEX.Description(), ChangeFixAction, Resources.IconHide));
+          ci.Items.Add(new DXMenuItem(IndexOp.DROP_TABLE.Description(), ChangeFixAction, Resources.IconDelete));
+
+          ci.Items.Add(new DXMenuItem(IndexOp.SKIP.Description(), ChangeFixAction, Resources.IconSkip) { BeginGroup = true });
         }
         
         e.Menu.Items.Add(new DXMenuItem("Copy Fix Script", CopyFixScript, Resources.IconCopyFix));
@@ -822,11 +853,9 @@ namespace SQLIndexManager {
     }
 
     private void ChangeFixAction(object sender, EventArgs e) {
-      using (ActionBox form = new ActionBox()) {
-        if (form.ShowDialog(this) == DialogResult.OK) {
-          UpdateFixAction(form.GetFixAction());
-        }
-      }
+      DXMenuItem mi = (DXMenuItem)sender;
+      IndexOp op = Utils.GetValueFromDescription<IndexOp>(mi.Caption);
+      UpdateFixAction(op);
     }
 
     private void UpdateFixAction(IndexOp op) {
@@ -884,7 +913,7 @@ namespace SQLIndexManager {
         Process.Start(AppInfo.LogFileName);
       }
       catch (Exception ex) {
-        XtraMessageBox.Show(ex.Message.Replace(". ", "." + Environment.NewLine), ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        Utils.ShowErrorFrom(ex);
       }
     }
 
@@ -911,7 +940,9 @@ namespace SQLIndexManager {
       Output.Current.Add("Canceling...");
       QueryEngine.KillActiveSessions();
       _workerFix.CancelAsync();
-      buttonStopFix.Visibility = BarItemVisibility.Never;
+
+      buttonStopFix.Visibility =
+        buttonAutoScroll.Visibility = BarItemVisibility.Never;
     }
 
     private void ButtonCopyFixClick(object sender, ItemClickEventArgs e) {

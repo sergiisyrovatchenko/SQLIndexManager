@@ -250,30 +250,26 @@ CREATE TABLE #Stats (
     , RowsSampled   BIGINT
     , PRIMARY KEY (ObjectID, IndexID)
 )
-
-INSERT INTO #Stats
-SELECT s.[object_id]
-     , s.[stats_id]
-     , s.[no_recompute]
-     , p.[rows_sampled] * 100. / NULLIF(p.[rows], 0)
-     , p.[rows_sampled]
-FROM (
-    SELECT DISTINCT s.[object_id]
-                  , s.[stats_id]
-                  , s.[no_recompute]
-    FROM sys.stats s WITH(NOLOCK)
-    WHERE EXISTS(
-            SELECT *
-            FROM #Indexes i
-            WHERE s.[object_id] = i.ObjectID
-                AND s.[stats_id] = i.IndexID
-                AND i.IndexType IN (1, 2)
-        )
-) s
-CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p
+{9}
 
 DECLARE @MINUTE INT
 SET @MINUTE = DATEDIFF(MINUTE, GETUTCDATE(), GETDATE())
+
+IF OBJECT_ID('tempdb.dbo.#FKs') IS NOT NULL
+    DROP TABLE #FKs
+
+CREATE TABLE #FKs (ObjectID INT PRIMARY KEY)
+INSERT INTO #FKs
+SELECT i.ObjectID
+FROM (
+    SELECT DISTINCT ObjectID
+    FROM #Indexes
+) i
+WHERE EXISTS(
+        SELECT *
+        FROM sys.foreign_keys f WITH(NOLOCK)
+        WHERE f.[referenced_object_id] = i.ObjectID
+    )
 
 SELECT i.ObjectID
      , i.IndexID
@@ -303,6 +299,8 @@ SELECT i.ObjectID
      , FileGroupName    = fg.[name]
      , CreateDate       = DATEADD(MINUTE, -@MINUTE, o.[create_date])
      , ModifyDate       = DATEADD(MINUTE, -@MINUTE, o.[modify_date])
+     , IsTable          = CAST(CASE WHEN o.[type] = 'U' THEN 1 ELSE 0 END AS BIT)
+     , IsFKs            = CAST(CASE WHEN fk.ObjectID IS NULL THEN 0 ELSE 1 END AS BIT)
      , i.IsUnique
      , i.IsPK
      , i.FillFactorValue
@@ -315,6 +313,7 @@ SELECT i.ObjectID
 FROM #Indexes i
 JOIN sys.objects o WITH(NOLOCK) ON o.[object_id] = i.ObjectID
 JOIN sys.schemas s WITH(NOLOCK) ON s.[schema_id] = o.[schema_id]
+LEFT JOIN #FKs fk ON fk.ObjectID = i.ObjectID
 LEFT JOIN #Stats ss ON ss.ObjectID = i.ObjectID AND ss.IndexID = i.IndexID
 LEFT JOIN #AggColumns a ON a.ObjectID = i.ObjectID AND a.IndexID = i.IndexID
 LEFT JOIN #Sparse p ON p.ObjectID = i.ObjectID
@@ -332,6 +331,42 @@ WHERE o.[type] IN ('V', 'U')
             i.IndexType IN (5, 6)
     )
 ";
+
+    public const string StatsLite = @"
+INSERT INTO #Stats (ObjectID, IndexID, IsNoRecompute)
+SELECT DISTINCT s.[object_id]
+              , s.[stats_id]
+              , s.[no_recompute]
+FROM sys.stats s WITH(NOLOCK)
+WHERE EXISTS(
+        SELECT *
+        FROM #Indexes i
+        WHERE s.[object_id] = i.ObjectID
+            AND s.[stats_id] = i.IndexID
+            AND i.IndexType IN (1, 2)
+    )";
+
+    public const string StatsFull = @"
+INSERT INTO #Stats (ObjectID, IndexID, IsNoRecompute, StatsSampled, RowsSampled)
+SELECT s.[object_id]
+     , s.[stats_id]
+     , s.[no_recompute]
+     , p.[rows_sampled] * 100. / NULLIF(p.[rows], 0)
+     , p.[rows_sampled]
+FROM (
+    SELECT DISTINCT s.[object_id]
+                  , s.[stats_id]
+                  , s.[no_recompute]
+    FROM sys.stats s WITH(NOLOCK)
+    WHERE EXISTS(
+            SELECT *
+            FROM #Indexes i
+            WHERE s.[object_id] = i.ObjectID
+                AND s.[stats_id] = i.IndexID
+                AND i.IndexType IN (1, 2)
+        )
+) s
+CROSS APPLY sys.dm_db_stats_properties(s.[object_id], s.[stats_id]) p";
 
     public const string MissingIndex = @"
 SET NOCOUNT ON
@@ -582,7 +617,7 @@ SELECT ServerName         = @@SERVERNAME
      , IsSysAdmin         = CAST(IS_SRVROLEMEMBER('sysadmin') AS BIT)
 ";
 
-    public const string DatabaseList = @"
+    public const string DatabaseSizeList = @"
 SET NOCOUNT ON
 SET ARITHABORT ON
 SET NUMERIC_ROUNDABORT OFF
@@ -591,29 +626,21 @@ IF OBJECT_ID('tempdb.dbo.#Databases') IS NOT NULL
     DROP TABLE #Databases
 
 CREATE TABLE #Databases (
-      DatabaseID    INT
-    , DatabaseName  NVARCHAR(500)
-    , RecoveryModel NVARCHAR(500)
-    , LogReuseWait  NVARCHAR(500)
-    , HasDBAccess   BIT
-    , CreateDate    DATETIME
+      DatabaseName NVARCHAR(500)
+    , HasDBAccess  BIT
 )
 
 INSERT INTO #Databases
-SELECT DatabaseID    = [database_id]
-     , DatabaseName  = [name]
-     , RecoveryModel = [recovery_model_desc]
-     , LogReuseWait  = [log_reuse_wait_desc]
-     , HasDBAccess   = ISNULL(HAS_DBACCESS([name]), 1)
-     , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])
+SELECT DatabaseName = [name]
+     , HasDBAccess  = ISNULL(HAS_DBACCESS([name]), 1)
 FROM sys.databases WITH(NOLOCK)
 WHERE [state] = 0
     AND [user_access] = 0
 
-IF OBJECT_ID('tempdb.dbo.#UsedSpace') IS NOT NULL
-    DROP TABLE #UsedSpace
+IF OBJECT_ID('tempdb.dbo.#DatabaseSize') IS NOT NULL
+    DROP TABLE #DatabaseSize
 
-CREATE TABLE #UsedSpace (
+CREATE TABLE #DatabaseSize (
       DatabaseID   INT
     , DataSize     BIGINT
     , LogSize      BIGINT
@@ -625,7 +652,7 @@ DECLARE @SQL NVARCHAR(MAX)
 SET @SQL = (
     SELECT '
     USE [' + REPLACE(REPLACE(DatabaseName, ']', ']]'), '[', '[[') + ']
-    INSERT INTO #UsedSpace
+    INSERT INTO #DatabaseSize
     SELECT DB_ID()
          , SUM(CASE WHEN [type] = 0 THEN [size] END)
          , SUM(CASE WHEN [type] = 1 THEN [size] END)
@@ -645,25 +672,13 @@ SET @SQL = (
 
 EXEC sys.sp_executesql @SQL
 
-SELECT t.DatabaseName
-     , u.DataSize
-     , u.DataUsedSize
-     , u.LogSize
-     , u.LogUsedSize
-     , t.RecoveryModel
-     , t.LogReuseWait
-     , t.CreateDate
-FROM #Databases t
-LEFT JOIN #UsedSpace u ON u.DatabaseID = t.DatabaseID
-WHERE t.HasDBAccess = 1
+SELECT *
+FROM #DatabaseSize
 ";
 
-    public const string DatabaseListAzure = @"
-SELECT DatabaseName  = [name]
-     , DataSize      = CAST(NULL AS BIGINT)
-     , DataUsedSize  = CAST(NULL AS BIGINT)
-     , LogSize       = CAST(NULL AS BIGINT)
-     , LogUsedSize   = CAST(NULL AS BIGINT)
+    public const string DatabaseList = @"
+SELECT DatabaseId    = [database_id]
+     , DatabaseName  = [name]
      , RecoveryModel = [recovery_model_desc]
      , LogReuseWait  = [log_reuse_wait_desc]
      , CreateDate    = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), [create_date])

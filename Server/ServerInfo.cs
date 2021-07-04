@@ -28,6 +28,12 @@
          || (MajorVersion == ServerVersion.Sql2016 && PatchVersion >= 4001)
          || MajorVersion >= ServerVersion.Sql2017;
 
+    // https://www.sqlskills.com/blogs/erin/new-statistics-dmf-in-sql-server-2008r2-sp2/
+    public bool IsFullStats => IsAzure
+         || (MajorVersion >= ServerVersion.Sql2008 && MinorVersion == 50 && PatchVersion >= 4000)
+         || (MajorVersion == ServerVersion.Sql2012 && PatchVersion >= 3000)
+         || MajorVersion >= ServerVersion.Sql2014;
+
     public bool IsOnlineRebuildAvailable => IsAzure
          || (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon);
 

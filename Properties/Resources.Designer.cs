@@ -79,6 +79,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DatabaseId.
+        /// </summary>
+        internal static string DatabaseId {
+            get {
+                return ResourceManager.GetString("DatabaseId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DatabaseName.
         /// </summary>
         internal static string DatabaseName {
@@ -227,6 +236,16 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconClear {
+            get {
+                object obj = ResourceManager.GetObject("IconClear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconCopy {
             get {
                 object obj = ResourceManager.GetObject("IconCopy", resourceCulture);
@@ -257,9 +276,9 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap IconDelay {
+        internal static System.Drawing.Bitmap IconDelete {
             get {
-                object obj = ResourceManager.GetObject("IconDelay", resourceCulture);
+                object obj = ResourceManager.GetObject("IconDelete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -477,9 +496,29 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconSaveFix {
+            get {
+                object obj = ResourceManager.GetObject("IconSaveFix", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconScan {
             get {
                 object obj = ResourceManager.GetObject("IconScan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap IconSkip {
+            get {
+                object obj = ResourceManager.GetObject("IconSkip", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -497,9 +536,9 @@ namespace SQLIndexManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap IiconSaveFix {
+        internal static System.Drawing.Bitmap IconUpdateStats {
             get {
-                object obj = ResourceManager.GetObject("IiconSaveFix", resourceCulture);
+                object obj = ResourceManager.GetObject("IconUpdateStats", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -577,6 +616,15 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IsFKs.
+        /// </summary>
+        internal static string IsFKs {
+            get {
+                return ResourceManager.GetString("IsFKs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsLob.
         /// </summary>
         internal static string IsLob {
@@ -636,6 +684,15 @@ namespace SQLIndexManager.Properties {
         internal static string IsSysAdmin {
             get {
                 return ResourceManager.GetString("IsSysAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IsTable.
+        /// </summary>
+        internal static string IsTable {
+            get {
+                return ResourceManager.GetString("IsTable", resourceCulture);
             }
         }
         

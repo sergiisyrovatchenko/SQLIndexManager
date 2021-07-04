@@ -51,9 +51,6 @@ namespace SQLIndexManager {
       boxPadIndex.Checked = o.PadIndex;
       boxSortInTempDb.Checked = o.SortInTempDb;
       boxLobCompaction.Checked = o.LobCompaction;
-      boxMultiThreadingCount.Value = o.DelayAfterFix;
-      boxDelayAfterFix.Value = o.DelayAfterFix;
-      boxMultiThreadingCount.Value = o.MultiThreadingCount;
       boxMaxDod.Value = o.MaxDop;
       boxStatsSamplePercent.Value = o.SampleStatsPercent;
       boxConnectionTimeout.Value = o.ConnectionTimeout;
@@ -94,8 +91,6 @@ namespace SQLIndexManager {
         MinIndexSize = boxMinIndexSize.Value.Minimum,
         PreDescribeSize = boxMinIndexSize.Value.Maximum,
         MaxIndexSize = boxMaxIndexSize.Value,
-        DelayAfterFix = (int)boxDelayAfterFix.Value,
-        MultiThreadingCount = (int)boxMultiThreadingCount.Value,
         MaxDop = (int)boxMaxDod.Value,
         Online = boxOnline.Checked,
         PadIndex = boxPadIndex.Checked,

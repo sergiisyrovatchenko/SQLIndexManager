@@ -48,9 +48,7 @@ namespace SQLIndexManager {
     }
 
     private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
-      using (ErrorBox errorBox = new ErrorBox(e.Exception)) {
-        errorBox.ShowDialog();
-      }
+      Utils.ShowErrorFrom(e.Exception);
     }
 
     private static void AttachConsole() {

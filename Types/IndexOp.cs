@@ -61,7 +61,10 @@ namespace SQLIndexManager {
     SKIP = 18,
 
     [Description("CREATE COLUMNSTORE INDEX")]
-    CREATE_COLUMNSTORE_INDEX = 19
+    CREATE_COLUMNSTORE_INDEX = 19,
+
+    [Description("TRUNCATE TABLE")]
+    TRUNCATE_TABLE = 20
   }
 
 }
