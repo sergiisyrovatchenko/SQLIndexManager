@@ -13,7 +13,7 @@ namespace SQLIndexManager {
         InitialCatalog = database ?? "master"
       };
 
-      if (host.AuthType == AuthTypes.WINDOWS) {
+      if (host.AuthType == AuthTypes.Windows) {
         builder.IntegratedSecurity = true;
       }
       else {

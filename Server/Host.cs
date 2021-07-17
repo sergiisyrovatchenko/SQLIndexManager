@@ -8,31 +8,28 @@ namespace SQLIndexManager {
   public class Host {
 
     [XmlAttribute]
-    public string Server;
+    public string Server { get; set; }
 
     [XmlAttribute]
-    public AuthTypes AuthType;
+    public AuthTypes AuthType { get; set; }
 
     [XmlAttribute]
-    public string User;
+    public string User { get; set; }
 
     [XmlAttribute]
-    public string Password;
+    public string Password { get; set; }
 
     [XmlElement]
-    public List<string> Databases;
+    public List<string> Databases { get; set; }
 
     [XmlIgnore]
-    public bool IsUserConnection;
+    public bool IsUserConnection { get; set; }
 
     [XmlIgnore]
-    public bool SavePassword;
-
-    [XmlIgnore]
-    public ServerInfo ServerInfo;
+    public ServerInfo ServerInfo { get; set; }
 
     public Host() {
-      AuthType = AuthTypes.WINDOWS;
+      AuthType = AuthTypes.Windows;
       Databases = new List<string>();
     }
 

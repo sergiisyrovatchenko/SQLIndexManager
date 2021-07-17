@@ -34,13 +34,11 @@
       this.label2 = new DevExpress.XtraEditors.LabelControl();
       this.label3 = new DevExpress.XtraEditors.LabelControl();
       this.label4 = new DevExpress.XtraEditors.LabelControl();
-      this.boxSavePassword = new DevExpress.XtraEditors.CheckEdit();
       this.progressBar = new DevExpress.XtraEditors.MarqueeProgressBarControl();
       ((System.ComponentModel.ISupportInitialize)(this.boxServer.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxAuthType.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxUser.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPassword.Properties)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxSavePassword.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.progressBar.Properties)).BeginInit();
       this.SuspendLayout();
       // 
@@ -69,10 +67,8 @@
       this.boxServer.Location = new System.Drawing.Point(95, 15);
       this.boxServer.Name = "boxServer";
       this.boxServer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxServer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[]
-      {
-        new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
-      });
+      this.boxServer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
       this.boxServer.Size = new System.Drawing.Size(263, 20);
       this.boxServer.TabIndex = 1;
       this.boxServer.SelectedIndexChanged += new System.EventHandler(this.BoxServerSelectionChanged);
@@ -83,15 +79,11 @@
       this.boxAuthType.Location = new System.Drawing.Point(95, 42);
       this.boxAuthType.Name = "boxAuthType";
       this.boxAuthType.Properties.AutoComplete = false;
-      this.boxAuthType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[]
-      {
-        new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
-      });
-      this.boxAuthType.Properties.Items.AddRange(new object[]
-      {
-        "Windows Authentication",
-        "SQL Server Authentication"
-      });
+      this.boxAuthType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxAuthType.Properties.Items.AddRange(new object[] {
+            "Windows Authentication",
+            "SQL Server Authentication"});
       this.boxAuthType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
       this.boxAuthType.Size = new System.Drawing.Size(263, 20);
       this.boxAuthType.TabIndex = 2;
@@ -147,14 +139,6 @@
       this.label4.TabIndex = 13;
       this.label4.Text = "Password";
       // 
-      // boxSavePassword
-      // 
-      this.boxSavePassword.Location = new System.Drawing.Point(95, 120);
-      this.boxSavePassword.Name = "boxSavePassword";
-      this.boxSavePassword.Properties.Caption = " Save password";
-      this.boxSavePassword.Size = new System.Drawing.Size(102, 19);
-      this.boxSavePassword.TabIndex = 5;
-      // 
       // progressBar
       // 
       this.progressBar.EditValue = 0;
@@ -176,7 +160,6 @@
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(370, 197);
       this.Controls.Add(this.progressBar);
-      this.Controls.Add(this.boxSavePassword);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.label3);
       this.Controls.Add(this.label2);
@@ -200,7 +183,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.boxAuthType.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxUser.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPassword.Properties)).EndInit();
-      ((System.ComponentModel.ISupportInitialize)(this.boxSavePassword.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.progressBar.Properties)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
@@ -219,7 +201,6 @@
     private DevExpress.XtraEditors.LabelControl label2;
     private DevExpress.XtraEditors.LabelControl label3;
     private DevExpress.XtraEditors.LabelControl label4;
-    private DevExpress.XtraEditors.CheckEdit boxSavePassword;
     private DevExpress.XtraEditors.MarqueeProgressBarControl progressBar;
   }
 }

@@ -24,7 +24,6 @@ namespace SQLIndexManager {
         AuthType = _authType,
         User = _user,
         Password = _password,
-        SavePassword = _savePassword,
         Databases = _databases,
         IsUserConnection = true,
         ServerInfo = _serverInfo
@@ -122,11 +121,6 @@ namespace SQLIndexManager {
       set => boxPassword.Text = value;
     }
 
-    private bool _savePassword {
-      get => boxSavePassword.Checked;
-      set => boxSavePassword.Checked = value;
-    }
-
     private List<string> _databases;
     private ServerInfo _serverInfo;
 
@@ -151,20 +145,17 @@ namespace SQLIndexManager {
         _authType = host.AuthType;
         _user = host.User;
         _password = host.Password;
-        _savePassword = host.SavePassword;
         _databases = host.Databases;
       }
     }
 
     private void BoxAuthTypeSelectionChanged(object sender, EventArgs e) {
-      bool sqlAuth = (_authType == AuthTypes.SQLSERVER);
+      bool sqlAuth = (_authType == AuthTypes.Sql);
       boxUser.Enabled =
-          boxPassword.Enabled =
-              boxSavePassword.Enabled = sqlAuth;
+          boxPassword.Enabled = sqlAuth;
 
       if (!sqlAuth) {
         _user = _password = null;
-        _savePassword = false;
       }
       else {
         _user = "sa";
@@ -172,7 +163,6 @@ namespace SQLIndexManager {
     }
 
     private void UpdateControlUsage(bool enabled) {
-
       foreach(Control c in Controls) {
         c.Enabled = enabled;
       }
@@ -182,14 +172,13 @@ namespace SQLIndexManager {
 
       if (enabled) {
         boxUser.Enabled =
-            boxPassword.Enabled =
-                boxSavePassword.Enabled = (_authType == AuthTypes.SQLSERVER);
+            boxPassword.Enabled = (_authType == AuthTypes.Sql);
       }
     }
 
     private void EditValueChanged(object sender, EventArgs e) {
       buttonOK.Enabled =
-          !string.IsNullOrEmpty(_server) && !(string.IsNullOrEmpty(_user) && _authType == AuthTypes.SQLSERVER);
+          !string.IsNullOrEmpty(_server) && !(string.IsNullOrEmpty(_user) && _authType == AuthTypes.Sql);
     }
 
     #endregion

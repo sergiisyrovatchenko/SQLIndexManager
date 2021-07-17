@@ -1,8 +1,8 @@
 ﻿namespace SQLIndexManager {
 
   public enum AuthTypes {
-    WINDOWS = 0,
-    SQLSERVER = 1
+    Windows = 0,
+    Sql = 1
   }
 
 }

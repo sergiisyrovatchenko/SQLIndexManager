@@ -19,7 +19,7 @@ namespace SQLIndexManager {
           case "connection":
             SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder(cmd.Params[0]);
             host.Server = sb.DataSource;
-            host.AuthType = sb.IntegratedSecurity ? AuthTypes.WINDOWS : AuthTypes.SQLSERVER;
+            host.AuthType = sb.IntegratedSecurity ? AuthTypes.Windows : AuthTypes.Sql;
             host.User = sb.UserID;
             if (!string.IsNullOrEmpty(sb.InitialCatalog)) {
               host.Databases.Add(sb.InitialCatalog);

@@ -31,7 +31,10 @@ namespace SQLIndexManager {
 
     public static ServerInfo ServerInfo => _activeHost.ServerInfo;
 
-    public static List<Host> Hosts => Instance.Hosts;
+    public static List<Host> Hosts {
+      get => Instance.Hosts;
+      set => Instance.Hosts = value;
+    }
 
     public static Options Options {
       get => Instance.Options;
@@ -71,10 +74,8 @@ namespace SQLIndexManager {
         using (FileStream writer = File.OpenWrite(AppInfo.SettingFileName)) {
           _current.Hosts.RemoveAll(s => !s.IsUserConnection);
           _current.Hosts.ForEach(s => {
-            if (s.AuthType == AuthTypes.SQLSERVER && s.Password != null) {
-              s.Password = s.SavePassword
-                              ? AES.Encrypt(s.Password)
-                              : null;
+            if (s.AuthType == AuthTypes.Sql && s.Password != null) {
+              s.Password = AES.Encrypt(s.Password);
             }
           });
 
@@ -98,9 +99,8 @@ namespace SQLIndexManager {
             _current.Hosts.RemoveAll(_ => _.Server == null);
             _current.Hosts.ForEach(s => {
               s.IsUserConnection = true;
-              if (s.AuthType == AuthTypes.SQLSERVER && !string.IsNullOrEmpty(s.Password)) {
+              if (s.AuthType == AuthTypes.Sql && !string.IsNullOrEmpty(s.Password)) {
                 s.Password = AES.Decrypt(s.Password);
-                s.SavePassword = true;
               }
             });
 
