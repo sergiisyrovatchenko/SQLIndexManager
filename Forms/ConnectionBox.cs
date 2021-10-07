@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using SQLIndexManager.Properties;
@@ -14,8 +13,8 @@ namespace SQLIndexManager {
     public ConnectionBox() {
       InitializeComponent();
 
-      boxServer.Properties.Items.AddRange(Settings.Hosts.Select(p => p.Server).ToList());
-      boxServer.SelectedIndex = 0;
+      boxServer.Properties.DataSource = Settings.Hosts;
+      UpdateServerInfo(0);
     }
 
     public Host GetHost() {
@@ -102,8 +101,8 @@ namespace SQLIndexManager {
     #region Properties
 
     private string _server {
-      get => boxServer.Text;
-      set => boxServer.Text = value;
+      get => (string)boxServer.EditValue;
+      set => boxServer.EditValue = value;
     }
 
     private AuthTypes _authType {
@@ -137,16 +136,19 @@ namespace SQLIndexManager {
     }
 
     private void BoxServerSelectionChanged(object sender, EventArgs e) {
-      if (boxServer.SelectedIndex != -1) {
+      UpdateServerInfo(boxServer.ItemIndex);
+    }
 
-        Host host = Settings.Hosts[boxServer.SelectedIndex];
+    private void UpdateServerInfo(int index) {
+      if (index == -1) return;
 
-        _server = host.Server;
-        _authType = host.AuthType;
-        _user = host.User;
-        _password = host.Password;
-        _databases = host.Databases;
-      }
+      Host host = Settings.Hosts[index];
+
+      _server = host.Server;
+      _authType = host.AuthType;
+      _user = host.User;
+      _password = host.Password;
+      _databases = host.Databases;
     }
 
     private void BoxAuthTypeSelectionChanged(object sender, EventArgs e) {

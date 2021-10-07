@@ -26,7 +26,6 @@
     private void InitializeComponent() {
       this.buttonCancel = new DevExpress.XtraEditors.SimpleButton();
       this.buttonOK = new DevExpress.XtraEditors.SimpleButton();
-      this.boxServer = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxAuthType = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxUser = new DevExpress.XtraEditors.TextEdit();
       this.boxPassword = new DevExpress.XtraEditors.TextEdit();
@@ -35,44 +34,33 @@
       this.label3 = new DevExpress.XtraEditors.LabelControl();
       this.label4 = new DevExpress.XtraEditors.LabelControl();
       this.progressBar = new DevExpress.XtraEditors.MarqueeProgressBarControl();
-      ((System.ComponentModel.ISupportInitialize)(this.boxServer.Properties)).BeginInit();
+      this.boxServer = new DevExpress.XtraEditors.LookUpEdit();
       ((System.ComponentModel.ISupportInitialize)(this.boxAuthType.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxUser.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPassword.Properties)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.progressBar.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxServer.Properties)).BeginInit();
       this.SuspendLayout();
       // 
       // buttonCancel
       // 
       this.buttonCancel.AllowFocus = false;
-      this.buttonCancel.Location = new System.Drawing.Point(283, 163);
+      this.buttonCancel.Location = new System.Drawing.Point(283, 134);
       this.buttonCancel.Name = "buttonCancel";
       this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-      this.buttonCancel.TabIndex = 7;
+      this.buttonCancel.TabIndex = 6;
       this.buttonCancel.Text = "Cancel";
       this.buttonCancel.Click += new System.EventHandler(this.ButtonCancelClick);
       // 
       // buttonOK
       // 
       this.buttonOK.AllowFocus = false;
-      this.buttonOK.Location = new System.Drawing.Point(202, 163);
+      this.buttonOK.Location = new System.Drawing.Point(202, 134);
       this.buttonOK.Name = "buttonOK";
       this.buttonOK.Size = new System.Drawing.Size(75, 23);
-      this.buttonOK.TabIndex = 6;
+      this.buttonOK.TabIndex = 5;
       this.buttonOK.Text = "OK";
       this.buttonOK.Click += new System.EventHandler(this.ButtonOkClick);
-      // 
-      // boxServer
-      // 
-      this.boxServer.Location = new System.Drawing.Point(95, 15);
-      this.boxServer.Name = "boxServer";
-      this.boxServer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
-      this.boxServer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-      this.boxServer.Size = new System.Drawing.Size(263, 20);
-      this.boxServer.TabIndex = 1;
-      this.boxServer.SelectedIndexChanged += new System.EventHandler(this.BoxServerSelectionChanged);
-      this.boxServer.EditValueChanged += new System.EventHandler(this.EditValueChanged);
       // 
       // boxAuthType
       // 
@@ -154,11 +142,36 @@
       this.progressBar.TabIndex = 14;
       this.progressBar.Visible = false;
       // 
+      // boxServer
+      // 
+      this.boxServer.Location = new System.Drawing.Point(95, 15);
+      this.boxServer.Name = "boxServer";
+      this.boxServer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxServer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxServer.Properties.CloseUpKey = new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.F2);
+      this.boxServer.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
+            new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Server", "")});
+      this.boxServer.Properties.DisplayMember = "Server";
+      this.boxServer.Properties.DropDownRows = 6;
+      this.boxServer.Properties.NullText = "";
+      this.boxServer.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+      this.boxServer.Properties.PopupSizeable = false;
+      this.boxServer.Properties.ShowFooter = false;
+      this.boxServer.Properties.ShowHeader = false;
+      this.boxServer.Properties.ShowLines = false;
+      this.boxServer.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+      this.boxServer.Properties.ValueMember = "Server";
+      this.boxServer.Size = new System.Drawing.Size(263, 20);
+      this.boxServer.TabIndex = 1;
+      this.boxServer.EditValueChanged += new System.EventHandler(this.BoxServerSelectionChanged);
+      this.boxServer.TextChanged += new System.EventHandler(this.EditValueChanged);
+      // 
       // ConnectionBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(370, 197);
+      this.ClientSize = new System.Drawing.Size(370, 169);
       this.Controls.Add(this.progressBar);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.label3);
@@ -167,9 +180,9 @@
       this.Controls.Add(this.boxPassword);
       this.Controls.Add(this.boxUser);
       this.Controls.Add(this.boxAuthType);
-      this.Controls.Add(this.boxServer);
       this.Controls.Add(this.buttonCancel);
       this.Controls.Add(this.buttonOK);
+      this.Controls.Add(this.boxServer);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
       this.LookAndFeel.SkinName = "Office 2016 Dark";
       this.MaximizeBox = false;
@@ -179,11 +192,11 @@
       this.ShowInTaskbar = false;
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "New Connection";
-      ((System.ComponentModel.ISupportInitialize)(this.boxServer.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxAuthType.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxUser.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.boxPassword.Properties)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.progressBar.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxServer.Properties)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -193,7 +206,6 @@
 
     private DevExpress.XtraEditors.SimpleButton buttonCancel;
     private DevExpress.XtraEditors.SimpleButton buttonOK;
-    private DevExpress.XtraEditors.ComboBoxEdit boxServer;
     private DevExpress.XtraEditors.ComboBoxEdit boxAuthType;
     private DevExpress.XtraEditors.TextEdit boxUser;
     private DevExpress.XtraEditors.TextEdit boxPassword;
@@ -202,5 +214,6 @@
     private DevExpress.XtraEditors.LabelControl label3;
     private DevExpress.XtraEditors.LabelControl label4;
     private DevExpress.XtraEditors.MarqueeProgressBarControl progressBar;
+    private DevExpress.XtraEditors.LookUpEdit boxServer;
   }
 }

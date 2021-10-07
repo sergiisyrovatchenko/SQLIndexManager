@@ -459,7 +459,7 @@ namespace SQLIndexManager {
     #region Dialogs
 
     private void MainBox_Shown(object sender, EventArgs e) {
-      ShowConnectionManagerBox();
+      ShowConnectionBox();
     }
 
     private void ShowDatabaseBox(bool isConnectionChanged) {
@@ -479,15 +479,6 @@ namespace SQLIndexManager {
         else {
           labelDatabases.Caption = Settings.ActiveHost.Databases.Count.ToString();
           labelDatabases.Visibility = BarItemVisibility.Always;
-        }
-      }
-    }
-
-    private void ShowConnectionManagerBox() {
-      using (ConnectionBox form = new ConnectionBox()) {
-        if (form.ShowDialog(this) == DialogResult.OK) {
-          Host host = form.GetHost();
-          Host lastHost = Settings.Hosts[0];
         }
       }
     }
