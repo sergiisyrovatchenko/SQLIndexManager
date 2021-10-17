@@ -86,6 +86,13 @@ namespace SQLIndexManager {
             sql = $"ALTER INDEX {fullIndexName} REORGANIZE PARTITION = {partition}" +
                     $"{(FixType == IndexOp.REORGANIZE_COMPRESS_ALL_ROW_GROUPS ? $"{Environment.NewLine}    WITH (COMPRESS_ALL_ROW_GROUPS = ON)" : "")};";
             break;
+
+          case IndexOp.TRUNCATE_TABLE:
+            sql = IsPartitioned
+                      ? $"TRUNCATE TABLE {objectName} WITH (PARTITIONS ({partition}));"
+                      : $"TRUNCATE TABLE {objectName};";
+            break;
+
         }
 
       }
