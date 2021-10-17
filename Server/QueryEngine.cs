@@ -358,20 +358,23 @@ namespace SQLIndexManager {
 
     public static string FixIndex(SqlConnection connection, Index ix) {
       int indexId = ix.FixType == IndexOp.CREATE_COLUMNSTORE_INDEX && ix.IndexType == IndexType.HEAP ? 1 : ix.IndexId;
-
-      string sqlInfo = string.Format(ix.IsColumnstore ? Query.AfterFixColumnstoreIndex : Query.AfterFixIndex,
-                                     ix.ObjectId, indexId, ix.PartitionNumber, Settings.Options.ScanMode);
-
+      string sql;
       string query = ix.GetQuery();
-      string sql = ix.FixType == IndexOp.DISABLE_INDEX
-                || ix.FixType == IndexOp.DROP_INDEX
-                || ix.FixType == IndexOp.DROP_TABLE
-                || ix.FixType == IndexOp.CREATE_INDEX
-                || ix.FixType == IndexOp.UPDATE_STATISTICS_FULL
-                || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE
-                || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
-                      ? query
-                      : $"{query} \n {sqlInfo}";
+
+      if (ix.FixType == IndexOp.DISABLE_INDEX || ix.FixType == IndexOp.DROP_INDEX || ix.FixType == IndexOp.DROP_TABLE || ix.FixType == IndexOp.CREATE_INDEX) {
+        sql = query;
+      }
+      else {
+        string sqlInfo;
+        if (ix.IsColumnstore)
+          sqlInfo = Query.AfterFixColumnstoreIndex;
+        else if (Settings.ServerInfo.IsFullStats && (ix.IndexType == IndexType.CLUSTERED || ix.IndexType == IndexType.NONCLUSTERED) && !ix.IsPartitioned)
+          sqlInfo = Query.AfterFixIndexWithStats;
+        else
+          sqlInfo = Query.AfterFixIndex;
+
+        sql = $"{query} \n {string.Format(sqlInfo, ix.ObjectId, indexId, ix.PartitionNumber, Settings.Options.ScanMode)}";
+      }
 
       SqlCommand cmd = new SqlCommand(sql, connection) { CommandTimeout = Settings.Options.CommandTimeout };
       SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -386,10 +389,7 @@ namespace SQLIndexManager {
 
       if (string.IsNullOrEmpty(ix.Error)) {
         try {
-          if (ix.FixType == IndexOp.UPDATE_STATISTICS_FULL || ix.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE || ix.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE) {
-            ix.IndexStats = DateTime.UtcNow;
-          }
-          else if (ix.FixType == IndexOp.CREATE_INDEX) {
+          if (ix.FixType == IndexOp.CREATE_INDEX) {
             ix.IndexStats = DateTime.UtcNow;
             ix.Fragmentation = 0;
           }
@@ -411,6 +411,8 @@ namespace SQLIndexManager {
             ix.RowsCount = row.Field<long>(Resources.RowsCount);
             ix.DataCompression = ((DataCompression)row.Field<byte>(Resources.DataCompression));
             ix.IndexStats = row.Field<DateTime?>(Resources.IndexStats);
+            ix.StatsSampled = row.Field<double?>(Resources.StatsSampled) ?? ix.StatsSampled;
+            ix.RowsSampled = row.Field<long?>(Resources.RowsSampled) ?? ix.RowsSampled;
 
             if (ix.FixType == IndexOp.CREATE_COLUMNSTORE_INDEX) {
               ix.IndexName = "CCL";

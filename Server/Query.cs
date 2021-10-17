@@ -721,6 +721,55 @@ SELECT Fragmentation    = [avg_fragmentation_in_percent]
      , RowsCount        = ISNULL(@RowsCount, 0)
      , IndexStats       = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), STATS_DATE({0}, {1}))
      , DataCompression  = @Compression
+     , StatsSampled     = NULL
+     , RowsSampled      = NULL
+FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, '{3}')
+WHERE [index_level] = 0
+    AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
+";
+
+    public const string AfterFixIndexWithStats = @"
+DECLARE @UnusedPagesCount  BIGINT
+      , @ReservedPageCount BIGINT
+      , @RowsCount         BIGINT
+      , @Compression       TINYINT
+      , @DBID              INT
+      , @DBNAME            SYSNAME
+      , @StatsSampled      FLOAT
+      , @RowsSampled       BIGINT
+
+SET @DBNAME = DB_NAME()
+SELECT @DBID = [database_id]
+FROM sys.databases WITH(NOLOCK)
+WHERE [name] = @DBNAME
+
+SELECT TOP(1) @UnusedPagesCount   = [used_page_count]
+            , @ReservedPageCount  = [reserved_page_count]
+            , @RowsCount          = [row_count]
+FROM sys.dm_db_partition_stats WITH(NOLOCK)
+WHERE [object_id] = {0}
+    AND [index_id] = {1}
+    AND [partition_number] = {2}
+
+SELECT @Compression = [data_compression]
+FROM sys.partitions WITH(NOLOCK)
+WHERE [object_id] = {0}
+    AND [index_id] = {1}
+    AND [partition_number] = {2}
+
+SELECT TOP(1) @StatsSampled = [rows_sampled] * 100. / NULLIF([rows], 0)
+            , @RowsSampled  = [rows_sampled]
+FROM sys.dm_db_stats_properties({0}, {1})
+
+SELECT Fragmentation    = [avg_fragmentation_in_percent]
+     , PageSpaceUsed    = [avg_page_space_used_in_percent]
+     , PagesCount       = ISNULL(@ReservedPageCount, 0)
+     , UnusedPagesCount = ISNULL(CASE WHEN ABS(@ReservedPageCount - @UnusedPagesCount) > 32 THEN @ReservedPageCount - @UnusedPagesCount END, 0)
+     , RowsCount        = ISNULL(@RowsCount, 0)
+     , IndexStats       = DATEADD(MINUTE, -DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), STATS_DATE({0}, {1}))
+     , DataCompression  = @Compression
+     , StatsSampled     = @StatsSampled
+     , RowsSampled      = @RowsSampled
 FROM sys.dm_db_index_physical_stats(@DBID, {0}, {1}, {2}, '{3}')
 WHERE [index_level] = 0
     AND [alloc_unit_type_desc] = 'IN_ROW_DATA'
@@ -746,6 +795,8 @@ SELECT Fragmentation    = @Fragmentation
      , RowsCount        = ISNULL([rows], 0)
      , IndexStats       = NULL
      , DataCompression  = [data_compression]
+     , StatsSampled     = NULL
+     , RowsSampled      = NULL
 FROM sys.partitions WITH(NOLOCK)
 WHERE [object_id] = {0}
     AND [index_id] = {1}
