@@ -216,26 +216,41 @@ namespace SQLIndexManager {
 
       buttonStopScan.Visibility = BarItemVisibility.Never;
 
-      List<Index> indexes = _indexes.Where(_ => _.Fragmentation >= (Settings.Options.SkipOperation == IndexOp.IGNORE ? Settings.Options.FirstThreshold : 0) 
-                                             && _.PagesCount >= Settings.Options.MinIndexSize.PageSize()
-                                             && _.PagesCount <= Settings.Options.MaxIndexSize.PageSize())
-                                        .OrderBy(_ => _.Fragmentation < Settings.Options.FirstThreshold
-                                                            && Settings.Options.SkipOperation != Settings.Options.FirstOperation
-                                                      ? 3
-                                                      :  _.Fragmentation < Settings.Options.SecondThreshold 
-                                                        && Settings.Options.FirstOperation != Settings.Options.SecondOperation 
-                                                            ? 2 : 1 )
-                                        .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
+      var o = Settings.Options;
+
+      List<Index> indexes = _indexes.Where(_ => _.Fragmentation >= (o.SkipOperation == IndexOp.IGNORE ? o.FirstThreshold : 0)
+                                         && _.PagesCount >= o.MinIndexSize.PageSize()
+                                         && _.PagesCount <= o.MaxIndexSize.PageSize())
+                                    .OrderBy(_ => _.Fragmentation < o.FirstThreshold && o.SkipOperation != o.FirstOperation
+                                                  ? 3
+                                                  :  _.Fragmentation < o.SecondThreshold && o.FirstOperation != o.SecondOperation
+                                                        ? 2 : 1 )
+                                    .ThenByDescending(_ => (_.Fragmentation + 0.1) * _.PagesCount).ToList();
 
       QueryEngine.UpdateFixType(indexes);
       QueryEngine.FindDublicateIndexes(indexes);
       QueryEngine.FindUnusedIndexes(indexes);
 
+      if (o.StatsIgnoreHoursEnabled || o.StatsIgnoreSampledPercentEnabled) {
+        indexes.RemoveAll(_ => _.IndexStats != null
+           && (
+                 _.FixType == IndexOp.UPDATE_STATISTICS_FULL
+              || _.FixType == IndexOp.UPDATE_STATISTICS_RESAMPLE
+              || _.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
+            )
+          && (
+                (o.StatsIgnoreHoursEnabled && (DateTime.UtcNow - (DateTime)_.IndexStats).TotalHours < o.StatsIgnoreHours)
+              ||
+                (o.StatsIgnoreSampledPercentEnabled && _.StatsSampled > o.StatsIgnoreSampledPercent)
+            )
+          );
+      }
+
       _ps.Indexes = _ps.IndexesTotal = indexes.Count;
       _ps.IndexesSize = indexes.Sum(_ => _.PagesCount);
       _ps.SavedSpace = indexes.Sum(_ => _.UnusedPagesCount);
       UpdateProgressStats();
-      
+
       Output.Current.Add($"Processed: {_indexes.Count}. Fragmented: {_ps.Indexes}{(_ps.Indexes == 0 ? ". No indexes found. Try searching again or change settings..." : string.Empty)}");
 
       grid.DataSource = indexes;

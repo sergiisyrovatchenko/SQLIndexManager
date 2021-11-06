@@ -56,13 +56,18 @@ namespace SQLIndexManager {
       boxConnectionTimeout.Value = o.ConnectionTimeout;
       boxCommandTimeout.Value = o.CommandTimeout;
       boxWaitAtLowPriority.Checked = o.WaitAtLowPriority;
-      boxMaxDuration.EditValue = o.MaxDuration;
+      boxMaxDuration.Value = o.MaxDuration;
       boxAbortAfterWait.EditValue = o.AbortAfterWait;
       boxDataCompression.EditValue = o.DataCompression;
       boxNoRecompute.EditValue = o.NoRecompute;
-      boxFillFactor.EditValue = o.FillFactor;
+      boxFillFactor.Value = o.FillFactor;
       boxScanMode.EditValue = o.ScanMode;
       boxShowSettingsWhenConnectionChanged.Checked = o.ShowSettingsWhenConnectionChanged;
+
+      boxStatsIgnoreHours.Value = o.StatsIgnoreHours;
+      boxStatsIgnoreHoursEnabled.Checked = o.StatsIgnoreHoursEnabled;
+      boxStatsIgnoreSampledPercent.Value = o.StatsIgnoreSampledPercent;
+      boxStatsIgnoreSampledPercentEnabled.Checked = o.StatsIgnoreSampledPercentEnabled;
 
       boxScanHeap.Checked = o.ScanHeap;
       boxScanClusteredIndex.Checked = o.ScanClusteredIndex;
@@ -107,6 +112,11 @@ namespace SQLIndexManager {
         FillFactor = (int)boxFillFactor.Value,
         ScanMode = boxScanMode.EditValue.ToEnum<ScanMode>(),
         ShowSettingsWhenConnectionChanged = boxShowSettingsWhenConnectionChanged.Checked,
+
+        StatsIgnoreHours = (int)boxStatsIgnoreHours.Value,
+        StatsIgnoreHoursEnabled = boxStatsIgnoreHoursEnabled.Checked,
+        StatsIgnoreSampledPercent = (int)boxStatsIgnoreSampledPercent.Value,
+        StatsIgnoreSampledPercentEnabled = boxStatsIgnoreSampledPercentEnabled.Checked,
 
         ScanHeap = boxScanHeap.Checked,
         ScanClusteredIndex = boxScanClusteredIndex.Checked,

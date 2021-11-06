@@ -49,6 +49,9 @@
       System.Windows.Forms.PictureBox pictureBox1;
       System.Windows.Forms.PictureBox pictureBox3;
       System.Windows.Forms.PictureBox pictureBox4;
+      DevExpress.XtraEditors.GroupControl groupControl6;
+      DevExpress.XtraEditors.LabelControl labelControl4;
+      DevExpress.XtraEditors.LabelControl labelControl10;
       this.labelSkipThreshold = new DevExpress.XtraEditors.LabelControl();
       this.boxSkipThreshold = new DevExpress.XtraEditors.ComboBoxEdit();
       this.boxSecondThreshold = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -93,6 +96,10 @@
       this.groupControl4 = new DevExpress.XtraEditors.GroupControl();
       this.groupControl5 = new DevExpress.XtraEditors.GroupControl();
       this.boxShowSettingsWhenConnectionChanged = new DevExpress.XtraEditors.CheckEdit();
+      this.boxStatsIgnoreHours = new DevExpress.XtraEditors.SpinEdit();
+      this.boxStatsIgnoreSampledPercent = new DevExpress.XtraEditors.SpinEdit();
+      this.boxStatsIgnoreHoursEnabled = new DevExpress.XtraEditors.CheckEdit();
+      this.boxStatsIgnoreSampledPercentEnabled = new DevExpress.XtraEditors.CheckEdit();
       labelControl9 = new DevExpress.XtraEditors.LabelControl();
       labelSortInTempDb = new DevExpress.XtraEditors.LabelControl();
       labelLobCompaction = new DevExpress.XtraEditors.LabelControl();
@@ -118,6 +125,9 @@
       pictureBox1 = new System.Windows.Forms.PictureBox();
       pictureBox3 = new System.Windows.Forms.PictureBox();
       pictureBox4 = new System.Windows.Forms.PictureBox();
+      groupControl6 = new DevExpress.XtraEditors.GroupControl();
+      labelControl4 = new DevExpress.XtraEditors.LabelControl();
+      labelControl10 = new DevExpress.XtraEditors.LabelControl();
       ((System.ComponentModel.ISupportInitialize)(groupControl1)).BeginInit();
       groupControl1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxSkipThreshold.Properties)).BeginInit();
@@ -173,6 +183,12 @@
       ((System.ComponentModel.ISupportInitialize)(this.groupControl5)).BeginInit();
       this.groupControl5.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxShowSettingsWhenConnectionChanged.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(groupControl6)).BeginInit();
+      groupControl6.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreHours.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreSampledPercent.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreHoursEnabled.Properties)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreSampledPercentEnabled.Properties)).BeginInit();
       this.SuspendLayout();
       // 
       // labelControl9
@@ -400,7 +416,7 @@
       groupControl2.Controls.Add(this.boxConnectionTimeout);
       groupControl2.Controls.Add(labelControl6);
       groupControl2.Controls.Add(this.boxCommandTimeout);
-      groupControl2.Location = new System.Drawing.Point(414, 395);
+      groupControl2.Location = new System.Drawing.Point(414, 482);
       groupControl2.Name = "groupControl2";
       groupControl2.Size = new System.Drawing.Size(303, 81);
       groupControl2.TabIndex = 14;
@@ -1029,7 +1045,7 @@
             " "});
       this.boxExcludeObject.Properties.ShowDropDown = false;
       this.boxExcludeObject.Properties.ValidateToken += new DevExpress.XtraEditors.TokenEditValidateTokenEventHandler(this.TokenValidate);
-      this.boxExcludeObject.Size = new System.Drawing.Size(652, 20);
+      this.boxExcludeObject.Size = new System.Drawing.Size(343, 20);
       this.boxExcludeObject.TabIndex = 8;
       // 
       // boxExcludeSchemas
@@ -1078,7 +1094,7 @@
             " "});
       this.boxIncludeObject.Properties.ShowDropDown = false;
       this.boxIncludeObject.Properties.ValidateToken += new DevExpress.XtraEditors.TokenEditValidateTokenEventHandler(this.TokenValidate);
-      this.boxIncludeObject.Size = new System.Drawing.Size(652, 20);
+      this.boxIncludeObject.Size = new System.Drawing.Size(343, 20);
       this.boxIncludeObject.TabIndex = 15;
       // 
       // groupControl4
@@ -1101,7 +1117,7 @@
       this.groupControl5.Controls.Add(this.boxExcludeObject);
       this.groupControl5.Location = new System.Drawing.Point(12, 482);
       this.groupControl5.Name = "groupControl5";
-      this.groupControl5.Size = new System.Drawing.Size(705, 81);
+      this.groupControl5.Size = new System.Drawing.Size(396, 81);
       this.groupControl5.TabIndex = 19;
       this.groupControl5.Text = "Object Filter (schema.table OR table OR %pattern%)";
       // 
@@ -1115,11 +1131,132 @@
       this.boxShowSettingsWhenConnectionChanged.TabIndex = 15;
       this.boxShowSettingsWhenConnectionChanged.TabStop = false;
       // 
+      // groupControl6
+      // 
+      groupControl6.Controls.Add(this.boxStatsIgnoreSampledPercentEnabled);
+      groupControl6.Controls.Add(this.boxStatsIgnoreHoursEnabled);
+      groupControl6.Controls.Add(labelControl4);
+      groupControl6.Controls.Add(this.boxStatsIgnoreHours);
+      groupControl6.Controls.Add(labelControl10);
+      groupControl6.Controls.Add(this.boxStatsIgnoreSampledPercent);
+      groupControl6.Location = new System.Drawing.Point(414, 395);
+      groupControl6.Name = "groupControl6";
+      groupControl6.Size = new System.Drawing.Size(303, 81);
+      groupControl6.TabIndex = 15;
+      groupControl6.Text = "Ignore Update Statistics";
+      // 
+      // labelControl4
+      // 
+      labelControl4.Location = new System.Drawing.Point(14, 25);
+      labelControl4.Name = "labelControl4";
+      labelControl4.Size = new System.Drawing.Size(149, 13);
+      labelControl4.TabIndex = 13;
+      labelControl4.Text = "LAST_UPDATE_HOURS_AGO <";
+      // 
+      // boxStatsIgnoreHours
+      // 
+      this.boxStatsIgnoreHours.EditValue = new decimal(new int[] {
+            24,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreHours.Location = new System.Drawing.Point(200, 22);
+      this.boxStatsIgnoreHours.Name = "boxStatsIgnoreHours";
+      this.boxStatsIgnoreHours.Properties.AllowFocused = false;
+      this.boxStatsIgnoreHours.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxStatsIgnoreHours.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxStatsIgnoreHours.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxStatsIgnoreHours.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxStatsIgnoreHours.Properties.DisplayFormat.FormatString = "n0";
+      this.boxStatsIgnoreHours.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxStatsIgnoreHours.Properties.EditFormat.FormatString = "n0";
+      this.boxStatsIgnoreHours.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxStatsIgnoreHours.Properties.IsFloatValue = false;
+      this.boxStatsIgnoreHours.Properties.Mask.EditMask = "N00";
+      this.boxStatsIgnoreHours.Properties.MaxValue = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreHours.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreHours.Size = new System.Drawing.Size(88, 20);
+      this.boxStatsIgnoreHours.TabIndex = 12;
+      this.boxStatsIgnoreHours.TabStop = false;
+      // 
+      // labelControl10
+      // 
+      labelControl10.Location = new System.Drawing.Point(14, 53);
+      labelControl10.Name = "labelControl10";
+      labelControl10.Size = new System.Drawing.Size(144, 13);
+      labelControl10.TabIndex = 7;
+      labelControl10.Text = "STATS_SAMPLED_PERCENT >";
+      // 
+      // boxStatsIgnoreSampledPercent
+      // 
+      this.boxStatsIgnoreSampledPercent.EditValue = new decimal(new int[] {
+            95,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreSampledPercent.Location = new System.Drawing.Point(200, 50);
+      this.boxStatsIgnoreSampledPercent.Name = "boxStatsIgnoreSampledPercent";
+      this.boxStatsIgnoreSampledPercent.Properties.AllowFocused = false;
+      this.boxStatsIgnoreSampledPercent.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+      this.boxStatsIgnoreSampledPercent.Properties.Appearance.Options.UseTextOptions = true;
+      this.boxStatsIgnoreSampledPercent.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+      this.boxStatsIgnoreSampledPercent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+      this.boxStatsIgnoreSampledPercent.Properties.DisplayFormat.FormatString = "n0";
+      this.boxStatsIgnoreSampledPercent.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxStatsIgnoreSampledPercent.Properties.EditFormat.FormatString = "n0";
+      this.boxStatsIgnoreSampledPercent.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+      this.boxStatsIgnoreSampledPercent.Properties.IsFloatValue = false;
+      this.boxStatsIgnoreSampledPercent.Properties.Mask.EditMask = "N00";
+      this.boxStatsIgnoreSampledPercent.Properties.MaxValue = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreSampledPercent.Properties.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+      this.boxStatsIgnoreSampledPercent.Size = new System.Drawing.Size(88, 20);
+      this.boxStatsIgnoreSampledPercent.TabIndex = 6;
+      this.boxStatsIgnoreSampledPercent.TabStop = false;
+      // 
+      // boxStatsIgnoreHoursEnabled
+      // 
+      this.boxStatsIgnoreHoursEnabled.Location = new System.Drawing.Point(179, 22);
+      this.boxStatsIgnoreHoursEnabled.Name = "boxStatsIgnoreHoursEnabled";
+      this.boxStatsIgnoreHoursEnabled.Properties.AllowFocused = false;
+      this.boxStatsIgnoreHoursEnabled.Properties.Caption = "";
+      this.boxStatsIgnoreHoursEnabled.Size = new System.Drawing.Size(19, 19);
+      this.boxStatsIgnoreHoursEnabled.TabIndex = 28;
+      this.boxStatsIgnoreHoursEnabled.TabStop = false;
+      // 
+      // boxStatsIgnoreSampledPercentEnabled
+      // 
+      this.boxStatsIgnoreSampledPercentEnabled.Location = new System.Drawing.Point(179, 50);
+      this.boxStatsIgnoreSampledPercentEnabled.Name = "boxStatsIgnoreSampledPercentEnabled";
+      this.boxStatsIgnoreSampledPercentEnabled.Properties.AllowFocused = false;
+      this.boxStatsIgnoreSampledPercentEnabled.Properties.Caption = "";
+      this.boxStatsIgnoreSampledPercentEnabled.Size = new System.Drawing.Size(19, 19);
+      this.boxStatsIgnoreSampledPercentEnabled.TabIndex = 29;
+      this.boxStatsIgnoreSampledPercentEnabled.TabStop = false;
+      // 
       // SettingsBox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(726, 605);
+      this.Controls.Add(groupControl6);
       this.Controls.Add(this.boxShowSettingsWhenConnectionChanged);
       this.Controls.Add(this.groupControl5);
       this.Controls.Add(this.groupControl4);
@@ -1199,6 +1336,13 @@
       this.groupControl5.ResumeLayout(false);
       this.groupControl5.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.boxShowSettingsWhenConnectionChanged.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(groupControl6)).EndInit();
+      groupControl6.ResumeLayout(false);
+      groupControl6.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreHours.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreSampledPercent.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreHoursEnabled.Properties)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.boxStatsIgnoreSampledPercentEnabled.Properties)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -1249,5 +1393,9 @@
     private DevExpress.XtraEditors.CheckEdit boxShowSettingsWhenConnectionChanged;
     private DevExpress.XtraEditors.CheckEdit boxIgnoreHeapWithCompression;
     private DevExpress.XtraEditors.CheckEdit boxShowOnlyMore1000Rows;
+    private DevExpress.XtraEditors.SpinEdit boxStatsIgnoreHours;
+    private DevExpress.XtraEditors.SpinEdit boxStatsIgnoreSampledPercent;
+    private DevExpress.XtraEditors.CheckEdit boxStatsIgnoreSampledPercentEnabled;
+    private DevExpress.XtraEditors.CheckEdit boxStatsIgnoreHoursEnabled;
   }
 }

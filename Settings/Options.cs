@@ -20,6 +20,8 @@ namespace SQLIndexManager {
     private int _maxDop;
     private int _fillFactor;
     private int _sampleStatsPercent = 100;
+    private int _statsIgnoreHours = 24;
+    private int _statsIgnoreSampledPercent = 95;
     private int _maxDuration = 1;
     private DataCompression _dataCompression;
     private List<string> _includeSchemas = new List<string>();
@@ -38,6 +40,8 @@ namespace SQLIndexManager {
       IgnorePermissions = true;
       IgnoreReadOnlyFL = true;
       ShowSettingsWhenConnectionChanged = true;
+      StatsIgnoreHoursEnabled = false;
+      StatsIgnoreSampledPercentEnabled = false;
 
       ScanMode = ScanMode.LIMITED;
       DataCompression = DataCompression.DEFAULT;
@@ -104,6 +108,24 @@ namespace SQLIndexManager {
       get => _sampleStatsPercent;
       set => _sampleStatsPercent = value.IsBetween(1, 100) ? value : _sampleStatsPercent;
     }
+
+    [XmlAttribute]
+    public int StatsIgnoreHours {
+      get => _statsIgnoreHours;
+      set => _statsIgnoreHours = value.IsBetween(1, 100) ? value : _statsIgnoreHours;
+    }
+
+    [XmlAttribute]
+    public bool StatsIgnoreHoursEnabled;
+
+    [XmlAttribute]
+    public int StatsIgnoreSampledPercent {
+      get => _statsIgnoreSampledPercent;
+      set => _statsIgnoreSampledPercent = value.IsBetween(1, 99) ? value : _statsIgnoreSampledPercent;
+    }
+
+    [XmlAttribute]
+    public bool StatsIgnoreSampledPercentEnabled;
 
     [XmlAttribute]
     public int MinIndexSize {
