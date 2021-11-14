@@ -585,9 +585,9 @@ SELECT *
 FROM (
     SELECT IndexID          = [index_id]
          , PartitionNumber  = [partition_number]
-         , PagesCount       = SUM([size_in_bytes]) / 8192
+         , PagesCount       = ISNULL(SUM([size_in_bytes]), 0) / 8192
          , UnusedPagesCount = ISNULL(SUM(CASE WHEN [state] = 1 THEN [size_in_bytes] END), 0) / 8192
-         , Fragmentation    = CAST(ISNULL(SUM(CASE WHEN [state] = 1 THEN [size_in_bytes] END), 0) * 100. / SUM([size_in_bytes]) AS FLOAT)
+         , Fragmentation    = ISNULL(CAST(ISNULL(SUM(CASE WHEN [state] = 1 THEN [size_in_bytes] END), 0) * 100. / SUM([size_in_bytes]) AS FLOAT), 0)
     FROM sys.fn_column_store_row_groups(@ObjectID)
     GROUP BY [index_id]
            , [partition_number]

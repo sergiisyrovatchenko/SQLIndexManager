@@ -469,7 +469,7 @@ namespace SQLIndexManager {
     }
 
     private static IndexOp CorrectIndexOp(IndexOp op, Index ix) {
-      if (op == IndexOp.NO_ACTION || op == IndexOp.IGNORE)
+      if (op == IndexOp.NO_ACTION || op == IndexOp.IGNORE || (ix.IsColumnstore && ix.Fragmentation == 0))
         return IndexOp.SKIP;
 
       if (ix.IndexType == IndexType.MISSING_INDEX)
