@@ -239,9 +239,17 @@ namespace SQLIndexManager {
               || _.FixType == IndexOp.UPDATE_STATISTICS_SAMPLE
             )
           && (
-                (o.StatsIgnoreHoursEnabled && (DateTime.UtcNow - (DateTime)_.IndexStats).TotalHours < o.StatsIgnoreHours)
+              (
+                  !o.StatsIgnoreHoursEnabled
+                ||
+                  (o.StatsIgnoreHoursEnabled && (DateTime.UtcNow - (DateTime)_.IndexStats).TotalHours < o.StatsIgnoreHours)
+              )
               ||
-                (o.StatsIgnoreSampledPercentEnabled && _.StatsSampled > o.StatsIgnoreSampledPercent)
+              (
+                  !o.StatsIgnoreSampledPercentEnabled
+                ||
+                  (o.StatsIgnoreSampledPercentEnabled && _.StatsSampled > o.StatsIgnoreSampledPercent)
+              )
             )
           );
       }
