@@ -55,8 +55,8 @@
             return "2017";
           case ServerVersion.Sql2019:
             return "2019";
-          case ServerVersion.Sql2021:
-            return "2021";
+          case ServerVersion.Sql2022:
+            return "2022";
           default:
             return "?";
         }

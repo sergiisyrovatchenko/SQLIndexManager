@@ -8,7 +8,7 @@
     public const int Sql2016 = 13;
     public const int Sql2017 = 14;
     public const int Sql2019 = 15;
-    public const int Sql2021 = 16;
+    public const int Sql2022 = 16;
   }
 
 }
