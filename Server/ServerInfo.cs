@@ -36,7 +36,7 @@
 
     // https://sqlperformance.com/2014/06/sql-indexes/hotfix-sql-2012-rebuilds
     public bool IsOnlineRebuildAvailable => IsAzure
-         || (MajorVersion >= ServerVersion.Sql2014 && IsMaxEdititon);
+         || (MajorVersion >= ServerVersion.Sql2008 && IsMaxEdititon);
 
     private string ProductVersion {
       get {

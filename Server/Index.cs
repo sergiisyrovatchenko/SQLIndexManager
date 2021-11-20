@@ -158,7 +158,9 @@ namespace SQLIndexManager {
                     (!IsAllowCompression
                       ? ""
                       : $"DATA_COMPRESSION = {compression}, ") +
-                    $"ONLINE = {onlineRebuild}, " +
+                    (Settings.ServerInfo.MajorVersion <= ServerVersion.Sql2012 && IsPartitioned // 'ONLINE' is not a recognized ALTER INDEX REBUILD PARTITION option
+                      ? ""
+                      : $"ONLINE = {onlineRebuild}, ") +
                     $"MAXDOP = {Settings.Options.MaxDop});";
             break;
 
