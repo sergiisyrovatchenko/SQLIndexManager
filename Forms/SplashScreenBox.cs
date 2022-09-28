@@ -1,6 +1,7 @@
 ﻿using DevExpress.XtraSplashScreen;
+using SQLIndexManager.Core;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class SplashScreenBox : SplashScreen {
 

@@ -79,18 +79,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\AES.cs" />
-    <Compile Include="Common\AppInfo.cs" />
     <Compile Include="Common\GridMethod.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\Output.cs" />
+    <Compile Include="Common\OutputHandlerWindow.cs" />
     <Compile Include="Common\ThreadWorker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Console\CmdArgument.cs" />
-    <Compile Include="Console\CmdParser.cs" />
-    <Compile Include="Console\CmdWorker.cs" />
+    <Compile Include="Common\UIUtils.cs" />
     <Compile Include="Console\NativeMethods.cs" />
     <Compile Include="Forms\ErrorBox.cs">
       <SubType>Form</SubType>
@@ -116,27 +112,13 @@
     <Compile Include="Forms\SplashScreenBox.Designer.cs">
       <DependentUpon>SplashScreenBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Server\ConnectionList.cs" />
-    <Compile Include="Server\Connection.cs" />
-    <Compile Include="Server\Database.cs" />
-    <Compile Include="Server\DiskInfo.cs" />
-    <Compile Include="Server\Index.cs" />
     <Compile Include="Server\ProgressStatus.cs" />
-    <Compile Include="Server\Query.cs" />
-    <Compile Include="Types\ServerVersion.cs" />
-    <Compile Include="Settings\GlobalSettings.cs" />
-    <Compile Include="Server\Host.cs" />
-    <Compile Include="Settings\Options.cs" />
-    <Compile Include="Server\QueryEngine.cs" />
-    <Compile Include="Server\ServerInfo.cs" />
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Common\Utils.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\MainBox.cs">
       <SubType>Form</SubType>
@@ -156,14 +138,6 @@
     <Compile Include="Forms\ConnectionBox.Designer.cs">
       <DependentUpon>ConnectionBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Types\AuthTypes.cs" />
-    <Compile Include="Types\DataCompression.cs" />
-    <Compile Include="Types\IndexOp.cs" />
-    <Compile Include="Types\IndexType.cs" />
-    <Compile Include="Types\AbortAfterWait.cs" />
-    <Compile Include="Types\NoRecompute.cs" />
-    <Compile Include="Types\ScanMode.cs" />
-    <Compile Include="Types\WarningType.cs" />
     <EmbeddedResource Include="Forms\ErrorBox.resx">
       <DependentUpon>ErrorBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -227,6 +201,15 @@
     <None Include="Images\icon_hide.png" />
     <Content Include="Images\icon_include.png" />
     <None Include="Images\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SQLIndexManager.Core\SQLIndexManager.Core.csproj">
+      <Project>{96c94bac-f145-4b7a-ac4e-40c1dca8b729}</Project>
+      <Name>SQLIndexManager.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Types" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

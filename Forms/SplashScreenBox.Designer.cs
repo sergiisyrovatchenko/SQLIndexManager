@@ -1,4 +1,4 @@
-﻿namespace SQLIndexManager {
+﻿namespace SQLIndexManager.Forms {
   partial class SplashScreenBox {
     /// <summary>
     /// Required designer variable.

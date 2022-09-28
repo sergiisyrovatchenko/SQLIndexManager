@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Console {
 
   public static class NativeMethods {
 

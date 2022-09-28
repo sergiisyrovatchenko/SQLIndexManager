@@ -1,6 +1,6 @@
 ﻿using DevExpress.XtraBars;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
   partial class MainBox {
     private System.ComponentModel.IContainer components = null;
 

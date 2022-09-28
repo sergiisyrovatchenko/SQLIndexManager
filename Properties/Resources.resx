@@ -172,9 +172,6 @@
   <data name="IconFix" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon_fix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RecoveryModel" xml:space="preserve">
-    <value>RecoveryModel</value>
-  </data>
   <data name="IndexType" xml:space="preserve">
     <value>IndexType</value>
   </data>
@@ -253,9 +250,6 @@
   <data name="IsAllowPageLocks" xml:space="preserve">
     <value>IsAllowPageLocks</value>
   </data>
-  <data name="LogReuseWait" xml:space="preserve">
-    <value>LogReuseWait</value>
-  </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
   </data>
@@ -322,9 +316,6 @@
   <data name="IndexName" xml:space="preserve">
     <value>IndexName</value>
   </data>
-  <data name="MinVersionMessage" xml:space="preserve">
-    <value>SQL Server 2000/2005 is not supported.</value>
-  </data>
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -390,9 +381,6 @@
   </data>
   <data name="IconHide" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon_hide.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DatabaseId" xml:space="preserve">
-    <value>DatabaseId</value>
   </data>
   <data name="IconDelete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\icon_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
