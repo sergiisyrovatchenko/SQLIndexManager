@@ -1,4 +1,4 @@
-﻿namespace SQLIndexManager {
+﻿namespace SQLIndexManager.Forms {
   partial class SettingsBox {
     /// <summary>
     /// Required designer variable.

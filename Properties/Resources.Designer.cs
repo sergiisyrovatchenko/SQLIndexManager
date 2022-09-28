@@ -79,15 +79,6 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DatabaseId.
-        /// </summary>
-        internal static string DatabaseId {
-            get {
-                return ResourceManager.GetString("DatabaseId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to DatabaseName.
         /// </summary>
         internal static string DatabaseName {
@@ -733,15 +724,6 @@ namespace SQLIndexManager.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LogReuseWait.
-        /// </summary>
-        internal static string LogReuseWait {
-            get {
-                return ResourceManager.GetString("LogReuseWait", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to LogSize.
         /// </summary>
         internal static string LogSize {
@@ -756,15 +738,6 @@ namespace SQLIndexManager.Properties {
         internal static string LogUsedSize {
             get {
                 return ResourceManager.GetString("LogUsedSize", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SQL Server 2000/2005 is not supported..
-        /// </summary>
-        internal static string MinVersionMessage {
-            get {
-                return ResourceManager.GetString("MinVersionMessage", resourceCulture);
             }
         }
         
@@ -855,15 +828,6 @@ namespace SQLIndexManager.Properties {
         internal static string Progress {
             get {
                 return ResourceManager.GetString("Progress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to RecoveryModel.
-        /// </summary>
-        internal static string RecoveryModel {
-            get {
-                return ResourceManager.GetString("RecoveryModel", resourceCulture);
             }
         }
         

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Server {
 
   public class ProgressStatus {
 

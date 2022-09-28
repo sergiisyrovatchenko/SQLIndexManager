@@ -4,9 +4,12 @@ using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using SQLIndexManager.Properties;
+using SQLIndexManager.Common;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
+using SQLIndexManager.Core.Settings;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class ConnectionBox : XtraForm {
 
@@ -56,7 +59,7 @@ namespace SQLIndexManager {
     }
 
     private void OpenConnection(object sender, DoWorkEventArgs e) {
-      SqlConnection connection = Connection.Create(GetHost());
+      SqlConnection connection = ConnectionUtils.Create(GetHost());
       connection.Open();
       e.Result = connection;
     }
@@ -88,7 +91,7 @@ namespace SQLIndexManager {
       }
 
       if (_serverInfo.MajorVersion < ServerVersion.Sql2008) {
-        XtraMessageBox.Show(Resources.MinVersionMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        XtraMessageBox.Show(MessageConstants.MinVersionMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         boxServer.Focus();
       }
       else {

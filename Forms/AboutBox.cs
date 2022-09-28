@@ -3,9 +3,11 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using SQLIndexManager.Common;
+using SQLIndexManager.Core;
 using SQLIndexManager.Properties;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class AboutBox : XtraForm {
 
@@ -23,7 +25,7 @@ namespace SQLIndexManager {
         Process.Start(Resources.GitHubLink);
       }
       catch (Exception ex) {
-        Utils.ShowErrorFrom(ex);
+        UIUtils.ShowErrorFrom(ex);
       }
     }
 
