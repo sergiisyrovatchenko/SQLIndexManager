@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Repository;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
+using SQLIndexManager.Core.Settings;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class SettingsBox : XtraForm {
 

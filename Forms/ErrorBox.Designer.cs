@@ -1,4 +1,4 @@
-﻿namespace SQLIndexManager {
+﻿namespace SQLIndexManager.Forms {
   partial class ErrorBox {
     /// <summary>
     /// Required designer variable.

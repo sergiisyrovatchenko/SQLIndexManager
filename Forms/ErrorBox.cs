@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
+using SQLIndexManager.Core.Settings;
 using SQLIndexManager.Properties;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class ErrorBox : XtraForm {
 

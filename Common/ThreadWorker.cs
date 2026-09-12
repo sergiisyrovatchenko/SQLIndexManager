@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Common {
 
   public class ThreadWorker : BackgroundWorker {
 

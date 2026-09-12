@@ -19,16 +19,22 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using SQLIndexManager.Common;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
+using SQLIndexManager.Core.Settings;
 using SQLIndexManager.Properties;
+using SQLIndexManager.Server;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class MainBox : RibbonForm {
 
     public MainBox() {
       InitializeComponent();
 
-      Output.Current.SetOutputControl(labelInfo);
+      var outputHandler = new OutputHandlerWindow(labelInfo);
+      Output.Current.AddOutputHandler(outputHandler);
       Output.Current.Add($"Log folder: {Environment.CurrentDirectory}");
 
       view.CustomColumnDisplayText += GridMethod.GridColumnDisplayText;
@@ -129,7 +135,7 @@ namespace SQLIndexManager {
               }
 
               if (!ex.Message.Contains("timeout")) {
-                Utils.ShowErrorFrom(ex);
+                UIUtils.ShowErrorFrom(ex);
                 return;
               }
 
@@ -927,7 +933,7 @@ namespace SQLIndexManager {
         Process.Start(AppInfo.LogFileName);
       }
       catch (Exception ex) {
-        Utils.ShowErrorFrom(ex);
+        UIUtils.ShowErrorFrom(ex);
       }
     }
 

@@ -5,6 +5,12 @@ using System.Threading;
 using System.Windows.Forms;
 using DevExpress.LookAndFeel;
 using DevExpress.XtraSplashScreen;
+using SQLIndexManager.Common;
+using SQLIndexManager.Console;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.CommandLine;
+using SQLIndexManager.Core.Settings;
+using SQLIndexManager.Forms;
 
 namespace SQLIndexManager {
 
@@ -48,7 +54,7 @@ namespace SQLIndexManager {
     }
 
     private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
-      Utils.ShowErrorFrom(e.Exception);
+      UIUtils.ShowErrorFrom(e.Exception);
     }
 
     private static void AttachConsole() {
@@ -66,9 +72,8 @@ namespace SQLIndexManager {
       if (!consoleAttached && !NativeMethods.AllocConsole())
         Environment.Exit(1);
       else
-        Console.OutputEncoding = (Encoding)Console.OutputEncoding.Clone();
+        System.Console.OutputEncoding = (Encoding)System.Console.OutputEncoding.Clone();
     }
-
   }
 
 }

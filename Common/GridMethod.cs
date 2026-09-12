@@ -4,11 +4,13 @@ using System.Windows.Forms;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
 using SQLIndexManager.Properties;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Common {
 
-  public class GridMethod: Control {
+  public static class GridMethod {
 
     public static void GridRowCellStyle(object sender, RowCellStyleEventArgs e) {
       if (e.RowHandle == ((GridView)sender).FocusedRowHandle) {
@@ -18,7 +20,7 @@ namespace SQLIndexManager {
 
     public static void GridDoubleClick(object sender, EventArgs e) {
       GridView obj = (GridView)sender;
-      Point pt = obj.GridControl.PointToClient(MousePosition);
+      Point pt = obj.GridControl.PointToClient(Control.MousePosition);
 
       GridHitInfo info = obj.CalcHitInfo(pt);
       if (info.Column == null || info.Column.Caption == Resources.Fix || info.Column.Caption == Resources.Selection)

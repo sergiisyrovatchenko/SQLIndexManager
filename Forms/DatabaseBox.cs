@@ -9,9 +9,13 @@ using DevExpress.Data;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using SQLIndexManager.Common;
+using SQLIndexManager.Core;
+using SQLIndexManager.Core.Server;
+using SQLIndexManager.Core.Settings;
 using SQLIndexManager.Properties;
 
-namespace SQLIndexManager {
+namespace SQLIndexManager.Forms {
 
   public partial class DatabaseBox : XtraForm {
 
@@ -56,24 +60,24 @@ namespace SQLIndexManager {
     private Stopwatch _ts = new Stopwatch();
 
     private void ScanDatabases(object sender, DoWorkEventArgs e) {
-      using (SqlConnection connection = Connection.Create(Settings.ActiveHost)) {
+      using (SqlConnection connection = ConnectionUtils.Create(Settings.ActiveHost)) {
         try {
           connection.Open();
 
           try { _disks = QueryEngine.GetDiskInfo(connection); }
-          catch (Exception ex) { Utils.ShowErrorFrom(ex, "Refresh disk info failed"); }
+          catch (Exception ex) { UIUtils.ShowErrorFrom(ex, "Refresh disk info failed"); }
 
           try { _databases = QueryEngine.GetDatabases(connection); }
-          catch (Exception ex) { Utils.ShowErrorFrom(ex, "Refresh databases failed"); }
+          catch (Exception ex) { UIUtils.ShowErrorFrom(ex, "Refresh databases failed"); }
 
           if (_databases.Count > 0 && !Settings.ServerInfo.IsAzure) {
             try { QueryEngine.RefreshDatabaseSize(connection, _databases); }
-            catch (Exception ex) { Utils.ShowErrorFrom(ex, "Refresh database sizes failed"); }
+            catch (Exception ex) { UIUtils.ShowErrorFrom(ex, "Refresh database sizes failed"); }
           }
           
         }
         catch (Exception ex) {
-          Utils.ShowErrorFrom(ex, "Refresh failed");
+          UIUtils.ShowErrorFrom(ex, "Refresh failed");
         }
         finally {
           connection.Close();
