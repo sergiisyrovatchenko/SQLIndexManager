@@ -448,10 +448,12 @@ namespace SQLIndexManager {
                         .Where(_ => _.Indexes.Count > 1);
 
       foreach (var item in data) {
+        Dictionary<Index, string> sortedIncluded = item.Indexes.ToDictionary(_ => _, _ => _.IncludedColumns.Sort());
+
         foreach (Index a in item.Indexes) {
           if (a.Warning != null) continue;
           foreach (Index b in item.Indexes) {
-            if (a != b && b.Warning == null && a.IndexColumns == b.IndexColumns && a.IncludedColumns.Sort() == b.IncludedColumns.Sort())
+            if (a != b && b.Warning == null && a.IndexColumns == b.IndexColumns && sortedIncluded[a] == sortedIncluded[b])
               a.Warning = b.Warning = WarningType.DUPLICATE;
           }
         }
