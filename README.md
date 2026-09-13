@@ -5,8 +5,6 @@ You can do maintenance through the UI, or generate a T-SQL script to run in SSMS
 
 [SQL Index Manager – Wiki Page](https://github.com/sergiisyrovatchenko/SQLIndexManager/wiki)
 
-[SQL Index Manager – CodeProject](https://www.codeproject.com/Articles/5162340/SQL-Index-Manager-Free-GUI-Tool-for-Index-Maintena)
-
 ## Key Features
 
 * An incredibly fast describe engine
